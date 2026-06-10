@@ -137,13 +137,11 @@ AI wajib bertindak sebagai fasilitator interaktif yang mengajukan **HANYA 1 pert
 2. **TECH STACK DEFINITIONS:** Ajukan pilihan terpusat untuk mengunci kombinasi teknologi: Frontend Framework, Backend Runtime, dan Database Engine (atau Global State Simulator jika Pure Frontend) yang akan digunakan secara menyeluruh.
 3. **KLUSTER AKSES & MANIFEST HALAMAN (MANIFEST HALAMAN AKTIF):** Sodorkan rekomendasi pembagian rute halaman fisik yang dipecah secara rigid menjadi 3 Kluster Akses Nyata (Kluster Publik/Guest, Kluster Member Terproteksi, Kluster Admin Panel) sesuai kriteria Bab 4 di `prd-template.md`. Mintalah konfirmasi, pengurangan, atau tambahan halaman spesifik dari user.
 4. SISTEM PALET TREN 2026 (PENGUNCI WARNA MUTLAK): Tampilkan 15 daftar master palet ke layar terminal. Mintalah user memilih nomor 1-15 atau mengetik kata "RANDOM". 
-    *Hukum Eksekusi & Sinkronisasi Dua Lapis (Klasifikasi Palet Adaptif):* Begitu nomor palet dikunci, AI wajib mengidentifikasi tipe palet berdasarkan klasifikasi bawaan:
-    - **Kluster Terang (Light-Based):** Palet 2, 5, 9, 12, 14.
-    - **Kluster Gelap (Dark-Based):** Palet 1, 3, 4, 6, 7, 8, 10, 11, 13, 15.
+    *Hukum Eksekusi & Sinkronisasi Dua Lapis (Definisi Tema Adaptif):* Begitu nomor palet dikunci, AI wajib menetapkan warna asli bawaan palet sebagai Light Mode (`[data-theme="light"]`), dan otomatis merumuskan versi warna malam (Deep Tonal) yang diturunkan kecerahannya secara ekstrem dari rona dasar palet tersebut sebagai Dark Mode (`[data-theme="dark"]`).
     
-    AI wajib merumuskan skema warna secara dinamis:
-    - Jika terpilih **Kluster Terang**: Warna asli palet disematkan pada Light Mode (`[data-theme="light"]`), dan AI merumuskan versi gelap (Deep Tonal) dari rumpun warna yang sama untuk Dark Mode (`[data-theme="dark"]`).
-    - Jika terpilih **Kluster Gelap**: Warna asli palet disematkan pada Dark Mode (`[data-theme="dark"]`), dan AI merumuskan versi terang/pastel senada (bukan putih murni `#ffffff`) untuk Light Mode (`[data-theme="light"]`).
+    AI wajib memahami bahwa:
+    - **Light Mode:** Selalu mempertahankan warna latar belakang asli dari palet terpilih (Original DNA), meskipun palet tersebut bernuansa gelap (contoh: untuk Cyber Industrial, background Light Mode adalah #111111). AI dilarang keras berasumsi Light Mode harus berwarna putih murni (#FFFFFF) jika palet aslinya bernuansa gelap.
+    - **Dark Mode:** Selalu berupa variasi yang diturunkan tingkat kecerahannya secara radikal (Deep Tonal) dari warna asli palet tersebut.
     
     AI wajib menampilkan skema visual hex kedua mode tersebut di terminal sebelum melangkah ke pertanyaan berikutnya dan mengisinya secara otomatis ke Bab 3 `prd.md`. Begitu nomor palet dikunci, AI dilarang keras bertanya tentang warna/mood lagi di pertanyaan lain.
     
@@ -279,13 +277,18 @@ AI wajib mematuhi manifesto visual yang telah disepakati pada Bab 3 PRD. DILARAN
 5. **Hukum Preservasi Tonal & Anti-Banjir Putih-Hitam Murni (Vibrant Contrast Guard)**
 - **Larangan Keras Pembersihan Warna (Anti-Color Wiping):** AI diharamkan secara mutlak mengartikan Light Mode sebagai banjir warna putih murni (`#FFFFFF` atau `#FFF`) dan Dark Mode sebagai hitam murni (`#000000` atau `#121212`) hambar standar korporat. Aksi melanggar aturan ini digolongkan sebagai kegagalan fatal pada sistem visual DNA proyek.
 - **Mekanisme Pergeseran Spektrum (Hue-Locking Mechanism):** Perpindahan dari Light Mode ke Dark Mode wajib berputar di dalam spektrum roda warna (hue) yang sama dari kluster palet yang dimenangkan saat wawancara.
-- **Logika Penentuan Mode Adaptif Berdasarkan Kluster Palet (MUTLAK):**
-  - **Untuk Kluster Terang (Palet 2, 5, 9, 12, 14):**
-    * *Light Mode:* `--vibe-background` wajib mempertahankan Hex asli palet dengan mewarisi secara langsung nilai variabel: `--vibe-background: var(--raw-palette-bg);`. Dilarang keras melakukan hardcode warna `#FFFFFF` atau `#FFF` pada CSS/PRD kecuali bawaan palet asli.
-    * *Dark Mode:* `--vibe-background` wajib dirumuskan dari rona dasar palet asli yang diturunkan kecerahannya secara ekstrem (Deep Tonal / Midnight Shade).
-  - **Untuk Kluster Gelap (Palet 1, 3, 4, 6, 7, 8, 10, 11, 13, 15):**
-    * *Dark Mode:* `--vibe-background` wajib mempertahankan Hex asli palet dengan mewarisi secara langsung nilai variabel: `--vibe-background: var(--raw-palette-bg);`.
-    * *Light Mode:* `--vibe-background` wajib dirumuskan dari rona dasar palet asli dengan menaikkan kecerahannya secara dinamis untuk menghasilkan warna pastel cerah yang senada, bukan warna putih murni `#FFFFFF` atau `#FFF`.
+- **Logika Penentuan Mode Adaptif & Penguncian Desain (MUTLAK):**
+  * *Light Mode:* `--vibe-background` wajib mempertahankan Hex asli bawaan palet terpilih (Original DNA) dengan mewarisi secara langsung nilai variabel: `--vibe-background: var(--raw-palette-bg);`. AI **DILARANG KERAS** melakukan hardcode warna `#FFFFFF` atau `#FFF` pada latar belakang Light Mode di berkas PRD maupun CSS, kecuali jika palet yang terpilih secara resmi menggunakan warna tersebut sebagai warna latar dasarnya.
+  * *Dark Mode:* `--vibe-background` wajib dirumuskan secara dinamis dari rona dasar palet asli yang diturunkan kecerahannya secara radikal (Deep Tonal / Midnight Shade).
+  
+  *CONTOH KASUS KONKRET PENERAPAN TEMA:*
+  1. *Kasus Palet Gelap (Cyber Industrial - Bg #111111):*
+     - Light Mode (`data-theme="light"`): `--vibe-background: var(--raw-palette-bg);` (bernilai #111111, mempertahankan DNA asli palet gelap).
+     - Dark Mode (`data-theme="dark"`): `--vibe-background: #090909;` (di-generate variasi yang lebih gelap/midnight dari spektrum warna yang sama).
+  2. *Kasus Palet Terang (Sage Balance - Bg #F4F7F5):*
+     - Light Mode (`data-theme="light"`): `--vibe-background: var(--raw-palette-bg);` (bernilai #F4F7F5, mempertahankan DNA asli palet terang).
+     - Dark Mode (`data-theme="dark"`): `--vibe-background: #1B2921;` (di-generate variasi gelap dari spektrum warna hijau sage).
+     
 - Pelanggaran terhadap aturan pewarisan variabel dan bias putih murni ini didefinisikan sebagai *Fatal Build Violation*.
 
 6. **Hukum Validasi Hasil Pengacakan (True Random Verification Gate):** Ketika opsi RANDOM terpilih, AI wajib mencetak nama kluster palet yang memenangkan hasil kocokan acak di jendela terminal saat serah terima prd.md. AI wajib memvalidasi delta kontras elemen teks utama terhadap kontainer permukaan (`--vibe-surface`) sebelum menuliskan kode css ke disk, memastikan rasio berada pada batas aman minimal 4.5:1.
