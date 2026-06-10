@@ -10,8 +10,10 @@
 - **MVP (Minimum Viable Product) Goal:** [Syarat utama agar aplikasi ini disebut "selesai" di tahap pertama]
 
 ## 2. TECH STACK, ARCHITECTURE, & ENVIRONMENT AGNOSTIC POLICY
-
+ 
 ### A. Spesifikasi Inti Ekosistem Teknologi (Core Stack Definitions)
+- **Mode Eksekusi Proyek:** [Pilih: Pembangunan Baru dari Nol / Konversi Stack & Re-Platforming (Strangler Fig)]
+- **Teknologi Proyek Asal (Khusus Konversi):** [Sebutkan stack lama, misal: PHP Native / MySQL / raw JS, atau ketik N/A jika pembangunan baru]
 - **Frontend Framework:** [Pilih: HTML-CSS-JS Native / PHP Native / Next.js 14+ App Router / React Vite]
 - **Backend Runtime & API:** [Pilih: PHP Native / Laravel / Node.js Express / Node.js Hono.js / Supabase BaaS / Pure Frontend Emulator]
 - **Database Engine & ORM:** [Pilih: MySQL / PostgreSQL via Prisma / SQLite / Global State Simulator (Memory-Based json)]
@@ -248,10 +250,11 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 
 ### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules) [Opsional - Hanya jika menggunakan Database/Backend]
 - **Struktur Skema Dasar:** AI wajib menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, relasi antartabel yang presisi, serta penamaan Model ORM yang bersangkutan (e.g. `User`, `Transaction`, `Settings`). *Hukum Khusus Kontinuitas:* AI dilarang keras menggunakan perintah destruktif (seperti fresh seeder/migrate:fresh) saat menganalisis proyek berjalan. AI wajib membatasi manipulasi database hanya pada migrasi inkremental biasa (`migrate --force`) guna mempertahankan data uji coba/testing riil yang telah diinput oleh pengguna di database lokal.
-- **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **WAJIB** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal.
+- **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **WAJIB** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal (termasuk migrasi data dummy dari database legacy jika mode `awal konversi` aktif).
+- **Database Compatibility Matrix (Khusus Konversi):** AI wajib menganalisis skema tabel legacy dan memetakan struktur migrasinya di sini (misal keselarasan kolom lama vs kolom baru, perubahan tipe data, penyesuaian foreign key ORM baru) untuk menjamin tidak ada hilangnya relasi data.
 - **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database wajib menanamkan minimal satu akun admin default siap pakai dengan username/email: `admin` dan password: `admin123` (atau versi hash-nya), serta menyediakan tabel data user aktif lengkap beserta minimal 3 data dummy pengguna yang kaya, bervariasi, memiliki status berbeda, dan menggunakan konteks nama/data asli (DILARANG malas menulis "test1", "test2"). Aplikasi harus langsung terlihat penuh isi dan *ready to use* saat pertama kali dijalankan di lingkungan lokal.
-- **Draft Schema Area / Global Local State Simulation Model (AI Generation Zone):**
-  - *[Tuliskan draf struktur tabel database atau struktur penampung state JSON secara detail di sini. Jika menggunakan komponen Slider, wajib sertakan tabel/objek `sliders` (id, image_path, order_position, created_at)].*
+- **Draft Schema Area / Global Local State Simulation Model / Database Compatibility Matrix (AI Generation Zone):**
+  - *[Tuliskan draf struktur tabel database, struktur penampung state JSON, serta tabel pemetaan skema compatibility database legacy di sini. Jika menggunakan komponen Slider, wajib sertakan tabel/objek `sliders` (id, image_path, order_position, created_at)].*
 
 ## 7. SECURITY, ROUTE GUARDING, & UX BEHAVIOR
 *(AI wajib mematuhi protokol keamanan siber tingkat tinggi, proteksi jalur navigasi, dan standar interaksi antarmuka berikut)*
@@ -378,3 +381,38 @@ AI wajib memutasi dan men-generate visualisasi ASCII Tree secara utuh ke dalam b
 └── todo.md                 <── Peta jalan linear aktivitas koding berjenjang 6 Fase Checkbox
 
 ##[AI WAJIB MEN-GENERATE ASCII TREE STRUKTUR FOLDER DI SINI SEBELUM MULAI KODING]
+
+---
+
+## 11. TRANSITION BLUEPRINT REGISTRY (KHUSUS KONVERSI STACK / RE-PLATFORMING)
+*(Bab ini wajib diisi secara detail oleh AI saat menjalankan perintah `awal konversi` untuk memetakan transisi tubuh lama ke tubuh baru)*
+
+### A. Database Schema Conversion Map
+Memetakan nama tabel, tipe data, primary key, dan foreign key dari database lama ke database baru. Wajib diisi sebelum Fase 2 dimulai:
+| Tabel Legacy | Kolom Legacy | Tipe Data Legacy | Tabel Target Baru | Kolom Target Baru | Tipe Data Baru / ORM Type | Status Porting | Catatan / Blocker |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [Contoh: users] | [usr_pwd] | [varchar(255)] | [users] | [password] | [String (Bcrypt/Argon2)] | [PENDING] | [Butuh upgrade-on-login fallback] |
+
+### B. Database Model Registry
+Memetakan query, relasi data, dan representasi model database dari stack lama ke ORM modern target. Wajib diisi sebelum Fase 3 dimulai:
+| Model Legacy | Nama Berkas Legacy | Relasi Legacy | Model ORM Baru | Path Berkas Baru | Relasi / ORM Syntax Baru | Status Porting | Catatan / Blocker |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [Contoh: User] | [models/user.php] | [none] | [User] | [src/models/user.js] | [@relation / User.hasMany] | [PENDING] | [-] |
+
+### C. Backend Controller & API Translation Map
+Memetakan controller handler dan endpoint routing dari API lama ke rute target baru. Wajib diisi sebelum Fase 6 dimulai:
+| Controller Legacy | Endpoint Legacy | Logika Fungsional | Controller Target | API Route Target Baru | Status Porting | Catatan / Blocker |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [Contoh: auth.php] | [POST /login.php] | [Captcha verify + password verification] | [AuthController] | [POST /api/auth/login] | [PENDING] | [-] |
+
+### D. Third-Party API Integration Map
+Memetakan pustaka/package dan endpoint API eksternal dari stack lama ke stack baru. Wajib diisi sebelum Fase 6 dimulai:
+| Layanan Pihak Ketiga | Library Legacy | Konfigurasi Legacy | Library Target Baru | Konfigurasi Baru (.env) | Status Porting | Catatan / Blocker |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [Contoh: Payment Gateway] | [Midtrans PHP SDK] | [Merchant ID static config] | [@midtrans/client] | [MIDTRANS_CLIENT_KEY] | [PENDING] | [-] |
+
+### E. Frontend View & Asset Translation Registry
+Memetakan tampilan antarmuka views lama ke React Components / Modern pages pada framework baru. Wajib diisi sebelum Fase 7 dimulai:
+| Berkas View Legacy | Kluster Akses | Komponen UI Utama | Berkas View Target | Deskripsi Visual Baru | Status Porting | Catatan / Blocker |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [Contoh: login_form.html] | [Publik] | [Form container, inputs, captcha] | [src/views/pages/login.tsx] | [Responsive Card + HSL original palette Bg] | [PENDING] | [-] |
