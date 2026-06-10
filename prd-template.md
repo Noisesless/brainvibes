@@ -291,10 +291,16 @@ Sebelum AI menjalankan fungsi pembuatan folder, berkas backend, frontend, atau m
 6. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
 7. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
 
-*Hukum Pembersihan Cache Git (Sanitasi Git):* AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add dengan perintah:
-- Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
-- Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
-Hal ini memastikan file rahasia/handover yang tidak sengaja ditambahkan ke index akan langsung di-untrack sebelum di-push.
+*Hukum Pembersihan Cache Git & Proteksi Commit Revisi (Sanitasi Git):*
+AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add pada repositori mana pun, baik saat auto-commit maupun saat diperintah manual oleh user untuk melakukan commit revisi berkali-kali dalam sehari.
+Jalankan perintah sanitasi cache dan unstage otomatis ini secara preventif:
+- Pembersihan index:
+  * Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+  * Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+- Pembatalan stage tak sengaja:
+  * Di Windows PowerShell: `$Null = git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+  * Di Unix/Bash/CMD: `git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+Hal ini menjamin file rahasia/handover/metadata AI yang tidak sengaja ditambahkan ke index akan langsung di-untrack dan di-unstage secara instan sebelum push, mengeliminasi amnesia keamanan pada commit berulang.
 
 ### C. Kebijakan Isolasi Berkas Uji Coba (Isolated Debugging Zone Rules)
 AI diharamkan keras mengotori folder utama proyek (*root*) atau folder fitur aktif dengan berkas-berkas eksperimen acak saat mencoba memecahkan masalah (*debugging/testing*).

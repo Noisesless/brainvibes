@@ -393,16 +393,19 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 	1. *Fase Pembangunan (Pre-Build):* Selama 6 Fase di todo.md masih aktif, setiap kali akumulasi 5 hingga 6 sub-task selesai dicentang (- [x]), AI wajib melakukan jeda senyap untuk menumpuk catatan riwayatnya khusus pada sub-bab `## 9. Log Perubahan Terbaru (Milestone Timeline)`. Jika jumlah baris di sub-bab ini menyentuh batas 100 baris, catatan paling tua di antrean atas wajib dihapus otomatis (First-In, First-Out chronological buffer) sebelum menyisipkan baris catatan baru di bawahnya.
 	2. *Fase Pemeliharaan & Poles Manual (Post-Build / Mode YOLO):* Jika seluruh 6 Fase di todo.md telah habis atau proyek berada dalam mode baca error (YOLO Global Clean-Up) untuk proses poles kode, optimasi, update fitur kecil, atau perbaikan bug secara manual: Setiap kali AI menyelesaikan 5 hingga 6 instruksi perbaikan/update/polesan kode secara berturut-turut, AI MUTLAK WAJIB melakukan jeda senyap untuk menumpuk catatan aktivitasnya khusus pada sub-bab `## 7. Catatan Teknis & Bug Fixes (Resolved)` dengan batasan rolling buffer chronological yang sama (maksimal 100 baris, baris tertua di antrean atas dihapus otomatis jika penuh). AI dilarang keras melakukan overwrite total yang dapat menghapus catatan arsitektur dasar atau riwayat sesi sebelumnya.
 
-- **Auto Commit Berstandar Industri & Proteksi Kredensial (MUTLAK):**
-	Sesaat setelah file `handover.md` diperbarui secara otomatis (baik pada fase pembangunan maupun pemeliharaan/YOLO), AI **DILARANG keras** menggunakan perintah `git commit -am` secara membabi buta karena parameter `-a` akan memaksa file kredensial/metadata yang telanjur ter-track ikut ter-commit.
-	Sebelum melakukan commit, AI **MUTLAK WAJIB** melakukan langkah-langkah sanitasi cache Git berikut untuk memastikan file kredensial dan file internal AI tidak ikut ter-track:
-	- Jalankan perintah hapus cache tracking secara paksa:
-	  * Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
-	  * Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
-	- Tambahkan file yang ingin di-commit secara spesifik (misalnya berkas source code baru atau termutasi) atau jika menggunakan `git add .`, pastikan `.gitignore` sudah aktif mencekal file rahasia tersebut.
-	- Eksekusi perintah commit secara deskriptif (tanpa parameter `-a` jika tidak yakin cache bersih):
-	  1. Untuk pembangunan: `git add . && git commit -m "chore: auto-update handover log milestone round [Nama Sub-Fase]"`
-	  2. Untuk pemeliharaan/YOLO: `git add . && git commit -m "chore: auto-update handover log post-maintenance round [Mode YOLO]"`
+- **Protokol Transaksi Git & Keamanan Commit Lintas Sesi (MUTLAK):**
+	Baik untuk auto-commit log milestone maupun commit revisi manual yang diperintahkan pengguna berkali-kali dalam sehari, AI **DILARANG KERAS** menggunakan perintah `git commit -am` atau `git add .` secara membabi buta. Mengabaikan ini berisiko memicu kebocoran file kredensial development, database lokal, dan file internal AI (`handover.md`, `prd.md`, `todo.md`) ke GitHub.
+	AI **MUTLAK WAJIB** mengikuti workflow transaksi commit berikut di repositori mana pun terminal AI ini berjalan:
+	1. *Sanitasi Index Git secara Paksa:* Sebelum melakukan staging (`git add`) atau pembuatan commit baru, jalankan pembersihan cache tracking Git untuk file-file sensitif secara menyeluruh guna melepaskan status ter-track pada file tersebut:
+	   - Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+	   - Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+	2. *Stage File Selektif:* AI wajib menambahkan file source code secara spesifik (misalnya `git add src/` atau file tertentu yang diubah). Jika menggunakan `git add .` atau `git add -A`, AI harus segera memverifikasi file yang masuk zona staging.
+	3. *Inspeksi Status & Unstage Otomatis:* Jalankan `git status --porcelain` secara senyap. Jika terdeteksi file `handover.md`, `prd.md`, `todo.md`, `.env*`, database lokal, atau berkas kredensial masuk ke daftar staged (indikasi akan ikut ter-commit), AI wajib secara otomatis membatalkan status stage-nya sebelum commit dibuat:
+	   - Di Windows PowerShell: `$Null = git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+	   - Di Unix/Bash/CMD: `git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+	4. *Pembuatan Commit:* Gunakan perintah commit spesifik:
+	   - Untuk pembangunan: `git commit -m "chore: auto-update handover log milestone round [Nama Sub-Fase]"`
+	   - Untuk pemeliharaan/YOLO/revisi manual: `git commit -m "chore: update revisions and fixes [Spesifikasi Perubahan]"`
 
 - **Daily Archive Automation via Bash Script:**
 	Jika pengguna mengetik instruksi pagi/sesi baru (seperti mengaktifkan saklar awal baru atau awal lanjut), AI wajib mengabaikan tugas koding lain terlebih dahulu dan secara otomatis mengeksekusi perintah bash untuk kompresi folder project menjadi file arsip dengan format penamaan statis: `[NamaProject]_[Tanggal_YYYY-MM-DD].zip`. Proses kompresi ini MUTLAK WAJIB mengecualikan folder `.git`, `node_modules`, `/.scratchpad/`, folder `build/dist`, serta folder cache lokal.
@@ -557,10 +560,16 @@ Sebelum AI menjalankan fungsi pembuatan folder, berkas backend, frontend, atau m
 6. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
 7. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
 
-*Hukum Pembersihan Cache Git (Sanitasi Git):* AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add dengan perintah:
-- Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
-- Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
-Hal ini memastikan file rahasia/handover yang tidak sengaja ditambahkan ke index akan langsung di-untrack sebelum di-push.
+*Hukum Pembersihan Cache Git & Proteksi Commit Revisi (Sanitasi Git):*
+AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add pada repositori mana pun, baik saat auto-commit maupun saat diperintah manual oleh user untuk melakukan commit revisi berkali-kali dalam sehari.
+Jalankan perintah sanitasi cache dan unstage otomatis ini secara preventif:
+- Pembersihan index:
+  * Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+  * Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+- Pembatalan stage tak sengaja:
+  * Di Windows PowerShell: `$Null = git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+  * Di Unix/Bash/CMD: `git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+Hal ini menjamin file rahasia/handover/metadata AI yang tidak sengaja ditambahkan ke index akan langsung di-untrack dan di-unstage secara instan sebelum push, mengeliminasi amnesia keamanan pada commit berulang.
 
 ## 10. MULTI-ENVIRONMENT DEPLOYMENT, PATH-BASED ROUTING, & ASSET SANITATION
 *(Hukum adaptasi runtime lintas server, standarisasi URL agnostik lokal/VPS, dan protokol pembersihan aset produksi)*
