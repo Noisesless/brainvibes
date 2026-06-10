@@ -199,7 +199,7 @@ Setelah 10 poin wawancara disetujui, AI wajib menulis `prd.md` (termasuk visuali
   - [ ] Tanamkan parameter *Mandatory Cache-Busting* (`?v=1.0.0` atau timestamp dinamis) pada setiap baris pemanggilan aset CSS/JS eksternal.
   - [ ] Build komponen Navigasi Makro (Fixed Sidebar / Sticky Navbar sesuai pilihan PRD) yang dikunci properti CSS `flex-shrink: 0` agar anti-collapse.
   - [ ] Build tombol floating global utility "Back to Top" dengan efek scroll smooth di pojok kanan bawah halaman.
-  - [ ] Build sistem penukar tema (Toggle Switch Theme) fungsional yang aktif terikat ke penyimpanan lokal (LocalStorage) browser client.
+  - [ ] Build sistem penukar tema (Toggle Switch Theme) fungsional yang aktif terikat ke penyimpanan lokal (LocalStorage) browser client [Opsional - Hanya jika menggunakan Dynamic Toggle Switch].
 
 - **FASE 5: Implementasi Halaman & Fitur Aktif Berjenjang (HUKUM MANIFEST BERKAS FISIK)**
   *AI wajib menjabarkan tugas Fase 5 secara terperinci menjadi sub-checklist file fisik komponen view / halaman nyata berdasarkan hasil wawancara di PRD. Dilarang menggabungkan halaman berbeda ke dalam satu baris checklist!*
@@ -213,7 +213,7 @@ Setelah 10 poin wawancara disetujui, AI wajib menulis `prd.md` (termasuk visuali
   **Sub-Fase 5.2: Kluster Pengguna Terproteksi (Member Area)**
   - [ ] Build File Fisik View Halaman Dashboard Pengguna (Model layout Dashboard Grid, ringkasan widget data, dan visualisasi komponen Grafik jika dipilih).
   - [ ] Build File Fisik View User Profile Center (Form edit data personal, form ubah password lama, dan input upload avatar profil dengan crop pipeline).
-  - [ ] Build File Fisik View Workspace Settings lengkap dengan Fungsional Toggle Switch Theme.
+  - [ ] Build File Fisik View Workspace Settings lengkap dengan Fungsional Toggle Switch Theme [Opsional - Hanya jika menggunakan Dynamic Toggle Switch].
   
   **Sub-Fase 5.3: Kluster Pengelola (Admin/Super Admin Panel)**
   - [ ] Build File Fisik View Dashboard Analitik Admin lengkap dengan komponen grafik dinamis (Chart.js/ApexCharts) dan widget counter data.
@@ -290,6 +290,7 @@ AI wajib mematuhi manifesto visual yang telah disepakati pada Bab 3 PRD. DILARAN
      - Dark Mode (`data-theme="dark"`): `--vibe-background: #1B2921;` (di-generate variasi gelap dari spektrum warna hijau sage).
      
 - Pelanggaran terhadap aturan pewarisan variabel dan bias putih murni ini didefinisikan sebagai *Fatal Build Violation*.
+- **Konfigurasi Static Palette Mode (Tema Statis Terkunci):** Jika sistem transisi tema dikonfigurasi menggunakan *Static Palette Mode*, AI wajib hanya me-render skema warna **Light Mode (Warna Asli Palet)** sebagai tema tunggal yang dikunci pada antarmuka. AI dilarang keras membuat tombol toggle switch tema pada UI dan dilarang meng-generate selector `[data-theme="dark"]` pada file CSS.
 
 6. **Hukum Validasi Hasil Pengacakan (True Random Verification Gate):** Ketika opsi RANDOM terpilih, AI wajib mencetak nama kluster palet yang memenangkan hasil kocokan acak di jendela terminal saat serah terima prd.md. AI wajib memvalidasi delta kontras elemen teks utama terhadap kontainer permukaan (`--vibe-surface`) sebelum menuliskan kode css ke disk, memastikan rasio berada pada batas aman minimal 4.5:1.
 
