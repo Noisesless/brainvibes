@@ -17,7 +17,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
     
     1. **SKENARIO A: Jika Melanjutkan Proyek Internal (Sistem Gemini Berjalan)**
        * **Kondisi:** AI mendeteksi keberadaan file `prd.md`, `todo.md`, dan `handover.md` di direktori utama.
-       * **Aksi AI:** Lakukan pemulihan memori (*State Restoring*) secara senyap dengan membaca ketiga file tersebut serta folder `/.docs/` untuk mengingat batasan arsitektur, data state, dan kemajuan tugas harian.
+       * **Aksi AI (State Restoring & Environment Verification):** Lakukan pemulihan memori (*State Restoring*) secara senyap dengan membaca ketiga file tersebut serta folder `/.docs/` untuk mengingat batasan arsitektur, data state, dan kemajuan tugas harian. AI wajib mendeteksi keberadaan file `.env` di root folder. Jika tidak ditemukan, AI wajib membaca `.env.example`, menyalinnya menjadi `.env`, mengisi variabel sensitif dengan default dummy credentials, dan melanjutkan tanpa crash loop. AI juga wajib melakukan pemindaian pasif pada database lokal (SQLite/JSON) untuk mengonfirmasi tabel, kolom, dan data uji coba yang sudah diinput oleh pengguna. AI **DIHARAMKAN** menjalankan perintah reset database (`migrate:fresh`) yang dapat menghapus data testing/riil milik pengguna. Port local dev server aktif yang terdeteksi wajib dibaca dari `handover.md` (di bawah `## 2. Environment & Local Settings`) agar tetap konsisten.
        * **State Restoring untuk Pure Frontend (MUTLAK):** Jika proyek terdeteksi bertipe Pure Frontend / Jamstack (Tanpa Server Fisik), selain membaca tiga file markdown (`prd.md`, `todo.md`, `handover.md`), AI **MUTLAK WAJIB** membaca file manajemen state lokal simulator (seperti `src/config/state.js` atau file konfigurasi state padanannya). AI wajib memetakan record dummy data aktif dan session simulation aktif yang tersimpan di dalam file kode tersebut ke dalam variabel memori jangka pendeknya agar simulasi state tidak mengalami amnesia data saat sesi dilanjutkan.
        * **Aturan Trigger Handover Kontinuitas:** AI wajib langsung mengaktifkan ulang *internal session counter* pelacakan tugas dari angka 0 pada detik pertama memori dipulihkan. Setiap kali ada akumulasi **5 hingga 6 sub-task baru** yang dicentang (`- [x]`) pada file `todo.md` di sesi berjalan ini, pemicu (*trigger*) pembaruan otomatis ke `handover.md` **MUTLAK WAJIB** dieksekusi secara instan dengan metode penumpukan log (*append incremental*) maksimal 100 baris task, tanpa merusak isi log sesi sebelumnya.
        * **Output Terminal:** Berikan laporan kilat berformat: 
@@ -25,9 +25,9 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
 
     2. **SKENARIO B: Jika Melanjutkan Proyek Asing (Legacy / Existing Codebase)**
        * **Kondisi:** Direktori kerja terdeteksi memiliki berkas kode aplikasi (bukan folder kosong), tetapi **TIDAK MENEMUKAN** berkas `prd.md` atau `todo.md` di dalamnya.
-       * **Aksi AI - HUKUM PERLINDUNGAN DATA & ANTI-DESTRUCTIVE DATABASE OPERATIONS (CRITICAL):**
-         a. **Silent Scan:** Gunakan tool filesystem untuk membaca file konfigurasi (seperti `package.json`, `composer.json`, atau berkas routing) guna mengunci ekosistem framework, library reaktivitas, dan catatan riwayat `handover.md` jika ada. AI wajib mendeteksi tipe proyek secara otomatis (Statis: HTML/CSS murni vs Dinamis/Framework).
-         b. **Hukum Mutlak Anti-Fresh Seeder:** Selama proses analisis, pemindaian, audit, maupun pengujian kode repositori eksisting berjalan, AI **DILARANG KERAS DAN DIHARAMKAN** menjalankan perintah terminal yang bersifat destruktif terhadap database yang sudah terbentuk (seperti `php artisan migrate:fresh`, `db:seed` massal yang membersihkan tabel, atau skrip drop tables). AI wajib memitigasi risiko rusaknya data riil development yang sudah dibangun pengguna dengan hanya menggunakan metode pemindaian struktur skema secara senyap (*safe passive structural scanning*) atau skrip migrasi inkremental.
+        * **Aksi AI - HUKUM PERLINDUNGAN DATA & ANTI-DESTRUCTIVE DATABASE OPERATIONS (CRITICAL):**
+          a. **Silent Scan:** Gunakan tool filesystem untuk membaca file konfigurasi (seperti `package.json`, `composer.json`, atau berkas routing) guna mengunci ekosistem framework, library reaktivitas, dan catatan riwayat `handover.md` jika ada. AI wajib mendeteksi tipe proyek secara otomatis (Statis: HTML/CSS murni vs Dinamis/Framework). AI juga wajib memindai file `.env`. Jika absen, AI wajib menyalin `.env.example` menjadi `.env` dengan nilai dummy default.
+          b. **Hukum Mutlak Anti-Fresh Seeder:** Selama proses analisis, pemindaian, audit, maupun pengujian kode repositori berjalan, AI **DILARANG KERAS DAN DIHARAMKAN** menjalankan perintah terminal yang bersifat destruktif terhadap database yang sudah terbentuk (seperti `php artisan migrate:fresh`, `db:seed` massal yang membersihkan tabel, skrip drop tables, atau perintah reset schema ORM sejenis). AI wajib memitigasi risiko rusaknya data riil development/testing yang sudah dibangun pengguna dengan hanya menggunakan metode pemindaian struktur skema secara senyap (*safe passive structural scanning*) atau skrip migrasi inkremental biasa (`migrate --force`).
          c. **Auto-Generate PRD & Opsi Alur Kerja:** Lakukan *reverse engineering* dari hasil pemindaian kode mentah tersebut, lalu generate satu file `prd.md` baru yang murni merangkum fitur dan spesifikasi yang *memang sudah terimplementasi secara nyata* di dalam folder proyek.
          d. **Gap Analysis:** Bandingkan isi `prd.md` proyek asing tersebut dengan parameter kualitas ideal yang diwajibkan oleh `gemini.md` dan `prd-template.md` (misal: memeriksa ketersediaan Konfigurasi Test Linting, **Kesiapan Type-Safety, Celah Keamanan SAST, Proteksi Server Actions, Sistem Enkripsi Auth/Session**, Fallback Gambar Lokal, dan folder Dokumentasi).
 	   * **Aturan Linkage Automation Handover:** Sesaat setelah fase inisiasi/pilihan alur selesai dan file `todo.md` perdana berhasil dicetak atas persetujuan user, AI wajib secara otomatis menanamkan *internal session counter* pelacakan tugas dari angka 0. Akumulasi **5 hingga 6 sub-task** pertama yang dieksekusi sukses dari proyek asing ini wajib langsung memicu pembuatan berkas `handover.md` pertama secara otomatis menggunakan metode penumpukan log (*append incremental*) khusus pada sub-bab `## 9. Log Perubahan Terbaru (Milestone Timeline)` maksimal 100 baris task, sebagai fondasi kontinuitas mutlak pelacakan state proyek berjalan.
@@ -89,20 +89,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
 
 ---
 
-## 2. ARSITEKTUR INTEGRASI KONTEXT & MANAJEMEN WORKSPACE (CONTEXT-7 CONFIGURATION)
-*(Tata kelola pembacaan ruang memori, pangkalan data internal `.docs/`, dan hukum perlindungan berkas).*
 
-### A. Protokol Inisiasi Memori Sesi (Workspace Bootstrapping Pipeline)
-Setiap kali sesi baru dimulai atau command `awal lanjut` dipicu, AI wajib melakukan pemindaian ruang memori internal dengan urutan hierarki prioritas sebagai berikut:
-1. **Prioritas 1 (Konstitusi Utama):** Membaca `prd.md` (Jika sudah ada) atau `prd-template.md` (Jika inisiasi awal) untuk mengunci aturan desain, token warna, dan manifestasi rute halaman fisik.
-2. **Prioritas 2 (Kompas Peta Jalan):** Membaca `todo.md` untuk memetakan posisi Fase koding yang sedang aktif dan memeriksa checkbox mana saja yang belum terselesaikan.
-3. **Prioritas 3 (Jejak Rekam Harian):** Membaca `handover.md` untuk memulihkan variabel state internal terakhir, daftar komponen terpasang, dan log modifikasi sesi sebelumnya.
-4. **Prioritas 4 (Pangkalan Data Arsitektur):** Membaca seluruh folder `/.docs/` (`architecture.md`, `api-spec.md`, `database.md`). Folder `/.docs/` ini adalah pangkalan data teknis tertinggi. AI wajib memperlakukannya sebagai *Ground Truth Reference*. Jika terjadi perbedaan logika antara kode yang ada di disk dengan dokumen di dalam `/.docs/`, AI wajib memenangkan aturan di dalam `/.docs/` dan memperbaiki kode di disk agar patuh pada arsitektur.
-
-### B. Hukum Perlindungan Berkas & Keamanan Mutasi Data (File Mutation Guard)
-1. **Analisis Dampak Sebelum Menulis (Pre-Mutation Impact Analysis):** Sebelum AI menggunakan tool filesystem untuk menulis (`write`) atau mengubah (`edit`) sebuah berkas kode, AI wajib menganalisis secara mendalam apakah berkas tersebut terhubung dengan komponen atau halaman lain. AI dilarang keras merusak fungsi-fungsi yang sudah berjalan stabil di file lain hanya demi menyelesaikan tugas barunya.
-2. **Larangan Penghapusan Massal Tanpa Izin:** AI diharamkan menghapus berkas kode lama secara sepihak kecuali berkas tersebut adalah berkas temporer di dalam folder `/.scratchpad/` yang sedang dibersihkan dalam mode `baca error`.
-3. **Sinkronisasi Otomatis Kamar Dokumentasi:** Jika selama proses koding berlangsung pengguna meminta perubahan skema database atau penambahan endpoint API baru, AI wajib mengubah file fisik aplikasinya **DAN SEKALIGUS** mengupdate berkas padanannya di folder `/.docs/database.md` atau `/.docs/api-spec.md` di turn yang sama agar dokumentasi tidak usang (*Anti-Stale Documentation*).
 
 ## 2. ARSITEKTUR INTEGRASI KONTEKS & MANAJEMEN WORKSPACE (CONTEXT-7 CONFIGURATION)
 *(Tata kelola pembacaan memori jangka pendek, pangkalan data internal folder dokumentasi, perlindungan berkas, dan batasan operasional agen)*
@@ -112,9 +99,9 @@ Setiap kali sesi kerja baru dimulai, command `awal lanjut` dipicu, atau terjadi 
 1. **Langkah 1 (Audit Eksistensi Repositori):** Memeriksa apakah direktori kerja saat ini merupakan folder kosong atau berisi kode aplikasi berjalan untuk menentukan penggunaan skenario kontinuitas.
 2. **Langkah 2 (Pemuatan Dokumen Utama):** Membaca `prd.md` secara utuh untuk mengunci batasan fungsionalitas produk MVP, aturan desain, dan manifestasi rute halaman fisik agar tidak terjadi deviasi fitur.
 3. **Langkah 3 (Sinkronisasi Peta Jalan):** Membaca `todo.md` untuk memetakan status Fase koding berjalan, mendata tugas-tugas yang telah selesai (`- [x]`), dan mengunci target tugas linear berikutnya.
-4. **Langkah 4 (Restorasi Jejak Harian):** Membaca file `handover.md` untuk mengekstrak manifes variabel state internal, daftar komponen yang baru saja dipasang, dan catatan log modifikasi dari sesi sebelumnya.
-5. **Langkah 5 (Pemuatan Pangkalan Data Teknis):** Membaca seluruh file di dalam direktori `/.docs/` (`architecture.md`, `api-spec.md`, `database.md`). Dokumen di dalam folder ini adalah kebenaran tertinggi (*Ground Truth Reference*). Jika terjadi kontradiksi logika antara kode di dalam disk dengan dokumen di `/.docs/`, AI wajib memenangkan aturan `/.docs/` dan memutasi kode agar patuh pada arsitektur dokumentasi.
-6. **Langkah 6 (Restorasi State Simulator - KHUSUS PURE FRONTEND):** Jika proyek berjenis client-side murni tanpa backend server, AI wajib membaca file konfigurasi state lokal (`src/config/state.js` atau padanannya) untuk memetakan record data tiruan dan status session aktif ke dalam memorinya agar simulasi interaksi tidak amnesia.
+4. **Langkah 4 (Restorasi Jejak Harian & Port):** Membaca file `handover.md` untuk mengekstrak manifes variabel state internal, daftar komponen yang baru saja dipasang, port server aktif yang digunakan (pada `## 2. Environment & Local Settings`), riwayat debug gagal (pada `## 8. Catatan Debugging Gagal & Solusi (Lessons Learned)`), dan catatan log modifikasi dari sesi sebelumnya.
+5. **Langkah 5 (Pemuatan & Verifikasi Pangkalan Data Teknis):** Membaca seluruh file di dalam direktori `/.docs/` (`architecture.md`, `api-spec.md`, `database.md`). Dokumen di dalam folder ini adalah kebenaran tertinggi (*Ground Truth Reference*). AI wajib melakukan verifikasi skema fisik database secara pasif dan membandingkannya dengan `/.docs/database.md` untuk memastikan keselarasan tanpa menjalankan mutasi/destructive reset database.
+6. **Langkah 6 (Verifikasi Kredensial & State Simulator):** AI wajib memindai berkas `.env` di root directory. Jika tidak ditemukan, AI wajib menyalin `.env.example` ke `.env` dengan default dummy values. Selain itu, jika proyek berjenis client-side murni tanpa backend server, AI wajib membaca file konfigurasi state lokal (`src/config/state.js` atau padanannya) untuk memetakan record data tiruan dan status session aktif ke dalam memorinya agar simulasi interaksi tidak amnesia.
 7. **Langkah 7 (Konsolidasi Batas Token & Kapasitas Memori):** Melakukan kompresi internal terhadap data yang tidak relevan dengan tugas Fase berjalan guna menghemat ruang token konteks, memastikan memori jangka pendek hanya fokus pada target file yang akan dimutasi.
 
 ### B. Regulasi Operasional Penggunaan Alat & Integrasi Model (Tooling Integration Rules)
@@ -176,12 +163,16 @@ AI wajib bertindak sebagai fasilitator interaktif yang mengajukan **HANYA 1 pert
 ### B. Proses Parsing Todo List & Hukum Sinkronisasi Berkas Fisik (Physical File-Based Checklist)
 Setelah 10 poin wawancara disetujui, AI wajib menulis `prd.md` (termasuk visualisasi ASCII Tree ANSI murni pada Bab 10) lalu men-generate berkas peta jalan `todo.md` di root folder. `todo.md` wajib dipecah ke dalam format checkbox (`- [ ]`) menjadi 6 Fase linier tanpa boleh melakukan peringkasan kalimat makro. Setiap komponen visual wajib dibongkar secara atomik menjadi baris berkas fisik riil sebagai berikut:
 
-- **FASE 1: Fondasi Repositori & Git Security**
+- **FASE 1: Fondasi Repositori, Git Security, & Arsitektur Teknis**
   - [ ] Create robust `.gitignore` di root folder (Mencekal `.env`, `/.scratchpad/`, `prd.md`, `todo.md`, `handover.md`).
   - [ ] Inisialisasi folder terisolasi `/.scratchpad/` untuk ruang debug aman.
   - [ ] Pembuatan folder struktur aset statis lokal dan folder penampung file view utama sesuai konvensi framework terpilih.
   - [ ] Menyediakan berkas gambar fallback lokal (`avatar-default.webp`, `logo-placeholder.webp`) di folder aset lokal menggunakan tool filesystem.
   - [ ] Inisialisasi file configuration standar kebersihan kode (Linter/Formatter).
+  - [ ] Buat folder `/.docs/` di root directory sebagai cetak biru arsitektur teknis utama.
+  - [ ] Write File Cetak Biru Teknis: `/.docs/database.md` (Memetakan skema tabel database, tipe data, relasi, nama database model, seeder file, serta verifikasi skema fisik database lokal secara pasif).
+  - [ ] Write File Cetak Biru Teknis: `/.docs/api-spec.md` (Memetakan seluruh rute/endpoints, penamaan backend controllers yang menangani, tipe parameter request/response, mock API response, dan integrasi API pihak ketiga).
+  - [ ] Write File Cetak Biru Teknis: `/.docs/architecture.md` (Menjelaskan pola folder MVC/routing framework terpilih, port dev server lokal, dan alur aliran data aplikasi).
 
 - **FASE 2: Arsitektur Data & Rich Data Seeder**
   - [ ] Buat file skrip skema database / model state management lokal untuk seluruh tabel/objek data dasar yang dideklarasikan di PRD.
@@ -223,13 +214,12 @@ Setelah 10 poin wawancara disetujui, AI wajib menulis `prd.md` (termasuk visuali
   - [ ] Build File Fisik View Global App Settings berupa form kontrol administrator untuk mengubah Nama Aplikasi dan file gambar Logo secara dinamis dari database settings.
   - [ ] Build File Fisik View CMS Media Slider Organizer berupa halaman manajemen slider penayangan untuk memanipulasi urutan sequence/posisi banner carousel depan (jika aktif).
 
-- **FASE 6: Sanitasi Akhir, Optimasi Dependensi, Standar Dokumentasi & Handover**
+- **FASE 6: Sanitasi Akhir, Optimasi Dependensi, Audit Dokumentasi & Handover**
   - [ ] Eksekusi pemangkasan dependensi dev (DevDependencies) atau penerapan mekanisme Single-File Distribution untuk mengoptimalkan ukuran produksi.
   - [ ] Jalankan 5 Lapisan Scan Kelayakan Keamanan secara real-time (A. Linting Check, B. Deep Scan Type-Safety, C. Analisis SAST celah dependensi & hardcoded secret, D. Backend Input Validation Guard pada form, E. Verification Guard Session Auth).
-  - [ ] Buat folder `/.docs/` di root directory.
-  - [ ] Write File Dokumentasi Fisik: `/.docs/architecture.md` (Menjelaskan aliran data makro).
-  - [ ] Write File Dokumentasi Fisik: `/.docs/api-spec.md` (Spesifikasi mutasi status / endpoint API / routing data).
-  - [ ] Write File Dokumentasi Fisik: `/.docs/database.md` (Memetakan blueprint skema data terstruktur / Local JSON Store).
+  - [ ] Audit dan verifikasi keselarasan berkas `/.docs/architecture.md` terhadap kode akhir.
+  - [ ] Audit dan verifikasi keselarasan berkas `/.docs/api-spec.md` terhadap endpoint dan controller riil.
+  - [ ] Audit dan verifikasi keselarasan berkas `/.docs/database.md` terhadap skema fisik database riil.
   - [ ] Eksekusi pembersihan mandiri folder `/.scratchpad/` melalui tool filesystem pasca kelulusan kompilasi build 100%.
   - [ ] Picu Git commit otomatis berstandar konvensi industri.
 
@@ -358,6 +348,8 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 - **Timestamp Akhir:** [Tanggal & Waktu Eksekusi Sesi Ini]
 - **Kondisi Kompilasi:** SUCCESS / PRODUCTION READY
 - **Status 5 Lapisan Scan:** [Linter: PASSED | Type-Safety: PASSED | SAST: CLEAN | Input Guard: SECURED | Auth Integrity: VERIFIED]
+- **Local Dev Server Port:** [Port aktif yang digunakan, e.g. 3000, 8080, dsb.]
+- **Database Path / Connection:** [Path database SQLite lokal atau detail koneksi]
 
 ## 3. Tech Stack
 - **Framework & Runtime:** [HTML-CSS-JS Native / PHP Native / Next.js / React Vite, dll]
@@ -388,7 +380,10 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 ## 7. Catatan Teknis & Bug Fixes (Resolved)
 [Tempat mencatat instruksi polesan manual pengguna atau riwayat perbaikan bug massal selama Mode YOLO berjalan. Secara kronologis, jika akumulasi baris di dalam penanda ini melebihi 100 baris, baris paling tua di antrean atas wajib dihapus otomatis sebelum menyisipkan baris catatan baru di bawahnya]
 
-## 8. Panduan Standarisasi & Siklus Hidup Otomatis (SISTEM INTI)
+## 8. Catatan Debugging Gagal & Solusi (Lessons Learned)
+- [Tempat mencatat pendekatan perbaikan bug atau eksperimen kode debug yang terbukti gagal agar tidak diulangi kembali oleh AI di masa depan]
+
+## 9. Panduan Standarisasi & Siklus Hidup Otomatis (SISTEM INTI)
 - **Aturan Mutlak Pengkodean:** Relative Asset Paths, Mandatory Cache-Busting (?v=1.0.0), Environment Agnostic URL.
 - **Incremental Auto Handover Lifecycle & Rolling Log Buffer (MUTLAK):**
 	AI wajib membagi perilaku penulisan log ke dalam dua fase siklus hidup proyek yang dikelola menggunakan metode append incremental (penumpukan kronologis dari bawah ke atas) dan dikunci dengan kapasitas maksimal 100 baris task. Catatan identitas permanen (Bab 1, 2, 3, dan 4 pada handover.md) TIDAK BOLEH terkena aturan FIFO ini dan harus selalu dipertahankan:

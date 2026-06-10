@@ -171,20 +171,20 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 > ### BLUEPRINT MANIFEST HALAMAN FISIK (MUTLAK DIKUNCI SAAT WAWANCARA)
 > AI DILARANG KERAS hanya mencatat daftar halaman secara global atau kasar. Seluruh file visual wajib dikelompokkan dan dijabarkan secara rinci ke dalam 3 Kluster Akses nyata tanpa boleh ada yang terlewat, dan wajib ditulis eksplisit path fisiknya sesuai framework oleh AI sebelum masuk ke todo.md:
 > 
-> | Kluster Akses | Nama Halaman | Target Path Berkas Fisik Nyata | Status Fungsional |
-> | :--- | :--- | :--- | :--- |
-> | **Kluster Publik (Guest View)** | Landing Page Utama | [Isi Path Fisik Riil, misal: index.php atau /app/page.tsx] | Belum Dibuat |
-> | **Kluster Publik (Guest View)** | Auth Login Center | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Publik (Guest View)** | Register Onboarding | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Publik (Guest View)** | Lupa & Reset Password | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Terproteksi (Member Area)** | Dashboard Utama User | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Terproteksi (Member Area)** | User Profile Center | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Terproteksi (Member Area)** | Workspace Settings | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | Dashboard Analitik | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | Global App Settings | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | User Role CRUD Table | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | Form Add New User | [Isi Path Fisik Riil oleh AI] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | CMS Media Slider Organizer | [Isi Path Fisik Riil oleh AI jika Carousel aktif] | Belum Dibuat |
+> | Kluster Akses | Nama Halaman | Target Path Berkas Fisik (View) | Controller yang Menangani | Model Database Terkait | Endpoint API / Integrasi Pihak ke-3 | Status Fungsional |
+> | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+> | **Kluster Publik (Guest View)** | Landing Page Utama | [Isi Path Fisik Riil, misal: index.php atau /app/page.tsx] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Publik (Guest View)** | Auth Login Center | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Publik (Guest View)** | Register Onboarding | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Publik (Guest View)** | Lupa & Reset Password | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Terproteksi (Member Area)** | Dashboard Utama User | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Terproteksi (Member Area)** | User Profile Center | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Terproteksi (Member Area)** | Workspace Settings | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Pengelola (Admin Panel)** | Dashboard Analitik | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Pengelola (Admin Panel)** | Global App Settings | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Pengelola (Admin Panel)** | User Role CRUD Table | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Pengelola (Admin Panel)** | Form Add New User | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **Kluster Pengelola (Admin Panel)** | CMS Media Slider Organizer | [Isi Path Fisik Riil oleh AI jika Carousel aktif] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
 
 ### D. Parameter Properti Bayangan & Peta Z-Index (Anti-Tabrakan Elemen)
 - **Z-Index Map (Konstitusi Level Kedalaman):**
@@ -242,7 +242,7 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Kompresi Otomatis & Standarisasi WebP:** Segera setelah pemotongan 1:1 selesai, gambar wajib dilewatkan ke fungsi *intercept pipeline* di backend untuk dikompresi ukurannya (maksimum lebar 400px untuk avatar) dan dikonversi otomatis menjadi format modern `.webp` sebelum disimpan fisik di folder lokal `/public/assets/images/` untuk menjaga ringannya performa UI.
 
 ### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules) [Opsional - Hanya jika menggunakan Database/Backend]
-- **Struktur Skema Dasar:** AI wajib menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, dan relasi antartabel yang presisi. *Hukum Khusus Kontinuitas:* AI dilarang menggunakan perintah destruktif (seperti fresh seeder) saat menganalisis proyek berjalan.
+- **Struktur Skema Dasar:** AI wajib menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, relasi antartabel yang presisi, serta penamaan Model ORM yang bersangkutan (e.g. `User`, `Transaction`, `Settings`). *Hukum Khusus Kontinuitas:* AI dilarang keras menggunakan perintah destruktif (seperti fresh seeder/migrate:fresh) saat menganalisis proyek berjalan. AI wajib membatasi manipulasi database hanya pada migrasi inkremental biasa (`migrate --force`) guna mempertahankan data uji coba/testing riil yang telah diinput oleh pengguna di database lokal.
 - **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **WAJIB** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal.
 - **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database wajib menanamkan minimal satu akun admin default siap pakai dengan username/email: `admin` dan password: `admin123` (atau versi hash-nya), serta menyediakan tabel data user aktif lengkap beserta minimal 3 data dummy pengguna yang kaya, bervariasi, memiliki status berbeda, dan menggunakan konteks nama/data asli (DILARANG malas menulis "test1", "test2"). Aplikasi harus langsung terlihat penuh isi dan *ready to use* saat pertama kali dijalankan di lingkungan lokal.
 - **Draft Schema Area / Global Local State Simulation Model (AI Generation Zone):**
