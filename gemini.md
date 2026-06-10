@@ -164,11 +164,14 @@ AI wajib bertindak sebagai fasilitator interaktif yang mengajukan **HANYA 1 pert
 Setelah 10 poin wawancara disetujui, AI wajib menulis `prd.md` (termasuk visualisasi ASCII Tree ANSI murni pada Bab 10) lalu men-generate berkas peta jalan `todo.md` di root folder. `todo.md` wajib dipecah ke dalam format checkbox (`- [ ]`) menjadi 6 Fase linier tanpa boleh melakukan peringkasan kalimat makro. Setiap komponen visual wajib dibongkar secara atomik menjadi baris berkas fisik riil sebagai berikut:
 
 - **FASE 1: Fondasi Repositori, Git Security, & Arsitektur Teknis**
+  - [ ] Jalankan deteksi versi runtime host secara pasif (misal: `node -v` atau `php -v`) untuk memastikan kompatibilitas sebelum inisiasi framework.
+  - [ ] Tentukan dan kunci manajer paket tunggal yang digunakan (npm/pnpm/yarn/bun) untuk menghindari tabrakan lockfile.
   - [ ] Create robust `.gitignore` di root folder (Mencekal `.env`, `/.scratchpad/`, `prd.md`, `todo.md`, `handover.md`).
   - [ ] Inisialisasi folder terisolasi `/.scratchpad/` untuk ruang debug aman.
   - [ ] Pembuatan folder struktur aset statis lokal dan folder penampung file view utama sesuai konvensi framework terpilih.
   - [ ] Menyediakan berkas gambar fallback lokal (`avatar-default.webp`, `logo-placeholder.webp`) di folder aset lokal menggunakan tool filesystem.
-  - [ ] Inisialisasi file configuration standar kebersihan kode (Linter/Formatter).
+  - [ ] Inisialisasi file configuration standar kebersihan kode (Linter/Formatter) dengan aturan lowercase routing case-sensitive.
+  - [ ] Buat berkas database SQLite fisik kosong (misal: database.sqlite) di disk sebelum memicu migrasi pertama (jika SQLite digunakan).
   - [ ] Buat folder `/.docs/` di root directory sebagai cetak biru arsitektur teknis utama.
   - [ ] Write File Cetak Biru Teknis: `/.docs/database.md` (Memetakan skema tabel database, tipe data, relasi, nama database model, seeder file, serta verifikasi skema fisik database lokal secara pasif).
   - [ ] Write File Cetak Biru Teknis: `/.docs/api-spec.md` (Memetakan seluruh rute/endpoints, penamaan backend controllers yang menangani, tipe parameter request/response, mock API response, dan integrasi API pihak ketiga).

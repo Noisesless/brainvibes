@@ -17,6 +17,7 @@
 - **Database Engine & ORM:** [Pilih: MySQL / PostgreSQL via Prisma / SQLite / Global State Simulator (Memory-Based json)]
 - **Styling & Design Engine:** [Pilih: Tailwind CSS v4 / Vanilla CSS dengan CSS Modules / Bootstrap 5]
 - **IDE Workspace Configuration:** [Pilih: Antigravity-IDE Settings / VSCode Settings / EditorConfig Standard / Tanpa Editor Config]
+- **Package Manager Engine:** [Pilih: npm / pnpm / yarn / bun]
 
 ### B. Pola Arsitektur, Multi-Environment Deployment & Path-Based Routing Rules
 - **Environment Agnostic & Anti-Port Collision Policy (STRICT):** AI wajib merancang sistem routing dan konfigurasi environment yang sepenuhnya adaptif, mandiri, dan terisolasi. Aplikasi **DILARANG KERAS** menggunakan, mengunci, atau berasumsi menggunakan port statis tertentu (terutama **PORT 8000** karena sudah digunakan oleh aplikasi produksi aktif di lokal user, begitu juga port standar lain seperti 3000, 5000, atau 8080). 
@@ -131,10 +132,14 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 *Sistem penjarakan wajib patuh pada kelipatan angka 8. AI dilarang keras melakukan hardcode nilai padding atau margin acak (seperti 13px, 19px, atau 21px).*
 - **Ukuran Spacing Baku:** XS: 4px | S: 8px | M: 16px | L: 24px | XL: 32px
 
-### E. Dummy Content & Rich Media Seeder Policy
+### E. Case-Sensitivity & Lowercase Routing Rules
+- **Aturan Penamaan Berkas & Direktori (Case-Sensitive Compliant):** Untuk mencegah kegagalan build saat proyek dijalankan di lingkungan server Linux yang case-sensitive, AI **MUTLAK WAJIB** menggunakan penamaan **huruf kecil (lowercase) murni** untuk semua nama folder, berkas routing, views, dan nama aset (e.g. `/views/admin/login.php` bukan `/Views/Admin/Login.php`).
+- **Standardisasi Impor Komponen:** Seluruh penulisan perintah `import` atau `require` di dalam kode wajib cocok secara persis (case-sensitive) dengan nama berkas fisik di disk.
+
+### F. Dummy Content & Rich Media Seeder Policy
 - AI WAJIB menggunakan gambar HD dari sumber internet resmi (Unsplash/Picsum) yang aktif dan teks dummy yang KONTEKSTUAL sesuai tema aplikasi *(DILARANG keras memakai teks malas dan berulang seperti "test1", "lorem ipsum")*. Aplikasi DIHARAMKAN tampil dalam kondisi kosong melompong atau gersang tanpa estetika visual.
 
-### F. Regulasi Mutlak Aset Gambar, Ilustrasi Pemanis, Avatar User, dan Logo Perusahaan (MANDATORY VISUAL POLICY)
+### G. Regulasi Mutlak Aset Gambar, Ilustrasi Pemanis, Avatar User, dan Logo Perusahaan (MANDATORY VISUAL POLICY)
 - **Hukum Kewajiban Komponen Visual:** Penggunaan gambar, ilustrasi kontekstual sebagai pemanis halaman, komponen foto avatar user, serta logo identitas perusahaan adalah **MUTLAK WAJIB** ada di setiap proyek yang dibangun. 
 - **Implementasi Fisik & Fail-Safe Strategy (Anti-Broken Image):**
   1. *Penyediaan File Cadangan Lokal:* AI wajib menghasilkan aset gambar placeholder ber-resolusi HD yang sesuai dengan tema proyek, lalu menyimpannya secara fisik di dalam folder direktori aset statis bawaan framework (`/public/assets/images/` atau `/assets/img/`) sejak Fase 1 di `todo.md`.
