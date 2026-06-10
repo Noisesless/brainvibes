@@ -78,9 +78,12 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
   --vibe-warning: #FFD600;
 }
 
-/* --- SCENARIO A: LIGHT MODE ACTIVE (PALETTE ORIGINAL DNA) --- */
+/* --- SCENARIO A: LIGHT MODE ACTIVE (PALETTE ORIGINAL DNA) --- 
+   [WARNING: JIKA AI MENULISKAN #FFFFFF ATAU #FFF PADA --vibe-background LIGHT MODE DI DALAM PRD.MD ATAU STYLE.CSS,
+   MAKA HAL ITU ADALAH PELANGGARAN CORE CONSTITUTION YANG AKAN MEMBATALKAN BUILD.
+   WAJIB MEWARISI SECARA MUTLAK VARIABEL DARI PALET ASLI SEPERTI DI BAWAH INI] */
 [data-theme="light"] {
-  --vibe-background: var(--raw-palette-bg);        /* Menggunakan Hex asli palet bawaan tren */
+  --vibe-background: var(--raw-palette-bg);        /* Menggunakan Hex asli palet bawaan tren - DILARANG DI-HARDCODE KE PUTIH */
   --vibe-surface: var(--raw-palette-surface);      /* Satu tingkat lebih cerah atau bergeser saturasi lembut */
   --vibe-text-main: var(--raw-palette-text);       /* Diturunkan ke skala gelap (Charcoal/Slate) dengan undertone senada */
   --vibe-text-muted: rgba(0, 0, 0, 0.6);
@@ -202,7 +205,7 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Dynamic Application Identity:** Komponen Nama Web dan elemen Gambar Logo **DIHARAMKAN** ditulis secara statis (*hardcode*). Wajib ditarik secara dinamis dari tabel konfigurasi database `settings`, sehingga Admin dapat merubah identitas visual web secara terpusat melalui form pengaturan aplikasi.
 - **Kebijakan Isolasi Transaksi & ACID Compliance (Strict Transaction Isolation):** Setiap kali aplikasi mengimplementasikan logika bisnis yang melibatkan kalkulasi nilai sensitif, pengurangan/penambahan data numerik (seperti saldo, poin, stok barang), atau manipulasi data yang tersebar di lebih dari satu tabel database, AI **MUTLAK** wajib membungkus seluruh rangkaian query tersebut ke dalam mekanisme **Database Transaction** resmi dari database engine/ORM yang digunakan. AI dilarang keras menulis query manipulasi multi-tabel secara terpisah tanpa pengaman transaksi. Jika terjadi kegagalan sistem pada salah satu baris eksekusi di tengah jalan, AI wajib memastikan sistem memicu fungsi pembatalan total (*Rollback Mutlak*) secara instan guna menjaga integritas data tertinggi dan mencegah terjadinya cacat selisih hitungan data pada pangkalan data produksi.
 
-### B. Sistem Otentikasi & Kewajiban Pembangunan Pilar Ekosistem Turunan
+### B. Sistem Otentikasi & Kewajiban Pembangunan Pilar Ekosistem Turunan [Opsional - Hanya jika Punya Login]
 - **Kebijakan Pilihan Sistem:** [Pilih: Tanpa Login / Punya Login (JWT Based / Session Based)]
 - **Hukum Fitur Aktif (MUTLAK):** Jika pilihan bertuliskan "Punya Login", sistem otentikasi tersebut **WAJIB fungsional 100%**. AI dilarang keras membuat form login kosmetik. Sistem wajib mampu menerbitkan token/session, menyimpannya di sisi client secara aman (HttpOnly Cookie / Secure LocalStorage), dan membersihkannya saat Logout.
 
@@ -227,7 +230,7 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Mekanisme Auto-Crop 1:1 Kotak Persegi Sempurna:** Jika berkas gambar yang diunggah oleh pengguna atau admin memiliki rasio aspek acak/tidak beraturan, skrip backend wajib mencegat dan memotong gambar secara otomatis (*auto-crop*) berbasis titik tengah (*center-focused adjustment*) untuk memaksa gambar bertransformasi menjadi geometri Kotak Persegi Sempurna bersudut tipis (`rounded-md` atau `rounded-lg`) dengan aspek rasio `1:1`.
 - **Kompresi Otomatis & Standarisasi WebP:** Segera setelah pemotongan 1:1 selesai, gambar wajib dilewatkan ke fungsi *intercept pipeline* di backend untuk dikompresi ukurannya (maksimum lebar 400px untuk avatar) dan dikonversi otomatis menjadi format modern `.webp` sebelum disimpan fisik di folder lokal `/public/assets/images/` untuk menjaga ringannya performa UI.
 
-### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules)
+### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules) [Opsional - Hanya jika menggunakan Database/Backend]
 - **Struktur Skema Dasar:** AI wajib menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, dan relasi antartabel yang presisi. *Hukum Khusus Kontinuitas:* AI dilarang menggunakan perintah destruktif (seperti fresh seeder) saat menganalisis proyek berjalan.
 - **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **WAJIB** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal.
 - **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database wajib menanamkan minimal satu akun admin default siap pakai dengan username/email: `admin` dan password: `admin123` (atau versi hash-nya), serta menyediakan tabel data user aktif lengkap beserta minimal 3 data dummy pengguna yang kaya, bervariasi, memiliki status berbeda, dan menggunakan konteks nama/data asli (DILARANG malas menulis "test1", "test2"). Aplikasi harus langsung terlihat penuh isi dan *ready to use* saat pertama kali dijalankan di lingkungan lokal.
@@ -237,13 +240,13 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 ## 7. SECURITY, ROUTE GUARDING, & UX BEHAVIOR
 *(AI wajib mematuhi protokol keamanan siber tingkat tinggi, proteksi jalur navigasi, dan standar interaksi antarmuka berikut)*
 
-### A. Mekanisme Proteksi Jalur Halaman & Middleware (Strict Route Guarding)
+### A. Mekanisme Proteksi Jalur Halaman & Middleware (Strict Route Guarding) [Opsional - Hanya jika Punya Login]
 AI wajib mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut secara mutlak:
 1. **ZONA 1: PUBLIC ROUTES (Jalur Terbuka):** Dapat diakses oleh siapa saja tanpa session token (Landing Page, About, Artikel, Login, Register).
 2. **ZONA 2: PROTECTED ROUTES (Jalur Terproteksi / Member Area):** Jika token otentikasi tidak ditemukan atau tidak valid, sistem **WAJIB memblokir akses secara instan dan mengarahkan paksa (redirect) user kembali ke halaman Login** disertai notifikasi peringatan.
 3. **ZONA 3: ADMIN ROUTES (Jalur Eksklusif Super User):** Wajib lolos Zona 2 dan memeriksa klaim parameter `role == 'Admin'`. Jika tidak sesuai, sistem **WAJIB menolak akses secara mutlak dan menampilkan Halaman Error 403 (Unauthorized Access)**.
 
-### B. Keamanan Form Publik & Pertahanan Siber (High-Contrast Captcha & Rate Limiting)
+### B. Keamanan Form Publik & Pertahanan Siber (High-Contrast Captcha & Rate Limiting) [Opsional - Hanya jika menggunakan Database/Backend]
 - **Strict Captcha Security & High-Contrast Visibility:** Seluruh formulir yang dapat diakses oleh publik luas tanpa login—khususnya **Form Login dan Kolom Komentar**—**WAJIB** dilengkapi dengan sistem pelindung Captcha fungsional (bukan kosmetik, jika diaktifkan pada bab 6). Angka/huruf Captcha wajib menggunakan warna tegas bersaturasi tinggi di atas latar belakang kontras agar terlihat sangat jelas oleh mata pengguna manusia. **DILARANG KERAS** menggunakan skema warna buram, lapisan abu-abu (*grey layer*), atau hitam-putih (*black & white*) yang menyatu dengan background. Validasi Captcha wajib diverifikasi secara ketat di sisi *backend/API Services*. Wajib menyediakan tombol atau ikon kecil di samping kotak Captcha untuk menghasilkan ulang (*generate new code*).
 - **Perlindungan Anti-Bruteforce (Rate Limiting):** Membatasi jumlah request pada endpoint sensitif (terutama `/api/auth/login`). Maksimal 5 kali percobaan login yang gagal dalam rentang waktu 15 menit dari IP yang sama sebelum diblokir sementara dengan status `429 Too Many Requests`.
 - **Sanitasi Input & Validasi Data:** Menggunakan library validasi skema yang ketat (seperti Zod / Joi) untuk membersihkan input dari karakter berbahaya (Anti-SQL Injection & Anti-XSS).
@@ -253,7 +256,7 @@ AI wajib mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut seca
 - **Manajemen Keterlambatan Data (Loading State):** Guna menghindari efek layar berkedip kosong saat fetching state, AI **WAJIB menyediakan dan mernder komponen *Skeleton Loader*** (animasi kotak abu-abu berdenyut) atau *Spinner Component* yang presisi pada layout.
 - **Pesan Error yang Humanis:** Jika terjadi kegagalan sistem, AI wajib memperlihatkan komponen visual pesan error yang ramah pengguna di layar (misal: "Gagal memuat data, silakan coba beberapa saat lagi").
 
-## 8. ENVIRONMENT VARIABLES, REPOSITORY SANITATION, & CREDENTIAL SECURITY (STRICT)
+## 8. ENVIRONMENT VARIABLES, REPOSITORY SANITATION, & CREDENTIAL SECURITY (STRICT) [Opsional - Hanya jika menggunakan Database/Backend]
 *(AI wajib mematuhi protokol perlindungan rahasia, isolasi berkas debug, dan hukum tata kelola repositori Git berikut secara mutlak untuk mencegah kebocoran data)*
 
 ### A. Arsitektur Manajemen Variabel Lingkungan & Isolasi Kredensial (Strict Secrets Map)
