@@ -312,11 +312,12 @@ AI diharamkan keras mengotori folder utama proyek (*root*) atau folder fitur akt
 - **Sanitasi Repositori Sebelum Serah Terima (Handover):** Sebelum AI menyatakan sebuah tugas di `todo.md` berstatus "Selesai", atau melakukan rutinitas *auto-commit*, AI wajib melakukan inspeksi visual dan struktural pada pohon repositori untuk memastikan tidak ada metadata lokal, file log, atau berkas sampah yang tertinggal di luar struktur folder resmi yang telah disepakati pada Poin 10.
 - **Log Pembersihan Rahasia:** Jika ditemukan ada kunci rahasia atau token yang sempat bocor ke file teks biasa selama fase *debugging*, AI wajib segera menghapus file tersebut, membersihkan jejaknya dari memori sementara, dan memberikan laporan tertulis kepada pengguna untuk melakukan rotasi kredensial demi keamanan siber.
 
-### E. Protokol Penanganan & Pelaporan Bug (Developer Approval Gate)
-Setiap kali proses pelacakan bug atau perbaikan kesalahan global dipicu (seperti mode YOLO / baca error):
-1. **Pencatatan Dokumentasi `issues.md` (`/.docs/issues.md`):** AI wajib mencatat dan mendokumentasikan setiap temuan error ke dalam berkas `/.docs/issues.md` sebelum melakukan perubahan kode.
-2. **Gerbang Persetujuan Pengembang (Mandor Approval):** AI **DIHARAMKAN** mengubah file kode program sebelum melaporkan daftar issue dan rencana perbaikannya di terminal serta mendapatkan persetujuan eksplisit dari developer/mandor.
-3. **Eksekusi & Uji Coba Terarah:** Setelah disetujui, perbaikan dilakukan secara bertahap, diselingi build test dengan stdout/stderr yang terbuka penuh, untuk menjamin bug bersih 100% tanpa memicu regresi.
+### E. Protokol Penanganan & Pelaporan Bug (Developer Approval Gate & Anti-Looping)
+Every time a global bug tracking or error fixing process is triggered (such as YOLO mode / baca error):
+1. **Pencatatan Dokumentasi & Jurnal Percobaan (`/.docs/issues.md`):** AI wajib mencatat dan mendokumentasikan setiap temuan error ke dalam berkas `/.docs/issues.md` (mencakup ID issue, file path, deskripsi error, analisis penyebab, rencana perbaikan, dan Jurnal Percobaan Solusi dengan status SUKSES/GAGAL) sebelum melakukan perubahan kode.
+2. **Gerbang Persetujuan Pengembang (Mandor Approval Gate):** AI **DIHARAMKAN** mengubah file kode program sebelum melaporkan daftar issue dan rencana perbaikannya di terminal serta mendapatkan persetujuan eksplisit dari developer/mandor.
+3. **Pemberlakuan Hukum Anti-Looping:** AI wajib membaca jurnal percobaan di `/.docs/issues.md` terlebih dahulu. AI **MUTLAK DILARANG** mencoba kembali pendekatan/metode perbaikan yang statusnya sudah ditandai `GAGAL` pada log riwayat untuk issue bersangkutan. AI harus mencari metode alternatif lain yang logis.
+4. **Eksekusi & Pencatatan Hasil Uji:** Setelah disetujui, perbaikan dilakukan secara bertahap. Jika perbaikan gagal melewati batas 3 kali percobaan (memicu looping guard), AI wajib menghentikan loop, me-restore file ke state aman terakhir, dan mencatat kegagalan pendekatan tersebut ke `/.docs/issues.md` beserta alasannya sebelum melapor ke pengguna.
 
 ---
 
