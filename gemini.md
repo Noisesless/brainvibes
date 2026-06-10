@@ -8,7 +8,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
   - **Aturan Eksekusi:** Abaikan seluruh instruksi lain. Langsung muat `prd-template.md`. Lakukan *gap analysis* jika ada catatan lama, lalu mulai wawancara poin yang kosong satu per satu. Dilarang keras menulis kode aplikasi sebelum `prd.md` dan `todo.md` resmi tercipta dan disetujui.
   - **Hukum Shell Kebal Interupsi:** Jika selama fase inisiasi awal ini AI perlu memicu perintah CLI (seperti mengecek versi runtime, membuat folder repositori, melakukan inisiasi paket, atau mengunduh dependensi awal), AI **MUTLAK WAJIB** melakukan bypass interaktif secara radikal dengan menyuntikkan environment variable `CI=true` dan pipes kosong sesuai OS (Unix: `yes "" | [command]`, Windows PowerShell: `$Null | [command]`, Windows CMD: `echo | [command]`) guna mencegah status *Awaiting Input (Tab to focus)* (Contoh: `CI=true yes "" | npm init -y` atau di Windows PowerShell: `$Null | pnpm init`).
   - **Aturan Pemicu Handover Sesi Awal (MUTLAK):** Sesaat setelah `prd.md` disetujui dan berkas `todo.md` resmi dicetak untuk pertama kalinya, AI wajib langsung mengaktifkan *internal session counter* pelacakan tugas dari angka 0. Setiap kali ada akumulasi **5 hingga 6 sub-task baru** yang diselesaikan atau diperbarui (ditandai dengan status centang `- [x]` di `todo.md`), AI wajib secara otomatis memicu pembuatan/pembaruan berkas `handover.md` menggunakan tool filesystem.
-  - **Sistem Manajemen Log:** Proses pembaruan otomatis ini wajib menggunakan metode penumpukan log (*append incremental*) khusus pada sub-bab `## 3. Pre-Build Milestone Timeline` di dalam `handover.md` maksimal 100 baris task, tanpa merusak atau menimpa isi log sesi sebelumnya.
+  - **Sistem Manajemen Log:** Proses pembaruan otomatis ini wajib menggunakan metode penumpukan log (*append incremental*) khusus pada sub-bab `## 10. Log Perubahan Terbaru (Milestone Timeline)` di dalam `handover.md` maksimal 100 baris task, tanpa merusak atau menimpa isi log sesi sebelumnya.
 
 - **Command: `awal lanjut`**
   - **Aksi:** Paksa masuk ke mode **KONTINUITAS & AUDIT ADAPTIF REPOSITORI (DAILY WORKFLOW)**.
@@ -17,7 +17,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
     
     1. **SKENARIO A: Jika Melanjutkan Proyek Internal (Sistem Gemini Berjalan)**
        * **Kondisi:** AI mendeteksi keberadaan file `prd.md`, `todo.md`, dan `handover.md` di direktori utama.
-       * **Aksi AI (State Restoring & Environment Verification):** Lakukan pemulihan memori (*State Restoring*) secara senyap dengan membaca ketiga file tersebut serta folder `/.docs/` untuk mengingat batasan arsitektur, data state, dan kemajuan tugas harian. AI wajib mendeteksi keberadaan file `.env` di root folder. Jika tidak ditemukan, AI wajib membaca `.env.example`, menyalinnya menjadi `.env`, mengisi variabel sensitif dengan default dummy credentials, dan melanjutkan tanpa crash loop. AI juga wajib melakukan pemindaian pasif pada database lokal (SQLite/JSON) untuk mengonfirmasi tabel, kolom, dan data uji coba yang sudah diinput oleh pengguna. AI **DIHARAMKAN** menjalankan perintah reset database (`migrate:fresh`) yang dapat menghapus data testing/riil milik pengguna. Port local dev server aktif yang terdeteksi wajib dibaca dari `handover.md` (di bawah `## 2. Environment & Local Settings`) agar tetap konsisten.
+       * **Aksi AI (State Restoring & Environment Verification):** Lakukan pemulihan memori (*State Restoring*) secara senyap dengan membaca ketiga file tersebut serta folder `/.docs/` untuk mengingat batasan arsitektur, data state, dan kemajuan tugas harian. AI wajib mendeteksi keberadaan file `.env` di root folder. Jika tidak ditemukan, AI wajib membaca `.env.example`, menyalinnya menjadi `.env`, mengisi variabel sensitif dengan default dummy credentials, dan melanjutkan tanpa crash loop. AI juga wajib melakukan pemindaian pasif pada database lokal (SQLite/JSON) untuk mengonfirmasi tabel, kolom, dan data uji coba yang sudah diinput oleh pengguna. AI **DIHARAMKAN** menjalankan perintah reset database (`migrate:fresh`) yang dapat menghapus data testing/riil milik pengguna. Port local dev server aktif yang terdeteksi wajib dibaca dari `handover.md` (di bawah `## 2. Environment & Local Settings`) agar tetap konsisten. **Deteksi Konversi Aktif (MUTLAK):** Jika sub-bab `## Migrasi Timeline` ditemukan di dalam `handover.md` (indikator mode `awal konversi` aktif), AI wajib memperluas lingkup pembacaan state ke folder `/.legacy/` untuk memvalidasi kode sumber lama yang masih dalam proses porting dan memastikan tidak ada fitur yang terabaikan antar sesi.
        * **State Restoring untuk Pure Frontend (MUTLAK):** Jika proyek terdeteksi bertipe Pure Frontend / Jamstack (Tanpa Server Fisik), selain membaca tiga file markdown (`prd.md`, `todo.md`, `handover.md`), AI **MUTLAK WAJIB** membaca file manajemen state lokal simulator (seperti `src/config/state.js` atau file konfigurasi state padanannya). AI wajib memetakan record dummy data aktif dan session simulation aktif yang tersimpan di dalam file kode tersebut ke dalam variabel memori jangka pendeknya agar simulasi state tidak mengalami amnesia data saat sesi dilanjutkan.
        * **Aturan Trigger Handover Kontinuitas:** AI wajib langsung mengaktifkan ulang *internal session counter* pelacakan tugas dari angka 0 pada detik pertama memori dipulihkan. Setiap kali ada akumulasi **5 hingga 6 sub-task baru** yang dicentang (`- [x]`) pada file `todo.md` di sesi berjalan ini, pemicu (*trigger*) pembaruan otomatis ke `handover.md` **MUTLAK WAJIB** dieksekusi secara instan dengan metode penumpukan log (*append incremental*) maksimal 100 baris task, tanpa merusak isi log sesi sebelumnya.
        * **Output Terminal:** Berikan laporan kilat berformat: 
@@ -30,7 +30,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
           b. **Hukum Mutlak Anti-Fresh Seeder:** Selama proses analisis, pemindaian, audit, maupun pengujian kode repositori berjalan, AI **DILARANG KERAS DAN DIHARAMKAN** menjalankan perintah terminal yang bersifat destruktif terhadap database yang sudah terbentuk (seperti `php artisan migrate:fresh`, `db:seed` massal yang membersihkan tabel, skrip drop tables, atau perintah reset schema ORM sejenis). AI wajib memitigasi risiko rusaknya data riil development/testing yang sudah dibangun pengguna dengan hanya menggunakan metode pemindaian struktur skema secara senyap (*safe passive structural scanning*) atau skrip migrasi inkremental biasa (`migrate --force`).
          c. **Auto-Generate PRD & Opsi Alur Kerja:** Lakukan *reverse engineering* dari hasil pemindaian kode mentah tersebut, lalu generate satu file `prd.md` baru yang murni merangkum fitur dan spesifikasi yang *memang sudah terimplementasi secara nyata* di dalam folder proyek.
          d. **Gap Analysis:** Bandingkan isi `prd.md` proyek asing tersebut dengan parameter kualitas ideal yang diwajibkan oleh `gemini.md` dan `prd-template.md` (misal: memeriksa ketersediaan Konfigurasi Test Linting, **Kesiapan Type-Safety, Celah Keamanan SAST, Proteksi Server Actions, Sistem Enkripsi Auth/Session**, Fallback Gambar Lokal, dan folder Dokumentasi).
-	   * **Aturan Linkage Automation Handover:** Sesaat setelah fase inisiasi/pilihan alur selesai dan file `todo.md` perdana berhasil dicetak atas persetujuan user, AI wajib secara otomatis menanamkan *internal session counter* pelacakan tugas dari angka 0. Akumulasi **5 hingga 6 sub-task** pertama yang dieksekusi sukses dari proyek asing ini wajib langsung memicu pembuatan berkas `handover.md` pertama secara otomatis menggunakan metode penumpukan log (*append incremental*) khusus pada sub-bab `## 9. Log Perubahan Terbaru (Milestone Timeline)` maksimal 100 baris task, sebagai fondasi kontinuitas mutlak pelacakan state proyek berjalan.
+	   * **Aturan Linkage Automation Handover:** Sesaat setelah fase inisiasi/pilihan alur selesai dan file `todo.md` perdana berhasil dicetak atas persetujuan user, AI wajib secara otomatis menanamkan *internal session counter* pelacakan tugas dari angka 0. Akumulasi **5 hingga 6 sub-task** pertama yang dieksekusi sukses dari proyek asing ini wajib langsung memicu pembuatan berkas `handover.md` pertama secara otomatis menggunakan metode penumpukan log (*append incremental*) khusus pada sub-bab `## 10. Log Perubahan Terbaru (Milestone Timeline)` maksimal 100 baris task, sebagai fondasi kontinuitas mutlak pelacakan state proyek berjalan.
        * **Output Terminal (Pilihan Alur Kerja & Wawancara Adaptif - STRICT):**
           1. AI **MUTLAK WAJIB** menghentikan seluruh proses otomatisasi koding dan menampilkan menu pilihan interaktif di terminal dengan format:
              
@@ -392,17 +392,18 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 ## 1. Ringkasan Proyek
 - **Deskripsi:** [Fungsi utama proyek saat ini berdasarkan data PRD]
 
-## 2. Identitas & Metadata
+## 2. Environment & Local Settings
+- **Local Dev Server Port:** [Port aktif yang digunakan, e.g. 3000, 8080, dsb.]
+- **App URL (Lokal):** [URL lokal aktif, e.g. http://localhost:3000 atau http://localhost/nama-folder/]
+- **Database Path / Connection:** [Path database SQLite lokal atau detail koneksi]
+- **Kondisi Kompilasi:** SUCCESS / PRODUCTION READY
+- **Status 5 Lapisan Scan:** [Linter: PASSED | Type-Safety: PASSED | SAST: CLEAN | Input Guard: SECURED | Auth Integrity: VERIFIED]
+- **Timestamp Akhir:** [Tanggal & Waktu Eksekusi Sesi Ini]
 - **Nama Tema / Proyek:** [Nama unik proyek hasil wawancara]
 - **Developer:** [Nama/Inisial Developer]
 - **Email:** [Kontak Developer]
 - **Lisensi:** [MIT / Proprietary / Kebijakan Lisensi]
 - **Repository Utama:** [Link repository lokal atau remote]
-- **Timestamp Akhir:** [Tanggal & Waktu Eksekusi Sesi Ini]
-- **Kondisi Kompilasi:** SUCCESS / PRODUCTION READY
-- **Status 5 Lapisan Scan:** [Linter: PASSED | Type-Safety: PASSED | SAST: CLEAN | Input Guard: SECURED | Auth Integrity: VERIFIED]
-- **Local Dev Server Port:** [Port aktif yang digunakan, e.g. 3000, 8080, dsb.]
-- **Database Path / Connection:** [Path database SQLite lokal atau detail koneksi]
 
 ## 3. Tech Stack
 - **Framework & Runtime:** [HTML-CSS-JS Native / PHP Native / Next.js / React Vite, dll]
@@ -440,8 +441,8 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 - **Aturan Mutlak Pengkodean:** Relative Asset Paths, Mandatory Cache-Busting (?v=1.0.0), Environment Agnostic URL.
 - **Incremental Auto Handover Lifecycle & Rolling Log Buffer (MUTLAK):**
 	AI wajib membagi perilaku penulisan log ke dalam dua fase siklus hidup proyek yang dikelola menggunakan metode append incremental (penumpukan kronologis dari bawah ke atas) dan dikunci dengan kapasitas maksimal 100 baris task. Catatan identitas permanen (Bab 1, 2, 3, dan 4 pada handover.md) TIDAK BOLEH terkena aturan FIFO ini dan harus selalu dipertahankan:
-	1. *Fase Pembangunan (Pre-Build):* Selama 6 Fase di todo.md masih aktif, setiap kali akumulasi 5 hingga 6 sub-task selesai dicentang (- [x]), AI wajib melakukan jeda senyap untuk menumpuk catatan riwayatnya khusus pada sub-bab `## 9. Log Perubahan Terbaru (Milestone Timeline)`. Jika jumlah baris di sub-bab ini menyentuh batas 100 baris, catatan paling tua di antrean atas wajib dihapus otomatis (First-In, First-Out chronological buffer) sebelum menyisipkan baris catatan baru di bawahnya.
-	2. *Fase Pemeliharaan & Poles Manual (Post-Build / Mode YOLO):* Jika seluruh 6 Fase di todo.md telah habis atau proyek berada dalam mode baca error (YOLO Global Clean-Up) untuk proses poles kode, optimasi, update fitur kecil, atau perbaikan bug secara manual: Setiap kali AI menyelesaikan 5 hingga 6 instruksi perbaikan/update/polesan kode secara berturut-turut, AI MUTLAK WAJIB melakukan jeda senyap untuk menumpuk catatan aktivitasnya khusus pada sub-bab `## 7. Catatan Teknis & Bug Fixes (Resolved)` dengan batasan rolling buffer chronological yang sama (maksimal 100 baris, baris tertua di antrean atas dihapus otomatis jika penuh). AI dilarang keras melakukan overwrite total yang dapat menghapus catatan arsitektur dasar atau riwayat sesi sebelumnya.
+	1. *Fase Pembangunan (Pre-Build):* Selama Fase Todo berjalan (6 Fase untuk proyek baru / 9 Fase untuk mode `awal konversi`), setiap kali akumulasi 5 hingga 6 sub-task selesai dicentang (- [x]), AI wajib melakukan jeda senyap untuk menumpuk catatan riwayatnya khusus pada sub-bab `## 10. Log Perubahan Terbaru (Milestone Timeline)`. Jika jumlah baris di sub-bab ini menyentuh batas 100 baris, catatan paling tua di antrean atas wajib dihapus otomatis (First-In, First-Out chronological buffer) sebelum menyisipkan baris catatan baru di bawahnya.
+	2. *Fase Pemeliharaan & Poles Manual (Post-Build / Mode YOLO):* Jika seluruh Fase di todo.md telah habis atau proyek berada dalam mode baca error (YOLO Global Clean-Up) untuk proses poles kode, optimasi, update fitur kecil, atau perbaikan bug secara manual: Setiap kali AI menyelesaikan 5 hingga 6 instruksi perbaikan/update/polesan kode secara berturut-turut, AI MUTLAK WAJIB melakukan jeda senyap untuk menumpuk catatan aktivitasnya khusus pada sub-bab `## 7. Catatan Teknis & Bug Fixes (Resolved)` dengan batasan rolling buffer chronological yang sama (maksimal 100 baris, baris tertua di antrean atas dihapus otomatis jika penuh). AI dilarang keras melakukan overwrite total yang dapat menghapus catatan arsitektur dasar atau riwayat sesi sebelumnya.
 
 - **Protokol Transaksi Git & Keamanan Commit Lintas Sesi (MUTLAK):**
 	Baik untuk auto-commit log milestone maupun commit revisi manual yang diperintahkan pengguna berkali-kali dalam sehari, AI **DILARANG KERAS** menggunakan perintah `git commit -am` atau `git add .` secara membabi buta. Mengabaikan ini berisiko memicu kebocoran file kredensial development, database lokal, dan file internal AI (`handover.md`, `prd.md`, `todo.md`) ke GitHub.
@@ -469,8 +470,8 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 - **Otomatisasi Rekreasi Berkas & Clean-Up Script:**
 	Setiap kali file program utama mengalami modifikasi kode massal pada Mode YOLO (baca error), AI wajib melakukan inspeksi kilat terhadap keselarasan 3 file di dalam folder `/.docs/` ini. Jika ada fungsi/struktur data baru, dokumentasi wajib langsung diperbarui secara sinkron. Setelah steril melewati 5 lapisan uji kelayakan, AI wajib menghapus seluruh isi folder uji coba `/.scratchpad/` menggunakan tool filesystem sebelum menghasilkan perintah Git commit otomatis.
 
-## 9. Log Perubahan Terbaru (Milestone Timeline)
-[Tempat mencatat centang sub-task yang selesai selama 6 Fase Todo berjalan. Gunakan format checkbox terisi: - [x] Task X. Secara kronologis, jika akumulasi baris di dalam penanda ini melebihi 100 baris, baris paling tua di antrean atas wajib dihapus otomatis sebelum menyisipkan baris catatan baru di bawahnya]
+## 10. Log Perubahan Terbaru (Milestone Timeline)
+[Tempat mencatat centang sub-task yang selesai selama Fase Todo berjalan (6 Fase untuk proyek baru / 9 Fase untuk mode `awal konversi`). Gunakan format checkbox terisi: - [x] Task X. Secara kronologis, jika akumulasi baris di dalam penanda ini melebihi 100 baris, baris paling tua di antrean atas wajib dihapus otomatis sebelum menyisipkan baris catatan baru di bawahnya]
 
 
 ## 7. COMPONENT REGISTRY & VISUAL CONSISTENCY
@@ -522,6 +523,8 @@ Saat membangun tata letak antarmuka dua kolom (khususnya kombinasi Sidebar Kiri 
 
 ## 8. ADVANCED LAYOUTING, SYSTEM TYPOGRAPHY, & VISUAL CONSISTENCY
 *(Undang-undang standardisasi elemen visual, mitigasi deviasi layout, pencegahan teks gaib, dan hukum penguncian geometri makro di seluruh halaman)*
+
+> **[CATATAN REFERENSI]** Sub-bab A (Typography), B (Shadow System), C (Badge Color Semantics), dan D (Z-Index Map) di bawah ini merupakan **ringkasan konsolidasi** dari aturan yang sudah didefinisikan secara penuh di **Section 7B–7E**. Jika terjadi konflik, Section 7 yang lebih detail adalah acuan utama. Sub-bab unik di Section 8 yang tidak ada di Section 7 adalah: **E (Macro Layout Anti-Clipping)** dan **F (Strict Vanilla CSS Utility Engine)**.
 
 ### A. Konstitusi Penyeragaman Elemen Tipografi (Typography Consistency Rule)
 AI wajib mengunci hierarki ukuran huruf (font-size), jarak antar baris (line-height), dan ketebalan (font-weight) secara absolut di setiap halaman aplikasi tanpa toleransi perubahan sepihak antar kluster views untuk menjaga keutuhan ritme visual:
@@ -599,6 +602,7 @@ CACHE_DRIVER=file
 # RATE LIMITING
 RATE_LIMIT_MAX_ATTEMPTS=5
 RATE_LIMIT_DECAY_MINUTES=15
+```
 
 ### C. Konstitusi `.gitignore` Mutlak & Tata Kelola Git (Pre-Coding Git Governance)
 Sebelum AI menjalankan fungsi pembuatan folder, berkas backend, frontend, atau menulis satu baris kode fungsional pun di detik pertama proyek dimulai, **TUGAS NOMOR SATU yang wajib dieksekusi oleh AI adalah membuat dan mengonfigurasi file `.gitignore` di root folder**. File ini wajib mengunci secara permanen pola berkas berikut agar tidak bocor ke riwayat *commit* Git:

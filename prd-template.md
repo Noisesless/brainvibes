@@ -357,7 +357,7 @@ AI wajib memutasi dan men-generate visualisasi ASCII Tree secara utuh ke dalam b
 ├── .gitignore              <── Proteksi rahasia siber mencekal berkas sensitif, prd, todo, & handover
 ├── handover.md             <── Kompas pelacak progress state harian (Auto-Generated Incremental Log)
 ├── prd.md                  <── Kitab suci spesifikasi fitur proyek hasil konfirmasi wawancara
-└── todo.md                 <── Peta jalan linear aktivitas koding berjenjang 6 Fase Checkbox
+└── todo.md                 <── Peta jalan linear aktivitas koding (6 Fase untuk proyek baru / 9 Fase untuk `awal konversi`)
 
 ### SKENARIO B: Modern Bundler Framework (React Vite / Next.js) App Router Architecture
 ├── /.docs/                 <── [WAJIB] Pusat seluruh dokumentasi teknis inti proyek
@@ -378,7 +378,7 @@ AI wajib memutasi dan men-generate visualisasi ASCII Tree secara utuh ke dalam b
 ├── .gitignore              <── Proteksi rahasia siber mencekal berkas sensitif, prd, todo, & handover
 ├── handover.md             <── Kompas pelacak progress state harian (Auto-Generated Incremental Log)
 ├── prd.md                  <── Kitab suci spesifikasi fitur proyek hasil konfirmasi wawancara
-└── todo.md                 <── Peta jalan linear aktivitas koding berjenjang 6 Fase Checkbox
+└── todo.md                 <── Peta jalan linear aktivitas koding (6 Fase untuk proyek baru / 9 Fase untuk `awal konversi`)
 
 ##[AI WAJIB MEN-GENERATE ASCII TREE STRUKTUR FOLDER DI SINI SEBELUM MULAI KODING]
 
@@ -386,6 +386,8 @@ AI wajib memutasi dan men-generate visualisasi ASCII Tree secara utuh ke dalam b
 
 ## 11. TRANSITION BLUEPRINT REGISTRY (KHUSUS KONVERSI STACK / RE-PLATFORMING)
 *(Bab ini wajib diisi secara detail oleh AI saat menjalankan perintah `awal konversi` untuk memetakan transisi tubuh lama ke tubuh baru)*
+
+> **[REFERENSI WAJIB]** Sebelum mengisi tabel-tabel di Bab 11 ini, AI **MUTLAK WAJIB** membaca ulang **Bab 6D (Database Schema & Rich Seeder Rules)** untuk memastikan seluruh aturan ACID Compliance, anti-destructive migration, seeder legacy data, dan Database Compatibility Matrix sudah diterapkan secara konsisten pada kolom Status Porting setiap tabel di bawah ini.
 
 ### A. Database Schema Conversion Map
 Memetakan nama tabel, tipe data, primary key, dan foreign key dari database lama ke database baru. Wajib diisi sebelum Fase 2 dimulai:
