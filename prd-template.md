@@ -78,27 +78,42 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
   --vibe-warning: #FFD600;
 }
 
-/* --- SCENARIO A: LIGHT MODE ACTIVE (PALETTE ORIGINAL DNA) --- 
-   [WARNING: JIKA AI MENULISKAN #FFFFFF ATAU #FFF PADA --vibe-background LIGHT MODE DI DALAM PRD.MD ATAU STYLE.CSS,
-   MAKA HAL ITU ADALAH PELANGGARAN CORE CONSTITUTION YANG AKAN MEMBATALKAN BUILD.
-   WAJIB MEWARISI SECARA MUTLAK VARIABEL DARI PALET ASLI SEPERTI DI BAWAH INI] */
+/* ==========================================================================
+   ARSITEKTUR TEMA ADAPTIF (ANTI-COLOR WIPING & PRESERVASI SPEKTRUM)
+   ==========================================================================
+   Aturan Pemetaan Berdasarkan Kluster Palet Pemenang Wawancara:
+   1. KLUSTER TERANG (Palet 2, 5, 9, 12, 14):
+      - Light Mode = Hex Asli Palet (diwariskan via var(--raw-palette-bg)).
+      - Dark Mode  = Di-generate versi gelap/malam yang serona (Deep Tonal).
+   2. KLUSTER GELAP (Palet 1, 3, 4, 6, 7, 8, 10, 11, 13, 15):
+      - Dark Mode  = Hex Asli Palet (diwariskan via var(--raw-palette-bg)).
+      - Light Mode = Di-generate versi terang/pastel yang senada (bukan #FFFFFF).
+   ========================================================================== */
+
+/* --- SCENARIO A: LIGHT MODE ACTIVE (TERANG) --- 
+   [WARNING: DILARANG KERAS meng-hardcode #FFFFFF / #FFF pada --vibe-background.
+   - Jika Palet Terang: Wajib bernilai var(--raw-palette-bg).
+   - Jika Palet Gelap: Wajib di-generate warna pastel cerah dari rumpun rona palet] */
 [data-theme="light"] {
-  --vibe-background: var(--raw-palette-bg);        /* Menggunakan Hex asli palet bawaan tren - DILARANG DI-HARDCODE KE PUTIH */
-  --vibe-surface: var(--raw-palette-surface);      /* Satu tingkat lebih cerah atau bergeser saturasi lembut */
-  --vibe-text-main: var(--raw-palette-text);       /* Diturunkan ke skala gelap (Charcoal/Slate) dengan undertone senada */
+  --vibe-background: [Wajib Di-generate adaptif sesuai aturan di atas];
+  --vibe-surface: [Wajib Di-generate: Satu tingkat lebih cerah atau bergeser saturasi lembut];
+  --vibe-text-main: [Wajib Di-generate: Skala gelap (Charcoal/Slate) dengan undertone senada palet asli];
   --vibe-text-muted: rgba(0, 0, 0, 0.6);
-  --vibe-primary: var(--raw-palette-accent-1);     /* Warna aksen utama pembentuk identitas visual */
-  --vibe-secondary: var(--raw-palette-accent-2);   /* Warna aksen sekunder / pemanis visual */
+  --vibe-primary: var(--raw-palette-accent-1);     /* Warna aksen utama */
+  --vibe-secondary: var(--raw-palette-accent-2);   /* Warna aksen sekunder */
 }
 
-/* --- SCENARIO B: DARK MODE ACTIVE (DEEP TONAL PRESERVATION) --- */
+/* --- SCENARIO B: DARK MODE ACTIVE (GELAP) --- 
+   [WARNING: 
+   - Jika Palet Gelap: Wajib bernilai var(--raw-palette-bg).
+   - Jika Palet Terang: Wajib di-generate versi Midnight / Deep Tonal dari rona palet] */
 [data-theme="dark"] {
-  --vibe-background: [Wajib Di-generate: Versi Midnight / Deep Tonal Tergelap dari Rona Latar Palet Terpilih];
-  --vibe-surface: [Wajib Di-generate: Satu tingkat lebih terang dari --vibe-background gelap di atas];
+  --vibe-background: [Wajib Di-generate adaptif sesuai aturan di atas];
+  --vibe-surface: [Wajib Di-generate: Satu tingkat lebih terang dari background gelap di atas];
   --vibe-text-main: [Wajib Di-generate: Versi cerah kontras tinggi / putih susu dengan rona palet asli]; 
   --vibe-text-muted: rgba(255, 255, 255, 0.6);
-  --vibe-primary: var(--raw-palette-accent-1);     /* Aksen tetap menyala berkarakter di atas permukaan gelap */
-  --vibe-secondary: var(--raw-palette-accent-2);   /* Aksen sekunder yang disesuaikan tingkat saturasinya */
+  --vibe-primary: var(--raw-palette-accent-1);     /* Aksen tetap menyala di atas permukaan gelap */
+  --vibe-secondary: var(--raw-palette-accent-2);   /* Aksen sekunder */
 }
 
 * **Hukum Sinkronisasi Token Warna (Anti-Text Gaib):** AI wajib memastikan bahwa penamaan class utility pada framework terikat mutlak ke variabel di atas. AI dilarang keras menerapkan kombinasi warna font yang memiliki tingkat kontras rendah dengan warna latar belakang komponen (`font putih + card putih + bg putih`). Jika user mengubah saklar tema, seluruh warna halaman wajib berganti secara halus menggunakan efek transisi `transition-colors duration-200`.

@@ -137,9 +137,17 @@ AI wajib bertindak sebagai fasilitator interaktif yang mengajukan **HANYA 1 pert
 2. **TECH STACK DEFINITIONS:** Ajukan pilihan terpusat untuk mengunci kombinasi teknologi: Frontend Framework, Backend Runtime, dan Database Engine (atau Global State Simulator jika Pure Frontend) yang akan digunakan secara menyeluruh.
 3. **KLUSTER AKSES & MANIFEST HALAMAN (MANIFEST HALAMAN AKTIF):** Sodorkan rekomendasi pembagian rute halaman fisik yang dipecah secara rigid menjadi 3 Kluster Akses Nyata (Kluster Publik/Guest, Kluster Member Terproteksi, Kluster Admin Panel) sesuai kriteria Bab 4 di `prd-template.md`. Mintalah konfirmasi, pengurangan, atau tambahan halaman spesifik dari user.
 4. SISTEM PALET TREN 2026 (PENGUNCI WARNA MUTLAK): Tampilkan 15 daftar master palet ke layar terminal. Mintalah user memilih nomor 1-15 atau mengetik kata "RANDOM". 
-   *Hukum Eksekusi & Sinkronisasi Dua Lapis:* Begitu nomor palet dikunci, AI dilarang keras bertanya tentang warna/mood lagi di pertanyaan lain. AI wajib mengunci secara internal token warna cerah (asli) dan otomatis merumuskan token warna malam (Deep Tonal) dari rumpun warna yang sama, lalu menampilkan visualisasi skema hex kedua mode tersebut di terminal sebagai bukti transparansi visual sebelum melangkah ke pertanyaan berikutnya. AI wajib menggunakan data hex palet pemenang ini untuk otomatisasi pengisian token warna `:root` di Bab 3 `prd.md`.
-   
-   *DAFTAR MASTER REKONSILIASI PALET TREN 2026:*
+    *Hukum Eksekusi & Sinkronisasi Dua Lapis (Klasifikasi Palet Adaptif):* Begitu nomor palet dikunci, AI wajib mengidentifikasi tipe palet berdasarkan klasifikasi bawaan:
+    - **Kluster Terang (Light-Based):** Palet 2, 5, 9, 12, 14.
+    - **Kluster Gelap (Dark-Based):** Palet 1, 3, 4, 6, 7, 8, 10, 11, 13, 15.
+    
+    AI wajib merumuskan skema warna secara dinamis:
+    - Jika terpilih **Kluster Terang**: Warna asli palet disematkan pada Light Mode (`[data-theme="light"]`), dan AI merumuskan versi gelap (Deep Tonal) dari rumpun warna yang sama untuk Dark Mode (`[data-theme="dark"]`).
+    - Jika terpilih **Kluster Gelap**: Warna asli palet disematkan pada Dark Mode (`[data-theme="dark"]`), dan AI merumuskan versi terang/pastel senada (bukan putih murni `#ffffff`) untuk Light Mode (`[data-theme="light"]`).
+    
+    AI wajib menampilkan skema visual hex kedua mode tersebut di terminal sebelum melangkah ke pertanyaan berikutnya dan mengisinya secara otomatis ke Bab 3 `prd.md`. Begitu nomor palet dikunci, AI dilarang keras bertanya tentang warna/mood lagi di pertanyaan lain.
+    
+    *DAFTAR MASTER REKONSILIASI PALET TREN 2026:*
    - 1. Cyber Industrial (Ultra Dark): Bg #111111 | Surface #222222 | Text #E2E8F0 | Accent1 #FF6B00 | Accent2 #00FFC2
    - 2. Quiet Luxury (Warm Premium): Bg #FDFBF7 | Surface #F4F0E6 | Text #1E1E24 | Accent1 #4A1525 | Accent2 #0D3B30
    - 3. Electric SaaS (Modern Tech): Bg #0F172A | Surface #1E293B | Text #F1F5F9 | Accent1 #635BFF | Accent2 #00E5E5
@@ -271,8 +279,14 @@ AI wajib mematuhi manifesto visual yang telah disepakati pada Bab 3 PRD. DILARAN
 5. **Hukum Preservasi Tonal & Anti-Banjir Putih-Hitam Murni (Vibrant Contrast Guard)**
 - **Larangan Keras Pembersihan Warna (Anti-Color Wiping):** AI diharamkan secara mutlak mengartikan Light Mode sebagai banjir warna putih murni (`#FFFFFF` atau `#FFF`) dan Dark Mode sebagai hitam murni (`#000000` atau `#121212`) hambar standar korporat. Aksi melanggar aturan ini digolongkan sebagai kegagalan fatal pada sistem visual DNA proyek.
 - **Mekanisme Pergeseran Spektrum (Hue-Locking Mechanism):** Perpindahan dari Light Mode ke Dark Mode wajib berputar di dalam spektrum roda warna (hue) yang sama dari kluster palet yang dimenangkan saat wawancara.
-- **Dark Mode Blueprint:** Warna `--vibe-background` untuk Dark Mode wajib diekstraksi dari rona dasar palet asli yang diturunkan nilai kecerahannya (luminance) secara radikal hingga menjadi warna gelap pekat berkarakter (Deep Tonal / Midnight Shade, contoh: jika palet dominan hijau sage, maka Dark Mode-nya adalah hijau hutan pekat malam hari, bukan abu-abu komputer).
-- **Light Mode Blueprint & Pewarisan Variabel CSS Root (STRICT):** Warna `--vibe-background` untuk Light Mode **MUTLAK WAJIB** mempertahankan Hex asli bawaan palet tren dengan mewarisi secara langsung nilai variabel: `--vibe-background: var(--raw-palette-bg);`. AI **DILARANG KERAS** melakukan hardcode warna `#FFFFFF` atau `#FFF` pada latar belakang Light Mode di berkas PRD maupun CSS, kecuali jika palet yang terpilih secara resmi menggunakan warna tersebut sebagai warna latar dasarnya. Pelanggaran terhadap aturan ini didefinisikan sebagai *Fatal Build Violation*.
+- **Logika Penentuan Mode Adaptif Berdasarkan Kluster Palet (MUTLAK):**
+  - **Untuk Kluster Terang (Palet 2, 5, 9, 12, 14):**
+    * *Light Mode:* `--vibe-background` wajib mempertahankan Hex asli palet dengan mewarisi secara langsung nilai variabel: `--vibe-background: var(--raw-palette-bg);`. Dilarang keras melakukan hardcode warna `#FFFFFF` atau `#FFF` pada CSS/PRD kecuali bawaan palet asli.
+    * *Dark Mode:* `--vibe-background` wajib dirumuskan dari rona dasar palet asli yang diturunkan kecerahannya secara ekstrem (Deep Tonal / Midnight Shade).
+  - **Untuk Kluster Gelap (Palet 1, 3, 4, 6, 7, 8, 10, 11, 13, 15):**
+    * *Dark Mode:* `--vibe-background` wajib mempertahankan Hex asli palet dengan mewarisi secara langsung nilai variabel: `--vibe-background: var(--raw-palette-bg);`.
+    * *Light Mode:* `--vibe-background` wajib dirumuskan dari rona dasar palet asli dengan menaikkan kecerahannya secara dinamis untuk menghasilkan warna pastel cerah yang senada, bukan warna putih murni `#FFFFFF` atau `#FFF`.
+- Pelanggaran terhadap aturan pewarisan variabel dan bias putih murni ini didefinisikan sebagai *Fatal Build Violation*.
 
 6. **Hukum Validasi Hasil Pengacakan (True Random Verification Gate):** Ketika opsi RANDOM terpilih, AI wajib mencetak nama kluster palet yang memenangkan hasil kocokan acak di jendela terminal saat serah terima prd.md. AI wajib memvalidasi delta kontras elemen teks utama terhadap kontainer permukaan (`--vibe-surface`) sebelum menuliskan kode css ke disk, memastikan rasio berada pada batas aman minimal 4.5:1.
 
