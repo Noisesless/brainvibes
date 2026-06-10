@@ -3,6 +3,7 @@
 ## 1. PROJECT IDENTITY & CORE PURPOSE
 - **Nama Project:** [Nama Aplikasi - Wajib dikunci saat wawancara untuk Title & Database Seeder]
 - **Tipe Aplikasi:** [Pilih: Company Profile / Blog-CMS / E-Commerce / Web App / Portal Pemerintahan]
+- **Skala & Scope Aplikasi:** [Pilih: Kantor (Internal Instansi) / Desa (Kelurahan) / Kabupaten (Kota) / Nasional / Publik Luas | Sebutkan estimasi jumlah pengguna]
 - **Core Value:** [Satu kalimat fungsi utama aplikasi]
 - **High-Level Explanation & Business Process:** [AI WAJIB menjabarkan penjelasan makro fungsional secara mendalam, arsitektur bisnis, aliran proses dari awal hingga akhir, serta target ekosistem yang ingin dicapai aplikasi ini]
 - **Target User:** [Target pengguna utama dan karakteristiknya]
