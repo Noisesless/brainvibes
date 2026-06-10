@@ -49,7 +49,7 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Status Pilihan Palet:** [Wajib Terisi: Nomor 1-15 / TRUE RANDOM SELECTION berdasarkan Bab 3 Gemini.md]
 - **Nama Kluster Terpilih:** [Wajib Terisi Nama Kluster Terpilih dari Otak Gemini.md]
 - **Tema Visual & Mood / Vibrasi Karakter:** [Otomatis Terisi Menyesuaikan Karakter Palet yang Menang]
-- **Sistem Transisi Tema Global:** [Pilih: Light Mode Only / Dark Mode Only / Dynamic Toggle Switch]
+- **Sistem Transisi Tema Global:** [Pilih: Static Palette Mode (Tema Statis) / Dynamic Toggle Switch (Saklar Dinamis)]
 
 
 ###A. Arsitektur Token Warna Dinamis (Tonal Preservation Theme Matrix)
