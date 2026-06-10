@@ -166,7 +166,7 @@ Setelah 10 poin wawancara disetujui, AI wajib menulis `prd.md` (termasuk visuali
 - **FASE 1: Fondasi Repositori, Git Security, & Arsitektur Teknis**
   - [ ] Jalankan deteksi versi runtime host secara pasif (misal: `node -v` atau `php -v`) untuk memastikan kompatibilitas sebelum inisiasi framework.
   - [ ] Tentukan dan kunci manajer paket tunggal yang digunakan (npm/pnpm/yarn/bun) untuk menghindari tabrakan lockfile.
-  - [ ] Create robust `.gitignore` di root folder (Mencekal `.env`, `/.scratchpad/`, `prd.md`, `todo.md`, `handover.md`).
+  - [ ] Create robust `.gitignore` di root folder (Mencekal `.env*`, `/.scratchpad/`, `prd.md`, `todo.md`, `handover.md`, `*.sqlite`, `*.db`, `*creds.json`, `*accounts.json`, `.idea/`, `.vscode/`).
   - [ ] Inisialisasi folder terisolasi `/.scratchpad/` untuk ruang debug aman.
   - [ ] Pembuatan folder struktur aset statis lokal dan folder penampung file view utama sesuai konvensi framework terpilih.
   - [ ] Menyediakan berkas gambar fallback lokal (`avatar-default.webp`, `logo-placeholder.webp`) di folder aset lokal menggunakan tool filesystem.
@@ -393,10 +393,16 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 	1. *Fase Pembangunan (Pre-Build):* Selama 6 Fase di todo.md masih aktif, setiap kali akumulasi 5 hingga 6 sub-task selesai dicentang (- [x]), AI wajib melakukan jeda senyap untuk menumpuk catatan riwayatnya khusus pada sub-bab `## 9. Log Perubahan Terbaru (Milestone Timeline)`. Jika jumlah baris di sub-bab ini menyentuh batas 100 baris, catatan paling tua di antrean atas wajib dihapus otomatis (First-In, First-Out chronological buffer) sebelum menyisipkan baris catatan baru di bawahnya.
 	2. *Fase Pemeliharaan & Poles Manual (Post-Build / Mode YOLO):* Jika seluruh 6 Fase di todo.md telah habis atau proyek berada dalam mode baca error (YOLO Global Clean-Up) untuk proses poles kode, optimasi, update fitur kecil, atau perbaikan bug secara manual: Setiap kali AI menyelesaikan 5 hingga 6 instruksi perbaikan/update/polesan kode secara berturut-turut, AI MUTLAK WAJIB melakukan jeda senyap untuk menumpuk catatan aktivitasnya khusus pada sub-bab `## 7. Catatan Teknis & Bug Fixes (Resolved)` dengan batasan rolling buffer chronological yang sama (maksimal 100 baris, baris tertua di antrean atas dihapus otomatis jika penuh). AI dilarang keras melakukan overwrite total yang dapat menghapus catatan arsitektur dasar atau riwayat sesi sebelumnya.
 
-- **Auto Commit Berstandar Industri:**
-	Sesaat setelah file handover.md berhasil diperbarui secara otomatis (baik pada fase pembangunan maupun pemeliharaan/YOLO), AI wajib menghasilkan dan mengeksekusi satu baris perintah Git commit otomatis berstandar konvensi industri yang deskriptif dan presisi melalui terminal. Contoh format eksekusi:
-	1. Untuk pembangunan: `git commit -am "chore: auto-update handover log milestone round [Nama Sub-Fase]"`
-	2. Untuk pemeliharaan/YOLO: `git commit -am "chore: auto-update handover log post-maintenance round [Mode YOLO]"`
+- **Auto Commit Berstandar Industri & Proteksi Kredensial (MUTLAK):**
+	Sesaat setelah file `handover.md` diperbarui secara otomatis (baik pada fase pembangunan maupun pemeliharaan/YOLO), AI **DILARANG keras** menggunakan perintah `git commit -am` secara membabi buta karena parameter `-a` akan memaksa file kredensial/metadata yang telanjur ter-track ikut ter-commit.
+	Sebelum melakukan commit, AI **MUTLAK WAJIB** melakukan langkah-langkah sanitasi cache Git berikut untuk memastikan file kredensial dan file internal AI tidak ikut ter-track:
+	- Jalankan perintah hapus cache tracking secara paksa:
+	  * Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+	  * Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+	- Tambahkan file yang ingin di-commit secara spesifik (misalnya berkas source code baru atau termutasi) atau jika menggunakan `git add .`, pastikan `.gitignore` sudah aktif mencekal file rahasia tersebut.
+	- Eksekusi perintah commit secara deskriptif (tanpa parameter `-a` jika tidak yakin cache bersih):
+	  1. Untuk pembangunan: `git add . && git commit -m "chore: auto-update handover log milestone round [Nama Sub-Fase]"`
+	  2. Untuk pemeliharaan/YOLO: `git add . && git commit -m "chore: auto-update handover log post-maintenance round [Mode YOLO]"`
 
 - **Daily Archive Automation via Bash Script:**
 	Jika pengguna mengetik instruksi pagi/sesi baru (seperti mengaktifkan saklar awal baru atau awal lanjut), AI wajib mengabaikan tugas koding lain terlebih dahulu dan secara otomatis mengeksekusi perintah bash untuk kompresi folder project menjadi file arsip dengan format penamaan statis: `[NamaProject]_[Tanggal_YYYY-MM-DD].zip`. Proses kompresi ini MUTLAK WAJIB mengecualikan folder `.git`, `node_modules`, `/.scratchpad/`, folder `build/dist`, serta folder cache lokal.
@@ -543,12 +549,18 @@ RATE_LIMIT_DECAY_MINUTES=15
 
 ### C. Konstitusi `.gitignore` Mutlak & Tata Kelola Git (Pre-Coding Git Governance)
 Sebelum AI menjalankan fungsi pembuatan folder, berkas backend, frontend, atau menulis satu baris kode fungsional pun di detik pertama proyek dimulai, **TUGAS NOMOR SATU yang wajib dieksekusi oleh AI adalah membuat dan mengonfigurasi file `.gitignore` di root folder**. File ini wajib mengunci secara permanen pola berkas berikut agar tidak bocor ke riwayat *commit* Git:
-1. *Kredensial Pribadi & Token Rahasia:* `.env`, `.env.local`, `.env.production`, `.env.development.local`, `*.pem`, `*.key`, berkas sertifikat, dan file rahasia lainnya.
-2. *Cetak Biru & Metadata Internal AI (Kerahasiaan Arsitektur):* `prd.md`, `todo.md`, `handover.md`.
-3. *Dependensi Kapasitas Besar:* `node_modules/`, `vendor/`, `.pnpm-store/`, dan folder manajer paket lainnya.
-4. *Berkas Sampah Lokal & Sistem Operasi:* `.DS_Store`, `Thumbs.db`, `.idea/`, `.vscode/`, `*.suo`, `*.ntvs*`.
-5. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
-6. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
+1. *Kredensial Pribadi & Token Rahasia:* `.env*` (termasuk `.env`, `.env.local`, `.env.production`, `.env.development.local`, `.env.example.local`), `*.pem`, `*.key`, berkas sertifikat, `*creds*.json`, `*accounts*.json`, `*secret*.json`, dan file kredensial format lainnya.
+2. *Database Lokal:* `*.sqlite`, `*.sqlite3`, `*.db`, `*.db-journal`, `*.db-wal`, `*.db-shm`.
+3. *Cetak Biru & Metadata Internal AI (Kerahasiaan Arsitektur):* `prd.md`, `todo.md`, `handover.md`.
+4. *Dependensi Kapasitas Besar:* `node_modules/`, `vendor/`, `.pnpm-store/`, dan folder manajer paket lainnya.
+5. *Berkas Sampah Lokal & Sistem Operasi:* `.DS_Store`, `Thumbs.db`, `.idea/`, `.vscode/`, `*.suo`, `*.ntvs*`.
+6. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
+7. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
+
+*Hukum Pembersihan Cache Git (Sanitasi Git):* AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add dengan perintah:
+- Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+- Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+Hal ini memastikan file rahasia/handover yang tidak sengaja ditambahkan ke index akan langsung di-untrack sebelum di-push.
 
 ## 10. MULTI-ENVIRONMENT DEPLOYMENT, PATH-BASED ROUTING, & ASSET SANITATION
 *(Hukum adaptasi runtime lintas server, standarisasi URL agnostik lokal/VPS, dan protokol pembersihan aset produksi)*

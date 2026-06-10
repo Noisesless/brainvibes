@@ -283,12 +283,18 @@ AI wajib mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut seca
 
 ### B. Konstitusi `.gitignore` Mutlak & Tata Kelola Git (Pre-Coding Git Governance)
 Sebelum AI menjalankan fungsi pembuatan folder, berkas backend, frontend, atau menulis satu baris kode fungsional pun di detik pertama proyek dimulai, **TUGAS NOMOR SATU yang wajib dieksekusi oleh AI adalah membuat dan mengonfigurasi file `.gitignore` di root folder**. File ini wajib mengunci secara permanen pola berkas berikut agar tidak bocor ke riwayat *commit* Git:
-1. *Kredensial Pribadi & Token Rahasia:* `.env`, `.env.local`, `.env.production`, `*.pem`, `*.key`, berkas sertifikat, dan file rahasia lainnya.
-2. *Cetak Biru & Metadata Internal AI (Kerahasiaan Arsitektur):* `prd.md`, `todo.md`, `handover.md`.
-3. *Dependensi Kapasitas Besar:* `node_modules/`, `vendor/`, `.pnpm-store/`, dan folder manajer paket lainnya.
-4. *Berkas Sampah Lokal & Sistem Operasi:* `.DS_Store`, `Thumbs.db`, `.idea/`, `.vscode/`, `*.suo`, `*.ntvs*`.
-5. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
-6. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
+1. *Kredensial Pribadi & Token Rahasia:* `.env*` (termasuk `.env`, `.env.local`, `.env.production`, `.env.development.local`, `.env.example.local`), `*.pem`, `*.key`, berkas sertifikat, `*creds*.json`, `*accounts*.json`, `*secret*.json`, dan file kredensial format lainnya.
+2. *Database Lokal:* `*.sqlite`, `*.sqlite3`, `*.db`, `*.db-journal`, `*.db-wal`, `*.db-shm`.
+3. *Cetak Biru & Metadata Internal AI (Kerahasiaan Arsitektur):* `prd.md`, `todo.md`, `handover.md`.
+4. *Dependensi Kapasitas Besar:* `node_modules/`, `vendor/`, `.pnpm-store/`, dan folder manajer paket lainnya.
+5. *Berkas Sampah Lokal & Sistem Operasi:* `.DS_Store`, `Thumbs.db`, `.idea/`, `.vscode/`, `*.suo`, `*.ntvs*`.
+6. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
+7. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
+
+*Hukum Pembersihan Cache Git (Sanitasi Git):* AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add dengan perintah:
+- Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
+- Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
+Hal ini memastikan file rahasia/handover yang tidak sengaja ditambahkan ke index akan langsung di-untrack sebelum di-push.
 
 ### C. Kebijakan Isolasi Berkas Uji Coba (Isolated Debugging Zone Rules)
 AI diharamkan keras mengotori folder utama proyek (*root*) atau folder fitur aktif dengan berkas-berkas eksperimen acak saat mencoba memecahkan masalah (*debugging/testing*).
