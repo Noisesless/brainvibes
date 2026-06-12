@@ -56,8 +56,9 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Sistem Transisi Tema Global:** [Pilih: Static Palette Mode (Tema Statis) / Dynamic Toggle Switch (Saklar Dinamis)]
 
 
-###A. Arsitektur Token Warna Dinamis (Tonal Preservation Theme Matrix)
+### A. Arsitektur Token Warna Dinamis (Tonal Preservation Theme Matrix)
  
+```css
 /* HUKUM MUTLAK ANTI-COLOR WIPING (TREN 2026 CONSTITUTION)
    AI dilarang keras menggunakan warna #FFFFFF murni untuk Light Mode atau
    #000000 / #121212 murni untuk Dark Mode. Kedua mode WAJIB di-generate 
@@ -114,6 +115,7 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
   --vibe-primary: var(--raw-palette-accent-1);     /* Aksen tetap menyala di atas permukaan gelap */
   --vibe-secondary: var(--raw-palette-accent-2);   /* Aksen sekunder */
 }
+```
 
 * **Hukum Sinkronisasi Token Warna (Anti-Text Gaib):** AI wajib memastikan bahwa penamaan class utility pada framework terikat mutlak ke variabel di atas. AI dilarang keras menerapkan kombinasi warna font yang memiliki tingkat kontras rendah dengan warna latar belakang komponen (`font putih + card putih + bg putih`). Jika user mengubah saklar tema, seluruh warna halaman wajib berganti secara halus menggunakan efek transisi `transition-colors duration-200`.
 
@@ -191,7 +193,10 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 > | **Kluster Pengelola (Admin Panel)** | Global App Settings | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
 > | **Kluster Pengelola (Admin Panel)** | User Role CRUD Table | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
 > | **Kluster Pengelola (Admin Panel)** | Form Add New User | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | CMS Media Slider Organizer | [Isi Path Fisik Riil oleh AI jika Carousel aktif] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+> | **[Kluster Pengelola (Admin Panel)]** | CMS Media Slider Organizer | [Isi Path Fisik Riil oleh AI jika Carousel aktif] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+| **[Fitur Kustom — Tambahkan Baris Sesuai Kebutuhan]** | [Nama Halaman Kustom X] | [AI wajib mengisi berdasarkan hasil wawancara] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+
+> **[ATURAN EXTENSIBILITY TABEL]** Jumlah baris tabel di atas TIDAK TERBATAS pada contoh template. AI **WAJIB** menambah baris baru untuk setiap halaman fisik yang disepakati saat wawancara (misal: Forum, Marketplace, Booking, Laporan, dll). Dilarang keras memangkas atau melewati halaman apapun yang disebutkan user hanya karena tidak ada di template ini.
 
 ### D. Parameter Properti Bayangan & Peta Z-Index (Anti-Tabrakan Elemen)
 - **Z-Index Map (Konstitusi Level Kedalaman):**
