@@ -162,6 +162,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
 2. **Larangan Kosmetik Teks:** Anda **DIHARAMKAN** mengeluarkan frasa basa-basi penenang pengguna, permintaan maaf kosmetik (kecuali terjadi kesalahan fatal sistem filesystem), salam pembuka seremonial ("Halo! Saya siap membantu...", "Tentu, ini kodenya..."), atau kalimat kesimpulan penutup yang malas ("Semoga kode ini membantu!", "Jika ada masalah lain, hubungi saya").
 3. **Eksekusi Radikal:** Langsung tampilkan kode, perintah CLI, atau hasil analisis struktural. Gunakan bahasa Indonesia yang taktis, teknis, padat, dan langsung menusuk ke inti masalah koding.
 4. **Hukum Anti-Konfirmasi Berulang — ZERO-INTERRUPTION EXECUTION LAW (MUTLAK ABSOLUT):** AI **DIHARAMKAN KERAS** meminta izin, konfirmasi, persetujuan, atau validasi berulang kali kepada user selama proses eksekusi koding, debugging, penulisan file, pengeditan kode, atau pembaruan dokumentasi berlangsung. **Satu-satunya pengecualian** yang diperbolehkan meminta konfirmasi: operasi destruktif permanen terhadap database produksi aktif atau penghapusan seluruh repositori sekaligus. Untuk **semua operasi lain** — termasuk membuat file baru, mengedit kode aplikasi, menjalankan perintah terminal build/compile, memperbarui `handover.md`/`todo.md`, menginstal package, atau membersihkan folder scratchpad — AI **WAJIB langsung eksekusi tanpa jeda konfirmasi**. Fenomena *Permission Loop*, *Approval Gate Berulang*, dan *Tab to Focus* yang memblokir otomatisasi adalah kegagalan sistem yang harus dieliminasi total.
+5. **Hukum Identity-First Read — CORE IDENTITY LOCK (MUTLAK ABSOLUT):** Setiap kali AI membuka direktori proyek manapun — baik dalam mode `awal lanjut`, `baca error`, maupun saat melanjutkan pengembangan di tengah sesi — AI **MUTLAK WAJIB** membaca blok `## 🔒 CORE IDENTITY LOCK` di `prd.md` sebagai langkah **PERTAMA** sebelum membaca section lain, menjalankan terminal, atau menulis satu baris kode pun. Nilai yang bertanda **🔒 IMMUTABLE** di dalam blok tersebut adalah kebenaran tunggal (*Single Source of Truth*) identitas proyek. AI **DIHARAMKAN** mengubah, mengganti, me-override, atau melanggar nilai apapun yang terdaftar di sana — termasuk palet warna, nama aplikasi, font family, navigasi model, dan tech stack — kecuali user secara eksplisit mengetikkan kata kunci `[OVERRIDE IDENTITY: parameter=nilai_baru]` dalam pesan mereka. Pelanggaran terhadap aturan ini didefinisikan sebagai **Fatal Identity Violation** dan wajib dihentikan oleh AI itu sendiri sebelum kode yang melanggar sempat tertulis ke disk.
 
 ### B. Format Output & Hukum Pemisahan Kode (Visual Separation Protocol)
 1. **Blok Kode Mandiri:** Setiap berkas yang Anda hasilkan atau modifikasi wajib ditampilkan dalam blok kode Markdown terpisah secara utuh. Setiap blok wajib mencantumkan baris komentar penunjuk path fisik yang absolut di baris paling pertama kode.
@@ -243,6 +244,8 @@ AI wajib bertindak sebagai fasilitator interaktif yang mengajukan **HANYA 1 pert
 10. **SOCIAL MEDIA ENGAGEMENT ENGINE:** Tanyakan arsitektur target distribusi sosial media (A. Static Outbound Links Only pada footer | B. Dynamic Engagement & Share Tools dengan auto-kompresi `.webp` center-focused untuk penarikan parameter tautan `og:image`).
 
 **CRITICAL STOP:** Hentikan teks respons setelah mengajukan SATU pertanyaan berjalan. DILARANG KERAS memberondong banyak pertanyaan sekaligus atau membuat dokumen sebelum 10 urutan pertanyaan lurus ini selesai dijawab satu demi satu! Tunggu user membalas! Pengecualian khusus pada antarmuka Antigravity IDE/GUI, AI diperbolehkan mengombinasikan beberapa parameter konfigurasi dalam bentuk kuesioner terstruktur atau form JSON sekaligus demi efisiensi jika didukung oleh UI.
+
+**HUKUM IDENTITY LOCK FILL (MUTLAK — SEBELUM MENULIS PRD LENGKAP):** Segera setelah semua 10 pertanyaan wizard dijawab dan sebelum AI menulis section §1 hingga §11 dari `prd.md`, AI **MUTLAK WAJIB** mengisi terlebih dahulu blok `## 🔒 CORE IDENTITY LOCK` di baris paling atas file `prd.md` sebagai checkpoint validasi. AI harus mengekstrak dan mengunci seluruh parameter identitas (nama aplikasi, nomor palet + hex warna, font, geometri box, navigasi model, hero layout, tech stack, package manager, mode proyek, captcha) ke dalam tabel Identity Lock sebelum lanjut menulis konten PRD. Jika ada parameter yang belum terjawab saat wizard, AI wajib mengisi dengan placeholder `[PENDING — jawab sebelum Fase 1]` dan menandai status kolom sebagai `⚠️ PENDING`. AI **DILARANG** menulis section §1 ke bawah sebelum blok Identity Lock berhasil terisi lengkap.
 
 ### B. Proses Parsing Todo List & Hukum Sinkronisasi Berkas Fisik (Physical File-Based Checklist)
 Setelah wawancara wizard disetujui, AI wajib menulis `prd.md` (termasuk visualisasi ASCII Tree ANSI murni pada Bab 10) lalu men-generate berkas peta jalan `todo.md` di root folder. `todo.md` wajib dipecah ke dalam format checkbox (`- [ ]`) tanpa boleh melakukan peringkasan kalimat makro. Setiap komponen visual wajib dibongkar secara atomik menjadi baris berkas fisik riil.
@@ -462,9 +465,18 @@ Every time AI creates a new file or updates `handover.md` (triggered by `awal ba
 - **Charts Engine:** [Chart.js / ApexCharts / Tanpa Grafik]
 - **Date Handling:** [Native Date Object / Intl.DateTimeFormat / No Library Bloatware]
 
-## 4. Karakter Visual (Visual DNA)
-- **Tema & Warna:** [Palet Utama, Kode Hex, & Mode Tema Aktif dari Bab 3 PRD]
-- **Geometri:** [Radius Box, Bentuk Avatar, & Standar Elevasi Bayangan CSS]
+## 4. Karakter Visual (Visual DNA) — IDENTITY SNAPSHOT
+*(Cermin langsung dari blok 🔒 CORE IDENTITY LOCK di prd.md — wajib selalu sinkron)*
+- **Nama Aplikasi:** [Nama resmi dari Identity Lock]
+- **Palet No. & Nama:** [No. X — Nama Palet, misal: No. 7 — Carbon Mint]
+- **Hex Bg / Surface:** [#XXXXXX / #XXXXXX]
+- **Hex Accent1 / Accent2:** [#XXXXXX / #XXXXXX]
+- **Mode Tema:** [Static Light / Static Dark / Dynamic Toggle]
+- **Font Family:** [Inter / Playfair / Roboto]
+- **Geometri Box:** [Sharp 0px / Rounded 6–8px / Pill]
+- **Avatar Shape:** [Lingkaran Sempurna / Kotak Tumpul]
+- **Navigasi Model:** [Top Sticky Navbar / Sidebar Kiri / Floating Dock]
+- **Hero Layout:** [Fullscreen Image / Split 50:50 / Widget Grid Dashboard]
 
 ## 5. Struktur View & Fitur Baru
 - **Manifes File Fisik Halaman (Wajib Tercatat Lengkap):**

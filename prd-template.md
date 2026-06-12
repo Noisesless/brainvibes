@@ -1,3 +1,41 @@
+<!-- ════════════════════════════════════════════════════════════════════════════
+     ⚠️  CORE IDENTITY LOCK — AI WAJIB BACA INI PERTAMA SEBELUM APAPUN  ⚠️
+     Single Source of Truth identitas proyek ini.
+     Diisi OTOMATIS oleh AI setelah wawancara wizard selesai (sebelum §1).
+     DILARANG mengubah nilai 🔒 IMMUTABLE tanpa instruksi eksplisit user:
+     [OVERRIDE IDENTITY: parameter=nilai_baru]
+     ════════════════════════════════════════════════════════════════════════════ -->
+
+## 🔒 CORE IDENTITY LOCK (IMMUTABLE AFTER PRD APPROVAL)
+
+| Parameter Identitas | Nilai Terkunci | Status |
+| :--- | :--- | :--- |
+| **Nama Aplikasi** | `[Diisi AI setelah wawancara]` | 🔒 IMMUTABLE |
+| **Tipe Aplikasi** | `[Company Profile / Blog-CMS / E-Commerce / Web App / Portal]` | 🔒 IMMUTABLE |
+| **Skala & Scope** | `[Kantor / Desa / Kabupaten / Nasional / Publik Luas]` | 🔒 IMMUTABLE |
+| **Core Value** | `[Satu kalimat fungsi utama aplikasi]` | 🔒 IMMUTABLE |
+| **Mode Proyek** | `[Pembangunan Baru dari Nol / Konversi Stack & Re-Platforming]` | 🔒 IMMUTABLE |
+| **Tech Stack** | `[Framework + DB + Styling Engine]` | 🔒 IMMUTABLE |
+| **Package Manager** | `[npm / pnpm / yarn / bun]` | 🔒 IMMUTABLE |
+| **Palet No.** | `[1–15 atau RANDOM → tulis nomor hasil kocokan]` | 🔒 IMMUTABLE |
+| **Nama Kluster Palet** | `[Nama kluster terpilih, misal: Carbon Mint]` | 🔒 IMMUTABLE |
+| **Hex: Bg / Surface** | `[#XXXXXX / #XXXXXX]` | 🔒 IMMUTABLE |
+| **Hex: Accent1 / Accent2** | `[#XXXXXX / #XXXXXX]` | 🔒 IMMUTABLE |
+| **Hex: Text Utama** | `[#XXXXXX]` | 🔒 IMMUTABLE |
+| **Mode Tema** | `[Static Light / Static Dark / Dynamic Toggle Switch]` | 🔒 IMMUTABLE |
+| **Font Family** | `[Inter (Sans-Serif Modern) / Playfair (Serif Elegan) / Roboto (Clean)]` | 🔒 IMMUTABLE |
+| **Geometri Box** | `[Sharp 0px / Rounded 6–8px / Pill Bulat Penuh]` | 🔒 IMMUTABLE |
+| **Avatar Shape** | `[Lingkaran Sempurna rounded-full / Kotak Tumpul rounded-md]` | 🔒 IMMUTABLE |
+| **Navigasi Model** | `[Top Sticky Navbar / Vertical Sidebar Kiri / Floating Dock Menu]` | 🔒 IMMUTABLE |
+| **Hero Layout** | `[Fullscreen Image / Split 50:50 / Widget Grid Dashboard]` | 🔒 IMMUTABLE |
+| **Captcha** | `[High-Contrast Active / No Captcha — Native Validation Only]` | 🔒 IMMUTABLE |
+| **Fase Aktif** | `[Fase X dari Y — diperbarui AI setiap sesi]` | 🔄 DYNAMIC |
+| **Terakhir Diperbarui** | `[Timestamp — diperbarui AI setiap sesi]` | 🔄 DYNAMIC |
+
+> **⚠️ HUKUM IMMUTABILITY:** AI yang membaca file ini DIHARAMKAN mengubah baris bertanda 🔒 IMMUTABLE di atas tanpa instruksi eksplisit user menggunakan kata kunci `[OVERRIDE IDENTITY: parameter=nilai_baru]`. Nilai 🔄 DYNAMIC boleh diperbarui AI setiap sesi tanpa konfirmasi. Pelanggaran = **Fatal Identity Violation**.
+
+---
+
 # PRODUCT REQUIREMENTS DOCUMENT (AI-READABLE)
 
 ## 1. PROJECT IDENTITY & CORE PURPOSE
