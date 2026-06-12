@@ -16,13 +16,38 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
   - **Hukum Shell Kebal Interupsi:** Jika selama proses audit, pengujian kompilasi, jalannya server lokal, atau verifikasi repositori berjalan AI perlu memicu perintah CLI, AI **MUTLAK WAJIB** menyisipkan pengaman anti-stuck di setiap baris perintah terminal (Contoh Unix: `CI=true yes "" | pnpm run build`, Windows PowerShell: `$Null | pnpm run build`, atau menggunakan flag `--no-interaction --no-plugins --no-scripts` pada ekosistem PHP/Composer) agar tidak menahan antrean proses akibat menunggu input keyboard dari user.
   - **Aturan Eksekusi (Dua Skenario Mutlak):**
     
-    1. **SKENARIO A: Jika Melanjutkan Proyek Internal (Sistem Gemini Berjalan)**
+    1. **SKENARIO A: Jika Melanjutkan Proyek Internal (Sistem Berjalan)**
        * **Kondisi:** AI mendeteksi keberadaan file `prd.md`, `todo.md`, dan `handover.md` di direktori utama.
-       * **Aksi AI (State Restoring & Environment Verification):** Lakukan pemulihan memori (*State Restoring*) secara senyap dengan membaca ketiga file tersebut serta folder `/.docs/` untuk mengingat batasan arsitektur, data state, dan kemajuan tugas harian. AI wajib mendeteksi keberadaan file `.env` di root folder. Jika tidak ditemukan, AI wajib membaca `.env.example`, menyalinnya menjadi `.env`, mengisi variabel sensitif dengan default dummy credentials, dan melanjutkan tanpa crash loop. AI juga wajib melakukan pemindaian pasif pada database lokal (SQLite/JSON) untuk mengonfirmasi tabel, kolom, dan data uji coba yang sudah diinput oleh pengguna. AI **DIHARAMKAN** menjalankan perintah reset database (`migrate:fresh`) yang dapat menghapus data testing/riil milik pengguna. Port local dev server aktif yang terdeteksi wajib dibaca dari `handover.md` (di bawah `## 2. Environment & Local Settings`) agar tetap konsisten. **Deteksi Konversi Aktif (MUTLAK):** Jika sub-bab `## Migrasi Timeline` ditemukan di dalam `handover.md` (indikator mode `awal konversi` aktif), AI wajib memperluas lingkup pembacaan state ke folder `/.legacy/` untuk memvalidasi kode sumber lama yang masih dalam proses porting dan memastikan tidak ada fitur yang terabaikan antar sesi.
-       * **State Restoring untuk Pure Frontend (MUTLAK):** Jika proyek terdeteksi bertipe Pure Frontend / Jamstack (Tanpa Server Fisik), selain membaca tiga file markdown (`prd.md`, `todo.md`, `handover.md`), AI **MUTLAK WAJIB** membaca file manajemen state lokal simulator (seperti `src/config/state.js` atau file konfigurasi state padanannya). AI wajib memetakan record dummy data aktif dan session simulation aktif yang tersimpan di dalam file kode tersebut ke dalam variabel memori jangka pendeknya agar simulasi state tidak mengalami amnesia data saat sesi dilanjutkan.
-       * **Aturan Trigger Handover Kontinuitas:** AI wajib langsung mengaktifkan ulang *internal session counter* pelacakan tugas dari angka 0 pada detik pertama memori dipulihkan. Setiap kali ada akumulasi **5 hingga 6 sub-task baru** yang dicentang (`- [x]`) pada file `todo.md` di sesi berjalan ini, pemicu (*trigger*) pembaruan otomatis ke `handover.md` **MUTLAK WAJIB** dieksekusi secara instan dengan metode penumpukan log (*append incremental*) maksimal 100 baris task, tanpa merusak isi log sesi sebelumnya.
-       * **Output Terminal:** Berikan laporan kilat berformat: 
-         *"[KONTINUITAS] Sesi kerja dipulihkan. Berdasarkan handover.md, status terakhir aplikasi adalah [X], variabel state/komponen baru terpasang adalah [Y], dan tugas yang belum selesai di todo.md adalah [Z]. Pemicu otomatisasi handover incremental (setiap 5-6 task) telah diaktifkan kembali secara otomatis. Mari kita lanjutkan eksekusi."*
+       * **Aksi AI (State Restoring & Environment Verification):** Lakukan pemulihan memori secara senyap dengan membaca ketiga file tersebut serta folder `/.docs/`. AI wajib mendeteksi `.env` di root. Jika absen, salin dari `.env.example` dengan dummy credentials. AI wajib pindai database lokal secara pasif. AI **DIHARAMKAN** menjalankan `migrate:fresh`. Port dev server wajib dibaca dari `handover.md §2`.
+       * **Deteksi Konversi Aktif — 3-LAYER SIGNAL SYSTEM (MUTLAK):** Sebelum menentukan jalur state restoring, AI WAJIB mengevaluasi 3 sinyal berikut secara bersamaan:
+         - **Signal 1:** `handover.md` mengandung sub-bab `## Migrasi Timeline` ATAU string literal `awal konversi`
+         - **Signal 2:** `todo.md` mengandung pola fase migrasi ("Fase 7", "Fase 8", "Fase 9", atau total susunan 9 fase atomik)
+         - **Signal 3:** Folder `/.legacy/` ada secara fisik di root direktori proyek
+
+         → Jika **≥ 2 dari 3 sinyal** terdeteksi: AI WAJIB masuk ke **MODE STATE RESTORING KONVERSI** dengan langkah perluasan:
+           1. Baca ulang file-file di `/.legacy/` yang kolom Status Portingnya masih `PENDING` atau `IN_PROGRESS` di `prd.md §11` — wajib anti-stale code.
+           2. Verifikasi fase migrasi aktif dari `todo.md` (AI harus mengetahui: sedang di Fase berapa dari 9).
+           3. Baca `/.docs/database.md` — validasi tabel/kolom di Database Compatibility Matrix yang masih `PENDING`.
+           4. Baca `/.docs/api-spec.md` — identifikasi controller mana yang belum di-porting.
+           5. Tampilkan output terminal Varian 2 (format khusus konversi di bawah).
+
+         → Jika **< 2 sinyal** terdeteksi: Lanjutkan State Restoring jalur standar (proyek baru).
+
+       * **State Restoring untuk Pure Frontend (MUTLAK):** Jika proyek bertipe Pure Frontend / Jamstack, AI **MUTLAK WAJIB** membaca file state lokal simulator (`src/config/state.js` atau padanannya) dan memetakan record dummy data aktif agar simulasi tidak amnesia.
+       * **Aturan Trigger Handover Kontinuitas:** AI wajib aktifkan ulang *internal session counter* dari angka 0. Setiap akumulasi **5–6 sub-task** tercentang (`- [x]`), trigger update `handover.md` secara *append incremental* (maks 100 baris), tanpa merusak log sesi sebelumnya.
+       * **Output Terminal — DUA VARIAN WAJIB (pilih sesuai hasil deteksi):**
+
+         *Varian 1 — Proyek Baru (< 2 sinyal konversi):*
+         *"[KONTINUITAS] Sesi dipulihkan. Status terakhir: [X]. Komponen baru: [Y]. Task tersisa: [Z]. Handover trigger aktif (setiap 5–6 task). Lanjutkan eksekusi."*
+
+         *Varian 2 — Proyek Konversi (≥ 2 sinyal terdeteksi):*
+         *"[KONTINUITAS — MODE KONVERSI AKTIF] Proyek konversi dipulihkan.
+         — Fase Migrasi Aktif : [Fase N dari 9]
+         — File Legacy Pending Porting : [Daftar file /.legacy/ berstatus PENDING dari prd.md §11]
+         — Kolom DB Compatibility Pending : [Daftar tabel/kolom dari database.md]
+         — Controller Belum Di-porting : [Daftar dari api-spec.md]
+         — Handover trigger konversi (setiap 5–6 task) diaktifkan ke ## Migrasi Timeline.
+         Lanjutkan porting dari titik terakhir."*
 
     2. **SKENARIO B: Jika Melanjutkan Proyek Asing (Legacy / Existing Codebase)**
        * **Kondisi:** Direktori kerja terdeteksi memiliki berkas kode aplikasi (bukan folder kosong), tetapi **TIDAK MENEMUKAN** berkas `prd.md` atau `todo.md` di dalamnya.
@@ -50,12 +75,28 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
 
 - **Command: `awal konversi`**
   - **Aksi:** Paksa masuk ke mode **FASE RE-PLATFORMING & FEATURE PRESERVATION (MIGRASI FRAMEWORK - STRANGLER FIG PATTERN)**.
+  - **PRE-FLIGHT CHECK — DETEKSI SESI KONVERSI YANG SUDAH BERJALAN (WAJIB DIEKSEKUSI SEBELUM WIZARD):**
+    Sebelum memulai wizard 6 pertanyaan, AI MUTLAK WAJIB memeriksa direktori kerja aktif secara pasif menggunakan tool filesystem:
+    * **KONDISI 1 — Sesi Konversi Terdeteksi:** Jika folder `/.legacy/` DITEMUKAN **DAN** file `prd.md` / `todo.md` SUDAH ADA di direktori → AI HARUS menghentikan wizard dan menampilkan peringatan:
+      *"[⚠️ SESI KONVERSI SEBELUMNYA TERDETEKSI] Folder /.legacy/ dan dokumen konversi (prd.md / todo.md) sudah ada di direktori ini. Kemungkinan ini adalah lanjutan sesi yang terputus.
+      Pilih tindakan:
+      (A) Lanjutkan dari fase terakhir → ketik `awal lanjut`
+      (B) Mulai ulang konversi dari nol [PERINGATAN: prd.md & todo.md lama akan ditimpa, /.legacy/ lama di-backup ke /.legacy-backup-[timestamp]/]
+      Ketik A atau B:"*
+      → Jika A: Langsung eksekusi **`awal lanjut` Skenario A mode konversi** tanpa membuka wizard.
+      → Jika B: Backup `/.legacy/` ke `/.legacy-backup-[timestamp]/` via tool filesystem, hapus `prd.md` & `todo.md` lama, lalu lanjutkan wizard 6 pertanyaan dari awal.
+    * **KONDISI 2 — Direktori Bersih:** Jika `/.legacy/` tidak ditemukan → Lanjutkan wizard 6 pertanyaan secara langsung.
   - **Wawancara Wizard Konversi (STRICT - 1 Turn = 1 Pertanyaan, WAJIB diajukan berurutan sebelum menulis kode apapun):**
     1. *Direktori Proyek Asal:* Minta path fisik absolut direktori proyek lama (misal: `C:/xampp/htdocs/myapp`). AI wajib mendeteksi struktur folder dan stack secara pasif segera setelah path diterima.
     2. *Stack Asal vs Stack Target:* Konfirmasi tech stack lama yang terdeteksi (misal: PHP Native + MySQL + jQuery) dan tanyakan stack target baru (misal: Next.js 15 App Router + PostgreSQL via Prisma).
     3. *Migrasi atau Pertahankan Database Engine:* Tanyakan apakah database engine akan dipertahankan (misal: tetap MySQL) atau dimigrasi ke engine baru (misal: MySQL → PostgreSQL). Jika migrasi engine, AI wajib memetakan konversi tipe data di Section 11A `prd.md`.
-    4. *Preservasi Aset Media:* Konfirmasi lokasi folder user-uploaded media di proyek lama (misal: `/uploads/`, `/public/storage/`). AI wajib memindahkan folder ini langsung ke struktur publik target baru, bukan ke `/.legacy/`.
-    5. *Visual DNA Refresh:* Tanyakan apakah desain visual dipertahankan 100% dari versi lama (termasuk palet warna dan layout), atau di-refresh ulang menggunakan 15 Master Palet Tren 2026.
+    4. *Preservasi Aset Media:* Konfirmasi lokasi folder user-uploaded media di proyek lama (misal: `/uploads/`, `/public/storage/`) **dan tipe file dominan** yang tersimpan (gambar, video, PDF, dokumen, atau campuran).
+       - Folder uploads/media **DILARANG** masuk ke `/.legacy/`. Wajib dipindahkan langsung ke folder publik target baru (`/public/uploads/` atau padanannya) menggunakan tool filesystem — bukan `git mv`.
+       - Untuk file **gambar (jpg/png/gif/webp)**: AI wajib merencanakan pipeline konversi WebP otomatis saat runtime upload. Dilarang batch-convert di awal agar tidak memblokir progress migrasi.
+       - Untuk file **video/PDF/dokumen besar**: AI wajib memperkirakan estimasi total ukuran folder. Jika >500MB: catat di `handover.md §2` bahwa folder media tidak dimasukkan ke Git. User wajib sinkronkan secara manual via FTP/rsync ke server produksi. Tambahkan `public/uploads/` ke `.gitignore` secara eksplisit jika melebihi batas ini.
+    5. *Visual DNA Refresh:* Tanyakan apakah desain visual dipertahankan 100% dari versi lama (palet warna, layout, geometri komponen), atau di-refresh ulang menggunakan sistem palet baru.
+       - Jika user pilih **Pertahankan 100%**: AI wajib melakukan scan CSS/stylesheet dari `/.legacy/` untuk mengekstrak token warna aktif (nilai hex background, surface, text, dan accent utama), lalu memetakannya ke variabel CSS sistem target baru (`--vibe-background`, `--vibe-surface`, `--vibe-text-primary`, `--vibe-accent`, dst.) dan mencatatnya di Bab 3 `prd.md` dengan label *"Visual DNA Preserved"*. AI **DILARANG** menggunakan atau meng-override dengan palet tren 2026.
+       - Jika user pilih **Refresh Ulang**: AI WAJIB langsung menampilkan **15 Daftar Master Palet Tren 2026** ke terminal (identik dengan wizard `awal baru §3A`) dan meminta user memilih nomor 1–15 atau mengetik `"RANDOM"` **sebelum melanjutkan ke pertanyaan #6**. Proses penguncian palet, penentuan Light Mode / Dark Mode (Deep Tonal), dan pengisian Bab 3 `prd.md` wajib mengikuti seluruh **Hukum Sinkronisasi Dua Lapis** yang berlaku di `awal baru §3.4`.
     6. *Inventarisasi API Pihak Ketiga:* Tanyakan daftar layanan API eksternal yang terintegrasi di aplikasi lama (misal: Midtrans, Google OAuth, RajaOngkir) agar AI dapat memetakan paketan pengganti atau ekuivalen di stack baru.
   - **Aturan Eksekusi:** AI dilarang keras menulis kode atau memodifikasi file apapun sebelum 6 pertanyaan wizard di atas dijawab tuntas dan `prd.md` konversi disetujui oleh pengguna.
   - **Hukum Shell Kebal Interupsi:** Jika selama proses migrasi ini AI perlu memicu perintah CLI, AI **MUTLAK WAJIB** melakukan bypass interaktif secara radikal dengan menyuntikkan environment variable `CI=true` dan pipes kosong sesuai OS (Unix: `yes "" | [command]`, Windows PowerShell: `$Null | [command]`) guna mencegah status *Awaiting Input*.
@@ -69,6 +110,11 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
     7. *Upgrade-on-Login Hashing Fallback:* AI wajib menulis *Legacy Hash Verifier Middleware* pada auth stack baru. Jika password user seeder lama menggunakan hash MD5/SHA-1, password divalidasi via hash lama terlebih dahulu, lalu di-upgrade otomatis ke Bcrypt/Argon2 modern saat login berhasil.
     8. *Handover Trigger Otomatis (MUTLAK):* AI wajib mengaktifkan *internal session counter* dari angka 0 sejak Fase 1 dimulai. Setiap kali akumulasi **5 hingga 6 sub-task** pada `todo.md` konversi dicentang (`- [x]`), AI wajib memperbarui berkas `handover.md` di bawah sub-bab `## Migrasi Timeline` menggunakan metode *append incremental* (maksimal 100 baris) tanpa merusak log fase sebelumnya, agar status migrasi dapat dipulihkan jika sesi terputus.
     9. *Git Commit Checkpoint per Fase (WAJIB):* Di akhir setiap Fase yang selesai dikerjakan, AI wajib memicu satu Git commit dengan pesan standar format `migrate(fase-N): [deskripsi singkat komponen selesai]` (misal: `migrate(fase-3): ported all ORM models & relations`). Commit ini berfungsi sebagai titik *rollback* aman jika fase berikutnya gagal dan perlu di-restore.
+    10. *Legacy Feature Completeness Audit — Anti-Missing Feature (MUTLAK, dieksekusi di akhir Fase 1):* Setelah isolasi `/.legacy/` selesai dan sebelum Fase 2 dimulai, AI MUTLAK WAJIB melakukan pemindaian mendalam seluruh file routing, controller, model, dan view di `/.legacy/` untuk menginventarisasi **SEMUA fitur yang terimplementasi secara nyata** — termasuk yang tidak disebutkan user saat wizard berlangsung. Temuan fitur "tak terungkap" wajib dilaporkan ke terminal:
+        *"[UNDISCLOSED FEATURES DETECTED] Fitur berikut ditemukan di kode legacy namun tidak disebutkan saat wizard:"*
+        | No | Nama Fitur | File Legacy | Estimasi Kompleksitas | Keputusan User |
+        | :- | :- | :- | :- | :- |
+        AI wajib meminta konfirmasi user untuk setiap baris: **(A) Port ke stack baru**, **(B) Abaikan/hapus di Fase 9**, atau **(C) Defer — putuskan nanti**. Keputusan wajib dicatat di `prd.md §11E` kolom "Catatan/Blocker" dan baris terkait ditambahkan ke `todo.md` Fase yang sesuai sebelum eksekusi Fase 2 dimulai.
 
 - **Command: `baca error`**
   - **Aksi:** Paksa masuk ke mode **DEBUGGING GLOBAL & AMNESIA SANITATION (MODE YOLO - ZERO COMPROMISE)**.
@@ -76,6 +122,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
     1. **Global App Auditing & Pencatatan Issue (STRICT):** AI dilarang keras hanya berfokus pada satu file atau satu pesan error yang dikirimkan user. AI wajib menggunakan tool filesystem secara masif untuk memetakan seluruh file routing, mendata semua halaman fisik yang aktif, serta menguji seluruh alur logika fitur (Auth, Form CRUD, Captcha, Validation Engine) yang ada di dalam repositori untuk berburu silent error atau celah visual.
        * **Pembuatan & Pelacakan Cetak Biru Issue (`/.docs/issues.md`):** Segera setelah pemindaian selesai, AI **MUTLAK WAJIB** membuat atau memperbarui berkas dokumentasi `/.docs/issues.md` dengan skema Markdown terstruktur yang sangat rigid. Isinya wajib memetakan secara detail: ID issue, status, file path, deskripsi error, analisis penyebab, rencana perbaikan, Jurnal Percobaan Solusi (Anti-Looping Ledger) beserta status percobaan (SUKSES/GAGAL), dan Verification Payload.
        * **Pengecekan Struktur Database Pasif (DB Struct Scan):** Jika error berkaitan dengan query data atau ORM Model, AI **MUTLAK WAJIB** memvalidasi tabel dan kolom fisik yang aktif pada database lokal secara pasif (tanpa reset) terlebih dahulu untuk mencocokkan skema database di `/.docs/database.md`.
+       * **Conversion Context Guard — WAJIB jika Proyek Konversi Aktif:** Jika folder `/.legacy/` ditemukan di root direktori, AI DILARANG KERAS memperlakukan fitur atau halaman yang belum di-porting sebagai "bug" atau "missing feature". AI wajib cross-check terlebih dahulu: apakah error berasal dari **(A) kode target baru yang benar-benar rusak** atau **(B) fitur legacy yang memang belum di-porting sesuai fase `todo.md` berjalan**. Jika (B): catat di `issues.md` dengan status `PENDING_PORTING` — bukan `OPEN` — beserta referensi ke nomor Fase dan baris `todo.md` yang bertanggung jawab atas porting tersebut. AI **DILARANG** menambahkan code stub palsu, placeholder function, atau fallback dummy untuk menyembunyikan incomplete porting.
     2. **Gerbang Persetujuan Mandor & Analisis Rencana (MUTLAK):** Sesaat setelah `/.docs/issues.md` berhasil dibuat, AI **MUTLAK WAJIB menghentikan seluruh proses modifikasi kode aplikasi**. AI dilarang melakukan perbaikan sepihak. AI wajib mencetak daftar issue dan analisis rencana tindakan perbaikannya ke terminal dengan format yang jelas dan meminta persetujuan eksplisit dari pengembang/mandor. AI hanya diperbolehkan mengeksekusi perbaikan kode **SETELAH** mendapat persetujuan atau instruksi dari user.
     3. **Hukum Perlindungan Core Aplikasi (Immutable Core Architecture):** Dalam melakukan perbaikan massal setelah disetujui, AI **DIHARAMKAN** mengubah atau merombak total *Core Arsitektur* yang telah disepakati di dalam `prd.md` (seperti mengganti library reaktivitas secara sepihak, mengubah struktur database dasar, atau mengganti framework styling global). Tugas AI adalah memperbaiki kebocoran logika (*logic bugs*), *broken layouts*, kebocoran tipe data (*type safety leak*), dan celah keamanan siber tanpa mengubah pondasi arsitektur dasar.
     4. **Siklus Eksekusi Berjenjang & Incremental Active Build (ANTI-STUCK AUTO-COMMANDS):** AI dilarang berasumsi bahwa kode perbaikannya langsung berjalan aman. Setiap kali AI menuntaskan perbaikan pada satu kluster halaman/fitur tunggal, AI **WAJIB** langsung memicu perintah kompilasi, migrasi, atau deployment terminal untuk menguji fungsionalitas sistem.
