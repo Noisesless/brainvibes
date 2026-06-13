@@ -40,7 +40,7 @@
 
 Berkas perintah makro dan hukum perilaku AI. Mencakup:
 
-- **4 Makro Command** (`awal baru`, `awal lanjut`, `awal konversi`, `baca error`)
+- **4 Makro Command** (`/init-project`, `/resume-session`, `/migrate-stack`, `/debug-mode`)
 - **Wizard PRD Interaktif** — 10-poin wawancara linier 1-per-giliran
 - **Anti-Looping Engine** — Retry limit 3x + Git Clean Rollback otomatis
 - **Handover Auto-Log System** — Rolling FIFO buffer 100 baris per 5–6 sub-task selesai
@@ -65,7 +65,7 @@ Template cetak biru *Product Requirements Document* berstruktur tinggi. Mencakup
 - **Bab 8** — Git Governance & Isolated Scratchpad Zone
 - **Bab 9** — SEO + Open Graph (TikTok / WhatsApp / Instagram ready)
 - **Bab 10** — ASCII Tree Map (Native PHP & Modern Bundler)
-- **Bab 11** — Transition Blueprint Registry *(khusus mode `awal konversi`)*
+- **Bab 11** — Transition Blueprint Registry *(khusus mode `/migrate-stack`)*
 
 </td>
 <td width="33%" valign="top">
@@ -119,22 +119,22 @@ Ketik perintah di bawah sebagai **kalimat pertama** pada sesi chat AI Anda:
 <th width="50%">Kapan Digunakan</th>
 </tr>
 <tr>
-<td><code>awal baru</code></td>
+<td><code>/init-project</code></td>
 <td>🏗️ Fase Inisiasi</td>
 <td>Memulai proyek dari nol. AI memandu wawancara wizard PRD 10-poin secara linier sebelum menulis satu baris kode pun.</td>
 </tr>
 <tr>
-<td><code>awal lanjut</code></td>
+<td><code>/resume-session</code></td>
 <td>🔄 Kontinuitas Harian</td>
 <td>Melanjutkan sesi kerja. AI memulihkan memori dari <code>prd.md</code>, <code>todo.md</code>, <code>handover.md</code>, dan folder <code>/.docs/</code> secara senyap.</td>
 </tr>
 <tr>
-<td><code>awal konversi</code></td>
+<td><code>/migrate-stack</code></td>
 <td>🔀 Re-Platforming</td>
 <td>Migrasi stack teknologi lama ke baru (Strangler Fig Pattern). Isolasi <code>/.legacy/</code>, wizard 6-pertanyaan, 9-fase migrasi atomik.</td>
 </tr>
 <tr>
-<td><code>baca error</code></td>
+<td><code>/debug-mode</code></td>
 <td>🔥 YOLO Debug Mode</td>
 <td>Debugging global tanpa kompromi. AI scan seluruh codebase, tulis <code>issues.md</code>, lalu berhenti dan minta persetujuan developer sebelum memperbaiki.</td>
 </tr>
@@ -148,14 +148,14 @@ Ketik perintah di bawah sebagai **kalimat pertama** pada sesi chat AI Anda:
 graph TD
     START([👤 Developer]) --> CMD{Perintah Makro?}
 
-    CMD -- "awal baru" --> INIT[🧙 Wizard PRD\n10 Pertanyaan Linier]
+    CMD -- "/init-project" --> INIT[🧙 Wizard PRD\n10 Pertanyaan Linier]
     INIT --> PRD[📄 Generate prd.md\n+ todo.md]
     PRD --> PHASE[🏗️ Fase Koding\n6 Fase / 9 Fase Konversi]
 
-    CMD -- "awal lanjut" --> RESTORE[🔁 State Restoring\nBaca prd + todo + handover\n+ /.legacy/ jika konversi aktif]
+    CMD -- "/resume-session" --> RESTORE[🔁 State Restoring\nBaca prd + todo + handover\n+ /.legacy/ jika konversi aktif]
     RESTORE --> PHASE
 
-    CMD -- "awal konversi" --> WIZARD[🔀 Wizard Konversi\n6 Pertanyaan Stack Migration]
+    CMD -- "/migrate-stack" --> WIZARD[🔀 Wizard Konversi\n6 Pertanyaan Stack Migration]
     WIZARD --> LEGACY[📦 Legacy Isolation\nke folder /.legacy/]
     LEGACY --> PHASE
 
@@ -164,7 +164,7 @@ graph TD
     HANDOVER --> PHASE
 
     PHASE --> BUG{🐛 Error Ditemukan?}
-    BUG -- "baca error" --> SCAN[🔍 Full Codebase Scan\nTulis /.docs/issues.md]
+    BUG -- "/debug-mode" --> SCAN[🔍 Full Codebase Scan\nTulis /.docs/issues.md]
     SCAN --> GATE[🚦 Mandor Approval Gate\nAI Berhenti — Tunggu Izin]
     GATE -- Disetujui --> FIX[🔧 Fix Loop\nRetry max 3x]
     FIX --> ITSA[🛡️ IT Scan Assessment\n5 Lapisan Keamanan]
@@ -228,11 +228,11 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dipisahkan k
 
 ```
 /[nama-proyek]/
-├── /.docs/               ← Pusat dokumentasi teknis inti (wajib ada)
+├── /.docs/               ← Pusat dokumentasi teknis inti (REQUIRED ada)
 │   ├── architecture.md   ← Aliran data makro (Presentation → Logic → DB)
 │   ├── api-spec.md       ← Spesifikasi endpoint & server actions
 │   ├── database.md       ← Schema DDL SQL / Local JSON State blueprint
-│   └── issues.md         ← Bug tracker FIFO (max 10 resolved, OPEN wajib dipertahankan)
+│   └── issues.md         ← Bug tracker FIFO (max 10 resolved, OPEN REQUIRED dipertahankan)
 ├── /.scratchpad/          ← Zona debug terisolasi (Git-Ignored otomatis)
 ├── /src/ atau /app/       ← Source code aplikasi utama
 ├── /public/ atau /assets/ ← Aset statis + fallback image WebP
@@ -251,9 +251,9 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dipisahkan k
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
 | `v2.0.0` | [`8fcf799`](https://github.com/Noisesless/brainvibes/commit/8fcf799) | Fix 8 celah lanjutan: rename `## 2. Environment & Local Settings`, standardisasi log `## 10.`, tutup unclosed code block, deteksi `/.legacy/` untuk konversi, ASCII tree kondisional, cross-ref Section 11→6D |
-| `v1.9.0` | [`d588ac1`](https://github.com/Noisesless/brainvibes/commit/d588ac1) | Fix 7 konflik `awal konversi`: wizard 6-langkah, 9-fase atomik, klarifikasi `git mv` vs filesystem move, tracking `/.legacy/`, kolom Status Porting Section 11, handover trigger, Git checkpoint per fase |
-| `v1.8.0` | [`bba7771`](https://github.com/Noisesless/brainvibes/commit/bba7771) | Hardened `baca error`: port sync API, linter auto-fix trap, db lock clearance, static frontend bypass |
-| `v1.7.0` | [`5a6f93f`](https://github.com/Noisesless/brainvibes/commit/5a6f93f) | Integrasi ITSA post-fix assessment ke mode `baca error` |
+| `v1.9.0` | [`d588ac1`](https://github.com/Noisesless/brainvibes/commit/d588ac1) | Fix 7 konflik `/migrate-stack`: wizard 6-langkah, 9-fase atomik, klarifikasi `git mv` vs filesystem move, tracking `/.legacy/`, kolom Status Porting Section 11, handover trigger, Git checkpoint per fase |
+| `v1.8.0` | [`bba7771`](https://github.com/Noisesless/brainvibes/commit/bba7771) | Hardened `/debug-mode`: port sync API, linter auto-fix trap, db lock clearance, static frontend bypass |
+| `v1.7.0` | [`5a6f93f`](https://github.com/Noisesless/brainvibes/commit/5a6f93f) | Integrasi ITSA post-fix assessment ke mode `/debug-mode` |
 
 ---
 

@@ -24,8 +24,8 @@
 | 15 | Neon Midnight (Cyberpunk Aesthetic) | `#03030C` | `#0D0D21` | `#E5E5F7` | `#FF007F` | `#7B2CBF` |
 
 ### Hukum Pemilihan Palet
-- **RANDOM:** Kocok satu nomor dari 15 secara utuh. DILARANG campur token lintas nomor.
-- **Light Mode:** `--vibe-background` = hex Bg asli palet (DNA original). DILARANG hardcode `#FFFFFF` kecuali palet aslinya memang putih.
+- **RANDOM:** Kocok satu nomor dari 15 secara utuh. FORBIDDEN campur token lintas nomor.
+- **Light Mode:** `--vibe-background` = hex Bg asli palet (DNA original). FORBIDDEN hardcode `#FFFFFF` kecuali palet aslinya memang putih.
 - **Dark Mode:** Generate versi midnight/deep tonal dari hue dasar palet asli — BUKAN `#000000`.
 - **Validasi kontras:** Rasio teks utama vs surface ≥ 4.5:1 (WCAG AA minimum).
 
@@ -57,7 +57,7 @@
 }
 
 /* ── LIGHT MODE (PALETTE ORIGINAL DNA) ──
-   DILARANG hardcode #FFFFFF pada --vibe-background
+   FORBIDDEN hardcode #FFFFFF pada --vibe-background
    kecuali palet aslinya memang menggunakan warna putih */
 [data-theme="light"] {
   --vibe-background:  var(--raw-palette-bg);
@@ -70,7 +70,7 @@
 
 /* ── DARK MODE (DEEP TONAL PRESERVATION) ──
    Generate versi midnight dari rona dasar palet asli
-   DILARANG menggunakan #000000 atau #121212 murni */
+   FORBIDDEN menggunakan #000000 atau #121212 murni */
 [data-theme="dark"] {
   --vibe-background:  [Generate: Versi midnight tergelap dari rona bg palet asli];
   --vibe-surface:     [Generate: Satu tingkat lebih terang dari background gelap];
@@ -104,7 +104,7 @@
 - **Serif Elegan:** Playfair Display (Google Fonts CDN)
 - **Official Clean:** Roboto | Open Sans (Google Fonts CDN)
 
-**Implementasi:** Suntikkan CDN link di `<head>` layout utama. Set `font-family` secara eksplisit di CSS global — DILARANG mengandalkan default browser.
+**Implementasi:** Suntikkan CDN link di `<head>` layout utama. Set `font-family` secara eksplisit di CSS global — FORBIDDEN mengandalkan default browser.
 
 ---
 
@@ -114,7 +114,7 @@
 /* Soft (Pasif/Idle) */
 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 
-/* Hover/Glow (Aktif — wajib kombinsasi dengan transition + translate) */
+/* Hover/Glow (Aktif — REQUIRED kombinsasi dengan transition + translate) */
 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 transition: all 0.2s ease-in-out;
 transform: translateY(-4px); /* hover:-translate-y-1 */
@@ -145,7 +145,7 @@ transform: translateY(-4px); /* hover:-translate-y-1 */
 | L | `24px` | Margin section, gap grid column |
 | XL | `32px` | Padding hero section, antar section |
 
-**Aturan:** DILARANG hardcode nilai acak (13px, 19px, 21px). Selalu gunakan kelipatan 8.
+**Aturan:** FORBIDDEN hardcode nilai acak (13px, 19px, 21px). Selalu gunakan kelipatan 8.
 
 ---
 
@@ -165,7 +165,7 @@ Geometri badge mengikuti setting Geometri Box dari wawancara (Sharp/Rounded/Pill
 
 ### Sidebar + Content Layout (Anti-Clipping):
 ```css
-/* Sidebar — DILARANG biarkan menyusut */
+/* Sidebar — FORBIDDEN biarkan menyusut */
 .sidebar {
   flex-shrink: 0;
   min-width: 240px; /* atau nilai fixed sesuai desain */
@@ -178,7 +178,7 @@ Geometri badge mengikuti setting Geometri Box dari wawancara (Sharp/Rounded/Pill
 }
 ```
 
-### Vanilla CSS Utility Engine (wajib jika tanpa framework CSS):
+### Vanilla CSS Utility Engine (REQUIRED jika tanpa framework CSS):
 ```css
 /* Responsive breakpoints */
 @media (max-width: 768px) { /* mobile rules */ }

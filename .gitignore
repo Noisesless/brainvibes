@@ -1,0 +1,7 @@
+antigravity-ide/
+brainvibes/
+tmp/
+*.json
+*.jsonl
+*.pb
+*.log
