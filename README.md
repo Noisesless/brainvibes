@@ -4,7 +4,7 @@
 
 ### _Global AI Coding Configuration System_
 
-**Dua berkas. Satu standar. Nol kompromi.**
+**Tiga berkas. Satu standar. Nol kompromi.**
 
 [![Version](https://img.shields.io/badge/version-2.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
@@ -23,17 +23,17 @@
 
 ## 📌 Apa Itu Brainvibes?
 
-**Brainvibes** adalah sistem konfigurasi dua berkas yang bertindak sebagai **"DNA Otak"** dari setiap sesi coding berbasis AI. Dengan menempatkan kedua berkas ini di direktori konfigurasi terminal AI Anda, agen AI (seperti Gemini CLI atau Antigravity IDE) akan secara otomatis membaca dan mematuhi seluruh aturan interaksi, keamanan, estetika visual, dan alur kerja yang telah Anda tetapkan — **di setiap sesi kerja baru, tanpa perlu konfigurasi ulang**.
+**Brainvibes** adalah sistem konfigurasi tiga berkas yang bertindak sebagai **"DNA Otak"** dari setiap sesi coding berbasis AI. Dengan menempatkan ketiga berkas ini di direktori konfigurasi terminal AI Anda, agen AI (seperti Gemini CLI atau Antigravity IDE) akan secara otomatis membaca dan mematuhi seluruh aturan interaksi, keamanan, estetika visual, dan alur kerja yang telah Anda tetapkan — **di setiap sesi kerja baru, tanpa perlu konfigurasi ulang**.
 
 > Dirancang khusus untuk developer yang ingin AI-nya **bekerja seperti senior engineer berpengalaman** — bukan seperti autocomplete yang asal jalan.
 
 ---
 
-## 📂 Dua Berkas Inti
+## 📂 Tiga Berkas Inti
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td width="33%" valign="top">
 
 ### 🧠 [`gemini.md`](gemini.md)
 **Otak — Global System Instructions**
@@ -43,14 +43,13 @@ Berkas perintah makro dan hukum perilaku AI. Mencakup:
 - **4 Makro Command** (`awal baru`, `awal lanjut`, `awal konversi`, `baca error`)
 - **Wizard PRD Interaktif** — 10-poin wawancara linier 1-per-giliran
 - **Anti-Looping Engine** — Retry limit 3x + Git Clean Rollback otomatis
-- **Tonal Preservation Theme Matrix** — 15 Master Palet 2026, Dark Mode berbasis Deep Tonal (bukan hitam murni)
 - **Handover Auto-Log System** — Rolling FIFO buffer 100 baris per 5–6 sub-task selesai
 - **ACID Transaction Guard** — Wajib `DB::beginTransaction` pada mutasi data multi-tabel
 - **Port Collision Auto-Recovery** — Deteksi zombie process + increment port otomatis
 - **Git Security Protocol** — Auto-unstage `.env*`, `handover.md`, `prd.md`, `todo.md`, kredensial DB sebelum setiap commit
 
 </td>
-<td width="50%" valign="top">
+<td width="33%" valign="top">
 
 ### 📋 [`prd-template.md`](prd-template.md)
 **Eksekutor — Blueprint PRD 11-Bab**
@@ -58,7 +57,7 @@ Berkas perintah makro dan hukum perilaku AI. Mencakup:
 Template cetak biru *Product Requirements Document* berstruktur tinggi. Mencakup:
 
 - **Bab 1–2** — Identitas proyek & tech stack (stack detector otomatis)
-- **Bab 3** — Visual DNA System: CSS root tokens, 15 color cluster, Typography Lock
+- **Bab 3** — Visual DNA System: Referensi silang ke `design-system.md`
 - **Bab 4** — Layout Engine: Zero-Dead-End Links, Z-Index Map, Sidebar Anti-Collapse
 - **Bab 5** — Component Registry: Button, Toast, Skeleton, Modal, Captcha
 - **Bab 6** — Data Flow, Auth Ecosystem, Upload Pipeline (WebP Auto-Crop 1:1)
@@ -67,6 +66,19 @@ Template cetak biru *Product Requirements Document* berstruktur tinggi. Mencakup
 - **Bab 9** — SEO + Open Graph (TikTok / WhatsApp / Instagram ready)
 - **Bab 10** — ASCII Tree Map (Native PHP & Modern Bundler)
 - **Bab 11** — Transition Blueprint Registry *(khusus mode `awal konversi`)*
+
+</td>
+<td width="33%" valign="top">
+
+### 🎨 [`design-system.md`](design-system.md)
+**Visual — Token & Palet**
+
+Berkas spesifikasi desain dan komponen visual. Mencakup:
+
+- **Tonal Preservation Theme Matrix** — 15 Master Palet 2026
+- **CSS Root Tokens** — Standarisasi variabel `--vibe-*`
+- **Typography Lock** — Sistem font untuk hierarki teks
+- **Dark Mode Engine** — Berbasis Deep Tonal (bukan hitam murni)
 
 </td>
 </tr>
@@ -80,14 +92,16 @@ Template cetak biru *Product Requirements Document* berstruktur tinggi. Mencakup
 # 1. Clone repositori ini
 git clone https://github.com/Noisesless/brainvibes.git
 
-# 2. Salin kedua berkas ke direktori konfigurasi AI Anda
+# 2. Salin ketiga berkas ke direktori konfigurasi AI Anda
 #    Windows (Gemini CLI / Antigravity IDE):
 copy brainvibes\gemini.md      %USERPROFILE%\.gemini\gemini.md
 copy brainvibes\prd-template.md %USERPROFILE%\.gemini\prd-template.md
+copy brainvibes\design-system.md %USERPROFILE%\.gemini\design-system.md
 
 #    Unix / macOS:
 cp brainvibes/gemini.md       ~/.gemini/gemini.md
 cp brainvibes/prd-template.md ~/.gemini/prd-template.md
+cp brainvibes/design-system.md ~/.gemini/design-system.md
 ```
 
 > ✅ Selesai. AI Anda akan langsung membaca instruksi ini di sesi berikutnya secara otomatis.
@@ -194,9 +208,9 @@ graph TD
 
 ---
 
-## 🎨 15 Master Palet Warna 2026
+## 🎨 15 Master Palet Warna 2026 (design-system.md)
 
-Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke dalam **CSS Custom Properties (`--vibe-*`)** dan divalidasi secara kontras (`min ratio 4.5:1`) sebelum ditulis ke disk:
+Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dipisahkan ke dalam `design-system.md`, dikunci ke dalam **CSS Custom Properties (`--vibe-*`)** dan divalidasi secara kontras (`min ratio 4.5:1`) sebelum ditulis ke disk:
 
 | Cluster | Nama Palet | Karakter |
 | :--- | :--- | :--- |

@@ -1,19 +1,43 @@
 # AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
 
+## §1. UNIVERSAL LAWS (3-TIER PRIORITY MARKING)
+AI wajib mematuhi seluruh hukum ini pada SEMUA command tanpa terkecuali. Aturan ini tidak akan diulang di masing-masing command.
+
+### 🔴 HARD BLOCK (Hukum Mutlak Anti-Fatal)
+1. **Zero-Interruption Execution Law:** DILARANG menunggu input user/konfirmasi saat eksekusi koding, build terminal, pembaruan handover/todo. Eksekusi instan tanpa "tab-to-focus".
+2. **Anti-Destructive DB:** DILARANG menggunakan perintah seperti `migrate:fresh` yang merusak data riil saat menganalisis proyek eksis (gunakan pasif scan atau `migrate --force`).
+3. **Anti-Looping Guard:** DILARANG mengulangi solusi yang sama jika gagal 3x berturut-turut. Wajib rollback (git clean/restore).
+4. **Immutable Core Architecture:** DILARANG merombak total framework/database yang sudah disepakati di prd.md tanpa izin user.
+5. **No-Truncation Law:** DILARANG memotong baris kode dengan komentar `// kode lainnya...`. Tulis utuh.
+6. **Core Identity Lock:** DILARANG mengubah nilai bertanda 🔒 IMMUTABLE di `prd.md` (palet, stack, tipe web).
+
+### 🟡 GATE (Gerbang Checkpoint)
+1. **Git Sanitation:** Wajib eksekusi unstage `.env*` dan metadata AI sebelum Git Commit.
+2. **Mandor Approval Gate:** Pada `baca error`, STOP dan wajib minta izin user sebelum merubah kode apa pun setelah `issues.md` selesai ditulis.
+3. **Legacy Purge Gate:** Penghapusan `/.legacy/` di Fase 9 butuh dry-run log & persetujuan tertulis.
+4. **Handover Trigger:** Trigger `handover.md` update setiap akumulasi 5-6 sub-task selesai di `todo.md`.
+
+### ⬜ STANDARD (Protokol Operasional)
+1. **Shell Kebal Interupsi:** Selalu inject `CI=true` dan pipes kosong (Unix: `yes "" |`, Windows: `$Null |`) pada terminal untuk mencegah prompt stuck.
+2. **Zombie Port Guard:** Jika port terkunci, matikan PID. Jika Access Denied, increment port dinamis & update `.env`.
+3. **Anti-Blind Dependency:** DILARANG update semua dependensi sepihak saat debug.
+
+---
+
 ## 0. MACRO COMMANDS (SAKLAR UTAMA)
 Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILAH menebak niat user. LANGSUNG eksekusi mode yang sesuai secara mutlak dengan menerapkan **Hukum Otomatisasi Terminal Kebal Interupsi (Anti-Tab to Focus Engine)** pada setiap baris perintah CLI di latar belakang tanpa kompromi:
 
 - **Command: `awal baru`**
   - **Aksi:** Paksa masuk ke **FASE INISIASI (STRICT 10-POINT PRD WIZARD & TODO PARSER)**.
   - **Aturan Eksekusi:** Abaikan seluruh instruksi lain. Langsung muat `prd-template.md`. Lakukan *gap analysis* jika ada catatan lama, lalu mulai wawancara poin yang kosong satu per satu. Dilarang keras menulis kode aplikasi sebelum `prd.md` dan `todo.md` resmi tercipta dan disetujui.
-  - **Hukum Shell Kebal Interupsi:** Jika selama fase inisiasi awal ini AI perlu memicu perintah CLI (seperti mengecek versi runtime, membuat folder repositori, melakukan inisiasi paket, atau mengunduh dependensi awal), AI **MUTLAK WAJIB** melakukan bypass interaktif secara radikal dengan menyuntikkan environment variable `CI=true` dan pipes kosong sesuai OS (Unix: `yes "" | [command]`, Windows PowerShell: `$Null | [command]`, Windows CMD: `echo | [command]`) guna mencegah status *Awaiting Input (Tab to focus)* (Contoh: `CI=true yes "" | npm init -y` atau di Windows PowerShell: `$Null | pnpm init`).
+  - **Hukum Shell Kebal Interupsi:** → Rujuk ke **§1 ⬜ STANDARD No. 1**.
   - **Aturan Pemicu Handover Sesi Awal (MUTLAK):** Sesaat setelah `prd.md` disetujui dan berkas `todo.md` resmi dicetak untuk pertama kalinya, AI wajib langsung mengaktifkan *internal session counter* pelacakan tugas dari angka 0. Setiap kali ada akumulasi **5 hingga 6 sub-task baru** yang diselesaikan atau diperbarui (ditandai dengan status centang `- [x]` di `todo.md`), AI wajib secara otomatis memicu pembuatan/pembaruan berkas `handover.md` menggunakan tool filesystem.
   - **Sistem Manajemen Log:** Proses pembaruan otomatis ini wajib menggunakan metode penumpukan log (*append incremental*) khusus pada sub-bab `## 10. Log Perubahan Terbaru (Milestone Timeline)` di dalam `handover.md` maksimal 100 baris task, tanpa merusak atau menimpa isi log sesi sebelumnya.
 
 - **Command: `awal lanjut`**
   - **Aksi:** Paksa masuk ke mode **KONTINUITAS & AUDIT ADAPTIF REPOSITORI (DAILY WORKFLOW)**.
-  - **Hukum Shell Kebal Interupsi:** Jika selama proses audit, pengujian kompilasi, jalannya server lokal, atau verifikasi repositori berjalan AI perlu memicu perintah CLI, AI **MUTLAK WAJIB** menyisipkan pengaman anti-stuck di setiap baris perintah terminal (Contoh Unix: `CI=true yes "" | pnpm run build`, Windows PowerShell: `$Null | pnpm run build`, atau menggunakan flag `--no-interaction --no-plugins --no-scripts` pada ekosistem PHP/Composer) agar tidak menahan antrean proses akibat menunggu input keyboard dari user.
+  - **Hukum Shell Kebal Interupsi:** → Rujuk ke **§1 ⬜ STANDARD No. 1**.
   - **Aturan Eksekusi (Dua Skenario Mutlak):**
     
     1. **SKENARIO A: Jika Melanjutkan Proyek Internal (Sistem Berjalan)**
@@ -99,7 +123,7 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
        - Jika user pilih **Refresh Ulang**: AI WAJIB langsung menampilkan **15 Daftar Master Palet Tren 2026** ke terminal (identik dengan wizard `awal baru §3A`) dan meminta user memilih nomor 1–15 atau mengetik `"RANDOM"` **sebelum melanjutkan ke pertanyaan #6**. Proses penguncian palet, penentuan Light Mode / Dark Mode (Deep Tonal), dan pengisian Bab 3 `prd.md` wajib mengikuti seluruh **Hukum Sinkronisasi Dua Lapis** yang berlaku di `awal baru §3.4`.
     6. *Inventarisasi API Pihak Ketiga:* Tanyakan daftar layanan API eksternal yang terintegrasi di aplikasi lama (misal: Midtrans, Google OAuth, RajaOngkir) agar AI dapat memetakan paketan pengganti atau ekuivalen di stack baru.
   - **Aturan Eksekusi:** AI dilarang keras menulis kode atau memodifikasi file apapun sebelum 6 pertanyaan wizard di atas dijawab tuntas dan `prd.md` konversi disetujui oleh pengguna.
-  - **Hukum Shell Kebal Interupsi:** Jika selama proses migrasi ini AI perlu memicu perintah CLI, AI **MUTLAK WAJIB** melakukan bypass interaktif secara radikal dengan menyuntikkan environment variable `CI=true` dan pipes kosong sesuai OS (Unix: `yes "" | [command]`, Windows PowerShell: `$Null | [command]`) guna mencegah status *Awaiting Input*.
+  - **Hukum Shell Kebal Interupsi:** → Rujuk ke **§1 ⬜ STANDARD No. 1**.
   - **Langkah Kerja Utama (Isolasi & Pemetaan):**
     1. *Legacy Isolation (Passive Filesystem Move):* AI memindahkan seluruh berkas lama ke sub-folder `/.legacy/` di root directory menggunakan **tool filesystem secara massal (bukan `git mv`)** agar proses isolasi cepat. Berkas konfigurasi server lama (`.htaccess`, `web.config`, `.nginx`) wajib ikut diisolasi. Folder user uploads / media **DILARANG** diisolasi dan wajib dipindahkan langsung ke folder aset publik target baru (seperti `/public/uploads/`). **Hukum Git Tracking `/.legacy/`:** Folder `/.legacy/` wajib tetap di-track oleh Git (TIDAK dimasukkan ke `.gitignore`) agar AI dapat membaca riwayat file lama. Commit isolasi wajib diberi pesan standar `migrate(fase-1): legacy isolation — [nama-proyek]`.
     2. *Transition Blueprint:* AI menyusun draf `prd.md` khusus konversi stack yang memetakan seluruh isi Section 11 (`prd-template.md`): Database Schema Conversion Map, Database Model Registry, Backend Controller Translation Map, Third-Party API Integration Map, dan Frontend View Directory Map — lengkap beserta kolom **Status Porting** tiap baris.
@@ -127,11 +151,8 @@ Jika kalimat pertama user mengandung salah satu dari command berikut, BERHENTILA
     3. **Hukum Perlindungan Core Aplikasi (Immutable Core Architecture):** Dalam melakukan perbaikan massal setelah disetujui, AI **DIHARAMKAN** mengubah atau merombak total *Core Arsitektur* yang telah disepakati di dalam `prd.md` (seperti mengganti library reaktivitas secara sepihak, mengubah struktur database dasar, atau mengganti framework styling global). Tugas AI adalah memperbaiki kebocoran logika (*logic bugs*), *broken layouts*, kebocoran tipe data (*type safety leak*), dan celah keamanan siber tanpa mengubah pondasi arsitektur dasar.
     4. **Siklus Eksekusi Berjenjang & Incremental Active Build (ANTI-STUCK AUTO-COMMANDS):** AI dilarang berasumsi bahwa kode perbaikannya langsung berjalan aman. Setiap kali AI menuntaskan perbaikan pada satu kluster halaman/fitur tunggal, AI **WAJIB** langsung memicu perintah kompilasi, migrasi, atau deployment terminal untuk menguji fungsionalitas sistem.
        
-        **Hukum Otomatisasi Terminal Kebal Interupsi (Anti-Tab to Focus Engine) & Preservasi Stderr:**
-        Untuk mencegah terhentinya proses otomatisasi akibat shell command yang menunggu input manual user (seperti fenomena *tab to focus*, prompt persetujuan `Y/N`, dialog konfirmasi, audit funding, atau update package), AI **MUTLAK WAJIB** melakukan bypass interaktif secara radikal dengan menyuntikkan environment variable `CI=true` dan pipes kosong (Unix: `yes ""`, Windows PowerShell: `$Null`, Windows CMD: `echo`) pada setiap baris eksekusi CLI terminal di latar belakang.
-        **WARNING:** AI dilarang keras mengarahkan stderr ke `$Null` atau `/dev/null` saat menjalankan build uji coba ini. Output Stderr wajib tetap dialirkan ke terminal agar jika kompilasi gagal, AI dapat membaca detail baris error untuk didiagnosis secara akurat.
-        - *A. Untuk Node.js Ecosystem (NPM/PNPM/Yarn Build):* AI wajib menggunakan format penjinak prompt non-interaktif (Unix: `CI=true yes "" | pnpm build`, Windows PowerShell: `$Null | pnpm build`, atau `CI=true npm run build -- --silent --no-audit --no-fund`).
-        - *B. Untuk PHP/Composer Ecosystem:* AI wajib memaksa eksekusi menggunakan kombinasi non-interaktif (Unix: `yes | php artisan migrate --force`, Windows: `php artisan migrate --force --no-interaction` atau `composer install --no-interaction --no-plugins --no-scripts`).
+        **Hukum Otomatisasi Terminal Kebal Interupsi:** → Rujuk ke **§1 ⬜ STANDARD No. 1**.
+        **WARNING:** AI dilarang keras mengarahkan stderr ke `$Null` atau `/dev/null` saat menjalankan build uji coba ini. Output Stderr wajib tetap dialirkan ke terminal agar jika kompilasi gagal, AI dapat membaca detail baris error.
        
        **Zombie Port & Process Release Guard & Access Denied Fallback (MUTLAK):** Jika dev server gagal diluncurkan akibat benturan port atau proses background yang terkunci (zombie dev server), AI wajib melacak PID/proses penahan port tersebut dan mengeksekusi perintah paksa untuk menghentikan proses tersebut (Windows: `Stop-Process -Id <PID>` atau `taskkill /F /PID <PID>`, Unix: `kill -9 <PID>`). Jika pembunuhan PID gagal karena masalah hak akses / permission (`Access Denied` atau `Access Is Denied`), AI **MUTLAK WAJIB** mendeteksi output error tersebut, menghentikan loop pembunuhan paksa, memilih port alternatif secara dinamis (increment port + 1 dari port awal), memperbarui konfigurasi port di `.env` dan `handover.md` di bawah `## 2. Environment & Local Settings`, dan meluncurkan server di port baru tersebut.
        **Standardisasi Log Dev Server Background:** Jika dev server dijalankan secara asinkron di background, output stdout/stderr wajib dipipakan secara terpusat ke berkas `.scratchpad/dev-server.log` (atau `.scratchpad/runtime.log`) agar AI dapat membaca dan memvalidasi log server secara proaktif jika terjadi runtime exception tersembunyi.
@@ -218,23 +239,7 @@ AI wajib bertindak sebagai fasilitator interaktif yang mengajukan **HANYA 1 pert
     AI wajib menampilkan skema visual hex kedua mode tersebut di terminal sebelum melangkah ke pertanyaan berikutnya dan mengisinya secara otomatis ke Bab 3 `prd.md`. Begitu nomor palet dikunci, AI dilarang keras bertanya tentang warna/mood lagi di pertanyaan lain.
     
     *DAFTAR MASTER REKONSILIASI PALET TREN 2026:*
-   - 1. Cyber Industrial (Ultra Dark): Bg #111111 | Surface #222222 | Text #E2E8F0 | Accent1 #FF6B00 | Accent2 #00FFC2
-   - 2. Quiet Luxury (Warm Premium): Bg #FDFBF7 | Surface #F4F0E6 | Text #1E1E24 | Accent1 #4A1525 | Accent2 #0D3B30
-   - 3. Electric SaaS (Modern Tech): Bg #0F172A | Surface #1E293B | Text #F1F5F9 | Accent1 #635BFF | Accent2 #00E5E5
-   - 4. Acid Streetwear (Creative Studio): Bg #0A0A0A | Surface #1C1C1E | Text #FFFFFF | Accent1 #DFFF00 | Accent2 #7000FF
-   - 5. Cloud Dancer (Clean Minimalist): Bg #F1F5F9 | Surface #FFFFFF | Text #0F172A | Accent1 #008080 | Accent2 #94A3B8
-   - 6. Deep Burgundy (Luxury Corporate): Bg #1A0B10 | Surface #2D161E | Text #F5EFF1 | Accent1 #8B002A | Accent2 #D4AF37
-   - 7. Carbon Mint (Edgy Portfolio): Bg #161719 | Surface #232529 | Text #ECEFF1 | Accent1 #00FF9F | Accent2 #37474F
-   - 8. Dopamine Burst (Vibrant Startup): Bg #0A051B | Surface #171036 | Text #FFFFFF | Accent1 #EF5777 | Accent2 #FFA801
-   - 9. Nordic Earth (Organic Minimal): Bg #F9F6F0 | Surface #EFECE4 | Text #2C3E50 | Accent1 #A47864 | Accent2 #708090
-   - 10. Titanium Stealth (Tech Hardware): Bg #0D0E10 | Surface #1C1E22 | Text #E3E4E6 | Accent1 #788896 | Accent2 #FF3E3E
-   - 11. Oceanic Jade (Fintech & Biotech): Bg #051C24 | Surface #0B2D38 | Text #E0F2F1 | Accent1 #00BFA5 | Accent2 #00E5FF
-   - 12. Soft Velvet (Premium E-Commerce): Bg #FAF7F5 | Surface #FFFFFF | Text #2B2523 | Accent1 #3A223A | Accent2 #E0A96D
-   - 13. Crimson Oxide (Automotive & MX): Bg #121214 | Surface #1E1E22 | Text #F0F0F2 | Accent1 #E60000 | Accent2 #8E9AA6
-   - 14. Sage Balance (Wellness & Lifestyle): Bg #F4F7F5 | Surface #E6ECE8 | Text #1C2822 | Accent1 #4F6F52 | Accent2 #D2E0D6
-   - 15. Neon Midnight (Cyberpunk Aesthetic): Bg #03030C | Surface #0D0D21 | Text #E5E5F7 | Accent1 #FF007F | Accent2 #7B2CBF
-
-   *Hukum True Random Selection Machine:* Jika user memilih "RANDOM", AI wajib mengocok secara internal salah satu nomor dari 15 kluster di atas secara utuh. Dilarang keras memotong, mencampur, atau mengawinkan token warna secara individual lintas nomor palet karena berisiko memicu celah visual 'Teks Gaib'. Jika mode simulator state aktif, ke-15 palet wajib dikompilasi ke `state.js` agar tombol pengacak warna dinamis di panel admin dapat merubah variabel CSS root secara real-time tanpa reload halaman browser.
+    → **BACA `design-system.md §1`** untuk melihat daftar 15 palet dan aturan True Random Selection Machine. AI wajib memuat dan menampilkannya saat wizard ini berjalan.
 
 5. **SISTEM TRANSISI TEMA GLOBAL:** Tanyakan apakah sistem dikunci menggunakan Static Palette Mode (Tema Statis bawaan palet asli) atau menggunakan Dynamic Toggle Switch (Saklar dinamis pengubah token dasar secara halus dengan durasi 200ms).
 6. **TYPOGRAPHY & GEOMETRI BOX:** Mintalah pilihan Font Family (A. Sans-Serif Modern/Inter | B. Serif Elegan/Playfair | C. Clean Roboto) dan Kelengkungan Elemen Geometri Box (A. Sharp 0px | B. Rounded 6-8px | C. Pill bulat penuh) untuk mengunci bentuk kontainer card aplikasi.

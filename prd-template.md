@@ -95,67 +95,8 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 
 
 ### A. Arsitektur Token Warna Dinamis (Tonal Preservation Theme Matrix)
- 
-```css
-/* HUKUM MUTLAK ANTI-COLOR WIPING (TREN 2026 CONSTITUTION)
-   AI dilarang keras menggunakan warna #FFFFFF murni untuk Light Mode atau
-   #000000 / #121212 murni untuk Dark Mode. Kedua mode WAJIB di-generate 
-   menggunakan satu rumpun rona dasar (undertone/hue) yang sama dari kluster
-   palet terpilih agar karakter asli aplikasi tetap utuh saat tema berganti.
-*/
 
-:root {
-  /* AMUNISI BASE DNA PALET (DIKUNCI SAAT WAWANCARA) */
-  --raw-palette-bg: [Wajib Terisi Hex Bg Palet Terpilih];
-  --raw-palette-surface: [Wajib Terisi Hex Surface Palet Terpilih];
-  --raw-palette-text: [Wajib Terisi Hex Text Palet Terpilih];
-  --raw-palette-accent-1: [Wajib Terisi Hex Accent 1 Palet Terpilih];
-  --raw-palette-accent-2: [Wajib Terisi Hex Accent 2 Palet Terpilih];
-
-  /* GLOBAL TRANSITION ENGINE */
-  --vibe-transition: all 0.2s ease-in-out;
-  
-  /* TOKEN FALLBACK KEAMANAN STATUS GLOBAL */
-  --vibe-error: #FF3E3E;
-  --vibe-success: #00E676;
-  --vibe-warning: #FFD600;
-}
-
-/* ==========================================================================
-   ARSITEKTUR TEMA ADAPTIF (ANTI-COLOR WIPING & PRESERVASI SPEKTRUM)
-   ==========================================================================
-   Aturan Pemetaan:
-   - Light Mode = Selalu menggunakan warna asli bawaan palet (var(--raw-palette-bg)), 
-                  bahkan jika palet aslinya bernuansa gelap.
-   - Dark Mode  = Di-generate versi malam / Deep Tonal yang diturunkan kecerahannya 
-                  secara ekstrem dari rona dasar palet asli.
-   ========================================================================== */
-
-/* --- SCENARIO A: LIGHT MODE ACTIVE (PALETTE ORIGINAL DNA) --- 
-   [WARNING: DILARANG KERAS meng-hardcode #FFFFFF / #FFF pada --vibe-background.
-   Warna background Light Mode wajib mewarisi nilai asli palet secara langsung] */
-[data-theme="light"] {
-  --vibe-background: var(--raw-palette-bg);        /* Menggunakan Hex asli palet bawaan tren - DILARANG DI-HARDCODE KE PUTIH */
-  --vibe-surface: var(--raw-palette-surface);      /* Satu tingkat lebih cerah atau bergeser saturasi lembut */
-  --vibe-text-main: var(--raw-palette-text);       /* Diturunkan ke skala gelap (Charcoal/Slate) dengan undertone senada */
-  --vibe-text-muted: rgba(0, 0, 0, 0.6);
-  --vibe-primary: var(--raw-palette-accent-1);     /* Warna aksen utama */
-  --vibe-secondary: var(--raw-palette-accent-2);   /* Warna aksen sekunder */
-}
-
-/* --- SCENARIO B: DARK MODE ACTIVE (DEEP TONAL PRESERVATION) --- 
-   [WARNING: Wajib di-generate versi Midnight / Deep Tonal yang lebih gelap dari rona palet asli] */
-[data-theme="dark"] {
-  --vibe-background: [Wajib Di-generate: Versi Midnight / Deep Tonal Tergelap dari rona latar palet asli];
-  --vibe-surface: [Wajib Di-generate: Satu tingkat lebih terang dari background gelap di atas];
-  --vibe-text-main: [Wajib Di-generate: Versi cerah kontras tinggi / putih susu senada rona palet asli]; 
-  --vibe-text-muted: rgba(255, 255, 255, 0.6);
-  --vibe-primary: var(--raw-palette-accent-1);     /* Aksen tetap menyala di atas permukaan gelap */
-  --vibe-secondary: var(--raw-palette-accent-2);   /* Aksen sekunder */
-}
-```
-
-* **Hukum Sinkronisasi Token Warna (Anti-Text Gaib):** AI wajib memastikan bahwa penamaan class utility pada framework terikat mutlak ke variabel di atas. AI dilarang keras menerapkan kombinasi warna font yang memiliki tingkat kontras rendah dengan warna latar belakang komponen (`font putih + card putih + bg putih`). Jika user mengubah saklar tema, seluruh warna halaman wajib berganti secara halus menggunakan efek transisi `transition-colors duration-200`.
+→ **BACA `design-system.md §2`** untuk arsitektur CSS Token (Light/Dark mode) dan Hukum Sinkronisasi Token Warna.
 
 ### B. Typography Consistency Rule
 *AI wajib mengunci hierarki ukuran huruf (font-size), jarak antar baris (line-height), dan ketebalan (font-weight) yang seragam di setiap halaman. Dilarang keras menggunakan font default browser yang acak:*
@@ -292,7 +233,8 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Kompresi Otomatis & Standarisasi WebP:** Segera setelah pemotongan 1:1 selesai, gambar wajib dilewatkan ke fungsi *intercept pipeline* di backend untuk dikompresi ukurannya (maksimum lebar 400px untuk avatar) dan dikonversi otomatis menjadi format modern `.webp` sebelum disimpan fisik di folder lokal `/public/assets/images/` untuk menjaga ringannya performa UI.
 
 ### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules) [Opsional - Hanya jika menggunakan Database/Backend]
-- **Struktur Skema Dasar:** AI wajib menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, relasi antartabel yang presisi, serta penamaan Model ORM yang bersangkutan (e.g. `User`, `Transaction`, `Settings`). *Hukum Khusus Kontinuitas:* AI dilarang keras menggunakan perintah destruktif (seperti fresh seeder/migrate:fresh) saat menganalisis proyek berjalan. AI wajib membatasi manipulasi database hanya pada migrasi inkremental biasa (`migrate --force`) guna mempertahankan data uji coba/testing riil yang telah diinput oleh pengguna di database lokal.
+- **Struktur Skema Dasar:** AI wajib menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, relasi antartabel yang presisi, serta penamaan Model ORM yang bersangkutan (e.g. `User`, `Transaction`, `Settings`).
+→ **BACA `gemini.md §1 🔴`** untuk Hukum Anti-Destructive DB (Dilarang `migrate:fresh`).
 - **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **WAJIB** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal (termasuk migrasi data dummy dari database legacy jika mode `awal konversi` aktif).
 - **Database Compatibility Matrix (Khusus Konversi):** AI wajib menganalisis skema tabel legacy dan memetakan struktur migrasinya di sini (misal keselarasan kolom lama vs kolom baru, perubahan tipe data, penyesuaian foreign key ORM baru) untuk menjamin tidak ada hilangnya relasi data.
 - **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database wajib menanamkan minimal satu akun admin default siap pakai dengan username/email: `admin` dan password: `admin123` (atau versi hash-nya), serta menyediakan tabel data user aktif lengkap beserta minimal 3 data dummy pengguna yang kaya, bervariasi, memiliki status berbeda, dan menggunakan konteks nama/data asli (DILARANG malas menulis "test1", "test2"). Aplikasi harus langsung terlihat penuh isi dan *ready to use* saat pertama kali dijalankan di lingkungan lokal.
@@ -327,26 +269,9 @@ AI wajib mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut seca
 - **Panduan Replikasi Lingkungan (`.env.example`):** AI wajib menciptakan dan memperbarui berkas `.env.example` di root folder yang berisi daftar kunci kosong atau nilai dummy contoh sebagai panduan replikasi lingkungan bagi pengembang lain, tanpa membocorkan kredensial asli.
 - **Dynamic Port & Configuration Fetching:** Kode program wajib dirancang untuk membaca konfigurasi port, host, dan koneksi secara dinamis dari variabel lingkungan ini, sehingga aplikasi siap dilempar ke environment produksi (Shared Hosting / VPS / Cloud Hosting) tanpa perlu mengubah struktur kode internal.
 
-### B. Konstitusi `.gitignore` Mutlak & Tata Kelola Git (Pre-Coding Git Governance)
-Sebelum AI menjalankan fungsi pembuatan folder, berkas backend, frontend, atau menulis satu baris kode fungsional pun di detik pertama proyek dimulai, **TUGAS NOMOR SATU yang wajib dieksekusi oleh AI adalah membuat dan mengonfigurasi file `.gitignore` di root folder**. File ini wajib mengunci secara permanen pola berkas berikut agar tidak bocor ke riwayat *commit* Git:
-1. *Kredensial Pribadi & Token Rahasia:* `.env*` (termasuk `.env`, `.env.local`, `.env.production`, `.env.development.local`, `.env.example.local`), `*.pem`, `*.key`, berkas sertifikat, `*creds*.json`, `*accounts*.json`, `*secret*.json`, dan file kredensial format lainnya.
-2. *Database Lokal:* `*.sqlite`, `*.sqlite3`, `*.db`, `*.db-journal`, `*.db-wal`, `*.db-shm`.
-3. *Cetak Biru & Metadata Internal AI (Kerahasiaan Arsitektur):* `prd.md`, `todo.md`, `handover.md`.
-4. *Dependensi Kapasitas Besar:* `node_modules/`, `vendor/`, `.pnpm-store/`, dan folder manajer paket lainnya.
-5. *Berkas Sampah Lokal & Sistem Operasi:* `.DS_Store`, `Thumbs.db`, `.idea/`, `.vscode/`, `*.suo`, `*.ntvs*`.
-6. *Log Sistem & Berkas Uji Coba:* `*.log`, `npm-debug.log*`, `yarn-debug.log*`, `yarn-error.log*`.
-7. *Isolasi Area Uji Coba:* Folder internal `/.scratchpad/` wajib masuk ke dalam daftar cekkal secara permanen sejak awal.
-
-*Hukum Pembersihan Cache Git & Proteksi Commit Revisi (Sanitasi Git):*
-AI wajib menjalankan pembersihan cache Git secara berkala sebelum melakukan git commit atau git add pada repositori mana pun, baik saat auto-commit maupun saat diperintah manual oleh user untuk melakukan commit revisi berkali-kali dalam sehari.
-Jalankan perintah sanitasi cache dan unstage otomatis ini secara preventif:
-- Pembersihan index:
-  * Di Windows PowerShell: `$Null = git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
-  * Di Unix/Bash/CMD: `git rm --cached .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
-- Pembatalan stage tak sengaja:
-  * Di Windows PowerShell: `$Null = git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r 2>$Null`
-  * Di Unix/Bash/CMD: `git restore --staged .env* handover.md prd.md todo.md *.sqlite *.db *creds.json *accounts.json -r >/dev/null 2>&1 || true`
-Hal ini menjamin file rahasia/handover/metadata AI yang tidak sengaja ditambahkan ke index akan langsung di-untrack dan di-unstage secara instan sebelum push, mengeliminasi amnesia keamanan pada commit berulang.
+### B. Konstitusi `.gitignore` Mutlak & Tata Kelola Git
+→ **BACA `gemini.md §1 🔴`** untuk Hukum Git Governance. 
+Tugas Nomor Satu AI adalah mengamankan repositori dengan membuat file `.gitignore` di root untuk melindungi kredensial `.env*`, database lokal, folder scratchpad, dan cetak biru internal AI (`prd.md`, `todo.md`, `handover.md`).
 
 ### C. Kebijakan Isolasi Berkas Uji Coba (Isolated Debugging Zone Rules)
 AI diharamkan keras mengotori folder utama proyek (*root*) atau folder fitur aktif dengan berkas-berkas eksperimen acak saat mencoba memecahkan masalah (*debugging/testing*).
@@ -359,18 +284,7 @@ AI diharamkan keras mengotori folder utama proyek (*root*) atau folder fitur akt
 - **Log Pembersihan Rahasia:** Jika ditemukan ada kunci rahasia atau token yang sempat bocor ke file teks biasa selama fase *debugging*, AI wajib segera menghapus file tersebut, membersihkan jejaknya dari memori sementara, dan memberikan laporan tertulis kepada pengguna untuk melakukan rotasi kredensial demi keamanan siber.
 
 ### E. Protokol Penanganan & Pelaporan Bug (Developer Approval Gate & Anti-Looping)
-Every time a global bug tracking or error fixing process is triggered (such as YOLO mode / baca error):
-1. **Pencatatan Dokumentasi, Skema Rigid `issues.md`, dan FIFO Rolling Buffer:** AI wajib merangkum temuan kesalahan ke dalam berkas `/.docs/issues.md` dengan skema Markdown terstruktur yang sangat rigid. Isinya wajib memetakan secara detail: ID issue, status, file path, deskripsi error, analisis penyebab, rencana perbaikan, Jurnal Percobaan Solusi (Anti-Looping Ledger) beserta status jackpot (SUKSES/GAGAL), dan Verification Payload.
-   **FIFO Rolling Buffer:** Untuk mencegah pembengkakan token context, berkas `/.docs/issues.md` wajib mematuhi aturan FIFO. Hanya simpan maksimal 10 riwayat issue dengan status `RESOLVED` / `RESOLVED_WITH_FALLBACK` / `ABANDONED` terbaru. Seluruh issue dengan status `OPEN` atau `IN_PROGRESS` wajib selalu dipertahankan dan dilarang dihapus.
-2. **Pengecekan Struktur Database Pasif (DB Struct Scan) & Database Lock Release:** Jika error berkaitan dengan query data atau database model, AI **MUTLAK WAJIB** memeriksa keselarasan skema tabel fisik secara pasif (tanpa reset) terlebih dahulu untuk memvalidasi kolom fisik yang aktif sebelum berasumsi kode programnya yang salah. Sebelum menjalankan migrasi inkremental database, AI wajib mendeteksi dan menghapus berkas lock/journal database yang menggantung (seperti file `.db-journal`, `.db-wal`, atau berkas lock SQLite) secara aman untuk mencegah terminal hang akibat transaksi database terkunci.
-3. **Pembersihan Zombie Port & Proses & Access Denied Fallback (MUTLAK):** AI wajib mengecek port dev server lokal secara pasif. Jika port terkunci, matikan prosesnya secara paksa menggunakan command Stop-Process/taskkill/kill. Jika pembunuhan PID gagal karena *Permission/Access Denied*, AI **MUTLAK WAJIB** mendeteksi output error tersebut, menghentikan loop pembunuhan paksa, memilih port alternatif secara dinamis (increment port + 1 dari port awal), memperbarui konfigurasi port di `.env` dan `handover.md` di bawah `## 2. Environment & Local Settings`, dan meluncurkan server di port baru tersebut.
-   * *API Port Sync & Pure Frontend Bypass:* Deteksi zombie port dev server wajib dilompati/bypass secara otomatis jika proyek bertipe statis / Pure Frontend (Jamstack/SPA tanpa backend server fisik). Jika port backend digeser secara dinamis ke port alternatif, AI wajib melacak dan memperbarui berkas variabel lingkungan Frontend (seperti `NEXT_PUBLIC_API_URL` pada `.env.local` atau padanannya di client-side) secara sinkron agar koneksi API client tidak terputus (CORS/Connection Refused).
-4. **Standardisasi Log Dev Server Background:** Jika dev server dijalankan secara asinkron di background, output stdout/stderr wajib dipipakan secara terpusat ke berkas `.scratchpad/dev-server.log` (atau `.scratchpad/runtime.log`) agar AI dapat membaca dan memvalidasi log server secara proaktif jika terjadi runtime exception tersembunyi.
-5. **Gerbang Persetujuan Pengembang (Mandor Approval Gate):** AI **DIHARAMKAN** mengubah file kode program sebelum melaporkan daftar issue dan rencana perbaikannya di terminal serta mendapatkan persetujuan eksplisit dari developer/mandor secara tertulis.
-6. **Imunitas Core Arsitektur, Anti-Blind Updates & Third-Party Outage Fallback:** Selama proses perbaikan massal (setelah disetujui), AI **DIHARAMKAN** merombak pondasi dasar aplikasi atau meng-update dependensi global secara sepihak. Sebelum mengubah kode internal akibat error integrasi pihak ketiga, AI wajib menguji konektivitas HTTP/mock API check ke server eksternal tersebut dari scratchpad. Jika API eksternal mengalami gangguan/timeout, AI wajib mengimplementasikan mock fallback handler / dummy response secara lokal agar sistem tidak crash, lalu mencatatnya di `issues.md` dengan status `RESOLVED_WITH_FALLBACK`.
-7. **Pemberlakuan Hukum Anti-Looping, Auto-Fix Lint Traps & Rollback Git Bersih (Untracked Files Cleanup - MUTLAK):** AI wajib membaca jurnal percobaan di `/.docs/issues.md` terlebih dahulu. AI **MUTLAK DILARANG** mencoba kembali pendekatan/metode perbaikan yang statusnya sudah ditandai `GAGAL` pada log riwayat untuk issue bersangkutan. Percobaan perbaikan pada satu titik error dibatasi maksimal **3 kali percobaan berturut-turut**. Jika tetap gagal, AI wajib menghentikan loop, me-restore file ke state aman terakhir, dan membersihkan workspace secara radikal dengan menghapus untracked/newly created files yang dibuat di turn tersebut secara manual melalui tool filesystem atau `git clean -fd`, memperbarui berkas `issues.md` dengan menandai metode tersebut sebagai `GAGAL` beserta alasannya, dan melaporkan statusnya secara transparan ke pengguna.
-   * *Auto-Fix Linting:* Untuk menangani error formatting/linting kosmetik secara massal, AI wajib mengeksekusi perintah auto-fix formatter bawaan terlebih dahulu (seperti `eslint --fix` or `prettier --write` pada Node.js, `pint` pada Laravel) sebelum melakukan perubahan kode manual, guna menghindari linter trap yang dapat menghabiskan kuota retry Looping Guard.
-8. **Verifikasi Runtime & IT Scan Assessment (Kelayakan Keamanan):** AI dilarang berasumsi kompilasi sukses berarti bug selesai. AI wajib memeriksa log server di `.scratchpad/dev-server.log` dan error log backend framework secara langsung untuk mengonfirmasi tidak ada runtime exception tersembunyi (pada proyek statis/SPA murni, validasi runtime logs backend dialihkan ke console compiler/bundler atau console browser). Selain itu, AI **MUTLAK WAJIB** menjalankan ulang **5 Lapisan Scan Kelayakan Keamanan** (Linter check, Deep Scan Type-safety, Analisis celah SAST, Form Input Validation Guard, dan Verification Guard Session Auth) untuk memastikan bahwa perbaikan bug tidak mengenalkan celah keamanan baru atau merusak regulasi kepatuhan sistem sebelum memperbarui status berkas `issues.md` menjadi `RESOLVED` / `RESOLVED_WITH_FALLBACK`.
+→ **BACA `gemini.md` pada Command `baca error`** untuk protokol lengkap penanganan bug (termasuk Jurnal Percobaan Solusi 3x batas retry, pembersihan zombie port, auto-fix linting, dan Mandor Approval Gate sebelum koding).
 
 ---
 
