@@ -29,31 +29,95 @@
 - **Dark Mode:** Generate versi midnight/deep tonal dari hue dasar palet asli — BUKAN `#000000`.
 - **Validasi kontras:** Rasio teks utama vs surface ≥ 4.5:1 (WCAG AA minimum).
 
+### Panduan Konversi ke oklch() (Standar 2026)
+*`oklch()` adalah standar warna modern 2026 — lebih perceptually uniform, aksesibel, dan mendukung HDR display.*
+```css
+/* oklch(lightness% chroma hue) */
+/* Konversi: gunakan https://oklch.com atau tool: npx oklch */
+
+/* Contoh konversi dari HEX ke oklch: */
+/* #FF6B00 (Orange Cyber Industrial) → oklch(65% 0.22 35) */
+/* #635BFF (Purple Electric SaaS)    → oklch(55% 0.25 275) */
+/* #00BFA5 (Teal Oceanic Jade)       → oklch(68% 0.15 175) */
+
+/* Aturan AI: saat generate CSS global pertama kali, */
+/* REQUIRED gunakan oklch() untuk --raw-palette-* variables */
+/* HEX di tabel §1 tetap sebagai referensi visual — oklch sebagai implementasi */
+```
+
 ---
 
 ## §2. CSS TOKEN ARCHITECTURE
+
+### @layer Architecture (REQUIRED — Standar 2026)
+*Semua CSS global REQUIRED ditulis dalam `@layer` untuk mencegah specificity wars dan memudahkan override:*
+```css
+/* REQUIRED: Deklarasikan urutan layer di baris pertama CSS global */
+@layer reset, tokens, base, components, utilities, overrides;
+
+/* Layer tokens — semua CSS custom properties */
+@layer tokens {
+  :root { /* … semua --vibe-* variables */ }
+}
+
+/* Layer base — typography, reset, element defaults */
+@layer base {
+  body { font-family: var(--font-sans); }
+  h1, h2 { /* … */ }
+}
+
+/* Layer components — navbar, card, button, dll */
+@layer components {
+  .card { /* … */ }
+}
+
+/* Layer utilities — helper class seperti .d-flex, .w-full */
+@layer utilities {
+  .d-flex { display: flex; }
+}
+```
+
+### @property Typed Custom Properties (Animatable Variables)
+*REQUIRED untuk CSS variables yang perlu di-animate (transisi warna, opacity, transform):*
+```css
+/* Contoh: animatable color variable */
+@property --vibe-primary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(55% 0.25 275);
+}
+
+/* Sekarang bisa di-transition: */
+.button {
+  background: var(--vibe-primary);
+  transition: --vibe-primary 0.3s ease; /* ✔️ bekerja dengan @property */
+}
+```
 
 ```css
 /* ══════════════════════════════════════════
    ARSITEKTUR TOKEN WARNA ADAPTIF (TREN 2026)
    AI: Isi nilai berdasarkan palet yang dipilih saat wawancara
+   REQUIRED: Gunakan oklch() — bukan HEX/HSL murni
    ══════════════════════════════════════════ */
 
-:root {
-  /* BASE DNA PALET — Dikunci saat wawancara */
-  --raw-palette-bg:       [Isi Hex Bg palet terpilih];
-  --raw-palette-surface:  [Isi Hex Surface palet terpilih];
-  --raw-palette-text:     [Isi Hex Text palet terpilih];
-  --raw-palette-accent-1: [Isi Hex Accent1 palet terpilih];
-  --raw-palette-accent-2: [Isi Hex Accent2 palet terpilih];
+@layer tokens {
+  :root {
+    /* BASE DNA PALET — Dikunci saat wawancara — FORMAT oklch() */
+    --raw-palette-bg:       [Isi oklch() bg palet terpilih];
+    --raw-palette-surface:  [Isi oklch() surface palet terpilih];
+    --raw-palette-text:     [Isi oklch() text palet terpilih];
+    --raw-palette-accent-1: [Isi oklch() accent1 palet terpilih];
+    --raw-palette-accent-2: [Isi oklch() accent2 palet terpilih];
 
-  /* GLOBAL TRANSITION ENGINE */
-  --vibe-transition: all 0.2s ease-in-out;
+    /* GLOBAL TRANSITION ENGINE */
+    --vibe-transition: all 0.2s ease-in-out;
 
-  /* STATUS TOKEN (Universal — tidak berubah antar tema) */
-  --vibe-error:   #FF3E3E;
-  --vibe-success: #00E676;
-  --vibe-warning: #FFD600;
+    /* STATUS TOKEN (Universal — tidak berubah antar tema) */
+    --vibe-error:   oklch(60% 0.22 25);   /* merah */
+    --vibe-success: oklch(72% 0.20 152);  /* hijau */
+    --vibe-warning: oklch(82% 0.18 85);   /* kuning */
+  }
 }
 
 /* ── LIGHT MODE (PALETTE ORIGINAL DNA) ──
@@ -149,6 +213,20 @@
 | H2 | `20px` / `1.5rem` | Semi-Bold (600) | 1.35 | Section title, sub-judul |
 | Body | `16px` / `1rem` | Regular (400) | 1.5 | Isi konten, form label |
 | Small | `14px` / `0.875rem` | Light/Regular (300–400) | 1.4 | Badge, toast, keterangan |
+
+### Aturan text-wrap Modern (REQUIRED — CSS 2026)
+```css
+/* REQUIRED: Anti-widow dan heading rapi otomatis */
+h1, h2, h3 {
+  text-wrap: balance;   /* Distribusi baris merata — REQUIRED untuk heading */
+}
+
+p, li, blockquote {
+  text-wrap: pretty;    /* Hindari orphan kata di baris terakhir paragraf */
+}
+
+/* FORBIDDEN: biarkan text-wrap: wrap default pada heading — hasilnya tidak rapi */
+```
 
 ### Font Family Options:
 - **Sans-Serif Modern:** Inter | Geist (Google Fonts CDN)
@@ -299,3 +377,307 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 
 > **[REFERENSI SILANG]** Spesifikasi teknis 3 state navigasi (Guest / Member / Admin) ada di **`gemini.md §4A`** — bukan di file ini.
 > `design-system.md` hanya menyimpan referensi visual. Logika implementasi navigasi sepenuhnya diatur oleh `gemini.md`.
+
+---
+
+## §10. MOBILE NAVIGATION & UX RULES (WAJIB DIIMPLEMENTASIKAN)
+
+*AI REQUIRED mematuhi aturan mobile UX ini untuk SETIAP proyek yang memiliki navigasi. Mobile experience yang buruk = kegagalan produk.*
+
+### A. Mobile Navigation Mode (Pilihan Wawancara)
+
+AI REQUIRED menanyakan pilihan Mobile Navigation Mode saat wawancara, dan mencatatnya di `prd.md §4C`:
+
+| Mode | Perilaku | Tampilan | Cocok Untuk |
+|---|---|---|---|
+| **Bottom Tab Bar** *(Default)* | Auto-convert dari Top Navbar di `≤768px` — sticky ke bawah layar | 3–5 ikon + label teks | Web app, dashboard, fitur banyak |
+| **Floating Header** *(Opsional)* | Card melayang di atas dengan blur backdrop — bukan fixed full-width | Compact, transparan, glassmorphism | Blog, portfolio, landing page |
+
+### B. Bottom Tab Bar — Implementasi Wajib
+
+```css
+/* REQUIRED: Deteksi mobile — sembunyikan top navbar, tampilkan bottom nav */
+@media (max-width: 768px) {
+  .top-navbar { display: none; }  /* Sembunyikan navbar desktop */
+
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--vibe-surface);
+    border-top: 1px solid var(--vibe-border);
+    /* REQUIRED: safe-area-inset untuk iPhone home indicator */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 8px);
+  }
+
+  /* REQUIRED: Minimum touch target 48x48px (Material Design standard) */
+  .bottom-nav__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    gap: 4px;
+    padding: 8px 4px;
+    cursor: pointer;
+    /* Anti-tap flash — REQUIRED */
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+  }
+
+  /* REQUIRED: Content area harus beri ruang untuk bottom nav */
+  .main-content {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* REQUIRED: Desktop — sembunyikan bottom nav */
+@media (min-width: 769px) {
+  .bottom-nav { display: none; }
+  .top-navbar { display: flex; }
+}
+```
+
+### C. Floating Header — Implementasi Opsional
+
+```css
+/* Pilih ini jika mode = Floating Header */
+@media (max-width: 768px) {
+  .floating-header {
+    position: fixed;
+    top: 12px;
+    left: 16px;
+    right: 16px;
+    z-index: 100;
+    border-radius: 16px;  /* Pill-like rounded */
+    background: rgba(var(--vibe-surface-rgb), 0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--vibe-border);
+    padding: 12px 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    /* REQUIRED: safe-area-inset untuk status bar iPhone */
+    top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+}
+```
+
+### D. Mobile UX Mandatory Rules (Berlaku Semua Mode)
+
+```css
+/* REQUIRED di CSS global — anti mobile UX bugs */
+
+/* 1. Anti-tap flash pada semua interactive element */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* 2. Anti-scroll overflow pada modal/drawer */
+.modal-open { overscroll-behavior: contain; }
+.drawer { overscroll-behavior: none; }
+
+/* 3. Touch target minimum — REQUIRED untuk tombol dan link */
+button, a, [role="button"] {
+  min-height: 44px;  /* Apple HIG minimum */
+  min-width: 44px;
+}
+
+/* 4. REQUIRED: Viewport meta tag di setiap HTML — pastikan ada di <head> */
+/* <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> */
+/* viewport-fit=cover — REQUIRED untuk safe area support */
+
+/* 5. Scroll smooth native */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+```
+
+### E. Mobile-First Breakpoint Strategy (Container Queries 2026)
+
+```css
+/* REQUIRED 2026: Gunakan Container Queries untuk komponen — bukan hanya viewport */
+/* Deklarasikan container pada parent element */
+.card-grid {
+  container-type: inline-size;
+  container-name: card-grid;
+}
+
+/* Responsif berdasarkan ukuran container — bukan ukuran layar */
+@container card-grid (min-width: 400px) {
+  .card { /* layout untuk container lebar */ }
+}
+
+@container card-grid (max-width: 399px) {
+  .card { /* layout untuk container sempit / mobile */ }
+}
+
+/* Viewport breakpoint — tetap dipakai untuk layout makro */
+@media (max-width: 768px)  { /* mobile  */ }
+@media (min-width: 769px) and (max-width: 1023px) { /* tablet */ }
+@media (min-width: 1024px) { /* desktop */ }
+```
+
+---
+
+## §11. COLOR SWITCHER SYSTEM (APPEARANCE PANEL)
+
+*Fitur opsional — aktifkan dengan memilih "Color Switcher: Aktif" saat wawancara. Dicatat di `prd.md §3H`.*
+
+### A. Konsep Arsitektur
+
+Appearance Panel = satu drawer/modal berisi 2 kontrol:
+1. **Dark/Light Mode toggle** (sudah ada di §2)
+2. **Palette Switcher** — 3–5 palet dikurasi AI, tersimpan di `localStorage`
+
+### B. Aturan Kurasi AI (Wajib Dipatuhi)
+
+- AI REQUIRED memilih **3–5 palet alternatif** dari 15 kluster `design-system.md §1` yang **harmonis** dengan palet utama
+- Kriteria harmonis: sama vibrasi karakter (misal: semua dark/moody, atau semua clean/minimal)
+- Palet utama dari wawancara = **default fallback** — tetap 🔒 IMMUTABLE
+- Palet alternatif REQUIRED dicatat di `prd.md §3H` dengan alasan kurasi
+- Jumlah maksimal: **5 palet** (termasuk palet utama) — FORBIDDEN lebih dari 5
+
+### C. Implementasi CSS (data-palette + @layer)
+
+```css
+/* REQUIRED: Setiap palette = satu set raw token di @layer tokens */
+@layer tokens {
+  /* Palet Utama (IMMUTABLE default) */
+  :root,
+  [data-palette="primary"] {
+    --raw-palette-bg:       oklch(/* nilai palet utama */);
+    --raw-palette-accent-1: oklch(/* nilai palet utama */);
+    /* ... semua token palet utama */
+  }
+
+  /* Palet Alternatif 1 (dikurasi AI) */
+  [data-palette="alt-1"] {
+    --raw-palette-bg:       oklch(/* nilai palet alt-1 */);
+    --raw-palette-accent-1: oklch(/* nilai palet alt-1 */);
+  }
+
+  /* Palet Alternatif 2 */
+  [data-palette="alt-2"] {
+    --raw-palette-bg:       oklch(/* nilai palet alt-2 */);
+    --raw-palette-accent-1: oklch(/* nilai palet alt-2 */);
+  }
+}
+```
+
+### D. Implementasi JavaScript (localStorage Sync)
+
+```javascript
+/**
+ * Color Switcher — semua pengunjung, tersimpan di localStorage
+ * Tidak perlu login. Preferensi per browser.
+ */
+const COLOR_SWITCHER = {
+  // Inisialisasi saat halaman load
+  init() {
+    const saved = localStorage.getItem('app-palette') || 'primary';
+    this.apply(saved);
+  },
+
+  // Terapkan palette ke <html> element
+  apply(paletteKey) {
+    document.documentElement.setAttribute('data-palette', paletteKey);
+    localStorage.setItem('app-palette', paletteKey);
+  },
+
+  // Reset ke palet utama
+  reset() {
+    this.apply('primary');
+  }
+};
+
+// REQUIRED: Panggil sebelum DOM render untuk mencegah flash of wrong palette
+COLOR_SWITCHER.init();
+
+// PHP/Blade equivalent:
+// <script>document.documentElement.setAttribute('data-palette', localStorage.getItem('app-palette') || 'primary')</script>
+// REQUIRED di <head> — sebelum CSS load
+```
+
+### E. Komponen UI Appearance Panel
+
+```html
+<!-- Appearance Panel — drawer/modal berisi dark mode + palette switcher -->
+<div class="appearance-panel" role="dialog" aria-label="Pengaturan Tampilan">
+  <!-- Bagian 1: Dark/Light Toggle -->
+  <div class="appearance-section">
+    <span>Mode Tampilan</span>
+    <button class="theme-toggle" aria-label="Ganti mode gelap/terang"
+            onclick="toggleTheme()">
+      <!-- Icon sun/moon — ganti sesuai state -->
+    </button>
+  </div>
+
+  <!-- Bagian 2: Palette Switcher -->
+  <div class="appearance-section">
+    <span>Warna Tema</span>
+    <div class="palette-grid">
+      <!-- AI REQUIRED generate dot swatch untuk setiap palet yang dikurasi -->
+      <button class="palette-swatch"
+              data-palette-key="primary"
+              style="background: var(--raw-palette-accent-1)"
+              aria-label="Palet Utama"
+              onclick="COLOR_SWITCHER.apply('primary')">
+      </button>
+      <!-- Ulangi untuk alt-1, alt-2, dst -->
+    </div>
+  </div>
+</div>
+```
+
+### F. Aturan Appearance Panel Trigger
+
+| Jika | Tampilkan Appearance Panel via |
+|---|---|
+| Dark Mode aktif + Color Switcher aktif | Icon di navbar (palette icon) — buka drawer |
+| Dark Mode aktif saja (no switcher) | Icon sun/moon toggle biasa |
+| Color Switcher aktif saja (no dark mode) | Icon palette di navbar |
+| Keduanya tidak aktif | Tidak ada tombol appearance |
+
+---
+
+## §12. MODERN CSS 2026 QUICK REFERENCE
+
+*Fitur CSS yang REQUIRED dipertimbangkan AI saat generate komponen — menggantikan JavaScript-heavy solutions.*
+
+| Fitur CSS | Menggantikan | Contoh Penggunaan |
+|---|---|---|
+| **Container Queries** `@container` | JS resize observer | Card layout responsif berdasarkan ukuran parent |
+| **`:has()` selector** | JS class toggling | Form state, parent-child conditional styling |
+| **`text-wrap: balance`** | Manual line-break | Heading rapi tanpa `<br>` manual |
+| **View Transitions API** | GSAP page transition | Animasi saat navigasi antar halaman |
+| **Scroll-driven Animations** `animation-timeline: scroll()` | ScrollMagic, Intersection Observer | Parallax, progress bar, reveal effect |
+| **Anchor Positioning** `position-anchor` | Popper.js, floating-ui | Tooltip, popover, dropdown positioning |
+| **`light-dark()` function** | Manual dark mode override | `color: light-dark(#000, #fff)` |
+| **`color-mix()` function** | SASS darken/lighten | `background: color-mix(in oklch, var(--vibe-primary) 80%, black)` |
+| **`@property`** | JS variable animation | Animasi CSS custom properties |
+
+```css
+/* CONTOH: View Transitions untuk navigasi halaman — native, tanpa library */
+@view-transition {
+  navigation: auto; /* Cross-document transition — Chrome + Safari 2026 */
+}
+
+::view-transition-old(root) {
+  animation: fade-out 0.15s ease;
+}
+::view-transition-new(root) {
+  animation: fade-in 0.15s ease;
+}
+
+/* CONTOH: :has() untuk state-based parent styling — menggantikan JS class toggle */
+.form-group:has(input:invalid) {
+  border-color: var(--vibe-error); /* Highlight parent jika input invalid */
+}
+
+.card-grid:has(.card:hover) .card:not(:hover) {
+  opacity: 0.7; /* Dim semua card kecuali yang di-hover */
+}
+```

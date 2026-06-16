@@ -52,7 +52,7 @@
 ### A. Spesifikasi Inti Ekosistem Teknologi (Core Stack Definitions)
 - **Mode Eksekusi Proyek:** [Pilih: Pembangunan Baru dari Nol / Konversi Stack & Re-Platforming (Strangler Fig)]
 - **Teknologi Proyek Asal (Khusus Konversi):** [Sebutkan stack lama, misal: PHP Native / MySQL / raw JS, atau ketik N/A jika pembangunan baru]
-- **Frontend Framework:** [Pilih: HTML-CSS-JS Native / PHP Native / Next.js 14+ App Router / React Vite]
+- **Frontend Framework:** [Pilih: HTML-CSS-JS Native / PHP Native / Next.js 14+ App Router / React Vite / **Astro 5+** (untuk content-heavy: blog, portfolio, docs, landing page statis)]
 - **Backend Runtime & API:** [Pilih: PHP Native / Laravel / Node.js Express / Node.js Hono.js / Supabase BaaS / Pure Frontend Emulator]
 - **Database Engine & ORM:** [Pilih: MySQL / PostgreSQL via Prisma / SQLite / Global State Simulator (Memory-Based json)]
 - **Styling & Design Engine:** [Pilih: Tailwind CSS v4 / Vanilla CSS dengan CSS Modules / Bootstrap 5]
@@ -60,13 +60,12 @@
 - **Package Manager Engine:** [Pilih: npm / pnpm / yarn / bun]
 
 ### B. Pola Arsitektur, Multi-Environment Deployment & Path-Based Routing Rules
-- **Environment Agnostic & Anti-Port Collision Policy (STRICT):** AI REQUIRED merancang sistem routing dan konfigurasi environment yang sepenuhnya adaptif, mandiri, dan terisolasi. Aplikasi **FORBIDDEN** menggunakan, mengunci, atau berasumsi menggunakan port statis tertentu (terutama **PORT 8000** karena sudah digunakan oleh aplikasi produksi aktif di lokal user, begitu juga port standar lain seperti 3000, 5000, atau 8080). 
+- **Environment Agnostic & Anti-Port Collision Policy (STRICT):** AI REQUIRED merancang sistem routing dan konfigurasi environment yang sepenuhnya adaptif, mandiri, dan terisolasi.
+  → **BACA `gemini.md §1`** (Dev Port Blacklist — HARD FORBIDDEN port `8000`/`3000`) dan **`gemini.md §4F`** (Tabel port dev per framework).
 - **Mekanisme Path-Based URL Sub-Folder Lokal:** Sistem routing REQUIRED dirancang agar mengenali dan mendukung penuh arsitektur lingkungan lokal berbasis sub-folder tanpa merusak *asset linkage*. Jika dijalankan di server lokal (seperti Apache XAMPP/Laragon), aplikasi harus dapat diakses dengan mulus via URL **`localhost/namafolderproject/`** (bukan root domain murni `localhost/` atau port `localhost:8000`). Sistem juga REQUIRED adaptif jika nantinya dideploy menggunakan sub-domain murni atau domain utama pada server produksi (Shared Hosting / VPS / Cloud).
 - **Strict Relative Asset Paths & Dynamic Base URL (Anti-Break Layout):** Untuk mencegah rusaknya tampilan visual (*broken layout*) dan munculnya error 404 pada aset atau endpoint API saat aplikasi dipindahkan antar server (dari lingkungan komputer lokal `localhost/namafolderproject/` ke hosting produksi), AI **MUTLAK** REQUIRED menuliskan seluruh pemanggilan aset (CSS, JS, Gambar, `<img src="...">`, `<a href="...">`, serta logika pengalihan/Redirect API di backend) menggunakan *Relative Path* (`./` atau `../`) atau menggunakan fungsi penangkap *Base URL* dinamis yang mendeteksi skema, host, dan sub-folder aktif secara otomatis dari runtime global request. Dilarang keras menggunakan *Absolute Path* kaku yang mengarah ke akar root domain seperti `/assets/img/` karena akan menyebabkan kegagalan pencarian aset di bawah struktur sub-folder `localhost/namafolderproject/`. *Pengecualian bagi Modern SPA/Framework Bundler (seperti Next.js App Router atau React Vite):* Jika framework mewajibkan absolute paths berbasis build time (seperti output bundler `/assets/`), AI REQUIRED menggunakan konfigurasi parameter Base Path yang disediakan resmi oleh framework (misal: `basePath` di `next.config.js` or `base` di `vite.config.js`) daripada menuliskan relative path (`./` or `../`) secara manual di file view, guna menghindari pecahnya asset linkage pada pemecahan modul (code splitting) di rute dinamis bertingkat.
-- **Prinsip Modular & Pemisahan Kekuasaan Kode (Architectural Cleanliness):** Kode REQUIRED terbagi menjadi layer yang terisolasi secara ketat (*Separation of Concerns*). AI REQUIRED mematuhi **Prinsip K.I.S.S (Keep It Simple, Stupid)** dan **YAGNI (You Aren't Gonna Need It)**. Dilarang membuat abstraksi berlapis yang tidak dibutuhkan oleh fungsionalitas MVP. Pembagian layer mutlak:
-  1. *Presentation Layer (UI Components / Views):* Hanya mengurusi render visual dan interaksi user.
-  2. *Business Logic Layer (State/Hooks/Controllers):* Tempat mengelola data state dan pengondisian logika bisnis.
-  3. *Data Access Layer (API Services/Queries/Models):* Tempat satu-satunya untuk melakukan komunikasi ke database atau eksternal API.
+- **Prinsip Modular & Pemisahan Kekuasaan Kode (Architectural Cleanliness):** Kode REQUIRED terbagi ke dalam 3 layer terisolasi ketat.
+  → **BACA `gemini.md §4A`** untuk definisi lengkap Anti-Spaghetti Layer Separation (Presentation / Business Logic / Data Access) dan aturan refaktor modular.
 
 ### C. Kebijakan Anti-Bloatware & Tata Kelola Dependensi (Strict Dependency Policy)
 AI diwajibkan menjaga folder dependensi (`node_modules` atau folder vendor) tetap ramping, bersih, dan bebas dari pustaka pihak ketiga yang tidak efisien.
@@ -92,11 +91,25 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Nama Kluster Terpilih:** [Wajib Terisi Nama Kluster Terpilih dari gemini.md §1]
 - **Tema Visual & Mood / Vibrasi Karakter:** [Otomatis Terisi Menyesuaikan Karakter Palet yang Menang]
 - **Sistem Transisi Tema Global:** [Pilih: Static Palette Mode (Tema Statis) / Dynamic Toggle Switch (Saklar Dinamis)]
+- **Color Switcher (Appearance Panel):** [Pilih: Aktif (AI kurasi 3-5 palet alternatif) / Tidak Aktif]
 
 
 ### A. Arsitektur Token Warna Dinamis (Tonal Preservation Theme Matrix)
 
-→ **BACA `design-system.md §2`** untuk arsitektur CSS Token (Light/Dark mode) dan Hukum Sinkronisasi Token Warna.
+→ **BACA `design-system.md §2`** untuk arsitektur CSS Token (Light/Dark mode), Hukum Sinkronisasi Token Warna, dan panduan oklch() 2026.
+
+### H. Palette Kurasi Color Switcher (Diisi AI — Hanya Jika Color Switcher: Aktif)
+
+→ **BACA `design-system.md §11`** untuk implementasi teknis Color Switcher System dan aturan kurasi palet.
+
+> **AI REQUIRED mengisi tabel ini setelah wawancara selesai, jika Color Switcher dipilih Aktif.**
+
+| Posisi | Nomor Palet | Nama Kluster | Aksen Utama | Alasan Kurasi AI |
+| :--- | :--- | :--- | :--- | :--- |
+| Palet Utama (default) | `[dari wawancara]` | `[nama kluster]` | `[oklch accent]` | 🔒 IMMUTABLE — default fallback |
+| Alternatif 1 | `[AI pilih]` | `[nama kluster]` | `[oklch accent]` | `[alasan harmonis]` |
+| Alternatif 2 | `[AI pilih]` | `[nama kluster]` | `[oklch accent]` | `[alasan harmonis]` |
+| Alternatif 3 (opsional) | `[AI pilih]` | `[nama kluster]` | `[oklch accent]` | `[alasan harmonis]` |
 
 ### B. Typography Consistency Rule
 *AI REQUIRED mengunci hierarki ukuran huruf, jarak antar baris, dan ketebalan yang seragam. Dilarang menggunakan font default browser.*
@@ -125,8 +138,8 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Hukum Kewajiban Komponen Visual:** Penggunaan gambar, ilustrasi kontekstual sebagai pemanis halaman, komponen foto avatar user, serta logo identitas perusahaan adalah **MUTLAK REQUIRED** ada di setiap proyek yang dibangun. 
 - **Implementasi Fisik & Fail-Safe Strategy (Anti-Broken Image):**
   1. *Penyediaan File Cadangan Lokal:* AI REQUIRED menghasilkan aset gambar placeholder ber-resolusi HD yang sesuai dengan tema proyek, lalu menyimpannya secara fisik di dalam folder direktori aset statis bawaan framework (`/public/assets/images/` atau `/assets/img/`) sejak Fase 1 di `todo.md`.
-  2. *Skrip Pencegat Error Runtime (`onerror` Guard):* Setiap baris tag `<img>` yang ditulis di dalam seluruh file view aplikasi **MUTLAK REQUIRED** dipasangi fungsi pencegat error runtime. Jika URL gambar eksternal (CDN/Unsplash) gagal dimuat, skrip harus secara otomatis mengalihkan sumber gambar ke file cadangan lokal agar tidak memicu ikon broken image silang merah.
-     - *Contoh implementasi skrip pada HTML/PHP Native:* `<img src="https://images.unsplash.com/photo-xxx" onerror="this.onerror=null; this.src='./assets/img/avatar-default.png';" class="rounded-md object-cover" alt="User Avatar">`
+  2. *Skrip Pencegat Error Runtime (`onerror` Guard):* Setiap tag `<img>` dari sumber CDN eksternal REQUIRED dipasangi `onerror` fallback ke file lokal agar tidak memicu broken image silang merah.
+     → **BACA `gemini.md §4G poin 6`** untuk implementasi teknis lengkap Anti-Broken Image Guard.
 
 ## 4. ADVANCED LAYOUTING, ACTIVE NAVIGATION, & UTILITY RULES
 *(AI patuh penuh pada tata kelola visual, manajemen z-index, dan siklus state navigasi berikut)*
@@ -153,8 +166,12 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 ### C. Geometri Layout & Kriteria Komponen Navigasi Makro
 - **Gaya Hero Section:** [Pilih: Fullscreen Background Image min-height 100vh dengan overlay gradien / Split 50:50 Kiri-Teks Kanan-Gambar / Data Widget Dashboard Grid / Tanpa Hero]
 - **Komponen Gambar Grafik:** [Pilih: Ya (Menggunakan Chart.js / ApexCharts) / Tidak Perlu Grafik]
+- **Mobile Navigation Mode:** [Pilih: Bottom Tab Bar (default — auto-convert dari Top Navbar di ≤768px) / Floating Header (glassmorphism card melayang — cocok untuk blog/portfolio)]
+  → **BACA `design-system.md §10`** untuk implementasi lengkap Bottom Tab Bar dan Floating Header beserta aturan safe-area-inset dan touch targets.
 - **Global Utility Buttons:** 1. *Back to Top Button (Wajib):* Setiap halaman panjang **REQUIRED** dipasangkan komponen tombol melayang (*floating button*) "Back to Top" di pojok kanan bawah yang aktif me-scroll layar ke atas dengan efek smooth.
     2. *Dark Mode Toggle:* [Pilih: Ya (Aktif terpasang tombol switch untuk Dynamic Toggle Switch) / Tidak (Sistem dikunci sebagai Static Palette Mode)].
+    3. *Appearance Panel (Color Switcher):* [Pilih: Aktif (Gabung Dark Mode + Palette Switcher dalam satu drawer) / Tidak Aktif].
+       → Jika Aktif: REQUIRED membangun komponen `AppearancePanel` — **BACA `design-system.md §11`** untuk implementasi.
 - **Komponen Footer Layout:** [Pilih: Simple Copyright Text / Multi-Column Links & Social Medias / Tanpa Footer]
 
 > ### BLUEPRINT MANIFEST HALAMAN FISIK (MUTLAK DIKUNCI SAAT WAWANCARA)
@@ -215,10 +232,8 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 *(AI REQUIRED mematuhi arsitektur aliran data, ekosistem fitur otentikasi terproteksi, standardisasi pipeline media, dan hukum pembentukan skema database berikut)*
 
 ### A. Arsitektur Aliran Data & Manajemen State (Data Flow Engineering)
-- **Aliran Data (Data Flow):** Pola mutlak: `Komponen UI (View) -> Custom Hooks / State Dispatcher -> API Client Service -> Backend API Endpoint -> Database`. Dilarang keras melakukan query database langsung dari komponen UI tanpa melalui layer abstraction.
-- **Dynamic Application Identity:** Komponen Nama Web dan elemen Gambar Logo **DIHARAMKAN** ditulis secara statis (*hardcode*). Wajib ditarik secara dinamis dari tabel konfigurasi database `settings`, sehingga Admin dapat merubah identitas visual web secara terpusat melalui form pengaturan aplikasi.
-
-→ **BACA `gemini.md §4A`** untuk hukum lengkap Kebijakan Isolasi Transaksi & ACID Compliance (Database Transaction Guarding, Rollback Mutlak, Anti-Multi-Table Query tanpa pengaman transaksi).
+- **Aliran Data & Identitas Dinamis (Data per Proyek):** Data mengalir melalui 3 layer (UI → Business Logic → Data Access). Nama Aplikasi + Logo ditarik dinamis dari tabel `settings` — FORBIDDEN hardcode.
+  → **BACA `gemini.md §4A`** untuk hukum lengkap: Layer Separation, ACID Compliance, Dynamic Application Identity, Anti-Dead-End Link Policy.
 
 ### B. Sistem Otentikasi & Kewajiban Pembangunan Pilar Ekosistem Turunan [Opsional - Hanya jika Punya Login]
 - **Kebijakan Pilihan Sistem:** [Pilih: Tanpa Login / Punya Login (JWT Based / Session Based)]
@@ -227,7 +242,8 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Spesifikasi Arsitektur Gerbang Login:**
   1. *Dual Input Identity Engine:* Kotak input utama form REQUIRED diprogram menerima data string Email ataupun Username pengguna secara fleksibel.
   2. *Password Eye Switcher Tool:* Isian password REQUIRED dibekali tombol manipulasi atribut `type` klien (*seen/unseen*) untuk mempermudah visibilitas sandi.
-  3. *Captcha Guard System:* [Pilih: Menggunakan Captcha / Tanpa Captcha]. Jika aktif, background REQUIRED kontras tinggi dengan karakter angka/huruf (*Anti-Blur*), dan pengujian string bersifat: [Pilih: Case-Sensitive / Case-Insensitive].
+  3. *Captcha Guard System:* [Pilih: Aktif / Tidak Aktif]. Jika aktif: [Pilih: Case-Sensitive / Case-Insensitive].
+     → BACA `gemini.md §4B` untuk spesifikasi teknis rendering (high-contrast, refresh control, state destruction on failure).
   4. *Background Layout Overlay:* Komponen gerbang login REQUIRED dipasangkan gambar latar belakang HD (Unsplash/Picsum) yang ditutup lapisan *overlay semi-transparent gradient tint* di bawah objek form utama.
 
 - **Kewajiban Pilar Ekosistem Turunan Autentikasi (Otomatis Aktif Jika Opsi "Punya Login" Dipilih):**
@@ -246,16 +262,52 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 
 - **Tipe Upload yang Dipakai Proyek Ini:** `[Pilih: Avatar Profil User / Logo Aplikasi / Gambar Konten CMS / File Attachment / Tidak Ada Upload]`
 - **Direktori Target Upload:** `[Isi: /public/assets/images/ atau sesuai framework]`
+- **APP_SLUG untuk Naming:** Diambil otomatis dari `APP_SLUG` di `.env` — AI REQUIRED mengisi nilai ini di Fase 1 berdasarkan Core Identity Lock. Format nama file upload: `[app-slug]_[konteks]_[uuid-8char]_[timestamp].webp`
 
 ### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules) [Opsional - Hanya jika menggunakan Database/Backend]
 - **Struktur Skema Dasar:** AI REQUIRED menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, relasi antartabel yang presisi, serta penamaan Model ORM yang bersangkutan (e.g. `User`, `Transaction`, `Settings`).
 → **BACA `gemini.md §1 🔴`** untuk Hukum Anti-Destructive DB (Dilarang `migrate:fresh`).
 - **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **REQUIRED** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal (termasuk migrasi data dummy dari database legacy jika mode `/migrate-stack` aktif).
 - **Database Compatibility Matrix (Khusus Konversi):** AI REQUIRED menganalisis skema tabel legacy dan memetakan struktur migrasinya di sini (misal keselarasan kolom lama vs kolom baru, perubahan tipe data, penyesuaian foreign key ORM baru) untuk menjamin tidak ada hilangnya relasi data.
-- **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database REQUIRED menanamkan minimal satu akun admin default siap pakai dengan username/email: `admin` dan password: `admin123` (atau versi hash-nya).
+- **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database REQUIRED menanamkan minimal satu akun admin default siap pakai. → **BACA `§6E`** untuk format password secure yang wajib digunakan (format `Adm![AppSlug]@[4digit]`) dan tabel kredensial yang harus diisi AI setelah seeder dibuat. FORBIDDEN menggunakan password generik seperti `admin123`, `password`, atau `12345678`.
 → **Data Dummy Seeder:** AI REQUIRED menggunakan Faker library (Faker.js / PHP Faker / Python Faker). FORBIDDEN lorem ipsum atau data statis berulang. Lihat aturan lengkap di `gemini.md §4A`.
 - **Draft Schema Area / Global Local State Simulation Model / Database Compatibility Matrix (AI Generation Zone):**
   - *[Tuliskan draf struktur tabel database, struktur penampung state JSON, serta tabel pemetaan skema compatibility database legacy di sini. Jika menggunakan komponen Slider, REQUIRED sertakan tabel/objek `sliders` (id, image_path, order_position, created_at)].*
+
+### E. Kebijakan Password Seeder & Kredensial Default (Secure Credential Policy)
+
+> ⚠️ **PENTING UNTUK DEVELOPER:** Bagian ini REQUIRED dibaca sebelum deploy ke production.
+
+AI REQUIRED menggunakan format password yang aman dan terdokumentasi untuk akun default seeder. Password WAJIB tercatat di sini agar developer tidak perlu bertanya ulang.
+
+**Format Password Default:**
+```
+Format  : Adm![SlugNamaApps]@[4DigitAcak]
+Contoh  : Adm!Brainvibes@7291
+Contoh  : Adm!Tokobaju@4823
+
+Aturan pembentukan:
+  - Prefix wajib  : Adm! (tidak berubah)
+  - Nama apps     : Ambil dari APP_SLUG, CamelCase (contoh: brainvibes-pro → Brainvibespro)
+  - Suffix         : @ diikuti 4 angka yang di-generate AI secara acak tiap proyek
+  - Panjang total  : Minimal 16 karakter
+  - Kompleksitas   : Sudah mengandung uppercase, lowercase, angka, dan simbol (!@)
+```
+
+**Tabel Kredensial Akun Default (REQUIRED diisi AI setelah seeder dibuat):**
+
+| Role | Username/Email | Password | Hash Algorithm | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| Super Admin | `admin@[domain-app].com` | `[AI generates: Adm![AppSlug]@[4digit]]` | bcrypt (cost=12) | ⚠️ WAJIB GANTI sebelum production |
+| Demo Member | `member@[domain-app].com` | `[AI generates: Usr![AppSlug]@[4digit]]` | bcrypt (cost=12) | Akun demo testing |
+
+> ⚠️ **PERINGATAN PRODUCTION:** Password di atas adalah **kredensial development only**. Sebelum deploy ke production, REQUIRED lakukan:
+> 1. Ganti password admin via halaman Admin Settings
+> 2. Rotasi semua kredensial di file `.env`
+> 3. Pastikan akun demo member di-suspend atau dihapus jika tidak diperlukan
+> 4. Hapus atau disable endpoint seeder di production environment
+
+> ✅ **UNTUK DEVELOPER:** Password akun admin development tercatat di tabel di atas. Jika lupa, cek file `prd.md` bagian ini — AI selalu mencatatnya saat generate seeder di Fase 1.
 
 ## 7. SECURITY, ROUTE GUARDING, & UX BEHAVIOR
 *(AI REQUIRED mematuhi protokol keamanan siber tingkat tinggi, proteksi jalur navigasi, dan standar interaksi antarmuka berikut)*
@@ -275,8 +327,6 @@ AI REQUIRED mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut s
 → **BACA `gemini.md §4B`** untuk aturan teknis rate limiting, captcha rendering, dan semua mekanisme keamanan form publik.
 - **Sanitasi Input:** Menggunakan library validasi skema (Zod / Joi / native) untuk Anti-SQL Injection & Anti-XSS.
 
-→ **BACA `gemini.md §4B`** untuk seluruh aturan teknis implementasi Captcha (high-contrast rendering, case-insensitive validation, refresh control, state destruction on failure).
-
 ### C. Standar Interaksi UI & Respons Feedback (UX Behavior Standard)
 - **Manajemen Notifikasi Responsif (Toast Engine):** AI FORBIDDEN menggunakan fungsi bawaan browser seperti `alert()`. Semua respons balik REQUIRED dirender menggunakan komponen Toast Notification melayang (Hijau untuk Sukses, Merah untuk Error/Gagal, Kuning untuk Peringatan) dengan durasi maksimal 3000ms.
 - **Manajemen Keterlambatan Data (Loading State):** Guna menghindari efek layar berkedip kosong saat fetching state, AI **REQUIRED menyediakan dan mernder komponen *Skeleton Loader*** (animasi kotak abu-abu berdenyut) atau *Spinner Component* yang presisi pada layout.
@@ -290,56 +340,19 @@ AI REQUIRED mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut s
 - **Peta Berkas `.env` Utama:** AI REQUIRED meletakkan seluruh kunci rahasia ke dalam satu file terpusat bernama `.env` di direktori utama (*root*). Di dalam dokumen PRD hasil generate, AI REQUIRED memetakan daftar *keys* yang dibutuhkan secara transparan tanpa menyertakan nilainya (*values* asli).
 - **Panduan Replikasi Lingkungan (`.env.example`):** AI REQUIRED menciptakan dan memperbarui berkas `.env.example` di root folder yang berisi daftar kunci kosong atau nilai dummy contoh sebagai panduan replikasi lingkungan bagi pengembang lain, tanpa membocorkan kredensial asli.
 - **Dynamic Port & Configuration Fetching:** Kode program REQUIRED dirancang untuk membaca konfigurasi port, host, dan koneksi secara dinamis dari variabel lingkungan ini, sehingga aplikasi siap dilempar ke environment produksi (Shared Hosting / VPS / Cloud Hosting) tanpa perlu mengubah struktur kode internal.
+- **APP_SLUG (REQUIRED di setiap proyek):** AI REQUIRED mendefinisikan variabel `APP_SLUG` di `.env` sejak Fase 1. Nilai ini digunakan sebagai prefix penamaan file upload (lihat `gemini.md §4E Tahap 2`). Format: `nama-aplikasi-lowercase-dengan-dash` tanpa spasi atau karakter spesial.
+  ```
+  # Contoh .env
+  APP_NAME="BrainVibes Pro"     # Nama asli untuk display
+  APP_SLUG=brainvibes-pro       # Slug untuk penamaan file upload & identifier internal
+  APP_PORT=5173                 # FORBIDDEN: 8000 atau 3000
+  ```
 
 ### B. Konstitusi `.gitignore` Mutlak & Tata Kelola Git
 
 > **[DATA KEPUTUSAN PER-PROYEK]** File `.gitignore` REQUIRED dibuat AI di Fase 1. Daftar lengkap "Rahasia Dapur" yang wajib dicantumkan ada di `gemini.md §6`.
 
 → **BACA `gemini.md §6` (Secret Leak Prevention Gate)** untuk daftar lengkap 5 kategori rahasia dapur, 5-tahap workflow commit wajib, dan post-commit verification.
-
-**Isi minimal `.gitignore` yang WAJIB ada di setiap proyek:**
-```gitignore
-# === RAHASIA DAPUR — WAJIB TIDAK DICOMMIT ===
-.env
-.env.*
-!.env.example
-
-# File internal AI
-handover.md
-prd.md
-todo.md
-issues.md
-
-# Database lokal
-*.sqlite
-*.sqlite3
-*.db
-*.db-journal
-*.db-wal
-
-# Debug & scratchpad
-/.scratchpad/
-*.log
-debug.json
-dump.json
-
-# Kredensial
-*creds.json
-*accounts.json
-*secret*
-*.key
-*.pem
-
-# Build & cache
-node_modules/
-vendor/
-/build/
-/dist/
-/.next/
-/.nuxt/
-.DS_Store
-Thumbs.db
-```
 
 ### C. Kebijakan Isolasi Berkas Uji Coba (Isolated Debugging Zone)
 
@@ -358,6 +371,19 @@ Thumbs.db
 ## 9. DEPLOYMENT TARGET, SEO & MODERN SOCIAL MEDIA METADATA
 - **Target Hosting Environment:** Local Development (Apache Sub-folder / Modern Runtime Node.js) & Ready to Deploy to Production Server (Shared Hosting / VPS / Cloud Hosting).
 - **SEO & Modern Social Media Rich Preview Tags:** AI REQUIRED menyertakan konfigurasi meta tags dinamis (Title, Description) dan arsitektur Open Graph lengkap (og:title, og:description, og:image, og:type) pada routing halaman utama. Konfigurasi ini REQUIRED dioptimasi secara presisi agar menghasilkan kartu pratinjau yang profesional, aman, dan memikat saat link aplikasi dibagikan ke ekosistem media sosial kekinian saat ini: **TikTok, WhatsApp (Rich Preview Chat), Instagram (Bio Link View), YouTube (Community Post Cards), Facebook (Feed Preview), dan Threads (Card Post Link)**. Asset `og:image` REQUIRED ditarik menggunakan URL absolut lengkap yang mendeteksi domain/host aktif saat itu secara dinamis agar gambar pratinjau kaya data tidak pecah atau kosong saat dimuat oleh aplikasi media sosial tersebut.
+- **JSON-LD Structured Data (REQUIRED — AI-Powered Search 2026):** AI REQUIRED menyertakan `<script type="application/ld+json">` pada halaman utama dan halaman konten untuk memastikan kompatibilitas dengan mesin pencari berbasis AI (Google SGE, Bing Copilot). Minimal implementasi:
+  ```html
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",  <!-- atau Organization, Article, Product sesuai tipe aplikasi -->
+    "name": "[Nama Aplikasi dari APP_NAME]",
+    "url": "[URL Produksi]",
+    "description": "[Deskripsi singkat dari Core Value PRD]"
+  }
+  </script>
+  ```
+- **INP Performance Standard (Core Web Vital 2026):** AI REQUIRED memastikan **Interaction to Next Paint (INP) ≤ 200ms** — ini adalah metrik responsivitas utama menggantikan FID. Hindari long tasks saat interaksi user dengan memecah heavy JS execution menggunakan `scheduler.yield()` atau `setTimeout(..., 0)`.
 
 ---
 
