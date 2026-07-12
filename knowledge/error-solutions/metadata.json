@@ -1,0 +1,12 @@
+{
+  "title": "Error Solutions Library",
+  "summary": "Curated solutions for real errors encountered in Vibes Coding projects. Organized by stack/environment: XAMPP+Windows, PHP Native, Laravel, Next.js, CSS oklch(), and port conflicts. AI should check this KI first when entering 'baca error' mode before attempting any fix — prevents repeating approaches that have already failed. Updated via /learn workflow after each successful debug session.",
+  "created": "2026-07-02",
+  "updated": "2026-07-02",
+  "references": [
+    "gemini.md §5C - YOLO Debugging Pipeline",
+    "config/skills/lessons-learned/data/anti-patterns.md",
+    "config/skills/lessons-learned/data/fast-solutions.md"
+  ],
+  "tags": ["debug", "errors", "solutions", "xampp", "windows", "php", "laravel", "nextjs"]
+}

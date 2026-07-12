@@ -1,0 +1,13 @@
+{
+  "title": "Vibes Stack Code Patterns",
+  "summary": "Proven code patterns for PHP Native, Laravel, and Next.js as used in Vibes Coding Workflow V2.3 projects. Contains battle-tested approaches for auth, file upload pipeline, database access, CSS token implementation (oklch), and component structures. AI should load this KI when starting a new project or creating components in these stacks to avoid reinventing patterns that already work.",
+  "created": "2026-07-02",
+  "updated": "2026-07-02",
+  "references": [
+    "gemini.md §4E - Secure Upload Pipeline",
+    "gemini.md §4A - Arsitektur Kode",
+    "design-system.md §2 - CSS Token System",
+    "gemini.md §4K - UUPM Integration Protocol"
+  ],
+  "tags": ["php", "laravel", "nextjs", "patterns", "css", "oklch", "auth"]
+}

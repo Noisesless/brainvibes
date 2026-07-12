@@ -1,0 +1,12 @@
+{
+  "title": "Project Retrospectives",
+  "summary": "Post-project lessons learned from completed Vibes Coding Workflow projects. Each retrospective captures: stack used, good decisions to repeat, bad decisions to avoid, new patterns discovered, interesting errors and their solutions, and estimation vs reality gaps. AI reads this KI during 'awal baru' Knowledge Priming step (gemini.md §2 step 6) to pre-populate todo.md with more precise tasks and avoid repeating past mistakes.",
+  "created": "2026-07-02",
+  "updated": "2026-07-02",
+  "references": [
+    "gemini.md §2 - Saklar awal baru (Knowledge Priming step 6)",
+    "gemini.md §7 Fase 8 - RETROSPECTIVE task",
+    "gemini.md §6A §8C - ADR Log"
+  ],
+  "tags": ["retrospective", "lessons", "project", "patterns", "estimation"]
+}

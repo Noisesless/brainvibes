@@ -4,9 +4,9 @@
 
 ### _Global AI Coding Configuration System_
 
-**Dua berkas. Satu standar. Nol kompromi.**
+**Satu ekosistem lengkap. Nol kompromi.**
 
-[![Version](https://img.shields.io/badge/version-2.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-3.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -23,54 +23,48 @@
 
 ## 📌 Apa Itu Brainvibes?
 
-**Brainvibes** adalah sistem konfigurasi dua berkas yang bertindak sebagai **"DNA Otak"** dari setiap sesi coding berbasis AI. Dengan menempatkan kedua berkas ini di direktori konfigurasi terminal AI Anda, agen AI (seperti Gemini CLI atau Antigravity IDE) akan secara otomatis membaca dan mematuhi seluruh aturan interaksi, keamanan, estetika visual, dan alur kerja yang telah Anda tetapkan — **di setiap sesi kerja baru, tanpa perlu konfigurasi ulang**.
+**Brainvibes** adalah ekosistem konfigurasi lengkap yang bertindak sebagai **"DNA Otak"** dari setiap sesi coding berbasis AI. Dengan menempatkan seluruh berkas ini di direktori konfigurasi terminal AI Anda, agen AI (seperti Gemini CLI atau Antigravity IDE) akan secara otomatis membaca dan mematuhi seluruh aturan interaksi, keamanan, estetika visual, dan alur kerja yang telah Anda tetapkan — **di setiap sesi kerja baru, tanpa perlu konfigurasi ulang**.
 
 > Dirancang khusus untuk developer yang ingin AI-nya **bekerja seperti senior engineer berpengalaman** — bukan seperti autocomplete yang asal jalan.
 
 ---
 
-## 📂 Dua Berkas Inti
+## 📂 Struktur Ekosistem
 
-<table>
-<tr>
-<td width="50%" valign="top">
+### Berkas Inti (7 File)
 
-### 🧠 [`gemini.md`](gemini.md)
-**Otak — Global System Instructions**
+| File | Ukuran | Fungsi |
+| :--- | :--- | :--- |
+| 🧠 [`gemini.md`](gemini.md) | ~144KB | **Otak** — Global system instructions, 10 makro command, universal laws, security-aware coding |
+| 📋 [`prd-template.md`](prd-template.md) | ~55KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
+| 🎨 [`design-system.md`](design-system.md) | ~36KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, components |
+| 📐 [`AGENTS.md`](AGENTS.md) | ~5KB | **Rules Tambahan** — Session init protocol, anti-slop enforcement, skills registry, security auto-trigger |
+| ⚙️ [`user-prefs.md`](user-prefs.md) | ~2.5KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist |
+| 🔌 [`config/mcp_config.json`](config/mcp_config.json) | ~170B | **MCP Server** — context7 documentation retrieval server |
+| 📜 `LICENSE` | ~36KB | GNU GPL v3 |
 
-Berkas perintah makro dan hukum perilaku AI. Mencakup:
+### Skills System (10 Skill Folders)
 
-- **4 Makro Command** (`awal baru`, `awal lanjut`, `awal konversi`, `baca error`)
-- **Wizard PRD Interaktif** — 10-poin wawancara linier 1-per-giliran
-- **Anti-Looping Engine** — Retry limit 3x + Git Clean Rollback otomatis
-- **Tonal Preservation Theme Matrix** — 15 Master Palet 2026, Dark Mode berbasis Deep Tonal (bukan hitam murni)
-- **Handover Auto-Log System** — Rolling FIFO buffer 100 baris per 5–6 sub-task selesai
-- **ACID Transaction Guard** — Wajib `DB::beginTransaction` pada mutasi data multi-tabel
-- **Port Collision Auto-Recovery** — Deteksi zombie process + increment port otomatis
-- **Git Security Protocol** — Auto-unstage `.env*`, `handover.md`, `prd.md`, `todo.md`, kredensial DB sebelum setiap commit
+| Skill | Trigger Keywords | Fungsi |
+| :--- | :--- | :--- |
+| 🎨 `ui-ux-pro-max` | awal baru, redesign | **UUPM** — Design intelligence dengan 15 CSV datasets, multi-stack support |
+| 🖌️ `taste-skill-bridge` | buat halaman, landing page, UI baru | Anti-slop frontend bridge, Three Dials system |
+| 🔒 `security-patterns` | analisa keamanan, scan keamanan | Vulnerability database + secure coding patterns per stack |
+| 📝 `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |
+| 🗄️ `database-patterns` | desain database, migration | Schema design, query optimization, ORM patterns |
+| 📚 `lessons-learned` | baca error, jangan ulangi | Anti-patterns + fast solutions dari proyek nyata |
+| ♿ `accessibility-audit` | audit a11y, WCAG | Checklist WCAG 2.2 AA |
+| ⚡ `performance-audit` | audit performa, lighthouse | Core Web Vitals optimization |
+| 🚀 `deployment-checklist` | deploy, hosting, go live | Pre-deploy checklist per platform |
+| 🔀 `git-workflow` | commit, push, branch | Conventional commits, branch protection |
 
-</td>
-<td width="50%" valign="top">
+### Knowledge Items (3 Knowledge Bases)
 
-### 📋 [`prd-template.md`](prd-template.md)
-**Eksekutor — Blueprint PRD 11-Bab**
-
-Template cetak biru *Product Requirements Document* berstruktur tinggi. Mencakup:
-
-- **Bab 1–2** — Identitas proyek & tech stack (stack detector otomatis)
-- **Bab 3** — Visual DNA System: CSS root tokens, 15 color cluster, Typography Lock
-- **Bab 4** — Layout Engine: Zero-Dead-End Links, Z-Index Map, Sidebar Anti-Collapse
-- **Bab 5** — Component Registry: Button, Toast, Skeleton, Modal, Captcha
-- **Bab 6** — Data Flow, Auth Ecosystem, Upload Pipeline (WebP Auto-Crop 1:1)
-- **Bab 7** — Security: Route Guarding 3-Zona, Captcha High-Contrast, Rate Limiting 5/15min
-- **Bab 8** — Git Governance & Isolated Scratchpad Zone
-- **Bab 9** — SEO + Open Graph (TikTok / WhatsApp / Instagram ready)
-- **Bab 10** — ASCII Tree Map (Native PHP & Modern Bundler)
-- **Bab 11** — Transition Blueprint Registry *(khusus mode `awal konversi`)*
-
-</td>
-</tr>
-</table>
+| Knowledge | Isi | Fungsi |
+| :--- | :--- | :--- |
+| 📕 `error-solutions/` | 4 file (PHP, Next.js, CSS oklch, XAMPP) | Solusi error dari proyek nyata — dibaca saat `baca error` |
+| 📗 `project-retrospectives/` | 1 retro + template | Post-mortem proyek — dibaca saat `awal baru` |
+| 📘 `vibes-stack-patterns/` | 3 file (PHP, Next.js, CSS) | Proven code patterns — dibaca saat menulis kode |
 
 ---
 
@@ -80,49 +74,86 @@ Template cetak biru *Product Requirements Document* berstruktur tinggi. Mencakup
 # 1. Clone repositori ini
 git clone https://github.com/Noisesless/brainvibes.git
 
-# 2. Salin kedua berkas ke direktori konfigurasi AI Anda
+# 2. Salin semua berkas ke direktori konfigurasi AI Anda
 #    Windows (Gemini CLI / Antigravity IDE):
-copy brainvibes\gemini.md      %USERPROFILE%\.gemini\gemini.md
-copy brainvibes\prd-template.md %USERPROFILE%\.gemini\prd-template.md
+copy brainvibes\gemini.md        %USERPROFILE%\.gemini\gemini.md
+copy brainvibes\prd-template.md   %USERPROFILE%\.gemini\prd-template.md
+copy brainvibes\design-system.md  %USERPROFILE%\.gemini\design-system.md
+copy brainvibes\AGENTS.md         %USERPROFILE%\.gemini\AGENTS.md
+copy brainvibes\user-prefs.md     %USERPROFILE%\.gemini\user-prefs.md
+xcopy brainvibes\config           %USERPROFILE%\.gemini\config /E /I /Y
+xcopy brainvibes\knowledge        %USERPROFILE%\.gemini\antigravity-ide\knowledge /E /I /Y
 
 #    Unix / macOS:
-cp brainvibes/gemini.md       ~/.gemini/gemini.md
-cp brainvibes/prd-template.md ~/.gemini/prd-template.md
+cp brainvibes/gemini.md brainvibes/prd-template.md brainvibes/design-system.md \
+   brainvibes/AGENTS.md brainvibes/user-prefs.md ~/.gemini/
+cp -r brainvibes/config/* ~/.gemini/config/
+cp -r brainvibes/knowledge/* ~/.gemini/antigravity-ide/knowledge/
 ```
 
 > ✅ Selesai. AI Anda akan langsung membaca instruksi ini di sesi berikutnya secara otomatis.
 
 ---
 
-## 🎮 4 Makro Command Utama
+## 🎮 10 Makro Command
 
 Ketik perintah di bawah sebagai **kalimat pertama** pada sesi chat AI Anda:
 
 <table>
 <tr>
 <th width="20%">Command</th>
-<th width="30%">Mode Yang Aktif</th>
-<th width="50%">Kapan Digunakan</th>
+<th width="25%">Mode</th>
+<th width="55%">Kapan Digunakan</th>
 </tr>
 <tr>
 <td><code>awal baru</code></td>
 <td>🏗️ Fase Inisiasi</td>
-<td>Memulai proyek dari nol. AI memandu wawancara wizard PRD 10-poin secara linier sebelum menulis satu baris kode pun.</td>
+<td>Memulai proyek dari nol. Wizard PRD 10-poin + Stack Intelligence Gate + Knowledge Priming.</td>
 </tr>
 <tr>
 <td><code>awal lanjut</code></td>
-<td>🔄 Kontinuitas Harian</td>
-<td>Melanjutkan sesi kerja. AI memulihkan memori dari <code>prd.md</code>, <code>todo.md</code>, <code>handover.md</code>, dan folder <code>/.docs/</code> secara senyap.</td>
+<td>🔄 Kontinuitas</td>
+<td>Melanjutkan sesi. Baca <code>app-context.md</code> → Visual DNA Checksum → resume task aktif.</td>
 </tr>
 <tr>
 <td><code>awal konversi</code></td>
 <td>🔀 Re-Platforming</td>
-<td>Migrasi stack teknologi lama ke baru (Strangler Fig Pattern). Isolasi <code>/.legacy/</code>, wizard 6-pertanyaan, 9-fase migrasi atomik.</td>
+<td>Migrasi stack lama ke baru. Legacy audit → Wizard 7-poin → Strangler Fig 9-fase.</td>
 </tr>
 <tr>
 <td><code>baca error</code></td>
-<td>🔥 YOLO Debug Mode</td>
-<td>Debugging global tanpa kompromi. AI scan seluruh codebase, tulis <code>issues.md</code>, lalu berhenti dan minta persetujuan developer sebelum memperbaiki.</td>
+<td>🔥 YOLO Debug</td>
+<td>Full codebase scan → <code>issues.md</code> → Mandor Approval Gate sebelum fix.</td>
+</tr>
+<tr>
+<td><code>tambah fitur</code></td>
+<td>➕ Incremental Add</td>
+<td>Tambah fitur tanpa wawancara ulang. Konflik detection + scope guard.</td>
+</tr>
+<tr>
+<td><code>lanjut dari sini</code></td>
+<td>🔁 Context Recovery</td>
+<td>Reconstruct state saat context window terpotong di tengah sesi.</td>
+</tr>
+<tr>
+<td><code>status proyek</code></td>
+<td>📊 Quick Brief</td>
+<td>Laporan 10-baris: progres, kompilasi, port, issues. Lalu STOP.</td>
+</tr>
+<tr>
+<td><code>analisa kualitas</code></td>
+<td>🔍 Code Smell Scan</td>
+<td>Audit kualitas kode: duplikasi, complexity, magic numbers. Output di <code>quality_review.md</code>.</td>
+</tr>
+<tr>
+<td><code>analisa keamanan</code></td>
+<td>🔒 Security Audit</td>
+<td>Passive pentest: OWASP 5-kategori scan, dependency map, vulnerability documentation. Output di <code>security-audit.md</code>.</td>
+</tr>
+<tr>
+<td><code>scan keamanan</code></td>
+<td>🔒 Security Audit</td>
+<td>Alias untuk <code>analisa keamanan</code>.</td>
 </tr>
 </table>
 
