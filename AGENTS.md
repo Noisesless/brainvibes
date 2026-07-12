@@ -21,25 +21,43 @@ di session init — hanya baca yang dibutuhkan (selective context loading §3A.4
 
 ---
 
-## TASTE-SKILL-BRIDGE AUTO-TRIGGER
+## VISUAL OUTPUT GATE — TASTE-SKILL & ANTI-SLOP ENFORCEMENT
+(PROTECTED BY gemini.md §1 HARD BLOCK #7)
 
-Ketika kata kunci berikut terdeteksi dalam request user, AI REQUIRED
-membaca `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`
-dan menjalankan STEP 0 (Brief Inference) + STEP 1 (Three Dials):
+🔴 HARD BLOCK: SETIAP kali AI akan menulis/mengedit kode yang menyentuh LAYER VISUAL
+(CSS, style, class, komponen UI, ikon, warna, font, spacing, layout, gambar, animasi),
+aturan berikut BERLAKU OTOMATIS — tanpa peduli apa kalimat perintah user:
 
-**Trigger keywords (case-insensitive, Bahasa Indonesia & English):**
-- buat halaman / create page / build page
-- redesign / ubah desain / tampilan baru / new design
-- landing page / hero section / home page
-- portfolio / profile page
-- UI baru / new UI / update tampilan
-- halaman login / auth page / register page
-- frontend / front-end / tampilan
+### Untuk SEMUA perubahan visual (besar maupun kecil):
+1. Gunakan CSS token `var(--vibe-*)` — FORBIDDEN hardcode hex/rgb/hsl
+2. Gunakan icon library proyek — FORBIDDEN ikon SVG mentah/hand-rolled
+3. FORBIDDEN memberi border/outline/stroke pada logo — logo as-is tanpa dekorasi
+4. FORBIDDEN `font-family: Inter` tunggal — wajib 2 font (heading + body)
+5. FORBIDDEN `background: white` / `color: black` hardcode
+6. FORBIDDEN spacing acak (13px, 19px) — gunakan kelipatan 8pt grid
+7. FORBIDDEN mencampur lebih dari 1 icon library dalam satu proyek
+8. Patuhi seluruh 16 aturan Anti-AI-SLOP di gemini.md §4K F
+9. AI REQUIRED memberikan rekomendasi style singkat yang sesuai Visual DNA proyek
+   (dari `prd.md §3 CORE IDENTITY LOCK` atau `handover.md §4 Karakter Visual`)
+   SEBELUM menulis kode perubahan visual
 
-**Output WAJIB (1 baris) sebelum kode apapun:**
+**Output WAJIB sebelum kode (untuk perubahan visual kecil):**
+```
+[Visual Gate] Perubahan: [deskripsi singkat] — token: [CSS token yang digunakan] — sesuai Visual DNA: ✅
+```
+
+### Untuk pembuatan halaman/komponen BARU atau REDESIGN — tambahan wajib:
+1. Panggil `view_file` pada `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`
+2. Baca Visual DNA proyek dari `prd.md §3` atau `handover.md §4`
+3. Keluarkan baris `[Design Read]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
+4. Jalankan UUPM Pipeline (§4K B) — search.py atau fallback design-system.md
+
+**Output WAJIB sebelum kode (untuk pembuatan/redesign):**
 ```
 [Design Read] Reading this as: [X] untuk [Y], vibe [Z], dials: V=[n] M=[n] D=[n]
+[Style Rec] Rekomendasi: [style sesuai Visual DNA] — sumber: [UUPM/design-system.md/prd.md]
 ```
+
 
 ---
 

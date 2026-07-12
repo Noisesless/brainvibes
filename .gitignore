@@ -1,24 +1,7 @@
-# Brainvibes — Vibes Coding Workflow Global Settings
-# Jangan commit file-file berikut:
-
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
-
-# Implicit memories (binary, per-installation)
+antigravity-ide/
+brainvibes/
+tmp/
+*.json
+*.jsonl
 *.pb
-
-# Logs
 *.log
-
-# OS metadata
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# Secrets (jangan sampai masuk)
-*.env
-oauth_creds.json
-google_accounts.json
-installation_id

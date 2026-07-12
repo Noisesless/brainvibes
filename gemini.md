@@ -26,6 +26,15 @@
 4. **Immutable Core Architecture:** FORBIDDEN merombak total framework/database yang sudah disepakati di prd.md tanpa izin user.
 5. **No-Truncation Law:** FORBIDDEN memotong baris kode dengan komentar `// kode lainnya...`. Tulis utuh.
 6. **Core Identity Lock:** FORBIDDEN mengubah nilai bertanda 🔒 IMMUTABLE di `prd.md` (palet, stack, tipe web).
+7. **Visual Output Gate (Anti-Slop UI):** FORBIDDEN menulis, mengedit, atau menghasilkan kode yang menyentuh LAYER VISUAL — termasuk namun tidak terbatas pada: file CSS/SCSS, atribut style/class di HTML/JSX/TSX/Blade/Vue, komponen UI (card, hero, navbar, sidebar, modal, form, footer, table), perubahan warna/font/spacing/layout/ikon/gambar/animasi — SEBELUM memastikan kepatuhan terhadap aturan berikut:
+   (a) Baca `taste-skill-bridge/SKILL.md` via tool `view_file` pada turn pertama sesi yang menyentuh visual (cukup 1x per sesi — setelah dibaca, tetap aktif di konteks).
+   (b) Patuhi seluruh aturan Anti-AI-SLOP di §4K F (16 larangan).
+   (c) Gunakan CSS token `var(--vibe-*)` — FORBIDDEN hardcode hex/rgb/hsl di komponen.
+   (d) Gunakan icon library yang sudah ditetapkan — FORBIDDEN ikon SVG mentah/hand-rolled.
+   (e) FORBIDDEN memberi border/outline/stroke pada logo — logo ditampilkan as-is tanpa dekorasi.
+   (f) Pada pembuatan halaman/komponen BARU atau redesign: wajib keluarkan baris `[Design Read]` + Three Dials SEBELUM kode, dan jalankan UUPM pipeline (§4K B).
+   (g) Pada perubahan visual bagian tertentu: AI REQUIRED memberikan rekomendasi style singkat yang sesuai dengan Visual DNA proyek (dari `prd.md §3 CORE IDENTITY LOCK` atau `handover.md §4 Karakter Visual`) SEBELUM menulis kode.
+   Pelanggaran = output AI-SLOP = kegagalan fatal setara No-Truncation Law.
 
 ### 🟡 GATE (Gerbang Checkpoint)
 1. **Git Sanitation:** Wajib eksekusi unstage `.env*` dan metadata AI sebelum Git Commit.
@@ -1514,13 +1523,20 @@ Setiap kali AI membuat baru atau memperbarui `handover.md` (dipicu oleh saklar `
 *Database: 193 palet industri-spesifik | 84 gaya visual | 73 font pairings | 99 UX rules | 25 chart types*
 *Skill path: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\` (dynamic — jangan hardcode username)*
 
-### A. Trigger Wajib Eksekusi UUPM
+### A. Trigger Wajib Eksekusi UUPM & Taste-Skill (ENFORCED BY §1 HARD BLOCK #7)
 
-AI REQUIRED menjalankan UUPM design intelligence search dalam kondisi berikut:
-1. Wizard `awal baru` — setelah user mendeskripsikan proyek, SEBELUM wawancara palet dimulai
-2. Permintaan pembuatan komponen UI baru (halaman, card, form, chart, modal)
-3. Permintaan rekomendasi warna / gaya / font / UX
-4. Review UX atau debugging visual/CSS
+AI REQUIRED menjalankan UUPM + taste-skill pipeline saat salah satu kondisi terpenuhi:
+1. **Pembuatan halaman/komponen baru** — halaman, section, card, form, chart, modal, navbar, footer
+2. **Redesign/perombakan visual** — ubah layout, ganti palet, restrukturisasi tampilan
+3. **Rekomendasi desain** — user minta saran warna, gaya, font, atau UX
+4. **Debug/perbaikan visual** — fix CSS, rapikan layout, perbaiki tampilan responsif
+5. Wizard `awal baru` — setelah user mendeskripsikan proyek, SEBELUM wawancara palet dimulai
+
+Untuk perubahan visual KECIL (tweak 1-2 properti CSS, fix alignment, adjust padding):
+- UUPM search TIDAK wajib dijalankan
+- TETAPI seluruh aturan Anti-AI-SLOP §4K F dan Visual Output Gate §1 #7 TETAP berlaku
+- Gunakan CSS token yang sudah ada, FORBIDDEN hardcode nilai baru
+- AI REQUIRED memberikan rekomendasi style singkat yang sesuai dengan Visual DNA proyek sebelum menulis kode perubahan
 
 ### B. Pipeline Eksekusi (Urutan Wajib)
 
@@ -1623,23 +1639,42 @@ Urutan eksekusi: `resolve-library-id` → `query-docs` dengan topik spesifik.
 - Business logic yang tidak bergantung library eksternal
 - Aturan yang sudah terdefinisi eksplisit di `design-system.md`
 
-### E. Taste-Skill Bridge Auto-Trigger Protocol (NEW)
+### E. Taste-Skill Bridge Auto-Trigger Protocol (ENFORCED BY §1 HARD BLOCK #7)
 
 *File skill: `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`*
 
-AI REQUIRED mengaktifkan taste-skill-bridge SECARA OTOMATIS (tanpa instruksi eksplisit user) ketika:
+**ENFORCEMENT:** Aturan ini dilindungi oleh §1 Hard Block #7 (Visual Output Gate).
+AI DILARANG KERAS menghasilkan kode UI sebelum membaca SKILL.md dan memenuhi gate.
 
-| Kata Kunci Terdeteksi | Aksi |
-|---|---|
-| "buat halaman", "redesign", "landing page" | Baca SKILL.md bridge → infer Design Read + Three Dials |
-| "portfolio", "tampilan baru", "ubah desain" | Baca SKILL.md bridge → infer Design Read + Three Dials |
-| "frontend", "UI baru", "halaman login" | Baca SKILL.md bridge → infer Design Read + Three Dials |
+**Kapan SKILL.md WAJIB dibaca (via `view_file`):**
+- Saat AI akan membuat halaman baru, komponen baru, atau melakukan redesign
+- Saat user meminta perubahan visual yang melibatkan lebih dari 1 komponen/section
+- Cukup 1x per sesi — setelah dibaca, aturan tetap aktif di konteks selama sesi
 
-**Output wajib sebelum kode (1 baris):**
+**Kapan SKILL.md TIDAK perlu dibaca ulang (tapi Anti-Slop §4K F TETAP berlaku):**
+- Perubahan kecil: tweak warna, fix alignment, adjust spacing (1-2 properti CSS)
+- Sudah pernah dibaca di sesi ini (konteks masih aktif)
+
+**Urutan Eksekusi Wajib (untuk pembuatan/redesign/perubahan visual signifikan):**
+1. Panggil `view_file` pada `taste-skill-bridge/SKILL.md` — baca PENUH
+2. Baca Visual DNA proyek dari `prd.md §3 CORE IDENTITY LOCK` atau `handover.md §4`
+3. Eksekusi STEP 0 (Brief Inference) → keluarkan baris [Design Read]
+4. Eksekusi STEP 1 (Three Dials) → set VARIANCE, MOTION, DENSITY
+5. Eksekusi STEP 2 (UUPM Pipeline) → query search.py atau fallback ke design-system.md
+6. Berikan rekomendasi style yang sesuai dengan Visual DNA bagian yang akan dirubah
+7. Baru setelah itu: tulis kode UI
+
+**Output wajib sebelum kode (untuk pembuatan/redesign):**
 ```
 [Design Read] Reading this as: [tipe halaman] untuk [audience], vibe [kata-kunci], dials: V=[X] M=[X] D=[X]
+[Style Rec] Rekomendasi: [style yang sesuai Visual DNA] — sumber: [UUPM/design-system.md/prd.md]
 ```
-Kemudian lanjut ke UUPM Step 1 → Step 2 → design-system.md token → kode.
+Kemudian lanjut ke kode.
+
+**Output wajib sebelum kode (untuk perubahan visual kecil):**
+```
+[Visual Gate] Perubahan: [deskripsi singkat] — token: [CSS token yang digunakan] — sesuai Visual DNA: ✅
+```
 
 ### F. Aturan Anti-AI-SLOP (HARD BLOCK — Pemicu Larangan)
 
@@ -1657,6 +1692,10 @@ FORBIDDEN menghasilkan desain generik. Pelanggaran di bawah = output AI SLOP:
 10. ❌ FORBIDDEN centered Hero section jika DESIGN_VARIANCE > 4 — gunakan Split/Asymmetric — lihat taste-skill-bridge §4.3
 11. ❌ FORBIDDEN `h-screen` pada hero — REQUIRED `min-h-[100dvh]` — lihat taste-skill-bridge §3.E
 12. ❌ FORBIDDEN eyebrow label pada lebih dari 1 dari 3 section — lihat taste-skill-bridge §4.7
+13. ❌ FORBIDDEN menggunakan ikon SVG mentah (hand-rolled) — REQUIRED gunakan icon library yang sudah ditetapkan di proyek (`@phosphor-icons` > `@tabler/icons` > `@radix-ui`). Satu proyek = satu icon library.
+14. ❌ FORBIDDEN memberi border, outline, stroke, atau box-shadow dekoratif pada elemen logo — logo WAJIB ditampilkan as-is tanpa dekorasi tambahan apapun.
+15. ❌ FORBIDDEN mencampur lebih dari 1 icon library dalam satu proyek — ONE icon family rule. Jika proyek sudah menggunakan `@phosphor-icons`, FORBIDDEN menambahkan `lucide-react` atau `@heroicons`.
+16. ❌ FORBIDDEN menghasilkan output visual tanpa memeriksa kepatuhan terhadap §1 Hard Block #7 — berlaku untuk SEMUA perubahan visual, bukan hanya redesign. Setiap perubahan visual WAJIB menggunakan CSS token dan sesuai Visual DNA proyek.
 
 ---
 
