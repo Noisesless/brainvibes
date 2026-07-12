@@ -46,15 +46,29 @@ aturan berikut BERLAKU OTOMATIS — tanpa peduli apa kalimat perintah user:
 [Visual Gate] Perubahan: [deskripsi singkat] — token: [CSS token yang digunakan] — sesuai Visual DNA: ✅
 ```
 
-### Untuk pembuatan halaman/komponen BARU atau REDESIGN — tambahan wajib:
-1. Panggil `view_file` pada `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`
-2. Baca Visual DNA proyek dari `prd.md §3` atau `handover.md §4`
-3. Keluarkan baris `[Design Read]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
-4. Jalankan UUPM Pipeline (§4K B) — search.py atau fallback design-system.md
+### Untuk pembuatan halaman/komponen BARU, REDESIGN, atau PENYESUAIAN VISUAL DNA — tambahan wajib:
 
-**Output WAJIB sebelum kode (untuk pembuatan/redesign):**
+Trigger skenario ini aktif jika request mengandung salah satu sinyal:
+```
+Sinyal EKSPLISIT  : buat halaman, redesign, UI baru, landing page, buat komponen baru
+Sinyal EDIT       : perbaiki halaman, edit tampilan, ubah layout, update tampilan,
+                    update konten halaman, perbaiki artikel, buat artikel, halaman berita
+Sinyal VDNA       : sesuai visual dna, sesuai vdna, visual dna, vdna,
+                    samakan visual, konsistensi visual, ikuti desain halaman utama,
+                    ikuti style halaman lain, perbaiki agar konsisten
+```
+
+Jika salah satu sinyal di atas terdeteksi → WAJIB:
+1. Panggil `view_file` pada `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`
+2. Jalankan **STEP 0.E Visual DNA Inheritance Protocol** — baca halaman utama dulu, ekstrak DNA tokens
+3. Baca Visual DNA proyek dari `prd.md §3` atau `handover.md §4`
+4. Keluarkan baris `[Design Read]` + `[DNA Source]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
+5. Jalankan UUPM Pipeline (search.py atau fallback design-system.md)
+
+**Output WAJIB sebelum kode (untuk pembuatan/redesign/VDNA alignment):**
 ```
 [Design Read] Reading this as: [X] untuk [Y], vibe [Z], dials: V=[n] M=[n] D=[n]
+[DNA Source] Inheriting from: [file halaman utama] — tokens: [daftar token]
 [Style Rec] Rekomendasi: [style sesuai Visual DNA] — sumber: [UUPM/design-system.md/prd.md]
 ```
 
@@ -84,8 +98,17 @@ Jika `user-prefs.md` tidak ada, gunakan defaults ini:
 6. FORBIDDEN Eyebrow > 1 per 3 section → kurangi atau hapus
 7. FORBIDDEN > 2 consecutive zigzag layout → break dengan layout berbeda
 8. FORBIDDEN Warna `#6C63FF`, `#4CAF50`, `#2196F3` tanpa UUPM recommendation
+9. FORBIDDEN halaman tanpa CSS containment (`max-width`, `overflow-wrap`, `img max-width`) → deklarasikan di awal task
+10. FORBIDDEN menunda fix tipografi dengan alasan container belum ada → buat container DULU, fix tipografi BERSAMAAN
 
-Referensi lengkap: `gemini.md §4K F` + `taste-skill-bridge SKILL.md §4`
+**Typography + Containment adalah UNCONDITIONAL:**
+```
+Jika menemukan: font tunggal, tidak ada max-width, img overflow, pre overflow
+→ Wajib fix SEKARANG, dalam task yang sama, tanpa tunggu instruksi eksplisit
+→ Alasan ❌ "belum di-declare", "bukan scope task", "tunggu layout" = INVALID
+```
+
+Referensi lengkap: `gemini.md §4K F` + `taste-skill-bridge SKILL.md §3.B + §4.1 + §4.10`
 
 ---
 
@@ -94,7 +117,7 @@ Referensi lengkap: `gemini.md §4K F` + `taste-skill-bridge SKILL.md §4`
 | Skill Name | Path | Auto-Trigger Keywords |
 |---|---|---|
 | `ui-ux-pro-max` | `config\skills\ui-ux-pro-max\` | awal baru, redesign, buat halaman |
-| `taste-skill-bridge` | `config\skills\taste-skill-bridge\` | redesign, buat halaman, UI baru, landing page |
+| `taste-skill-bridge` | `config\skills\taste-skill-bridge\` | redesign, buat halaman, UI baru, landing page, perbaiki halaman, buat artikel, halaman berita, template post, edit tampilan, ubah layout, sesuai visual dna, sesuai vdna, visual dna, vdna, samakan visual, konsistensi visual, update tampilan |
 | `lessons-learned` | `config\skills\lessons-learned\` | baca error, pernah coba, jangan ulangi |
 | `code-snippets` | `config\skills\code-snippets\` | buat form, buat navbar, buat modal, buat toast |
 | `database-patterns` | `config\skills\database-patterns\` | desain database, migration, seeder, query |

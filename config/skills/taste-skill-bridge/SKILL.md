@@ -3,9 +3,16 @@ name: taste-skill-bridge
 description: |
   Anti-slop frontend integration bridge. Menghubungkan taste-skill (design intelligence)
   dengan pipeline UUPM + design-system.md. Auto-aktif saat user meminta: buat halaman,
-  redesign, landing page, portfolio, UI baru, tampilan baru, ubah desain, frontend.
+  redesign, landing page, portfolio, UI baru, tampilan baru, ubah desain, frontend,
+  perbaiki halaman, buat artikel, halaman berita, template post, edit tampilan,
+  update konten halaman, ubah layout, perbaiki artikel,
+  sesuai visual dna, sesuai vdna, visual dna, vdna, samakan visual,
+  konsistensi visual, ikuti desain halaman utama, ikuti style halaman lain,
+  perbaiki agar konsisten, update tampilan.
   Menghasilkan Design Read + Three Dials → UUPM query → CSS token → kode anti-slop.
   Berlaku untuk semua stack: PHP Native, Laravel, Next.js, React, Astro, Vanilla HTML/CSS.
+  PRINSIP INTI: Visual DNA sebuah proyek dimulai dari halaman utama (landing/dashboard).
+  Semua halaman lain WAJIB mewarisi dan konsisten dengan Visual DNA halaman utama.
 ---
 
 # TASTE-SKILL BRIDGE — Anti-Slop Frontend Integration
@@ -37,12 +44,21 @@ Sebelum menulis kode atau memilih palet, AI REQUIRED membaca konteks:
 ```
 [Design Read] Reading this as: [tipe halaman] untuk [audience], vibe [kata-kunci dari prd.md], 
 leaning toward [aesthetic family], dials: V=[1-10] M=[1-10] D=[1-10]
+[DNA Source] Inheriting from: [nama file halaman utama] — tokens: [daftar token yang diekstrak]
 ```
 
-**Contoh output:**
+**Contoh output (halaman baru):**
 ```
-[Design Read] Reading this as: Web App dashboard untuk internal admin, vibe dark-professional,
-leaning toward Carbon Mint palette + data-density layout, dials: V=6 M=5 D=7
+[Design Read] Reading this as: Halaman artikel untuk blog tech, vibe dark-editorial,
+leaning toward Carbon Slate palette + reading-optimized layout, dials: V=6 M=4 D=3
+[DNA Source] Inheriting from: index.html / home.blade.php — tokens: --vibe-primary, --font-heading: Geist, --radius-md: 8px, shadow-style: tinted
+```
+
+**Contoh output (halaman utama / tidak ada parent):**
+```
+[Design Read] Reading this as: Landing page untuk SaaS B2B, vibe dark-professional,
+leaning toward Oceanic Jade palette + asymmetric layout, dials: V=7 M=6 D=4
+[DNA Source] NEW — ini halaman utama, Visual DNA dimulai di sini. UUPM akan menentukan token.
 ```
 
 ### 0.C Anti-Default Discipline (HARD BLOCK)
@@ -52,6 +68,85 @@ FORBIDDEN defaulting ke:
 - Glassmorphism everywhere tanpa alasan
 - Infinite loop micro-animations di semua elemen
 - Inter + slate-900 tanpa heading font pair
+
+### 0.D Existing Page Audit (Wajib Jika Halaman Sudah Ada)
+Jika task adalah **edit / perbaiki / update** halaman yang sudah ada:
+1. Baca file HTML/CSS/template target terlebih dahulu (`view_file`)
+2. **Audit Tipografi** — cek:
+   - Apakah ada 2-font pairing (heading + body)? → Jika TIDAK: **langsung fix sekarang, tidak boleh ditunda**
+   - Apakah `font-size`, `line-height`, `text-wrap` sudah sesuai §4.1? → Jika TIDAK: **langsung fix**
+3. **Audit Layout Containment** — cek:
+   - Apakah content area punya `max-width`? → Jika TIDAK: **deklarasikan sekarang**
+   - Apakah ada `overflow-wrap: break-word`? → Jika TIDAK: **tambahkan sekarang**
+   - Apakah `img` punya `max-width: 100%`? → Jika TIDAK: **tambahkan sekarang**
+4. Catat temuan sebagai `[Audit]` sebelum `[Design Read]`
+5. Lanjut ke STEP 1-6 seperti biasa — **FORBIDDEN melewati pipeline meskipun bukan halaman baru**
+
+> ⚠️ **HARD BLOCK — ANTI-EXCUSE LAW:**
+> FORBIDDEN menunda fix tipografi atau CSS containment dengan alasan apapun:
+> - ❌ "CSS content area belum di-declare" → SALAH: deklarasikan dulu, lalu fix tipografi
+> - ❌ "Menunggu layout selesai dulu" → SALAH: tipografi dan containment fix BERSAMAAN dengan layout
+> - ❌ "Bukan bagian dari task" → SALAH: jika audit menemukan masalah, wajib fix dalam task yang sama
+> - ❌ "User tidak meminta fix tipografi" → SALAH: tipografi adalah bagian dari Visual DNA, wajib konsisten
+
+```
+[Audit] Font: Inter saja → FIX: tambah Geist sebagai heading font | Container: tidak ada max-width → FIX: tambah .content { max-width: 65ch } | Status: langsung difix dalam task ini
+```
+
+### 0.E Visual DNA Inheritance Protocol (HARD RULE — Wajib untuk Semua Halaman Non-Utama)
+
+> **Prinsip:** Visual DNA sebuah proyek SELALU dimulai dari halaman utama
+> (landing page / dashboard / homepage / index). Semua halaman lain adalah **turunan**
+> dari Visual DNA tersebut — bukan desain terpisah yang berdiri sendiri.
+
+**Langkah wajib SEBELUM mendesain halaman non-utama:**
+
+**Step E-1 — Deteksi apakah ini halaman utama atau turunan:**
+```
+Halaman UTAMA (DNA Origin)  : index, home, landing, dashboard, main
+Halaman TURUNAN (Harus inherit) : artikel, berita, about, contact, profile,
+                                   detail, kategori, list, form, auth pages
+```
+
+**Step E-2 — Jika halaman TURUNAN → Baca halaman utama dulu:**
+```
+1. Temukan file halaman utama → index.html / home.blade.php / page.tsx / index.php
+2. Ekstrak DNA tokens:
+   a. Palet aktif         → cari var(--vibe-*) atau :root CSS variables
+   b. Font pair           → cari font-family declaration (heading + body)
+   c. Border-radius system → cari --radius-* atau border-radius pattern
+   d. Spacing rhythm      → cari gap/padding pattern (kelipatan 8pt?)
+   e. Shadow style        → cari box-shadow (tinted? pure black? neumorphic?)
+   f. Nav pattern         → fixed/sticky? height? glassmorphism?
+   g. Section structure   → full-width? max-width container? padding pattern?
+   h. Button style        → solid? outline? ghost? pill shape?
+3. Catat di [DNA Source] sebelum menulis kode apapun
+```
+
+**Step E-3 — Apply inherited DNA ke halaman baru:**
+```
+SEMUA token dari halaman utama → WAJIB dipakai di halaman turunan
+FORBIDDEN memperkenalkan:
+  - Font baru yang tidak ada di halaman utama
+  - Radius system yang berbeda (misal: halaman utama sharp → halaman artikel tiba-tiba pill)
+  - Palet warna baru (accent color baru yang tidak ada di halaman utama)
+  - Shadow style yang berbeda tone/gaya
+  - Nav style yang berbeda (halaman utama fixed, halaman lain tidak punya nav)
+```
+
+**Step E-4 — Boleh BERBEDA di halaman turunan (hanya ini):**
+```
+✅ Layout density (artikel lebih sparse daripada dashboard)
+✅ Section type (artikel tidak punya hero, tapi punya article header)
+✅ Konten spesifik (gambar kontekstual, data berbeda)
+✅ Motion intensity LEBIH RENDAH (artikel lebih tenang dari landing page)
+✅ Typography scale LEBIH KECIL (artikel body text, bukan display headline)
+```
+
+**HARD BLOCK:**
+FORBIDDEN membuat halaman turunan tanpa membaca halaman utama terlebih dahulu.
+Jika halaman utama belum ada → buat halaman utama dulu, ATAU tandai halaman ini
+sebagai "temporary DNA origin" dan catat di `[DNA Source] PLACEHOLDER`.
 
 ---
 
@@ -133,12 +228,29 @@ python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[k
 - NEVER flex percentage math → REQUIRED CSS Grid
 - NEVER `useState` untuk tracking continuous values (scroll/mouse) → gunakan Motion's `useMotionValue`
 
-### §3.B Font System (Anti-Slop)
-- FORBIDDEN: Inter sendirian tanpa heading font
-- REQUIRED: 2-font pairing dari `typography.csv` UUPM
-- Fallback stack wajib: `font-family: '[Primary]', '[Fallback]', system-ui, sans-serif`
-- Discouraged as default: Fraunces, Instrument Serif (LLM favorites)
-- Preferred heading fonts: Geist, Outfit, Cabinet Grotesk, Satoshi, GT America
+### §3.B Font System (Anti-Slop) + Typography Enforcement
+
+**REQUIRED — Wajib pada SEMUA halaman (baru maupun existing):**
+- REQUIRED: 2-font pairing dari `typography.csv` UUPM — 1 heading font + 1 body font
+- FORBIDDEN: Inter sendirian tanpa heading font — selalu pair dengan: Geist, Outfit, Cabinet Grotesk, Satoshi, atau GT America
+- Fallback stack wajib: `font-family: '[HeadingFont]', '[Fallback]', system-ui, sans-serif`
+- Discouraged as default: Fraunces, Instrument Serif (LLM favorites — terlalu generik)
+
+**CSS Implementation Wajib (deklarasikan di `:root` atau file CSS utama):**
+```css
+:root {
+  --font-heading: 'Geist', 'Outfit', system-ui, sans-serif;  /* dari UUPM typography.csv */
+  --font-body:    'Inter', system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+body, p, li, td          { font-family: var(--font-body); }
+```
+
+> ⚠️ **ANTI-EXCUSE — Typography Fix adalah UNCONDITIONAL:**
+> FORBIDDEN menunda atau melewati fix tipografi karena alasan apapun.
+> Jika CSS container belum ada → buat container-nya DULU, lalu apply tipografi.
+> Tipografi bukan opsional — ini bagian dari Visual DNA.
 
 ### §3.C Icon Policy
 - Priority: `@phosphor-icons/react` > `@tabler/icons-react` > `@radix-ui/react-icons`
@@ -150,11 +262,54 @@ python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[k
 
 ## STEP 4 — LAYOUT ANTI-SLOP RULES
 
-### §4.1 Typography
+### §4.1 Typography + CSS Containment (WAJIB BERSAMAAN — Tidak Terpisah)
+
+> ⚠️ **HARD RULE:** Tipografi dan CSS containment adalah SATU KESATUAN.
+> FORBIDDEN mengerjakan salah satu tanpa yang lain.
+> Jika content area belum ada container → BUAT DULU, lalu apply tipografi.
+
+**Typography Scale:**
 - Display/Headlines: `clamp(1.75rem, 4vw, 2.5rem)`, `font-weight: 700`, `line-height: 1.25`
-- Body: `font-size: 1rem`, `max-width: 65ch`, `line-height: 1.5`
+- Subheadings H2/H3: `clamp(1.25rem, 3vw, 1.75rem)`, `font-weight: 600`, `line-height: 1.35`
+- Body: `font-size: 1rem`, `line-height: 1.6` (artikel) / `1.5` (UI)
+- Caption/Meta: `font-size: 0.875rem`, `line-height: 1.4`
 - REQUIRED `text-wrap: balance` pada H1/H2/H3
 - REQUIRED `text-wrap: pretty` pada paragraf
+
+**CSS Containment Wajib (deklarasikan di SEMUA halaman):**
+```css
+/* WAJIB ada di setiap halaman — tidak ada alasan untuk tidak declare ini */
+.content-area,
+.article-body,
+.page-body,
+main {
+  max-width: 65ch;           /* untuk artikel/editorial */
+  /* ATAU */
+  max-width: var(--content-width, 72rem);  /* untuk halaman umum */
+  margin-inline: auto;
+  padding-inline: var(--space-4, 1rem);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Selalu apply ke semua halaman */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img, video, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+pre, code {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre-wrap;     /* mencegah horizontal overflow */
+  word-break: break-all;
+}
+```
 
 ### §4.2 Color Calibration
 - Max 1 accent color. Saturation < 80% default
@@ -214,6 +369,95 @@ python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[k
 - **COPY SELF-AUDIT:** Re-read semua visible string sebelum declare done
 - **FORBIDDEN:** fake-precise numbers (92%, 4.1×) tanpa real data
 
+### §4.10 Article & Editorial Layout Rules (Wajib untuk Tipe Post/Berita/Artikel/Blog)
+
+Jika tipe halaman adalah artikel, berita, post, blog, editorial — rules berikut WAJIB diterapkan:
+
+**Container Wajib:**
+```css
+.article-wrapper {
+  max-width: 72rem;           /* outer container */
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 5vw, 2rem);
+}
+
+.article-content {
+  max-width: 65ch;            /* optimal reading width */
+  margin-inline: auto;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+```
+
+**Typography Artikel Wajib:**
+```css
+.article-content p {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);  /* sedikit lebih besar untuk readability */
+  line-height: 1.75;                          /* lebih longgar dari UI */
+  text-wrap: pretty;
+  color: var(--vibe-text-main);
+  margin-block: var(--space-4, 1rem);
+}
+
+.article-content h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  text-wrap: balance;
+  font-weight: 700;
+}
+
+.article-content h2, .article-content h3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  line-height: 1.3;
+  text-wrap: balance;
+  font-weight: 600;
+  margin-block-start: var(--space-8, 2rem);
+}
+```
+
+**Media & Elemen Lain:**
+```css
+.article-content img,
+.article-content figure {
+  max-width: 100%;      /* WAJIB — mencegah overflow */
+  height: auto;
+  display: block;
+  border-radius: var(--radius-md);
+  margin-block: var(--space-6, 1.5rem);
+}
+
+.article-content pre {
+  overflow-x: auto;     /* WAJIB — mencegah code block overflow */
+  max-width: 100%;
+  padding: var(--space-4, 1rem);
+  border-radius: var(--radius-sm);
+  background: var(--vibe-surface);
+}
+
+.article-content table {
+  width: 100%;
+  overflow-x: auto;     /* WAJIB — tabel sering overflow di mobile */
+  display: block;
+}
+
+.article-content blockquote {
+  border-inline-start: 4px solid var(--vibe-accent);
+  padding-inline-start: var(--space-4, 1rem);
+  margin-inline: 0;
+  font-style: italic;
+  color: var(--vibe-text-muted);
+}
+```
+
+> **ANTI-EXCUSE:** FORBIDDEN halaman artikel/berita tanpa deklarasi `.article-content` atau `.article-wrapper`.
+> Jika template belum ada container — buat sekarang sebagai bagian dari task.
+> CSS containment adalah PRASYARAT tipografi, bukan alasan untuk menunda tipografi.
+
+
 ---
 
 ## STEP 5 — PRE-FLIGHT CHECK (Sebelum Declare Selesai)
@@ -221,6 +465,8 @@ python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[k
 AI REQUIRED menjalankan checklist ini sebelum menyatakan task UI selesai:
 
 ### Pre-Flight Checklist (Mechanical)
+- [ ] **DNA Inheritance:** Halaman non-utama sudah inherit font/palet/radius/shadow dari halaman utama
+- [ ] **File Written:** Perubahan sudah ditulis ke disk via `write_to_file`/`replace_file_content` — FORBIDDEN declare done jika hanya output di chat
 - [ ] **Typography:** Dua font dipakai (heading + body), bukan Inter sendirian
 - [ ] **Hero:** Fit dalam viewport, max 4 text elements, top padding ≤ pt-24
 - [ ] **Height:** Tidak ada `h-screen` → sudah `min-h-[100dvh]`
@@ -235,11 +481,12 @@ AI REQUIRED menjalankan checklist ini sebelum menyatakan task UI selesai:
 - [ ] **Images:** Minimal 2 real images, tidak ada fake screenshot div
 - [ ] **Mobile:** Semua section punya explicit mobile collapse rule
 - [ ] **CSS tokens:** Semua warna via `var(--vibe-*)`, tidak ada hex hardcode
+- [ ] **Article containment:** Jika tipe artikel/berita → `overflow-wrap: break-word` + `img { max-width: 100% }` + `pre { overflow-x: auto }` sudah diterapkan
 
 **Format output self-check:**
 ```
-[TASTE-SKILL PRE-FLIGHT] Typography: ✅ | Hero: ✅ | Center-bias: ✅ | Eyebrow: ✅ | 
-CTA: ✅ | Contrast: ✅ | Shape: ✅ | Tokens: ✅ | Images: ✅ | Mobile: ✅
+[TASTE-SKILL PRE-FLIGHT] DNA: ✅ | File: ✅ | Typography: ✅ | Hero: ✅ | Center-bias: ✅ | Eyebrow: ✅ |
+CTA: ✅ | Contrast: ✅ | Shape: ✅ | Tokens: ✅ | Images: ✅ | Mobile: ✅ | Article: ✅
 ```
 Jika ada ❌ → perbaiki SEBELUM declare done.
 

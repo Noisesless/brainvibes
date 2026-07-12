@@ -18,7 +18,9 @@ local_base_path    = C:\xampp\htdocs\             # Base path XAMPP
 db_engine          = MySQL                        # Database engine default
 
 [DESIGN_DEFAULTS]
-default_font       = Inter                        # Font default jika user tidak memilih
+default_font_heading = Geist                         # Font heading default (wajib berbeda dari body)
+default_font_body    = Inter                         # Font body default
+# CATATAN: AI FORBIDDEN menggunakan 1 font saja. Selalu gunakan heading+body pairing.
 default_palette    = UUPM-auto                    # UUPM-auto | random | [nomor 1-15]
 default_geometry   = Rounded                      # Sharp | Rounded | Pill
 dark_mode_default  = Dynamic Toggle Switch        # Static Light | Static Dark | Dynamic Toggle Switch
