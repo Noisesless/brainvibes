@@ -84,10 +84,34 @@
 3. Setelah review selesai, sajikan ringkasan dan rekomendasi refactoring konkret kepada user.
 
 ### 2I. Saklar: `analisa keamanan`
-1. Jalankan **6 Lapisan Scan Kelayakan Keamanan** secara mendalam.
+1. Jalankan **6 Lapisan Scan Kelayakan Keamanan** secara mendalam (SAST — Static Analysis).
 2. Scan dependencies terhadap vulnerability database (CVE).
 3. Output ke `/.docs/security-audit.md` menggunakan format dari `security-patterns/data/audit-template.md`.
 4. Laporkan temuan risiko dan rencana mitigasi ke user.
+5. *Tidak memerlukan Docker atau API key eksternal — murni static analysis.*
+
+### 2J. Saklar: `pentest` / `pentest cepat` / `pentest mendalam` / `pentest api` / `pentest auth`
+> DAST — Dynamic Application Security Testing via Strix AI Pentest Agent.
+> Detail lengkap: `config/skills/pentest-strix/SKILL.md`
+
+1. **Baca `pentest-strix/SKILL.md`** via `view_file` sebelum eksekusi apapun.
+2. **Pre-Flight Check (5 item wajib):**
+   - `docker ps` → Docker running?
+   - `strix --version` → strix-agent terinstall?
+   - `$env:STRIX_LLM` → LLM model terkonfigurasi?
+   - `$env:LLM_API_KEY` → API key tersedia?
+   - Baca `handover.md §2` → ada App URL lokal?
+   Jika salah satu gagal → cetak instruksi setup dari `pentest-strix/SKILL.md §5` dan STOP.
+3. **Target Detection:** Deteksi URL target dari `handover.md §2` / `prd.md §1` → tampilkan dan minta konfirmasi user.
+4. **Scope per Sub-Saklar:**
+   - `pentest` → `strix --target [URL]` (full scan)
+   - `pentest cepat` → `strix --target [URL] --scan-mode quick`
+   - `pentest mendalam` → full + instruction fokus business logic & race condition
+   - `pentest api` → instruction fokus API security (IDOR, auth, rate limit)
+   - `pentest auth` → instruction fokus authentication bypass & session attack
+5. **Eksekusi Strix** → monitor progress → parse hasil dari `strix_runs/`
+6. **Merge findings** ke `/.docs/security-audit.md` section `## DAST FINDINGS (Strix)`
+7. **Mandor Gate:** STOP setelah report — tampilkan ringkasan, tunggu instruksi fix user.
 
 ---
 

@@ -1,4 +1,4 @@
-﻿# AGENTS.md — Global AI Behavior Rules (Antigravity IDE)
+# AGENTS.md — Global AI Behavior Rules (Antigravity IDE)
 # Path: C:\Users\GBC_PC\.gemini\AGENTS.md
 # Berlaku untuk: Antigravity IDE (semua sesi, semua proyek)
 # Rules ini MENAMBAH, bukan menggantikan, gemini.md
@@ -118,6 +118,7 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 | `performance-audit` | `config\skills\performance-audit\` | audit performa, lighthouse, LCP, web vitals |
 | `deployment-checklist` | `config\skills\deployment-checklist\` | deploy, hosting, production, go live |
 | `security-patterns` | `config\skills\security-patterns\` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability |
+| `pentest-strix` | `config\skills\pentest-strix\` | **pentest, pentest cepat, pentest mendalam, pentest api, pentest auth, dast, dynamic scan, strix scan** |
 
 ---
 

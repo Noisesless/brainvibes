@@ -149,7 +149,12 @@ Step  2 : Ambil task aktif        → grep [/] di todo.md                      [
 | `lanjut dari sini` | Mid-session context recovery (context terpotong) | `gemini-templates.md §2F` |
 | `status proyek` | Quick brief 10 baris | `gemini-templates.md §2G` |
 | `analisa kualitas` | Code quality audit → `quality_review.md` | `gemini-templates.md §2H` |
-| `analisa keamanan` | Security scan → `security-audit.md` | `gemini-templates.md §2I` |
+| `analisa keamanan` | SAST — Static scan 6 lapisan → `security-audit.md` | `gemini-templates.md §2I` |
+| `pentest` | DAST — Dynamic pentest via Strix → `security-audit.md §DAST` | `gemini-templates.md §2J` |
+| `pentest cepat` | Strix quick mode (1 agent, scan singkat) | `gemini-templates.md §2J` |
+| `pentest mendalam` | Strix deep mode + business logic + race condition | `gemini-templates.md §2J` |
+| `pentest api` | Strix fokus API security (IDOR, auth, rate limit) | `gemini-templates.md §2J` |
+| `pentest auth` | Strix fokus authentication & session attack | `gemini-templates.md §2J` |
 
 **Saat saklar diaktifkan:** AI REQUIRED baca section detail dari `gemini-templates.md` sebelum eksekusi.
 
