@@ -124,3 +124,70 @@ Tool verifikasi:
 - https://www.siegemedia.com/contrast-ratio
 - Chrome DevTools → Inspect element → Color picker → shows contrast ratio
 ```
+
+---
+
+## [ES-OKLCH-005] Fallback Pattern Wajib untuk Semua --vibe-* Token (v3.1.0)
+
+**Masalah:** Design system Brainvibes menggunakan oklch() agresif sebagai token utama.
+Browser lama (Safari < 15.4, Chrome < 111) tidak bisa render -- semua warna menjadi transparan.
+
+**Solusi WAJIB -- Template CSS Token dengan Dual Fallback:**
+`
+:root {
+  /* PATTERN WAJIB: hex fallback dulu, oklch override modern */
+
+  /* Background */
+  --vibe-background: #0F172A;
+  --vibe-background: oklch(15% 0.03 250deg);
+
+  /* Surface (card, panel) */
+  --vibe-surface: #1E293B;
+  --vibe-surface: oklch(20% 0.025 250deg);
+
+  /* Text */
+  --vibe-text-main: #F8FAFC;
+  --vibe-text-main: oklch(98% 0.005 250deg);
+
+  --vibe-text-muted: #94A3B8;
+  --vibe-text-muted: oklch(65% 0.02 250deg);
+
+  /* Primary accent */
+  --vibe-primary: #6366F1;
+  --vibe-primary: oklch(60.2% 0.189 264.4deg);
+
+  /* Secondary accent */
+  --vibe-secondary: #8B5CF6;
+  --vibe-secondary: oklch(56% 0.195 290deg);
+
+  /* Semantic */
+  --vibe-error:   #EF4444;
+  --vibe-success: #22C55E;
+  --vibe-warning: #F59E0B;
+
+  /* System */
+  --vibe-border: #334155;
+  --vibe-border: oklch(28% 0.02 250deg);
+}
+`
+
+**Aturan:**
+- WAJIB tulis hex fallback SEBELUM oklch() di baris berikutnya (bukan setelahnya)
+- Browser membaca CSS berurutan -- jika oklch tidak dimengerti, gunakan nilai sebelumnya
+- FORBIDDEN hanya menulis oklch() tanpa fallback
+
+**Deteksi via @supports (opsional tapi direkomendasikan):**
+`
+@supports not (color: oklch(0% 0 0)) {
+  :root {
+    --vibe-primary: #6366F1;
+    /* override hanya untuk browser non-oklch */
+  }
+}
+`
+
+**Browser yang tidak support oklch():**
+- Safari < 15.4 (iOS < 15.4, macOS Monterey < 12.3)
+- Chrome < 111 (March 2023)
+- Firefox < 113 (May 2023)
+- Semua IE (tidak ada dukungan sama sekali)

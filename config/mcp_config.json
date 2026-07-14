@@ -5,6 +5,36 @@
       "headers": {
         "X-Context7-Client-IDE": "antigravity"
       }
+    },
+    "sequential-thinking": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "memory": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_FILE_PATH": "C:\\Users\\ClasNet\\.gemini\\brainvibes-memory.json"
+      }
+    },
+    "filesystem": {
+      "command": "cmd",
+      "args": [
+        "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem",
+        "C:\\XAMPP\\htdocs",
+        "C:\\Users\\ClasNet\\.gemini"
+      ]
+    },
+    "time": {
+      "command": "cmd",
+      "args": ["/c", "uvx", "mcp-server-time"],
+      "env": {
+        "LOCAL_TIMEZONE": "Asia/Jakarta"
+      }
+    },
+    "fetch": {
+      "command": "cmd",
+      "args": ["/c", "uvx", "mcp-server-fetch"]
     }
   }
 }

@@ -5,6 +5,8 @@ tmp/
 *.jsonl
 *.pb
 *.log
+
+.backup_*
 __pycache__/
 *.pyc
 .migrated
