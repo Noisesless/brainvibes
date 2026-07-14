@@ -23,6 +23,7 @@
     - `app-context.md` TIDAK ADA tapi `prd.md` ADA → proyek aktif tanpa snapshot, fallback normal
     - `prd.md` TIDAK ADA dan tidak ada saklar `awal baru` → STOP dan lapor:
       `[WORKSPACE] Tidak ditemukan prd.md di direktori ini. Apakah ini proyek baru (ketik 'awal baru') atau Anda ingin pindah direktori?`
+    - **Auto-Ignore Legacy Folder:** AI **REQUIRED** secara otomatis mengecualikan dan mengabaikan folder `/.legacy/` dari pemindaian filesystem global (seperti `search_files`, `grep_search`, atau `list_dir`) untuk menghemat token dan mencegah lag pembacaan, kecuali diinstruksikan secara eksplisit oleh user.
     FORBIDDEN berasumsi konteks proyek dari memori training AI.
 
 1.  **Deteksi Konflik:** Setiap kali user memberikan instruksi baru (misal: "tambah halaman baru"), AI WAJIB membandingkannya dengan `prd.md` dan `todo.md` yang ada.
@@ -55,7 +56,7 @@ AI REQUIRED mengeksekusi keenam lapisan berikut secara berurutan. Lapisan tidak 
 |---|---|---|---|
 | **L1** | Linter & Formatter | `npx eslint . --max-warnings=0` / `npx prettier --check .` / `./vendor/bin/pint --test` | Zero warnings, zero errors |
 | **L2** | Type Safety | `npx tsc --noEmit` / `npx tsc --noEmit --strict` | Zero type errors |
-| **L3** | SAST (Static Analysis) | Grep manual untuk pola berbahaya: `eval(`, `innerHTML =`, `dangerouslySetInnerHTML`, `exec(`, `system(`, query tanpa prepared statement | Zero pola berbahaya ditemukan |
+| **L3** | SAST (Static Analysis) | Audit celah keamanan. Jika AST linter terinstall (e.g. `eslint-plugin-security` / `phpstan`), prioritaskan verifikasi via linter tersebut. Fallback: grep manual untuk pola berbahaya: `eval(`, `innerHTML =`, `dangerouslySetInnerHTML`, `exec(`, `system(`, query tanpa prepared statement | Zero pola berbahaya / scan clean |
 | **L4** | Form Input Validation Guard | Baca setiap file form/endpoint — pastikan ada: validasi panjang input, sanitasi string, rate-limiting pada endpoint login | Semua form & endpoint tervalidasi |
 | **L5** | Auth Integrity Verification | Cek setiap protected route — pastikan middleware/guard aktif, token/session diperiksa, tidak ada bypass `if(true)` | Semua route terproteksi |
 | **L6** | Security Headers Check | Cek middleware/response header handler — pastikan minimal ada: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`. Untuk HTTPS: `Strict-Transport-Security` | Semua 4 header wajib ada |

@@ -94,14 +94,14 @@
 ## §5. YOLO DEBUGGING PIPELINE (`baca error` mode)
 
 1. **State Retention:** Catat file bermasalah dan hipotesis ke `handover.md §8` secara temporer agar state tidak hilang jika sesi terputus.
-2. **Pembersihan Zombie Port & Access Denied Fallback:** Cek port dev server. Jika port terkunci, matikan proses. Jika Access Denied, increment port + 1, update `.env` dan `handover.md §2`, lalu jalankan server di port baru. Bypass jika Pure Frontend.
+2. **Pembersihan Zombie Port & Access Denied Fallback:** Cek port dev server. Jika port terkunci, matikan proses. Jika Access Denied, increment port + 1, update `.env` dan `handover.md §2`, lalu jalankan server di port baru. *Batas Port Drifting:* AI dilarang melakukan increment port lebih dari **3 kali** berturut-turut (maks PORT+3). Jika port ke-3 tetap gagal/terkunci, hentikan server secara total, cetak error kritis ke terminal, dan tunggu instruksi manual dari user. Bypass jika Pure Frontend.
 3. **Log Dev Server Background:** Pipa stdout/stderr dev server ke `.scratchpad/dev-server.log`.
 4. **Full-Scan Fitur & Database Lock Release:** Gunakan tool filesystem untuk tracing error. Hapus file lock database (SQLite `.db-journal`, `.db-wal`) jika transaksi DB hang.
 5. **issues.md & FIFO Rolling Buffer:** Tulis temuan ke `/.docs/issues.md`. FIFO: max 10 RESOLVED history, OPEN/IN_PROGRESS dilarang hapus.
-6. **Mandor Approval Gate:** STOP koding, sodorkan analisis perbaikan di terminal, dan tunggu persetujuan tertulis user sebelum mengubah file kode.
+6. **Mandor Approval Gate:** STOP koding, sodorkan analisis perbaikan di terminal, dan tunggu persetujuan tertulis user sebelum mengubah file kode. *Bypass Non-Interactive:* Jika terdeteksi lingkungan non-interactive (seperti `$CI = true`, `$env:CI = 'true'`, atau terminal bukan TTY), AI diizinkan mem-bypass gerbang ini, langsung menerapkan kode perbaikan, dan menandai commit dengan tag `[AUTO-FIX]` secara terpisah.
 7. **Imunitas Core Arsitektur & Mock Fallback:** Dilarang update dependensi sepihak atau merubah arsitektur core. Jika API eksternal down, implementasikan mock fallback, catat `RESOLVED_WITH_FALLBACK` di `issues.md`.
 8. **Kompilasi Interseptor & Auto-Fix Lint Traps:** Setiap perbaikan wajib di-build (`CI=true` / `$Null`). Jalankan auto-fix formatter (`eslint --fix`, `pint`) sebelum edit manual untuk menghindari linter traps.
-9. **Looping Guard & Rollback Git Bersih:** Batasi max 3x percobaan perbaikan. Jika gagal, git restore/clean workspace, update `issues.md` status `GAGAL`, dan lapor user.
+9. **Looping Guard & Rollback Git Bersih:** Batasi max 3x percobaan perbaikan. Jika gagal, git restore/clean workspace (gunakan `git restore . && git clean -fd` secara tuntas), update `issues.md` status `GAGAL`, dan lapor user.
 10. **Verifikasi Runtime & IT Scan:** Verifikasi `.scratchpad/dev-server.log` dan jalankan ulang 6 Lapisan Scan Keamanan sebelum set status `RESOLVED` / `RESOLVED_WITH_FALLBACK` di `issues.md`.
 
 ---
@@ -202,7 +202,7 @@
 
 ## §7. DEFINISI STRUKTUR FASE TODO.MD
 *(Struktur 8 fase untuk proyek baru / 9 fase untuk konversi. detail list terdapat pada git repo)*
-1. **Fase 1: Foundation & Environment Setup:** Setup DB, git, env, app-context skeleton.
+1. **Fase 1: Foundation & Environment Setup:** Setup DB, git, env, app-context skeleton. *AST Security Linter (Mitigasi L3):* Tambahkan sub-task untuk menginstal static analysis tool berbasis AST (seperti `eslint-plugin-security` untuk Node.js atau `phpstan` untuk PHP) guna meminimalkan celah keamanan.
 2. **Fase 2: Core Architecture & Design System:** CSS tokens, layout, base UI components, auth middleware.
 3. **Fase 3: Guest Layer (Public / Unauthenticated Access):** Halaman Landing, Login + Captcha, Register.
 4. **Fase 4: Member Layer (Authenticated / Protected Access):** Member Dashboard, Profile + Avatar Upload, Settings.

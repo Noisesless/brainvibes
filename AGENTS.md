@@ -100,6 +100,7 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 - **`gemini.md` (Core):** Dibaca sistem di awal sesi. Jangan di-load ulang secara penuh.
 - **`gemini-execution.md`:** Wajib di-load via `view_file` (ambil section spesifik) saat AI mulai menulis kode, konfigurasi backend, setup database, atau memproses upload file.
 - **`gemini-templates.md`:** Wajib di-load via `view_file` hanya saat saklar makro (`awal baru`, `awal konversi`, `baca error`) dipicu, saat membuat `todo.md`, update `handover.md`, atau melakukan git commit.
+- **Auto-Ignore Legacy:** AI **REQUIRED** secara otomatis mengecualikan folder `/.legacy/` dari pemindaian filesystem global (seperti `search_files` atau `grep_search`) agar tidak membuang token dan mencegah lag pembacaan, kecuali diperintahkan secara eksplisit oleh user.
 
 ---
 

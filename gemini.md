@@ -1,4 +1,4 @@
-# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.0)
+# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.1.0)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
 *[Split Architecture: gemini.md (core ≤22KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
 
@@ -297,6 +297,9 @@ admin=[email]=[password]
 ---
 <!--
   VERSION LOG
+  v4.1.0 (2026-07-14) — Mitigasi Celah Logika: Tambah bypass Mandor Gate di lingkungan non-interactive (CI),
+                         batas Port Drifting maks 3x, integrasi static analysis AST di Fase 1 todo
+                         & L3 SAST, dan auto-ignore folder /.legacy/ di pemindaian filesystem.
   v4.0.0 (2026-07-14) — Split Architecture: gemini.md dipecah dari 146KB monolith
                          ke 3 tier (core + execution + templates). Tambah §VISUAL RULES
                          inline, §DOCS BLUEPRINT 7 file (+routes.md, +dependency-graph.md),
