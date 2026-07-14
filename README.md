@@ -6,7 +6,7 @@
 
 **Satu ekosistem lengkap. Nol kompromi.**
 
-[![Version](https://img.shields.io/badge/version-3.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -31,17 +31,19 @@
 
 ## 📂 Struktur Ekosistem
 
-### Berkas Inti (7 File)
+### Berkas Inti (9 File)
 
 | File | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| 🧠 [`gemini.md`](gemini.md) | ~144KB | **Otak** — Global system instructions, 10 makro command, universal laws, security-aware coding |
+| 🧠 [`gemini.md`](gemini.md) | ~20KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, pointer ke detail |
+| 🛠️ [`gemini-execution.md`](gemini-execution.md) | ~30KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y |
+| 📋 [`gemini-templates.md`](gemini-templates.md) | ~25KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit |
 | 📋 [`prd-template.md`](prd-template.md) | ~55KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
 | 🎨 [`design-system.md`](design-system.md) | ~36KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, components |
-| 📐 [`AGENTS.md`](AGENTS.md) | ~5KB | **Rules Tambahan** — Session init protocol, anti-slop enforcement, skills registry, security auto-trigger |
+| 📐 [`AGENTS.md`](AGENTS.md) | ~12KB | **Rules Tambahan** — Session init protocol, anti-slop enforcement, skills registry, security auto-trigger |
 | ⚙️ [`user-prefs.md`](user-prefs.md) | ~2.5KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist |
 | 🔌 [`config/mcp_config.json`](config/mcp_config.json) | ~170B | **MCP Server** — context7 documentation retrieval server |
-| 📜 `LICENSE` | ~36KB | GNU GPL v3 |
+| 📜 `LICENSE` | ~36KB | MIT License |
 
 ### Skills System (10 Skill Folders)
 
@@ -76,16 +78,18 @@ git clone https://github.com/Noisesless/brainvibes.git
 
 # 2. Salin semua berkas ke direktori konfigurasi AI Anda
 #    Windows (Gemini CLI / Antigravity IDE):
-copy brainvibes\gemini.md        %USERPROFILE%\.gemini\gemini.md
-copy brainvibes\prd-template.md   %USERPROFILE%\.gemini\prd-template.md
-copy brainvibes\design-system.md  %USERPROFILE%\.gemini\design-system.md
-copy brainvibes\AGENTS.md         %USERPROFILE%\.gemini\AGENTS.md
-copy brainvibes\user-prefs.md     %USERPROFILE%\.gemini\user-prefs.md
-xcopy brainvibes\config           %USERPROFILE%\.gemini\config /E /I /Y
-xcopy brainvibes\knowledge        %USERPROFILE%\.gemini\antigravity-ide\knowledge /E /I /Y
+copy brainvibes\gemini.md               %USERPROFILE%\.gemini\gemini.md
+copy brainvibes\gemini-execution.md     %USERPROFILE%\.gemini\gemini-execution.md
+copy brainvibes\gemini-templates.md     %USERPROFILE%\.gemini\gemini-templates.md
+copy brainvibes\prd-template.md          %USERPROFILE%\.gemini\prd-template.md
+copy brainvibes\design-system.md         %USERPROFILE%\.gemini\design-system.md
+copy brainvibes\AGENTS.md                %USERPROFILE%\.gemini\AGENTS.md
+copy brainvibes\user-prefs.md            %USERPROFILE%\.gemini\user-prefs.md
+xcopy brainvibes\config                  %USERPROFILE%\.gemini\config /E /I /Y
+xcopy brainvibes\knowledge               %USERPROFILE%\.gemini\antigravity-ide\knowledge /E /I /Y
 
 #    Unix / macOS:
-cp brainvibes/gemini.md brainvibes/prd-template.md brainvibes/design-system.md \
+cp brainvibes/gemini*.md brainvibes/prd-template.md brainvibes/design-system.md \
    brainvibes/AGENTS.md brainvibes/user-prefs.md ~/.gemini/
 cp -r brainvibes/config/* ~/.gemini/config/
 cp -r brainvibes/knowledge/* ~/.gemini/antigravity-ide/knowledge/
@@ -245,20 +249,24 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 ```
 /[nama-proyek]/
-├── /.docs/               ← Pusat dokumentasi teknis inti (wajib ada)
-│   ├── architecture.md   ← Aliran data makro (Presentation → Logic → DB)
-│   ├── api-spec.md       ← Spesifikasi endpoint & server actions
-│   ├── database.md       ← Schema DDL SQL / Local JSON State blueprint
-│   └── issues.md         ← Bug tracker FIFO (max 10 resolved, OPEN wajib dipertahankan)
-├── /.scratchpad/          ← Zona debug terisolasi (Git-Ignored otomatis)
-├── /src/ atau /app/       ← Source code aplikasi utama
-├── /public/ atau /assets/ ← Aset statis + fallback image WebP
-├── .env                   ← Konfigurasi sensitif (tidak pernah masuk Git)
-├── .env.example           ← Template kunci tanpa nilai asli
-├── .gitignore             ← Proteksi otomatis sejak detik pertama proyek
-├── handover.md            ← State tracker harian (Git-Ignored)
-├── prd.md                 ← Dokumen spesifikasi proyek (Git-Ignored)
-└── todo.md                ← Checklist koding berjenjang (Git-Ignored)
+├── /.docs/                 ← Pusat dokumentasi teknis inti (wajib ada)
+│   ├── architecture.md     ← Aliran data makro (Presentation → Logic → DB)
+│   ├── api-spec.md         ← Spesifikasi endpoint & server actions
+│   ├── database.md         ← Schema DDL SQL / Local JSON State blueprint
+│   ├── quality_review.md   ← Hasil audit linter, code smells, complexity
+│   ├── routes.md           ← Peta routes aktif (Frontend & API)
+│   ├── dependency-graph.md ← Analisis import, critical files, circular deps
+│   └── issues.md           ← Bug tracker FIFO (max 10 resolved, OPEN wajib dipertahankan)
+├── /.scratchpad/            ← Zona debug terisolasi (Git-Ignored otomatis)
+├── /src/ atau /app/         ← Source code aplikasi utama
+├── /public/ atau /assets/   ← Aset statis + fallback image WebP
+├── .env                     ← Konfigurasi sensitif (tidak pernah masuk Git)
+├── .env.example             ← Template kunci tanpa nilai asli
+├── .gitignore               ← Proteksi otomatis sejak detik pertama proyek
+├── app-context.md           ← State tracker cepat AI-optimized (Git-Ignored)
+├── handover.md              ← State tracker harian human-readable (Git-Ignored)
+├── prd.md                   ← Dokumen spesifikasi proyek (Git-Ignored)
+└── todo.md                  ← Checklist koding berjenjang (Git-Ignored)
 ```
 
 ---
@@ -267,7 +275,8 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v2.3.0` | [Current] | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
+| `v4.0.0` | [Current] | **Split Architecture & Memory Protocol Sync**: Pemisahan `gemini.md` 146KB monolith menjadi 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md) untuk mengatasi limitasi context window AI (truncation 83.6%). Mengintegrasikan 3 gap unik Memory-system-instruction (`routes.md`, `dependency-graph.md`, dan `§FLOWS` di `app-context-template.md`). |
+| `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
 | `v2.0.0` | [`8fcf799`](https://github.com/Noisesless/brainvibes/commit/8fcf799) | Fix 8 celah lanjutan: rename `## 2. Environment & Local Settings`, standardisasi log `## 10.`, tutup unclosed code block, deteksi `/.legacy/` untuk konversi, ASCII tree kondisional, cross-ref Section 11→6D |
 | `v1.9.0` | [`d588ac1`](https://github.com/Noisesless/brainvibes/commit/d588ac1) | Fix 7 konflik `awal konversi`: wizard 6-langkah, 9-fase atomik, klarifikasi `git mv` vs filesystem move, tracking `/.legacy/`, kolom Status Porting Section 11, handover trigger, Git checkpoint per fase |
 | `v1.8.0` | [`bba7771`](https://github.com/Noisesless/brainvibes/commit/bba7771) | Hardened `baca error`: port sync API, linter auto-fix trap, db lock clearance, static frontend bypass |

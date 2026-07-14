@@ -17,7 +17,7 @@ Step  2 : Ambil task aktif       → grep [/] di todo.md                  [SILEN
 ```
 
 FORBIDDEN: Membaca prd.md penuh, handover.md penuh, atau design-system.md
-di session init — hanya baca yang dibutuhkan (selective context loading §3A.4).
+di session init — hanya baca yang dibutuhkan (selective context loading).
 
 ---
 
@@ -36,9 +36,9 @@ aturan berikut BERLAKU OTOMATIS — tanpa peduli apa kalimat perintah user:
 5. FORBIDDEN `background: white` / `color: black` hardcode
 6. FORBIDDEN spacing acak (13px, 19px) — gunakan kelipatan 8pt grid
 7. FORBIDDEN mencampur lebih dari 1 icon library dalam satu proyek
-8. Patuhi seluruh 16 aturan Anti-AI-SLOP di gemini.md §4K F
+8. Patuhi seluruh 16 aturan Anti-AI-SLOP di bawah ini
 9. AI REQUIRED memberikan rekomendasi style singkat yang sesuai Visual DNA proyek
-   (dari `prd.md §3 CORE IDENTITY LOCK` atau `handover.md §4 Karakter Visual`)
+   (dari `prd.md §3 CORE IDENTITY LOCK` atau `app-context.md §PALETTE`)
    SEBELUM menulis kode perubahan visual
 
 **Output WAJIB sebelum kode (untuk perubahan visual kecil):**
@@ -48,16 +48,15 @@ aturan berikut BERLAKU OTOMATIS — tanpa peduli apa kalimat perintah user:
 
 ### Untuk pembuatan halaman/komponen BARU atau REDESIGN — tambahan wajib:
 1. Panggil `view_file` pada `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`
-2. Baca Visual DNA proyek dari `prd.md §3` atau `handover.md §4`
+2. Baca Visual DNA proyek dari `prd.md §3` atau `app-context.md §PALETTE`
 3. Keluarkan baris `[Design Read]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
-4. Jalankan UUPM Pipeline (§4K B) — search.py atau fallback design-system.md
+4. Jalankan UUPM Pipeline — `search.py` atau fallback `design-system.md`
 
 **Output WAJIB sebelum kode (untuk pembuatan/redesign):**
 ```
 [Design Read] Reading this as: [X] untuk [Y], vibe [Z], dials: V=[n] M=[n] D=[n]
 [Style Rec] Rekomendasi: [style sesuai Visual DNA] — sumber: [UUPM/design-system.md/prd.md]
 ```
-
 
 ---
 
@@ -74,18 +73,33 @@ Jika `user-prefs.md` tidak ada, gunakan defaults ini:
 
 ---
 
-## ANTI-SLOP ENFORCEMENT (Selalu Aktif di Semua Output UI)
+## ANTI-SLOP ENFORCEMENT (16 ATURAN WAJIB UI)
 
-1. FORBIDDEN `font-family: Inter` tunggal → wajib 2 font (heading + body)
-2. FORBIDDEN Centered hero jika VARIANCE > 4 → pakai Split/Asymmetric
-3. FORBIDDEN `h-screen` pada hero → REQUIRED `min-h-[100dvh]`
-4. FORBIDDEN `background: white` hardcode → `var(--vibe-background)`
-5. FORBIDDEN `border-radius: 8px` hardcode → `var(--radius-md)` CSS token
-6. FORBIDDEN Eyebrow > 1 per 3 section → kurangi atau hapus
-7. FORBIDDEN > 2 consecutive zigzag layout → break dengan layout berbeda
-8. FORBIDDEN Warna `#6C63FF`, `#4CAF50`, `#2196F3` tanpa UUPM recommendation
+1. ❌ FORBIDDEN warna `#6C63FF` (ungu AI), `#4CAF50` (hijau), `#2196F3` (biru) tanpa rekomendasi UUPM colors.csv
+2. ❌ FORBIDDEN `font-family: Inter` tunggal tanpa heading font pair — wajib pairing dari UUPM typography.csv
+3. ❌ FORBIDDEN `border-radius: 8px` hardcode — REQUIRED gunakan CSS token `--radius-md`
+4. ❌ FORBIDDEN `box-shadow` generik — REQUIRED gunakan nilai dari `design-system.md §4`
+5. ❌ FORBIDDEN `transition: all 0.3s ease` — REQUIRED gunakan `var(--vibe-transition)`
+6. ❌ FORBIDDEN `background: white` atau `color: black` hardcode — REQUIRED gunakan token `--vibe-background` & `--vibe-text-main`
+7. ❌ FORBIDDEN memilih palet tanpa memeriksa `colors.csv` UUPM terlebih dahulu
+8. ❌ FORBIDDEN spacing acak (13px, 19px) — REQUIRED gunakan kelipatan 8pt grid (`design-system.md §6`)
+9. ❌ FORBIDDEN Inter sebagai satu-satunya font tanpa heading pair
+10. ❌ FORBIDDEN centered Hero jika DESIGN_VARIANCE > 4 — gunakan Split/Asymmetric
+11. ❌ FORBIDDEN `h-screen` pada hero — REQUIRED `min-h-[100dvh]`
+12. ❌ FORBIDDEN eyebrow label > 1 per 3 section
+13. ❌ FORBIDDEN ikon SVG mentah (hand-rolled) — REQUIRED gunakan icon library proyek (`@phosphor-icons` > `@tabler/icons` > `@radix-ui`)
+14. ❌ FORBIDDEN memberi border, outline, atau shadow pada logo — logo wajib as-is tanpa dekorasi
+15. ❌ FORBIDDEN mencampur > 1 icon library dalam satu proyek — ONE icon family rule
+16. ❌ FORBIDDEN menghasilkan output visual tanpa memeriksa kepatuhan visual gate ini
 
-Referensi lengkap: `gemini.md §4K F` + `taste-skill-bridge SKILL.md §4`
+---
+
+## §LOAD PROTOCOL (ON-DEMAND FILES LOADING)
+
+AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context window:
+- **`gemini.md` (Core):** Dibaca sistem di awal sesi. Jangan di-load ulang secara penuh.
+- **`gemini-execution.md`:** Wajib di-load via `view_file` (ambil section spesifik) saat AI mulai menulis kode, konfigurasi backend, setup database, atau memproses upload file.
+- **`gemini-templates.md`:** Wajib di-load via `view_file` hanya saat saklar makro (`awal baru`, `awal konversi`, `baca error`) dipicu, saat membuat `todo.md`, update `handover.md`, atau melakukan git commit.
 
 ---
 
