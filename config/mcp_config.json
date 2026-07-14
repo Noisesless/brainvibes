@@ -14,7 +14,7 @@
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
       "env": {
-        "MEMORY_FILE_PATH": "C:\\Users\\ClasNet\\.gemini\\brainvibes-memory.json"
+        "MEMORY_FILE_PATH": "C:\\Users\\GBC_PC\\.gemini\\brainvibes-memory.json"
       }
     },
     "filesystem": {
@@ -22,7 +22,7 @@
       "args": [
         "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem",
         "C:\\XAMPP\\htdocs",
-        "C:\\Users\\ClasNet\\.gemini"
+        "C:\\Users\\GBC_PC\\.gemini"
       ]
     },
     "time": {
