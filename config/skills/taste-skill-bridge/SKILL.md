@@ -196,14 +196,18 @@ Ekstrak dari output:
 - **`Design System Variables`** dari `styles.csv` → masuk ke `:root` token
 - **`Implementation Checklist`** → jadi pre-delivery checklist
 
-**Jika Python TIDAK TERSEDIA** → fallback graceful:
-1. Tidak perlu lapor ke user — lanjut tanpa blokir
-2. Pilih palet dari **15 kluster `design-system.md §1`** berdasarkan inferred vibe:
+**Jika Python TIDAK TERSEDIA (Terhambat/Gagal/Izin Ditolak)** → lakukan **Direct-Read Fallback**:
+1. Jangan biarkan desain di-skip. Gunakan tool `view_file` atau `grep_search` secara langsung untuk mengurai file database UUPM di folder `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data/`:
+   - `colors.csv` -> Cari baris kategori industri/vibe terkait untuk mendapatkan Primary/Accent hex.
+   - `styles.csv` -> Cari baris gaya visual terkait untuk mendapatkan variabel layout.
+   - `typography.csv` -> Dapatkan font pairing yang sesuai.
+2. Jika pencarian manual CSV terhambat, gunakan fallback sekunder dengan memilih palet dari **15 kluster `design-system.md §1`** berdasarkan inferred vibe:
    - VARIANCE 8-10 → kluster "Cyber Industrial" / "Acid Streetwear" / "Holographic Dream"
    - VARIANCE 5-7 → kluster "Oceanic Jade" / "Nordic Earth" / "Carbon Slate"
    - VARIANCE 3-4 → kluster "Executive Navy" / "Medical Trust" / "Corporate Steel"
    - VARIANCE 1-2 → kluster "Minimalist Ivory" / "Pure Mono"
-3. Catat di prd.md §3: `Sumber Palet: design-system.md Cluster (UUPM tidak tersedia — Python tidak di PATH)`
+3. Catat di prd.md §3: `Sumber Palet: UUPM Direct-Read CSV (Python tidak aktif)`
+
 
 Jika stack terdeteksi (React/Next.js/Laravel), jalankan tambahan:
 ```cmd

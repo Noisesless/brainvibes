@@ -63,7 +63,7 @@ Jika salah satu sinyal di atas terdeteksi → WAJIB:
 2. Jalankan **STEP 0.E Visual DNA Inheritance Protocol** — baca halaman utama dulu, ekstrak DNA tokens
 3. Baca Visual DNA proyek dari `prd.md §3` atau `handover.md §4`
 4. Keluarkan baris `[Design Read]` + `[DNA Source]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
-5. Jalankan UUPM Pipeline (search.py atau fallback design-system.md)
+5. Jalankan UUPM Pipeline (search.py jika Python aktif, atau jika diblokir/gagal, lakukan Direct-Read Fallback dengan membaca berkas CSV UUPM `colors.csv`, `styles.csv`, `typography.csv` di bawah `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\` menggunakan tool `view_file` atau `grep_search` untuk menentukan token visual secara manual).
 
 **Output WAJIB sebelum kode (untuk pembuatan/redesign/VDNA alignment):**
 ```
@@ -116,16 +116,16 @@ Referensi lengkap: `gemini.md §4K F` + `taste-skill-bridge SKILL.md §3.B + §4
 
 | Skill Name | Path | Auto-Trigger Keywords |
 |---|---|---|
-| `ui-ux-pro-max` | `config\skills\ui-ux-pro-max\` | awal baru, redesign, buat halaman |
-| `taste-skill-bridge` | `config\skills\taste-skill-bridge\` | redesign, buat halaman, UI baru, landing page, perbaiki halaman, buat artikel, halaman berita, template post, edit tampilan, ubah layout, sesuai visual dna, sesuai vdna, visual dna, vdna, samakan visual, konsistensi visual, update tampilan |
-| `lessons-learned` | `config\skills\lessons-learned\` | baca error, pernah coba, jangan ulangi |
-| `code-snippets` | `config\skills\code-snippets\` | buat form, buat navbar, buat modal, buat toast |
-| `database-patterns` | `config\skills\database-patterns\` | desain database, migration, seeder, query |
-| `git-workflow` | `config\skills\git-workflow\` | commit, push, branch, merge, PR |
-| `accessibility-audit` | `config\skills\accessibility-audit\` | audit a11y, screen reader, WCAG, cek a11y |
-| `performance-audit` | `config\skills\performance-audit\` | audit performa, lighthouse, LCP, web vitals |
-| `deployment-checklist` | `config\skills\deployment-checklist\` | deploy, hosting, production, go live |
-| `security-patterns` | `config\skills\security-patterns\` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability |
+| `ui-ux-pro-max` | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\` | awal baru, redesign, buat halaman |
+| `taste-skill-bridge` | `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\` | redesign, buat halaman, UI baru, landing page, perbaiki halaman, buat artikel, halaman berita, template post, edit tampilan, ubah layout, sesuai visual dna, sesuai vdna, visual dna, vdna, samakan visual, konsistensi visual, update tampilan |
+| `lessons-learned` | `%USERPROFILE%\.gemini\config\skills\lessons-learned\` | baca error, pernah coba, jangan ulangi |
+| `code-snippets` | `%USERPROFILE%\.gemini\config\skills\code-snippets\` | buat form, buat navbar, buat modal, buat toast |
+| `database-patterns` | `%USERPROFILE%\.gemini\config\skills\database-patterns\` | desain database, migration, seeder, query |
+| `git-workflow` | `%USERPROFILE%\.gemini\config\skills\git-workflow\` | commit, push, branch, merge, PR |
+| `accessibility-audit` | `%USERPROFILE%\.gemini\config\skills\accessibility-audit\` | audit a11y, screen reader, WCAG, cek a11y |
+| `performance-audit` | `%USERPROFILE%\.gemini\config\skills\performance-audit\` | audit performa, lighthouse, LCP, web vitals |
+| `deployment-checklist` | `%USERPROFILE%\.gemini\config\skills\deployment-checklist\` | deploy, hosting, production, go live |
+| `security-patterns` | `%USERPROFILE%\.gemini\config\skills\security-patterns\` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability |
 
 ---
 

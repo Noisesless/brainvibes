@@ -68,30 +68,28 @@
 
 ---
 
-## ⚡ Instalasi Cepat (2 Langkah)
+## ⚡ Instalasi Cepat & Sinkronisasi (3 Langkah)
 
+### Langkah 1: Clone Repositori Ini
 ```bash
-# 1. Clone repositori ini
 git clone https://github.com/Noisesless/brainvibes.git
-
-# 2. Salin semua berkas ke direktori konfigurasi AI Anda
-#    Windows (Gemini CLI / Antigravity IDE):
-copy brainvibes\gemini.md        %USERPROFILE%\.gemini\gemini.md
-copy brainvibes\prd-template.md   %USERPROFILE%\.gemini\prd-template.md
-copy brainvibes\design-system.md  %USERPROFILE%\.gemini\design-system.md
-copy brainvibes\AGENTS.md         %USERPROFILE%\.gemini\AGENTS.md
-copy brainvibes\user-prefs.md     %USERPROFILE%\.gemini\user-prefs.md
-xcopy brainvibes\config           %USERPROFILE%\.gemini\config /E /I /Y
-xcopy brainvibes\knowledge        %USERPROFILE%\.gemini\antigravity-ide\knowledge /E /I /Y
-
-#    Unix / macOS:
-cp brainvibes/gemini.md brainvibes/prd-template.md brainvibes/design-system.md \
-   brainvibes/AGENTS.md brainvibes/user-prefs.md ~/.gemini/
-cp -r brainvibes/config/* ~/.gemini/config/
-cp -r brainvibes/knowledge/* ~/.gemini/antigravity-ide/knowledge/
 ```
 
-> ✅ Selesai. AI Anda akan langsung membaca instruksi ini di sesi berikutnya secara otomatis.
+### Langkah 2: Sinkronisasi ke Direktori Global AI
+Jalankan script PowerShell bawaan untuk menyalin seluruh rules master dari drive repositori ke direktori konfigurasi terminal AI (`%USERPROFILE%\.gemini`) secara aman:
+```powershell
+# Jalankan script auto-sync di root repositori
+powershell -ExecutionPolicy Bypass -File .\sync.ps1
+```
+
+### Langkah 3: Mengunci Aturan di Proyek Target (Anti-Skip)
+Buat **Directory Junction** folder `.agents` pada root proyek koding aktif Anda (seperti `digitara_newsid`) yang mengarah langsung ke folder konfigurasi global. Langkah ini menjamin platform IDE mendeteksi dan memuat aturan AI secara native tanpa pernah men-skip-nya:
+```powershell
+# Jalankan di terminal PowerShell (ganti path sesuai lokasi proyek Anda)
+New-Item -ItemType Junction -Path "C:\xampp\htdocs\nama-proyek-anda\.agents" -Value "C:\Users\GBC_PC\.gemini"
+```
+
+> ✅ **Selesai.** Rules Anda kini telah aktif secara global dan terikat secara native di dalam workspace proyek Anda untuk memandu AI koding.
 
 ---
 
@@ -267,7 +265,8 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v2.3.0` | [Current] | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
+| `v3.0.0` | [Current] | **Direct-Read Fallback & Auto-Sync System**: Menyelesaikan masalah pemuatan global settings AI yang ter-skip. Menambahkan aturan fallback pencarian CSV langsung pada folder data UUPM jika Python mati. Membuat script `sync.ps1` untuk auto-sync rules ke drive C, serta integrasi directory junction `.agents` lokal proyek target. |
+| `v2.3.0` | [`e79a832`](https://github.com/Noisesless/brainvibes/commit/e79a832) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
 | `v2.0.0` | [`8fcf799`](https://github.com/Noisesless/brainvibes/commit/8fcf799) | Fix 8 celah lanjutan: rename `## 2. Environment & Local Settings`, standardisasi log `## 10.`, tutup unclosed code block, deteksi `/.legacy/` untuk konversi, ASCII tree kondisional, cross-ref Section 11→6D |
 | `v1.9.0` | [`d588ac1`](https://github.com/Noisesless/brainvibes/commit/d588ac1) | Fix 7 konflik `awal konversi`: wizard 6-langkah, 9-fase atomik, klarifikasi `git mv` vs filesystem move, tracking `/.legacy/`, kolom Status Porting Section 11, handover trigger, Git checkpoint per fase |
 | `v1.8.0` | [`bba7771`](https://github.com/Noisesless/brainvibes/commit/bba7771) | Hardened `baca error`: port sync API, linter auto-fix trap, db lock clearance, static frontend bypass |
