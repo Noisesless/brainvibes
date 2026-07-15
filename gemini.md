@@ -1,4 +1,4 @@
-# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.2.0)
+# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.1.0)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
 *[Split Architecture: gemini.md (core ≤22KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
 
@@ -117,6 +117,9 @@ Step -1 : Baca user-prefs.md      → %USERPROFILE%\.gemini\user-prefs.md      [
 Step  0 : Baca app-context.md     → [workspace]/app-context.md               [SILENT, jika ada]
 Step  1 : Baca prd.md §1-§3      → jika app-context.md tidak ada             [SILENT]
 Step  2 : Ambil task aktif        → grep [/] di todo.md                      [SILENT]
+Step  3 : Self-Healing Handover   → Bandingkan [STATE].last di app-context.md
+          dengan [x] terakhir di todo.md. Jika mismatch > 2 task:
+          → Cetak: [HANDOVER DRIFT DETECTED] dan tawarkan sync [SILENT check]
 ```
 
 ### Selective Context Loading (Anti-Full-File-Read):
@@ -289,25 +292,23 @@ admin=[email]=[password]
 
 ## §POINTER (Cross-Reference ke File Detail)
 
-| Kebutuhan | Baca File | Kapan |
-|---|---|---|
-| Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif |
-| UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman |
-| SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep |
-| Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan |
-| Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` |
-| Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit |
-| Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna |
-| File role definitions | `gemini-execution.md §4C` | Saat bingung prd vs gemini vs design-system |
+| Kebutuhan | Baca File | Kapan | Range |
+|---|---|---|---|
+| Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik |
+| UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only |
+| Browser Tool Gate + Token Guard | `gemini-execution.md §3G-ter` | Setiap akan pakai browser tool | `§3G-ter` only |
+| SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only |
+| Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar |
+| Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only |
+| Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit | `§6A` only |
+| Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna | §1 kluster saja |
+| File role definitions | `gemini-execution.md §4C` | Saat bingung prd vs gemini vs design-system | `§4C` only |
 
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.
 
 ---
 <!--
   VERSION LOG
-  v4.2.0 (2026-07-15) — Browser Tool Gate + Token Guard: Tambah §1 STANDARD rule #6 (Browser Tool Gate)
-                         dan #7 (Token Guard per Turn) — wajib pakai read_url_content untuk cek DOM/scratchpad,
-                         max 5 file/turn, max 200 baris/read. Detail di gemini-execution.md §3G-ter.
   v4.1.0 (2026-07-14) — Mitigasi Celah Logika: Tambah bypass Mandor Gate di lingkungan non-interactive (CI),
                          batas Port Drifting maks 3x, integrasi static analysis AST di Fase 1 todo
                          & L3 SAST, dan auto-ignore folder /.legacy/ di pemindaian filesystem.

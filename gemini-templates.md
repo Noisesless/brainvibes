@@ -39,11 +39,18 @@
 ### 2D. Saklar: `tambah fitur`
 1. Baca `prd.md §2` + `handover.md §5` secara senyap.
 2. Cek konflik terhadap CORE IDENTITY LOCK atau fitur eksisting.
+2a. **Dependency Impact Check:** Cek `/.docs/dependency-graph.md §🔴 Critical Files`.
+    Jika file target ada di daftar Critical Files → tambahkan peringatan dampak ke gerbang konfirmasi:
+    ```
+    ⚠️ [DEP-IMPACT] File [nama] adalah Critical File (diimport oleh [N] modul).
+       Perubahan ini berisiko tinggi. Pastikan test regression setelah edit.
+    ```
 3. Cetak gerbang konfirmasi cerdas:
    ```
    [TAMBAH FITUR] Fitur yang diminta : [nama fitur]
    Konflik terdeteksi              : [ada/tidak ada]
    Halaman terpengaruh             : [daftar halaman yang perlu diubah]
+   Critical Files terdampak        : [ada/tidak ada — dari dependency-graph.md]
    Update dokumen yang diperlukan  : prd.md §2 + Blueprint Manifest §4
    Estimasi sub-task baru          : [jumlah] task di todo.md
    Konfirmasi untuk lanjut? (Y/N)
@@ -219,7 +226,8 @@
 - Git commit dengan 5 tahap wajib.
 
 ## 10. Log Perubahan Terbaru (Milestone Timeline)
-- [FIFO rolling log buffer 100 baris task selesai]
+- [FIFO rolling log buffer 100 baris — format: `[YYYY-MM-DD HH:MM] [FASE N] [x] Deskripsi task`]
+- Contoh: `[2026-07-15 14:30] [FASE 2] [x] Setup CSS tokens — design-system aktif`
 ```
 
 ---

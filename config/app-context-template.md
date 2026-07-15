@@ -81,6 +81,18 @@ icon_lib=[phosphor|heroicons|lucide|tabler]
 
 ---
 
+## §TOOL_GATE
+<!-- Token Anti-Waste — dibaca AI setiap sesi dari app-context ini -->
+🔴 DOM/scratchpad cek  → read_url_content (BUKAN browser_subagent)
+🔴 Fetch docs library  → context7 MCP (BUKAN search_web + browser)
+🔴 File >100 baris     → view_file + StartLine/EndLine WAJIB
+🔴 Max 5 file/turn     → dari user-prefs.md [AI_BEHAVIOR].max_files_per_turn
+🔴 Max 200 baris/read  → dari user-prefs.md [AI_BEHAVIOR].max_lines_per_read
+🔴 browser_subagent    → HANYA jika: klik UI / JS / login browser / user minta recording
+Output wajib: [Browser Gate] Alasan: [kondisi valid] → Proceed ✅
+
+---
+
 ## §FLOWS
 <!-- Per-feature data flow — 1 baris per fitur utama (distilasi dari data flow) -->
 <!-- Format: [Nama Fitur]=Step1→Step2→...→StepN -->
@@ -167,10 +179,19 @@ icon_lib=[phosphor|heroicons|lucide|tabler]
 | `./design-system/pages/[page].md` | Override design untuk halaman spesifik |
 
 ---
+
+## §PERF (opsional — isi setelah Fase 8 / audit performa)
+<!-- Baseline performa terakhir — AI gunakan untuk deteksi regresi -->
+- **LCP:** [X.Xs] | **CLS:** [X.XX] | **INP:** [XXXms]
+- **Lighthouse:** Perf=[XX] A11Y=[XX] SEO=[XX] BP=[XX]
+- **Last Audit:** [YYYY-MM-DD]
+- **Bottleneck:** [None / deskripsi jika ada]
+
+---
 <!--
   METADATA
-  Template Version: 2.0 (v4.0.0 — added §VISUAL_GATE & §FLOWS, updated docs blueprint)
+  Template Version: 2.1 (v4.1.0 — added §TOOL_GATE + §PERF sections)
   Source: %USERPROFILE%\.gemini\config\app-context-template.md
-  Engine: Antigravity IDE — §APP Protocol v2.0
+  Engine: Antigravity IDE — §APP Protocol v2.1
   Update trigger: Setiap handover cycle (5–6 task) atau perubahan major stack/design
 -->

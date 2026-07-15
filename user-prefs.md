@@ -43,13 +43,33 @@ max_lines_per_read = 200                          # Batas baris per view_file ca
 
 # Library yang SELALU di-query via context7 tanpa instruksi eksplisit:
 context7_whitelist = next.js, laravel, tailwindcss, react, astro, vue, php, mysql, axios
+# Library yang SKIP dari context7 auto-query (timeout/tidak relevan):
+context7_blacklist = bootstrap, jquery, wordpress
 
 [SESSION_PROTOCOL]
 read_app_context_first = true                     # Selalu baca app-context.md sebelum prd.md
 handover_trigger       = 5                        # Update handover setiap N sub-task selesai
 
+[BROWSER_TOOL]
+browser_gate       = STRICT                       # STRICT | PERMISSIVE — STRICT: wajib justifikasi
+dom_read_default   = read_url                     # read_url | browser_subagent — default cek DOM
+recording_default  = OFF                          # ON | OFF — auto-record browser session
+scratchpad_dom     = FORBIDDEN                    # FORBIDDEN | ALLOWED — scratchpad DOM via browser
+
+[COMMIT_BEHAVIOR]
+auto_unstage_env   = true                         # Auto unstage .env* sebelum commit
+auto_unstage_ai    = true                         # Auto unstage handover.md, prd.md, app-context.md
+commit_style       = conventional                 # conventional | simple — format pesan commit
+sign_commits       = false                        # GPG signing on/off
+
+[NOTIFICATION]
+milestone_banner   = true                         # Cetak [🔒 Milestone selesai] per fase
+drift_alert        = true                         # Cetak [HANDOVER DRIFT DETECTED] jika state mismatch
+browser_gate_log   = true                         # Cetak [Browser Gate] saat pakai browser tool
+self_check_log     = true                         # Cetak [SELF-CHECK] setelah setiap task selesai
+
 [META]
-brainvibes_version = 4.2.0
+brainvibes_version = 4.1.0
 installed_at       = 2026-07-13
-last_updated       = 2026-07-15
-changelog          = v4.2.0: Browser Tool Gate + Token Guard — wajib read_url_content untuk DOM/scratchpad, max 5 file/turn, max 200 baris/read
+last_updated       = 2026-07-14
+changelog          = v4.1.0: merge v4.1 — split gemini architecture, app-context-template, XAMPP security patterns, non-interactive shell mitigations
