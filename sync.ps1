@@ -57,6 +57,37 @@ if (Test-Path $SrcKnowledge) {
     Write-Host "[OK] Folder knowledge tersinkronisasi." -ForegroundColor Green
 }
 
+# 4. Merge mcpServers dari mcp_config.json ke settings.json
+$McpConfigSrc = Join-Path $SourceDir "config\mcp_config.json"
+$SettingsFile  = Join-Path $TargetDir "settings.json"
+
+if ((Test-Path $McpConfigSrc) -and (Test-Path $SettingsFile)) {
+    Write-Host "[i] Merging MCP servers ke settings.json..." -ForegroundColor Yellow
+    try {
+        $mcpConfig   = Get-Content $McpConfigSrc -Raw | ConvertFrom-Json
+        $settings    = Get-Content $SettingsFile  -Raw | ConvertFrom-Json
+
+        # Pastikan property mcpServers ada di settings
+        if (-not $settings.PSObject.Properties.Name -contains "mcpServers") {
+            $settings | Add-Member -MemberType NoteProperty -Name "mcpServers" -Value ([PSCustomObject]@{})
+        }
+
+        # Copy setiap server dari mcp_config ke settings
+        foreach ($server in $mcpConfig.mcpServers.PSObject.Properties) {
+            $settings.mcpServers | Add-Member -MemberType NoteProperty -Name $server.Name -Value $server.Value -Force
+        }
+
+        $settings | ConvertTo-Json -Depth 10 | Set-Content $SettingsFile -Encoding UTF8
+        Write-Host "[OK] MCP servers berhasil di-merge ke settings.json" -ForegroundColor Green
+    } catch {
+        Write-Warning "Gagal merge MCP config: $_"
+    }
+} elseif (-not (Test-Path $McpConfigSrc)) {
+    Write-Warning "mcp_config.json tidak ditemukan di sumber: $McpConfigSrc"
+} else {
+    Write-Warning "settings.json tidak ditemukan di target: $SettingsFile"
+}
+
 Write-Host "-----------------------------------------"
 Write-Host "[SUKSES] Sinkronisasi master Brainvibes selesai!" -ForegroundColor Green
 Write-Host "=========================================" -ForegroundColor Cyan
