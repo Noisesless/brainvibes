@@ -186,7 +186,7 @@ Input User → [UUPM Search] → [design-system.md Token Mapping] → [context7 
 ---
 
 ## §4L. SEO PRODUCTION PROTOCOL (SUMMARY)
-*Detail implementasi checklist 20-item lengkap dapat dibaca di `gemini-templates.md §2I`.*
+*Checklist SEO 20-item tersedia inline di bawah. Jalankan penuh di Fase 8 / deploy prep.*
 
 ### A. 7 Lapisan SEO Wajib
 - **L1 (Meta Core):** `<title>` unik (50-60 char), `<meta name="description">` unik (150-160 char), `<link rel="canonical">`.

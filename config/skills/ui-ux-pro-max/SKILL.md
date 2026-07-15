@@ -31,18 +31,18 @@ Ekstrak dari permintaan:
 - **Kata kunci gaya**: minimal, dark, vibrant, professional, dll
 
 ### Step 2 — Generate Design System (REQUIRED — Diam-diam)
-```cmd
-:: Windows — gunakan python (bukan python3)
-python skills/ui-ux-pro-max/scripts/search.py "<tipe_produk> <industri> <kata_kunci>" --design-system
+```powershell
+# Windows PowerShell — gunakan path absolut
+python "$env:USERPROFILE\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<tipe_produk> <industri> <kata_kunci>" --design-system
 ```
 
 Output memberikan: palet warna (Primary, Accent, Background), gaya visual terbaik,
 font pairing, efek CSS, dan checklist implementasi.
 
 ### Step 3 — Domain Search Spesifik (Jika Dibutuhkan)
-```cmd
-python skills/ui-ux-pro-max/scripts/search.py "<query>" --domain [color|style|typography|ux|chart|landing]
-python skills/ui-ux-pro-max/scripts/search.py "<query>" --stack [laravel|nextjs|react|vue|astro|...]
+```powershell
+python "$env:USERPROFILE\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<query>" --domain [color|style|typography|ux|chart|landing]
+python "$env:USERPROFILE\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<query>" --stack [laravel|nextjs|react|vue|astro|...]
 ```
 
 ### Step 4 — Konversi ke design-system.md Token

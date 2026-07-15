@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # 🧠 Brainvibes
 
@@ -6,7 +6,7 @@
 
 **Satu ekosistem lengkap. Nol kompromi.**
 
-[![Version](https://img.shields.io/badge/version-4.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.1.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -45,7 +45,7 @@
 | 🔌 [`config/mcp_config.json`](config/mcp_config.json) | ~170B | **MCP Server** — context7 documentation retrieval server |
 | 📜 `LICENSE` | ~36KB | MIT License |
 
-### Skills System (10 Skill Folders)
+### Skills System (11 Skill Folders)
 
 | Skill | Trigger Keywords | Fungsi |
 | :--- | :--- | :--- |
@@ -55,10 +55,12 @@
 | 📝 `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |
 | 🗄️ `database-patterns` | desain database, migration | Schema design, query optimization, ORM patterns |
 | 📚 `lessons-learned` | baca error, jangan ulangi | Anti-patterns + fast solutions dari proyek nyata |
+| 🕵️ `pentest-strix` | pentest, pentest cepat, dast | DAST — Dynamic pentest via Strix AI Agent (Docker-based validation) |
 | ♿ `accessibility-audit` | audit a11y, WCAG | Checklist WCAG 2.2 AA |
 | ⚡ `performance-audit` | audit performa, lighthouse | Core Web Vitals optimization |
 | 🚀 `deployment-checklist` | deploy, hosting, go live | Pre-deploy checklist per platform |
 | 🔀 `git-workflow` | commit, push, branch | Conventional commits, branch protection |
+
 
 ### Knowledge Items (3 Knowledge Bases)
 
@@ -159,7 +161,13 @@ Ketik perintah di bawah sebagai **kalimat pertama** pada sesi chat AI Anda:
 <td>🔒 Security Audit</td>
 <td>Alias untuk <code>analisa keamanan</code>.</td>
 </tr>
+<tr>
+<td><code>pentest</code></td>
+<td>🕵️ DAST Validation</td>
+<td>Dynamic Pentest via Strix Agent (docker-based). Memvalidasi exploit secara dynamic. Output di <code>security-audit.md</code>.</td>
+</tr>
 </table>
+
 
 ---
 

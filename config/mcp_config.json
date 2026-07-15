@@ -26,15 +26,15 @@
       ]
     },
     "time": {
-      "command": "cmd",
-      "args": ["/c", "uvx", "mcp-server-time"],
+      "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
+      "args": ["mcp-server-time"],
       "env": {
         "LOCAL_TIMEZONE": "Asia/Jakarta"
       }
     },
     "fetch": {
-      "command": "cmd",
-      "args": ["/c", "uvx", "mcp-server-fetch"]
+      "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
+      "args": ["mcp-server-fetch"]
     }
   }
 }

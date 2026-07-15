@@ -121,3 +121,71 @@ Solusi benar: WAJIB cek magic bytes (binary signature) dari buffer biner file �
               titik upload: CMS artikel, foto penduduk, pengaduan, lapak, gallery, dll.
               Referensi pattern: api-v4/src/core/utils/validate-image-magic.ts (DIGITARA)
 Tanggal: 2026-07-06
+
+[AP-016] Color overlay/tint layer pada setiap gambar sebagai "penerapan Visual DNA"
+Stack: Semua web frontend (CSS/HTML/React/PHP)
+Gejala: AI memberi warna transparan overlay (`background: rgba(accent, 0.4)`) di atas
+        setiap hero image, card image, atau section background — mengklaim ini "DNA-aware".
+        Hasilnya semua project terlihat sama templatenya: gambar gelap + warna overlay.
+Solusi benar: FORBIDDEN color overlay sebagai teknik DNA default.
+              DNA diterapkan melalui: tipografi, spacing, border-radius system, CSS token.
+              Gambar HARUS kontekstual dan real — jika tidak ada, WAJIB generate via
+              `generate_image` tool dengan prompt yang spesifik per project.
+              Overlay HANYA boleh saat ada alasan aksesibilitas kontras teks (≥4.5:1 WCAG).
+Tanggal: 2026-07-15
+
+[AP-017] Layout copy: halaman turunan memakai susunan section identik dengan halaman utama
+Stack: Semua web frontend
+Gejala: Landing page punya pola: Hero → Features 3-col → Testimonial → CTA.
+        Halaman lain (about, pricing, contact) memakai pola section yang SAMA persis,
+        hanya warna dan teks yang diganti. Terasa satu template dipakai berulang.
+Solusi benar: Setiap tipe halaman WAJIB punya layout family yang berbeda:
+              - Landing: Hero split + bento grid + timeline
+              - About: Full-bleed image + editorial text + team grid
+              - Pricing: Comparison table + toggle + FAQ accordion
+              - Contact: Split form + map/info panel
+              Layout BERBEDA = struktur grid berbeda, bukan hanya konten berbeda.
+Tanggal: 2026-07-15
+
+[AP-018] Redesign berulang tanpa perubahan layout yang nyata (cosmetic-only redesign)
+Stack: Semua web frontend
+Gejala: User minta redesign berkali-kali. AI hanya mengganti warna accent, font weight,
+        atau spacing. Hero tetap centered, section tetap 3-card grid, CTA tetap di bawah.
+        Setelah 2-3 iterasi user masih bilang "sama aja".
+Solusi benar: Redesign WAJIB mengubah minimal 2 dari 4 dimensi berikut:
+              1. Hero layout family (centered → split / full-bleed → asymmetric / bento)
+              2. Section grid structure (3-col → masonry / timeline → horizontal scroll)
+              3. Navigation model (top bar → sidebar / floating dock → bottom tab)
+              4. Typography hierarchy (display-dominant → body-dominant / mono-accent)
+              Jika user minta redesign ke-2+, AI WAJIB list 3 opsi layout berbeda dan
+              minta user pilih — FORBIDDEN langsung eksekusi ulang dengan variasi kosmetik.
+Tanggal: 2026-07-15
+
+[AP-019] Amnesia generate_image: tidak memanfaatkan tool generate gambar, pakai placeholder
+Stack: Semua web frontend (tool: Antigravity IDE / Gemini)
+Gejala: AI membuat halaman baru dengan `<div class="hero-bg">` kosong atau URL Unsplash
+        generic, padahal `generate_image` tool tersedia. Atau AI lupa bahwa fallback image
+        harus di-generate kontekstual per project — bukan reuse gambar yang sama.
+Solusi benar: SETIAP kali membuat halaman baru:
+              1. Cek apakah `generate_image` tool tersedia (ada di tool list)
+              2. Jika YA → REQUIRED generate minimal 1 hero image yang spesifik untuk project
+                 (prompt harus include: industri, mood, warna DNA, gaya)
+              3. Jika TIDAK → gunakan Unsplash dengan parameter deskriptif spesifik project,
+                 BUKAN URL generic. Contoh: ?q=fintech+dark+minimal bukan ?q=abstract
+              4. FORBIDDEN: div kosong, color-only background, atau gambar yang sama
+                 dipakai di lebih dari 1 project.
+Tanggal: 2026-07-15
+
+[AP-020] Rectangular Box Syndrome (Desain Kartu Monoton "Sangat AI")
+Stack: Semua web frontend
+Gejala: AI selalu membuat card dengan desain seragam persegi panjang/kotak kaku, sudut
+        rounded standar (8px-16px), border tipis abu-abu, dan shadow halus di bawahnya.
+        Membuat layout web terlihat sangat mekanis, generik, dan membosankan.
+Solusi benar: Kartu kotak tidak salah secara fungsional (sangat bagus untuk tabel harga/data
+              terstruktur), namun penggunaannya harus dibatasi dan tidak boleh mendominasi seluruh
+              elemen halaman. Campurkan dengan elemen non-kotak di section lain:
+              - **Section Testimonial**: Gunakan pure text slider/airy layout (tanpa boks kartu).
+              - **Section Tim / Fitur Unggulan**: Gunakan bentuk asimetris (border-radius: 40px 12px)
+                atau bentuk oval/arch untuk kontras geometri.
+              - **Section CTA**: Gunakan background full-bleed atau bentuk bebas (polygon clip-path).
+Tanggal: 2026-07-15
