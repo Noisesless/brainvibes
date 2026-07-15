@@ -6,7 +6,7 @@
 [IDENTITY]
 user_language      = id-ID                        # Bahasa interaksi ke user
 fallback_lang      = en-US                        # Fallback untuk istilah teknis
-user_name          = GBC_PC                       # Username mesin lokal
+user_name          = ClasNet                      # Username mesin lokal
 
 [DEVELOPMENT]
 default_port_vite  = 5173                         # Default Vite/React dev server
@@ -49,7 +49,7 @@ read_app_context_first = true                     # Selalu baca app-context.md s
 handover_trigger       = 5                        # Update handover setiap N sub-task selesai
 
 [META]
-brainvibes_version = 4.1.0
+brainvibes_version = 4.2.0
 installed_at       = 2026-07-13
-last_updated       = 2026-07-14
-changelog          = v4.1.0: merge v4.1 — split gemini architecture, app-context-template, XAMPP security patterns, non-interactive shell mitigations
+last_updated       = 2026-07-15
+changelog          = v4.2.0: Browser Tool Gate + Token Guard — wajib read_url_content untuk DOM/scratchpad, max 5 file/turn, max 200 baris/read

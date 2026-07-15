@@ -68,13 +68,13 @@ if ((Test-Path $McpConfigSrc) -and (Test-Path $SettingsFile)) {
         $settings    = Get-Content $SettingsFile  -Raw | ConvertFrom-Json
 
         # Pastikan property mcpServers ada di settings
-        if (-not $settings.PSObject.Properties.Name -contains "mcpServers") {
-            $settings | Add-Member -MemberType NoteProperty -Name "mcpServers" -Value ([PSCustomObject]@{})
+        if ($settings.PSObject.Properties.Name -notcontains "mcpServers") {
+            Add-Member -InputObject $settings -MemberType NoteProperty -Name "mcpServers" -Value ([PSCustomObject]@{})
         }
 
         # Copy setiap server dari mcp_config ke settings
         foreach ($server in $mcpConfig.mcpServers.PSObject.Properties) {
-            $settings.mcpServers | Add-Member -MemberType NoteProperty -Name $server.Name -Value $server.Value -Force
+            Add-Member -InputObject $settings.mcpServers -MemberType NoteProperty -Name $server.Name -Value $server.Value -Force
         }
 
         $settings | ConvertTo-Json -Depth 10 | Set-Content $SettingsFile -Encoding UTF8

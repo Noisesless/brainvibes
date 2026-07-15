@@ -1,5 +1,5 @@
 # AGENTS.md — Global AI Behavior Rules (Antigravity IDE)
-# Path: C:\Users\GBC_PC\.gemini\AGENTS.md
+# Path: C:\Users\ClasNet\.gemini\AGENTS.md
 # Berlaku untuk: Antigravity IDE (semua sesi, semua proyek)
 # Rules ini MENAMBAH, bukan menggantikan, gemini.md
 
@@ -101,6 +101,38 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 - **`gemini-execution.md`:** Wajib di-load via `view_file` (ambil section spesifik) saat AI mulai menulis kode, konfigurasi backend, setup database, atau memproses upload file.
 - **`gemini-templates.md`:** Wajib di-load via `view_file` hanya saat saklar makro (`awal baru`, `awal konversi`, `baca error`) dipicu, saat membuat `todo.md`, update `handover.md`, atau melakukan git commit.
 - **Auto-Ignore Legacy:** AI **REQUIRED** secara otomatis mengecualikan folder `/.legacy/` dari pemindaian filesystem global (seperti `search_files` atau `grep_search`) agar tidak membuang token dan mencegah lag pembacaan, kecuali diperintahkan secara eksplisit oleh user.
+
+---
+
+## BROWSER TOOL GATE — Token Anti-Waste (Dari gemini-execution.md §3G-ter)
+
+🔴 **HARD BLOCK:** FORBIDDEN memanggil `browser_subagent` tanpa justifikasi eksplisit.
+
+### Kondisi SATU-SATUNYA yang membolehkan `browser_subagent`:
+1. Butuh klik / interaksi UI aktif
+2. Halaman butuh JavaScript / SPA rendering
+3. Butuh login browser (session/cookie UI)
+4. User **eksplisit** minta recording/demo video
+
+### DEFAULT untuk semua kasus lain:
+```
+Cek halaman web       → read_url_content  (bukan browser_subagent)
+Scratchpad / cek DOM  → read_url_content  (bukan browser_subagent)
+Fetch docs library    → context7 MCP      (bukan search_web + browser)
+Baca file lokal besar → view_file + range (bukan baca penuh)
+```
+
+### Output Wajib jika pakai browser_subagent:
+```
+[Browser Gate] Alasan: [tulis kondisi yang memenuhi syarat] → Proceed ✅
+```
+
+### Token Guard per Turn (sumber: user-prefs.md [AI_BEHAVIOR]):
+```
+max_files_per_turn = 5    → FORBIDDEN buka > 5 file per turn
+max_lines_per_read = 200  → FORBIDDEN view_file > 200 baris tanpa StartLine/EndLine
+recording_default  = OFF  → FORBIDDEN auto-record tanpa permintaan user
+```
 
 ---
 

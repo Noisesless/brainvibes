@@ -1,7 +1,7 @@
 <!--
   ╔══════════════════════════════════════════════════════════════════════╗
   ║  APP-CONTEXT MASTER TEMPLATE — Antigravity IDE Global Config        ║
-  ║  Path: C:\Users\GBC_PC\.gemini\config\app-context-template.md      ║
+  ║  Path: C:\Users\ClasNet\.gemini\config\app-context-template.md      ║
   ║  Tujuan: Template acuan AI saat generate .docs/app-context.md        ║
   ║  AI: Isi semua placeholder [SEPERTI_INI] dengan nilai aktual proyek  ║
   ║  Target ukuran output: ≤5 KB per proyek                              ║

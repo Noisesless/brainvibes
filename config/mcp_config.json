@@ -14,7 +14,7 @@
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
       "env": {
-        "MEMORY_FILE_PATH": "C:\\Users\\GBC_PC\\.gemini\\brainvibes-memory.json"
+        "MEMORY_FILE_PATH": "C:\\Users\\ClasNet\\.gemini\\brainvibes-memory.json"
       }
     },
     "filesystem": {
@@ -22,18 +22,18 @@
       "args": [
         "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem",
         "C:\\XAMPP\\htdocs",
-        "C:\\Users\\GBC_PC\\.gemini"
+        "C:\\Users\\ClasNet\\.gemini"
       ]
     },
     "time": {
-      "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
+      "command": "C:\\Users\\ClasNet\\AppData\\Local\\hermes\\bin\\uvx.exe",
       "args": ["mcp-server-time"],
       "env": {
         "LOCAL_TIMEZONE": "Asia/Jakarta"
       }
     },
     "fetch": {
-      "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
+      "command": "C:\\Users\\ClasNet\\AppData\\Local\\hermes\\bin\\uvx.exe",
       "args": ["mcp-server-fetch"]
     }
   }

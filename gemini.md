@@ -1,4 +1,4 @@
-# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.1.0)
+# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.2.0)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
 *[Split Architecture: gemini.md (core ≤22KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
 
@@ -43,6 +43,9 @@
 3. **Anti-Blind Dependency:** FORBIDDEN update semua dependensi sepihak saat debug.
 4. **Dev Port Blacklist:** FORBIDDEN port `8000` dan `3000`. Default: `5173` (Vite), `3100` (Next.js), `8080` (PHP/Laravel).
 5. **Security-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` data SILENT → terapkan pattern aman.
+6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` kecuali: butuh klik/interaksi UI, JS rendering, login browser, atau user eksplisit minta recording. Semua cek halaman statis/DOM/scratchpad → `read_url_content`. → Detail: `gemini-execution.md §3G-ter`
+7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser.
+
 
 ---
 
@@ -302,6 +305,9 @@ admin=[email]=[password]
 ---
 <!--
   VERSION LOG
+  v4.2.0 (2026-07-15) — Browser Tool Gate + Token Guard: Tambah §1 STANDARD rule #6 (Browser Tool Gate)
+                         dan #7 (Token Guard per Turn) — wajib pakai read_url_content untuk cek DOM/scratchpad,
+                         max 5 file/turn, max 200 baris/read. Detail di gemini-execution.md §3G-ter.
   v4.1.0 (2026-07-14) — Mitigasi Celah Logika: Tambah bypass Mandor Gate di lingkungan non-interactive (CI),
                          batas Port Drifting maks 3x, integrasi static analysis AST di Fase 1 todo
                          & L3 SAST, dan auto-ignore folder /.legacy/ di pemindaian filesystem.

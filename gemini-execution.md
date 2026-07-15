@@ -172,6 +172,53 @@ AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 ---
 
+### G-ter. BROWSER TOOL GATE — Token Anti-Waste Protocol
+
+> ⛔ **HARD BLOCK:** AI **FORBIDDEN** memanggil `browser_subagent` tanpa memenuhi MINIMAL SATU dari kondisi di bawah. Pelanggaran = **Token Waste Violation**.
+
+#### Decision Tree (Wajib Dijalankan Sebelum Pakai Browser Tool):
+
+```
+Perlu cek/baca konten web?
+├── Butuh klik / interaksi UI (form, scroll, drag)?  → browser_subagent ✅
+├── Butuh JavaScript rendering / SPA content?        → browser_subagent ✅
+├── Butuh login UI (session/cookie browser)?         → browser_subagent ✅
+├── User eksplisit minta recording/video demo?       → browser_subagent ✅
+└── SISANYA (konten statis, HTML publik, API, docs): → read_url_content ✅
+```
+
+#### Tabel Substitusi Tool (DEFAULT):
+
+| Skenario | ❌ FORBIDDEN (Boros) | ✅ REQUIRED (Hemat) | Penghematan |
+|---|---|---|---|
+| Cek halaman web publik | `browser_subagent` ~30K token | `read_url_content` ~1K token | **97%** |
+| Ambil dokumentasi library | `search_web` + browser | `context7` MCP | **60%** |
+| Baca HTML/JSON dari URL | `browser_subagent` | `read_url_content` | **97%** |
+| Baca file lokal besar | `view_file` tanpa range | `view_file` + `StartLine`/`EndLine` | **75%** |
+| Verifikasi build lokal | browser scratchpad DOM | `read_url_content` ke localhost | **90%** |
+
+#### Token Guard — Per Turn Enforcement:
+
+```
+AI WAJIB per giliran:
+- max 5 file dibuka (dari user-prefs.md: max_files_per_turn = 5)
+- max 200 baris per view_file (dari user-prefs.md: max_lines_per_read = 200)
+- FORBIDDEN baca file >100 baris tanpa StartLine/EndLine
+- FORBIDDEN memanggil browser_subagent hanya untuk "cek DOM"
+- FORBIDDEN memanggil browser_subagent untuk scratchpad debug
+- DEFAULT recording = OFF kecuali user eksplisit minta
+```
+
+#### Pelanggaran & Konsekuensi:
+
+```
+Jika AI ingin pakai browser_subagent → wajib justifikasi 1 baris:
+[Browser Gate] Alasan: [salah satu dari 4 kondisi di atas] → Proceed ✅
+Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
+```
+
+---
+
 ## §4K. UI UX PRO MAX INTEGRATION PROTOCOL (SUMMARY)
 *Detail implementasi lengkap dapat dibaca di folder skill: `skills/ui-ux-pro-max/SKILL.md` dan `taste-skill-bridge/SKILL.md`.*
 
