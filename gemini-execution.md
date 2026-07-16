@@ -15,6 +15,14 @@
     - Ambil `[AI_BEHAVIOR].taste_skill_auto` → jika `true`, aktifkan taste-skill-bridge auto-trigger
     - Ambil `[AI_BEHAVIOR].uupm_auto_run` → jika `true`, jalankan UUPM Step 1 saat awal baru & redesign
     - Ambil `[SESSION_PROTOCOL].handover_trigger` → gunakan sebagai threshold handover update
+    - Ambil `[BROWSER_TOOL].scratchpad_dom` → jika `FORBIDDEN`, aktifkan PROTEKSI ABSOLUT SCRATCHPAD DOM (lihat `AGENTS.md §BROWSER TOOL GATE`)
+    - Ambil `[BROWSER_TOOL].browser_gate` → jika `STRICT`, wajib cetak `[Browser Gate]` log sebelum tiap browser_subagent
+    - Ambil `[BROWSER_TOOL].dom_read_default` → gunakan sebagai default tool untuk cek DOM (`read_url` = wajib pakai read_url_content)
+    - Ambil `[BROWSER_TOOL].recording_default` → jika `OFF`, FORBIDDEN auto-start recording browser
+    - Ambil `[NOTIFICATION].milestone_banner` → jika `true`, cetak `[🔒 Milestone selesai]` setelah setiap fase selesai
+    - Ambil `[NOTIFICATION].drift_alert` → jika `true`, cetak `[HANDOVER DRIFT DETECTED]` saat mismatch > 2 task
+    - Ambil `[NOTIFICATION].browser_gate_log` → jika `true`, REQUIRED cetak `[Browser Gate]` sebelum tiap browser_subagent
+    - Ambil `[NOTIFICATION].self_check_log` → jika `true`, REQUIRED cetak `[SELF-CHECK]` setelah tiap task selesai
     File ini FORBIDDEN dimodifikasi AI tanpa instruksi eksplisit user.
 
 0.  **Auto Workspace Verification (Silent — Setiap Sesi Baru):**
@@ -209,12 +217,21 @@ AI WAJIB per giliran:
 - DEFAULT recording = OFF kecuali user eksplisit minta
 ```
 
+#### ⛔ SCRATCHPAD DOM — Proteksi Absolut (Binding user-prefs.md):
+Jika `[BROWSER_TOOL].scratchpad_dom = FORBIDDEN`:
+- FORBIDDEN `browser_subagent` ke `localhost`, `127.0.0.1`, port dev lokal MANAPUN
+- FORBIDDEN untuk tujuan: "verifikasi build", "cek tampilan", "render check", "lihat DOM"
+- Satu-satunya exception: user mengetik permintaan eksplisit di turn tersebut
+- Alternatif wajib: gunakan `read_url_content` ke localhost URL (bukan browser)
+Pelanggaran = FATAL VIOLATION → cetak `[SCRATCHPAD BLOCKED]`, STOP, tunggu instruksi user.
+
 #### Pelanggaran & Konsekuensi:
 
 ```
 Jika AI ingin pakai browser_subagent → wajib justifikasi 1 baris:
-[Browser Gate] Alasan: [salah satu dari 4 kondisi di atas] → Proceed ✅
+[Browser Gate] Alasan: [salah satu dari 4 kondisi — scratchpad_dom check lulus] → Proceed ✅
 Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
+Jika scratchpad_dom = FORBIDDEN dan target adalah localhost → [SCRATCHPAD BLOCKED] STOP.
 ```
 
 ---
@@ -224,11 +241,20 @@ Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
 
 ### A. UUPM Pipeline Eksekusi
 ```
-Input User → [UUPM Search] → [design-system.md Token Mapping] → [context7 Verify] → Output Kode
+Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mapping] → Output Kode
 ```
-1. **Python Check:** Jalankan `python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi]"` secara senyap. Jika python tidak ada, fallback ke `design-system.md` kluster langsung.
-2. **oklch() Mapping:** Hex hasil rekomendasi UUPM dikonversi ke oklch() dan dipetakan ke token `--raw-palette-*`.
-3. **Component Pattern Query:** Query database stack-specific CSV (Laravel, Next.js, React) saat membuat komponen di Fase 3-5.
+1. **Three Dials Assessment (Wajib Sebelum Search):** Tentukan 3 dial dari konteks proyek sebelum query UUPM:
+   - **V (Vibrance):** 1-5 — Saturasi/vibransi palet. (1=monokrom netral, 5=neon/streetwear)
+   - **M (Modernity):** 1-5 — Tingkat modernitas desain. (1=klasik/editorial, 5=ultra-futuristik)
+   - **D (Darkness):** 1-5 — Preferensi gelap/terang. (1=full light, 5=full dark/noir)
+   Output format wajib sebelum kode: `dials: V=[n] M=[n] D=[n]`
+2. **Python Search (Prioritas):** Jalankan `python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi]"` secara senyap.
+3. **Fallback Chain (jika Python gagal atau tidak terinstall):**
+   - **Fallback A:** Baca `design-system.md §1` → pilih kluster warna yang paling cocok dengan Three Dials.
+   - **Fallback B:** Jika `design-system.md` tidak tersedia → gunakan `user-prefs.md [DESIGN_DEFAULTS]` sebagai baseline.
+   - Catat fallback yang dipakai di baris output `[Style Rec] ... — sumber: Fallback A/B`.
+4. **oklch() Mapping:** Hex hasil rekomendasi UUPM dikonversi ke oklch() dan dipetakan ke token `--raw-palette-*`.
+5. **Component Pattern Query:** Query database stack-specific CSV (Laravel, Next.js, React) saat membuat komponen di Fase 3-5.
 
 ---
 
@@ -243,3 +269,33 @@ Input User → [UUPM Search] → [design-system.md Token Mapping] → [context7 
 - **L5 (robots.txt):** Blokir private routes (`/admin/`, `/api/`, `/dashboard/`).
 - **L6 (sitemap.xml):** Static/dynamic sitemap.
 - **L7 (Core Web Vitals):** LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms.
+
+### B. Checklist 20-Item (Jalankan Per Halaman di Fase 8)
+
+**Tier 1 — Meta & Discovery (1-6):**
+- [ ] 1. `<title>` unik, 50-60 karakter, mengandung keyword utama halaman
+- [ ] 2. `<meta name="description">` unik, 150-160 karakter, mengandung CTA/keyword
+- [ ] 3. `<link rel="canonical">` ada di setiap halaman (self-referencing)
+- [ ] 4. `<meta name="robots" content="index, follow">` untuk semua halaman publik
+- [ ] 5. `<html lang="[kode-bahasa]">` terset (`id` / `en` sesuai proyek)
+- [ ] 6. URL bersih: lowercase, hyphens, tanpa special chars, tanpa trailing slash kecuali root
+
+**Tier 2 — Social & Rich Preview (7-11):**
+- [ ] 7. `og:title`, `og:description`, `og:url`, `og:type` ada di semua halaman publik
+- [ ] 8. `og:image` berukuran 1200×630px, format WebP, ≤1MB, ada logo + tagline
+- [ ] 9. `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` ada
+- [ ] 10. JSON-LD `Organization` schema ada di root layout (nama, url, logo, sameAs)
+- [ ] 11. JSON-LD `BreadcrumbList` di halaman non-root; `Article` di setiap post/berita
+
+**Tier 3 — Indexing & Structure (12-16):**
+- [ ] 12. `robots.txt` memblokir `/admin/`, `/api/`, `/dashboard/`, `/auth/`
+- [ ] 13. `sitemap.xml` dinamis — mencakup semua URL publik, di-update otomatis
+- [ ] 14. Hanya ada 1 `<h1>` per halaman, urutan heading tidak loncat (h1→h2→h3)
+- [ ] 15. Setiap `<img>` punya `alt` deskriptif — bukan `alt="image"` atau kosong
+- [ ] 16. Tidak ada orphan page — semua halaman bisa dicapai via navigasi atau sitemap
+
+**Tier 4 — Performance & Technical (17-20):**
+- [ ] 17. LCP ≤ 2.5s — gambar hero di-preload (`<link rel="preload" as="image">`)
+- [ ] 18. CLS ≤ 0.1 — semua `<img>` dan `<video>` punya `width` + `height` eksplisit
+- [ ] 19. INP ≤ 200ms — tidak ada blocking JS di main thread saat interaksi pertama
+- [ ] 20. Font heading di-preload: `<link rel="preload" as="font" type="font/woff2" crossorigin>`

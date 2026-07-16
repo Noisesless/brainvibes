@@ -6,7 +6,7 @@
 
 **Satu ekosistem lengkap. Nol kompromi.**
 
-[![Version](https://img.shields.io/badge/version-4.1.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.0.0--stable-6366f1?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -283,7 +283,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.1.0` | [Current] | **Split Architecture Refinement & Premium Layout**: Penggabungan penuh mitigasi shell non-aktif, drift port server, pre-flight check MCP. Menambahkan 3 HARD BLOCK visual baru (`Anti-Color-Overlay`, `Anti-Cosmetic-Redesign`, `Anti-Image-Amnesia`). Memperkenalkan **Rhythm Score System** (`§0.I`) dan panduan **Asymmetric Card Geometry** (`§0.J-4`) untuk memecah visual kaku yang seragam. |
+| `v4.0.0` | [Current] | **Split Architecture Refinement & Premium Layout**: Penggabungan penuh mitigasi shell non-aktif, drift port server, pre-flight check MCP. Menambahkan 3 HARD BLOCK visual baru (`Anti-Color-Overlay`, `Anti-Cosmetic-Redesign`, `Anti-Image-Amnesia`). Memperkenalkan **Rhythm Score System** (`§0.I`) dan panduan **Asymmetric Card Geometry** (`§0.J-4`) untuk memecah visual kaku yang seragam. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture & Memory Protocol Sync**: Pemisahan `gemini.md` 146KB monolith menjadi 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md) untuk mengatasi limitasi context window AI (truncation 83.6%). Mengintegrasikan 3 gap unik Memory-system-instruction (`routes.md`, `dependency-graph.md`, dan `§FLOWS` di `app-context-template.md`). |
 | `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
 | `v2.0.0` | [`8fcf799`](https://github.com/Noisesless/brainvibes/commit/8fcf799) | Fix 8 celah lanjutan: rename `## 2. Environment & Local Settings`, standardisasi log `## 10.`, tutup unclosed code block, deteksi `/.legacy/` untuk konversi, ASCII tree kondisional, cross-ref Section 11→6D |

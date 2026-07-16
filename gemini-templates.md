@@ -25,7 +25,7 @@
 1. **Baca `app-context.md` PERTAMA (Silent - Priority Context).** Fallback jika tidak ada: baca `prd.md`, `todo.md`, `handover.md`, dan `/.docs/`.
 2. **Analisis Kesenjangan & Konsistensi (Wawancara Kondisional):**
    - Checksum CORE IDENTITY LOCK: Bandingkan stack di `prd.md` dengan file manifest dependensi (`package.json`, `composer.json`, dll.).
-   - Visual DNA Checksum (Auto-Sync): Bandingkan `handover.md §4` dengan CORE IDENTITY LOCK di `prd.md`. Jika drift, update `handover.md §4` sesuai `prd.md`.
+   - Visual DNA Checksum (Auto-Sync): Bandingkan `app-context.md §PALETTE` dengan CORE IDENTITY LOCK di `prd.md`. Jika drift, update `app-context.md §PALETTE` sesuai `prd.md` lalu overwrite `app-context.md`.
 3. Tampilkan ringkasan status dalam Bahasa Indonesia dan tunggu instruksi.
 
 ### 2C. Saklar: `awal konversi`
@@ -37,7 +37,7 @@
 6. **Legacy Purge Gate (Fase 9):** Hapus folder `/.legacy/` hanya setelah dry-run log dan persetujuan tertulis user.
 
 ### 2D. Saklar: `tambah fitur`
-1. Baca `prd.md §2` + `handover.md §5` secara senyap.
+1. Baca `prd.md §2` + `app-context.md §NEXT` secara senyap.
 2. Cek konflik terhadap CORE IDENTITY LOCK atau fitur eksisting.
 2a. **Dependency Impact Check:** Cek `/.docs/dependency-graph.md §🔴 Critical Files`.
     Jika file target ada di daftar Critical Files → tambahkan peringatan dampak ke gerbang konfirmasi:
@@ -75,14 +75,14 @@
 4. Lanjut tanpa konfirmasi jika tidak ada issue terbuka.
 
 ### 2G. Saklar: `status proyek`
-1. Baca `todo.md` (hitung `[x]` vs total) dan `handover.md §2`.
+1. Baca `todo.md` (hitung `[x]` vs total) dan `app-context.md §APP`.
 2. Cetak brief dalam format tabel ringkas (max 10 baris):
    ```
-   Proyek     : [Nama Proyek dari handover §1]
+   Proyek     : [name dari app-context.md §APP]
    Fase Aktif : Fase X dari Y
    Progress   : [N]% ([N]/[Total] sub-task selesai)
-   State      : [Build OK / Error: msg]
-   Next Task  : [Task berikutnya]
+   State      : [build dari app-context.md §STATE]
+   Next Task  : [Task berikutnya dari todo.md]
    ```
 
 ### 2H. Saklar: `analisa kualitas`
@@ -107,9 +107,9 @@
    - `strix --version` → strix-agent terinstall?
    - `$env:STRIX_LLM` → LLM model terkonfigurasi?
    - `$env:LLM_API_KEY` → API key tersedia?
-   - Baca `handover.md §2` → ada App URL lokal?
+   - Baca `app-context.md §APP` → ambil field `url=` untuk URL lokal
    Jika salah satu gagal → cetak instruksi setup dari `pentest-strix/SKILL.md §5` dan STOP.
-3. **Target Detection:** Deteksi URL target dari `handover.md §2` / `prd.md §1` → tampilkan dan minta konfirmasi user.
+3. **Target Detection:** Deteksi URL target dari `app-context.md §APP` (field `url`) / `prd.md §1` → tampilkan dan minta konfirmasi user.
 4. **Scope per Sub-Saklar:**
    - `pentest` → `strix --target [URL]` (full scan)
    - `pentest cepat` → `strix --target [URL] --scan-mode quick`
@@ -124,8 +124,8 @@
 
 ## §5. YOLO DEBUGGING PIPELINE (`baca error` mode)
 
-1. **State Retention:** Catat file bermasalah dan hipotesis ke `handover.md §8` secara temporer agar state tidak hilang jika sesi terputus.
-2. **Pembersihan Zombie Port & Access Denied Fallback:** Cek port dev server. Jika port terkunci, matikan proses. Jika Access Denied, increment port + 1, update `.env` dan `handover.md §2`, lalu jalankan server di port baru. *Batas Port Drifting:* AI dilarang melakukan increment port lebih dari **3 kali** berturut-turut (maks PORT+3). Jika port ke-3 tetap gagal/terkunci, hentikan server secara total, cetak error kritis ke terminal, dan tunggu instruksi manual dari user. Bypass jika Pure Frontend.
+1. **State Retention:** Catat file bermasalah dan hipotesis ke `/.docs/issues.md` (tandai status `IN_PROGRESS`) secara temporer agar state tidak hilang jika sesi terputus.
+2. **Pembersihan Zombie Port & Access Denied Fallback:** Cek port dev server. Jika port terkunci, matikan proses. Jika Access Denied, increment port + 1, update `.env` dan `app-context.md §APP` field `port=`, lalu jalankan server di port baru. *Batas Port Drifting:* AI dilarang melakukan increment port lebih dari **3 kali** berturut-turut (maks PORT+3). Jika port ke-3 tetap gagal/terkunci, hentikan server secara total, cetak error kritis ke terminal, dan tunggu instruksi manual dari user. Bypass jika Pure Frontend.
 3. **Log Dev Server Background:** Pipa stdout/stderr dev server ke `.scratchpad/dev-server.log`.
 4. **Full-Scan Fitur & Database Lock Release:** Gunakan tool filesystem untuk tracing error. Hapus file lock database (SQLite `.db-journal`, `.db-wal`) jika transaksi DB hang.
 5. **issues.md & FIFO Rolling Buffer:** Tulis temuan ke `/.docs/issues.md`. FIFO: max 10 RESOLVED history, OPEN/IN_PROGRESS dilarang hapus.
@@ -233,13 +233,59 @@
 ---
 
 ## §7. DEFINISI STRUKTUR FASE TODO.MD
-*(Struktur 8 fase untuk proyek baru / 9 fase untuk konversi. detail list terdapat pada git repo)*
-1. **Fase 1: Foundation & Environment Setup:** Setup DB, git, env, app-context skeleton. *AST Security Linter (Mitigasi L3):* Tambahkan sub-task untuk menginstal static analysis tool berbasis AST (seperti `eslint-plugin-security` untuk Node.js atau `phpstan` untuk PHP) guna meminimalkan celah keamanan.
-2. **Fase 2: Core Architecture & Design System:** CSS tokens, layout, base UI components, auth middleware.
-3. **Fase 3: Guest Layer (Public / Unauthenticated Access):** Halaman Landing, Login + Captcha, Register.
-4. **Fase 4: Member Layer (Authenticated / Protected Access):** Member Dashboard, Profile + Avatar Upload, Settings.
-5. **Fase 5: Admin Layer (Privileged Control Panel):** Admin Dashboard, User Management CRUD, App Settings.
-6. **Fase 6: Backend Service Layer:** Validation, Rate Limiting, ACID Transaction Guard, Emails, Queues.
-7. **Fase 7: API, Webhooks & Third-Party Integrations:** API endpoints, Webhooks, Third-party SDK, `api-spec.md`.
-8. **Fase 8: Polish, SEO, A11Y & Deploy Prep:** Meta/SEO tags, robots.txt, sitemap.xml, A11Y Audit, 6 Lapisan Scan, Retrospective.
-*(Fase 9: Legacy Purge — Khusus Mode Konversi)*
+*(Struktur 8 fase untuk proyek baru / 9 fase untuk konversi. Hapus/skip fase yang tidak relevan dengan stack.)*
+
+### Fase 1: Foundation & Environment Setup
+- [ ] Init git repo + setup `.gitignore` (env, DB, handover, prd, node_modules, .scratchpad)
+- [ ] Buat `.env` + `.env.example` + setup koneksi DB (SQLite/MySQL/PostgreSQL)
+- [ ] Generate skeleton `app-context.md` + `handover.md` + folder `/.docs/`
+- [ ] Install AST security linter (`eslint-plugin-security` / `phpstan`) — Mitigasi L3 SAST
+- [ ] Verifikasi dev server jalan di port dari `user-prefs.md` (bukan port 3000/8000)
+
+### Fase 2: Core Architecture & Design System
+- [ ] Setup CSS token system lengkap (`--vibe-*` tokens) di file CSS utama
+- [ ] Buat base layout shell (root layout, `<head>` dengan font preload dari Google Fonts)
+- [ ] Implementasi auth middleware / route guard dasar (session/JWT check)
+- [ ] Buat komponen base sesuai design-system.md: Button, Card, Input, Modal, Badge
+- [ ] Setup routing struktur utama + generate `/.docs/routes.md` awal
+
+### Fase 3: Guest Layer (Public / Unauthenticated)
+- [ ] Landing Page: Hero section + Features + CTA — sesuai Visual DNA (Three Dials)
+- [ ] Halaman Login + Captcha + rate limiting endpoint
+- [ ] Halaman Register + validasi email + hashing password (bcrypt/argon2)
+- [ ] Halaman publik pendukung (About, Contact, dll) — Zero Dead-End Link policy
+
+### Fase 4: Member Layer (Authenticated / Protected)
+- [ ] Member Dashboard dengan data dinamis dari DB (bukan dummy/hardcode)
+- [ ] Halaman Profil + Avatar Upload — wajib ikuti `gemini-execution.md §4E` Upload Pipeline
+- [ ] Halaman Settings (ubah password, notifikasi, preferensi)
+- [ ] Protected route guard — redirect ke /login jika token tidak valid/expired
+
+### Fase 5: Admin Layer (Privileged Control Panel)
+- [ ] Admin Dashboard (statistik pengguna, log aktivitas terbaru)
+- [ ] User Management CRUD (list, detail, edit role, ban/unban)
+- [ ] App Settings dari DB (nama aplikasi, logo, konfigurasi — tidak hardcode)
+- [ ] Role-based access control — guard admin terpisah dari guard member
+
+### Fase 6: Backend Service Layer
+- [ ] Validasi input terpusat + sanitasi string di semua endpoint form/API
+- [ ] Rate limiting pada endpoint login, register, reset-password, dan API publik
+- [ ] ACID Transaction Guard untuk mutasi multi-tabel (saldo, stok, relasi kritis)
+- [ ] Email service: verifikasi akun + reset password (SMTP / Resend / Mailgun)
+
+### Fase 7: API, Webhooks & Third-Party Integrations
+- [ ] Definisikan dan implementasi semua REST/RPC API endpoint
+- [ ] Generate `/.docs/api-spec.md` (method, auth, request, response setiap endpoint)
+- [ ] Setup Webhook handler jika ada integrasi eksternal (payment, notifikasi push)
+- [ ] Integrasi third-party SDK (payment gateway, cloud storage, maps, dll)
+
+### Fase 8: Polish, SEO, A11Y & Deploy Prep
+- [ ] Jalankan SEO Checklist 20-item (`gemini-execution.md §4L`) per halaman publik
+- [ ] Buat `robots.txt` + `sitemap.xml` dinamis
+- [ ] Audit A11Y: keyboard nav, ARIA labels, kontras warna ≥ 4.5:1
+- [ ] Lighthouse audit — target LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms
+- [ ] Jalankan 6 Lapisan Scan Keamanan penuh + generate `/.docs/security-audit.md`
+- [ ] Generate `/.docs/` lengkap: architecture.md, routes.md, dependency-graph.md
+- [ ] Tulis Retrospective di `knowledge/project-retrospectives/` + overwrite `app-context.md`
+
+*(Fase 9: Legacy Purge — Khusus Mode Konversi: dry-run log + persetujuan tertulis user → hapus `/.legacy/`)*

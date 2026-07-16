@@ -6,7 +6,7 @@
 [IDENTITY]
 user_language      = id-ID                        # Bahasa interaksi ke user
 fallback_lang      = en-US                        # Fallback untuk istilah teknis
-user_name          = ClasNet                      # Username mesin lokal
+user_name          = GBC_PC                       # Username mesin lokal
 
 [DEVELOPMENT]
 default_port_vite  = 5173                         # Default Vite/React dev server
@@ -69,7 +69,7 @@ browser_gate_log   = true                         # Cetak [Browser Gate] saat pa
 self_check_log     = true                         # Cetak [SELF-CHECK] setelah setiap task selesai
 
 [META]
-brainvibes_version = 4.1.0
+brainvibes_version = 4.0.0
 installed_at       = 2026-07-13
-last_updated       = 2026-07-14
-changelog          = v4.1.0: merge v4.1 — split gemini architecture, app-context-template, XAMPP security patterns, non-interactive shell mitigations
+last_updated       = 2026-07-16
+changelog          = v4.0.0-hotfix (2026-07-16): 17 celah ditutup — scratchpad_dom enforcement, handover→app-context refs, SEO 20-item checklist, §7 fase konkret, POINTER update, skill+config sync, [NOTIFICATION] binding

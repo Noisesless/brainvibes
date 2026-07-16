@@ -108,11 +108,22 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 
 🔴 **HARD BLOCK:** FORBIDDEN memanggil `browser_subagent` tanpa justifikasi eksplisit.
 
+### 🔴 PROTEKSI ABSOLUT SCRATCHPAD DOM (Binding ke user-prefs.md):
+Baca `user-prefs.md [BROWSER_TOOL].scratchpad_dom` di session init.
+Jika nilai = `FORBIDDEN`:
+- AI **DILARANG KERAS** memanggil `browser_subagent` untuk tujuan APAPUN
+  (termasuk: verifikasi visual, cek DOM, render SPA lokal, crawl localhost/127.0.0.1)
+  KECUALI user secara **EKSPLISIT dan TERTULIS** memintanya di turn tersebut.
+- Inisiatif mandiri AI menggunakan browser untuk verifikasi lokal = **PELANGGARAN FATAL**.
+- Frasa berikut BUKAN justifikasi valid: "cek tampilan", "verifikasi build",
+  "render check", "lihat DOM", "screenshot lokal", "pastikan render".
+
 ### Kondisi SATU-SATUNYA yang membolehkan `browser_subagent`:
-1. Butuh klik / interaksi UI aktif
-2. Halaman butuh JavaScript / SPA rendering
+1. Butuh klik / interaksi UI aktif (hanya URL eksternal)
+2. Halaman butuh JavaScript / SPA rendering — **hanya berlaku untuk URL EKSTERNAL**
+   (jika `scratchpad_dom = FORBIDDEN`: localhost/127.0.0.1 TETAP FORBIDDEN meski SPA)
 3. Butuh login browser (session/cookie UI)
-4. User **eksplisit** minta recording/demo video
+4. User **eksplisit** minta recording/demo video pada turn tersebut
 
 ### DEFAULT untuk semua kasus lain:
 ```
@@ -127,11 +138,14 @@ Baca file lokal besar → view_file + range (bukan baca penuh)
 [Browser Gate] Alasan: [tulis kondisi yang memenuhi syarat] → Proceed ✅
 ```
 
-### Token Guard per Turn (sumber: user-prefs.md [AI_BEHAVIOR]):
+### Token Guard per Turn (sumber: user-prefs.md [AI_BEHAVIOR] + [BROWSER_TOOL]):
 ```
-max_files_per_turn = 5    → FORBIDDEN buka > 5 file per turn
-max_lines_per_read = 200  → FORBIDDEN view_file > 200 baris tanpa StartLine/EndLine
-recording_default  = OFF  → FORBIDDEN auto-record tanpa permintaan user
+max_files_per_turn = 5         → FORBIDDEN buka > 5 file per turn
+max_lines_per_read = 200       → FORBIDDEN view_file > 200 baris tanpa StartLine/EndLine
+recording_default  = OFF       → FORBIDDEN auto-record tanpa permintaan user
+scratchpad_dom     = FORBIDDEN → FORBIDDEN browser_subagent ke localhost/DOM tanpa trigger eksplisit user
+browser_gate       = STRICT    → REQUIRED justifikasi [Browser Gate] sebelum browser_subagent
+dom_read_default   = read_url  → DEFAULT cek DOM via read_url_content, bukan browser_subagent
 ```
 
 ---

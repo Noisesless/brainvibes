@@ -1,4 +1,4 @@
-# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.1.0)
+# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.0.0)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
 *[Split Architecture: gemini.md (core ≤22KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
 
@@ -43,7 +43,7 @@
 3. **Anti-Blind Dependency:** FORBIDDEN update semua dependensi sepihak saat debug.
 4. **Dev Port Blacklist:** FORBIDDEN port `8000` dan `3000`. Default: `5173` (Vite), `3100` (Next.js), `8080` (PHP/Laravel).
 5. **Security-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` data SILENT → terapkan pattern aman.
-6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` kecuali: butuh klik/interaksi UI, JS rendering, login browser, atau user eksplisit minta recording. Semua cek halaman statis/DOM/scratchpad → `read_url_content`. → Detail: `gemini-execution.md §3G-ter`
+6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` kecuali: butuh klik/interaksi UI, JS rendering URL eksternal, login browser, atau user eksplisit minta recording. Jika `user-prefs.md scratchpad_dom = FORBIDDEN` → localhost/DOM check TETAP FORBIDDEN tanpa permintaan eksplisit user di turn tersebut. Semua cek DOM/scratchpad/build → `read_url_content`. → Detail: `AGENTS.md §BROWSER TOOL GATE`
 7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser.
 
 
@@ -128,7 +128,7 @@ Step  3 : Self-Healing Handover   → Bandingkan [STATE].last di app-context.md
 |---|---|---|
 | Nama/slug proyek | `app-context.md [APP]` atau `prd.md` baris 1-35 | Baca `prd.md` penuh |
 | Task aktif | grep `[/]` dan `[ ]` di `todo.md` | Baca `todo.md` penuh |
-| Port aktif | `app-context.md [APP]` atau `handover.md §2` saja | Baca `handover.md` penuh |
+| Port aktif | `app-context.md [APP]` | Baca `handover.md` penuh |
 | Palet warna | `app-context.md [PALETTE]` | Baca `design-system.md` |
 | Halaman dibuat | `app-context.md [PAGES]` | Scan folder `src/` |
 | Issue terbuka | `app-context.md [STATE].issues` | Baca `issues.md` jika issues=0 |
@@ -251,6 +251,7 @@ icon_lib=[phosphor|heroicons|lucide|tabler]
 🔴 spacing acak→8pt grid | campur icon lib→ONE family
 🔴 [Design Read]+Three Dials sebelum halaman baru
 🔴 kontras text vs bg ≥ 4.5:1 | baca taste-skill sebelum visual
+🔴 scratchpad_dom=[FORBIDDEN|ALLOWED] | browser_gate=[STRICT|RELAXED]
 
 ## [FLOWS]
 <!-- Per-feature data flow — 1 baris per fitur utama -->
@@ -296,7 +297,8 @@ admin=[email]=[password]
 |---|---|---|---|
 | Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik |
 | UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only |
-| Browser Tool Gate + Token Guard | `gemini-execution.md §3G-ter` | Setiap akan pakai browser tool | `§3G-ter` only |
+| Browser Tool Gate + Scratchpad DOM enforcement | `AGENTS.md §BROWSER TOOL GATE` | Saat akan pakai browser_subagent | `§BROWSER TOOL GATE` only |
+| Browser Tool Gate detail + tabel substitusi tool | `gemini-execution.md §3G-ter` | Saat butuh decision tree lengkap | `§3G-ter` only |
 | SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only |
 | Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar |
 | Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only |
@@ -309,14 +311,7 @@ admin=[email]=[password]
 ---
 <!--
   VERSION LOG
-  v4.1.0 (2026-07-14) — Mitigasi Celah Logika: Tambah bypass Mandor Gate di lingkungan non-interactive (CI),
-                         batas Port Drifting maks 3x, integrasi static analysis AST di Fase 1 todo
-                         & L3 SAST, dan auto-ignore folder /.legacy/ di pemindaian filesystem.
-  v4.0.0 (2026-07-14) — Split Architecture: gemini.md dipecah dari 146KB monolith
-                         ke 3 tier (core + execution + templates). Tambah §VISUAL RULES
-                         inline, §DOCS BLUEPRINT 7 file (+routes.md, +dependency-graph.md),
-                         §APP-CONTEXT v2.0 (+§VISUAL_GATE, +§FLOWS). Memory Protocol gaps
-                         terintegrasi. Target: 100% visible di context window.
+  v4.0.0 (2026-07-16) — Split Architecture, Logic Mitigations & Refinements: Pemecahan monolith 146KB ke 3 tier. Mitigasi shell non-interactive, batas port drifting 3x, linter AST, auto-ignore /.legacy/, visual rules inline, §DOCS BLUEPRINT 7 file, §APP-CONTEXT v2.0 machine-optimized, dan full scratchpad_dom block enforcement.
   v3.1.0 (2026-07-07) — MCP v3.1.0, Context7, app-context.md system
   v2.2.0 (2026-06-xx) — UUPM Integration, Anti-Slop rules
 -->

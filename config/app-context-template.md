@@ -1,197 +1,89 @@
 <!--
-  ╔══════════════════════════════════════════════════════════════════════╗
-  ║  APP-CONTEXT MASTER TEMPLATE — Antigravity IDE Global Config        ║
-  ║  Path: C:\Users\ClasNet\.gemini\config\app-context-template.md      ║
-  ║  Tujuan: Template acuan AI saat generate .docs/app-context.md        ║
-  ║  AI: Isi semua placeholder [SEPERTI_INI] dengan nilai aktual proyek  ║
-  ║  Target ukuran output: ≤5 KB per proyek                              ║
-  ║  Version: 2.0 (v4.0.0 — added §VISUAL_GATE & §FLOWS, updated docs)   ║
-  ╚══════════════════════════════════════════════════════════════════════╝
+  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557
+  \u2551  APP-CONTEXT MASTER TEMPLATE \u2014 Antigravity IDE Global Config        \u2551
+  \u2551  Path: C:\Users\GBC_PC\.gemini\config\app-context-template.md      \u2551
+  \u2551  Format: MACHINE-OPTIMIZED v2.0 \u2014 sesuai gemini.md \u00a7APP-CONTEXT      \u2551
+  \u2551  Tujuan: Template acuan AI saat generate app-context.md per proyek  \u2551
+  \u2551  Target ukuran output: \u2264100 baris, \u22645 KB per proyek                 \u2551
+  \u2551  Version: 2.1 (2026-07-16 \u2014 migrated to machine-optimized format)   \u2551
+  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d
 
-  CARA GENERATE:
-  1. Baca prd.md §1–§3 + handover.md §2 + todo.md
-  2. Resolve Context7 IDs untuk stack di §IDENTITY
-  3. Isi semua placeholder dengan data aktual (bukan template kosong)
-  4. Simpan ke [PROJECT_ROOT]/.docs/app-context.md
-  5. Tambahkan .docs/app-context.md ke .gitignore HANYA jika proyek minta privacy
+  CARA GENERATE app-context.md:
+  1. Baca prd.md \u00a71\u2013\u00a73 + todo.md + .env untuk mendapatkan data aktual proyek
+  2. Isi semua placeholder [SEPERTI_INI] dengan nilai aktual (bukan template kosong)
+  3. Simpan ke [PROJECT_ROOT]/app-context.md (di root proyek, BUKAN di /.docs/)
+  4. Tambahkan app-context.md ke .gitignore proyek
+  5. FORBIDDEN append \u2014 ini snapshot, wajib OVERWRITE penuh setiap update
+
+  ATURAN PENULISAN (ZERO DEVIATION):
+  - Max 100 baris total output
+  - Max 1 baris per entry \u2014 FORBIDDEN multi-baris
+  - FORBIDDEN tambah header baru di luar template \u2014 gunakan [LIMITS]
+  - REQUIRED overwrite penuh setiap 5-6 task selesai (bukan append)
+  - REQUIRED masuk .gitignore proyek
+
+  TRIGGER GENERATE/UPDATE:
+  - Akhir Fase 1     : AI generate pertama kali
+  - Setiap 5-6 task  : AI overwrite bersamaan update handover.md
+  - `awal lanjut`    : AI baca ini PERTAMA sebelum file lain
+  - `lanjut dari sini`: AI baca ini untuk context recovery
 -->
 
-# [APP_NAME] — App Context
-> Stack: [STACK_ONELINER] | Fase: [FASE_N_DARI_TOTAL] | Updated: [YYYY-MM-DD HH:MM]
+<!-- app-context.md v2.0 \u2014 MACHINE-OPTIMIZED CONTEXT SNAPSHOT -->
+<!-- Last: [YYYY-MM-DDTHH:MM:SS+07:00] | Phase: [X]/[total] | Build: [OK|ERR] -->
 
----
+## [APP]
+name=[Nama Aplikasi] slug=[nama-slug] type=[web-app|saas|portal|e-commerce|company-profile]
+stack=[framework]|[db]|[css] pkg=[npm|composer] port=[port] url=[http://localhost/slug]
 
-## §IDENTITY
-<!-- Distilasi dari prd.md §1 + §2. Isi nilai aktual — bukan template -->
-| Key | Value |
-|-----|-------|
-| **App Name** | [Nama Aplikasi] |
-| **App Type** | [Web App / SaaS / E-Commerce / Company Profile / Portal / dll.] |
-| **Scale** | [Internal / Desa / Kabupaten / Nasional / Publik] |
-| **Core Value** | [Satu kalimat fungsi utama] |
-| **Frontend** | [HTML-CSS-JS / Next.js App Router / React Vite / Vue / dll.] |
-| **Backend** | [PHP Native / Laravel / Express / Hono / Supabase / Pure Frontend] |
-| **Database** | [MySQL / PostgreSQL+Prisma / SQLite / State Simulator] |
-| **Styling** | [Vanilla CSS / Tailwind CSS v4 / Bootstrap 5] |
-| **Package Mgr** | [npm / pnpm / yarn / bun / composer] |
-| **Dev Port** | [PORT — baca dari handover.md §2 atau .env] |
-| **Env Keys** | [KEY1, KEY2, KEY3 — nama key saja, TANPA value] |
-| **Project Root** | [Absolute path proyek] |
+## [PALETTE] IMMUTABLE
+bg=[#hex] surface=[#hex] text=[#hex] accent1=[#hex] accent2=[#hex]
+font_head=[Font Heading] font_body=[Font Body] radius=[Npx] nav=[model] theme=[mode]
 
----
+## [STATE]
+phase=[X] done=[N]/[total] last=[deskripsi task terakhir yang selesai]
+build=[OK|ERROR:pesan singkat] issues=[0|N:deskripsi singkat]
 
-## §DESIGN
-<!-- Distilasi dari prd.md §3 atau design-system/MASTER.md. Tulis HEX AKTUAL bukan placeholder -->
-```css
-/* Active Design Tokens — Resolved */
---vibe-background: [#HEX];     /* Palet [No.]: [Nama Kluster] */
---vibe-surface:    [#HEX];
---vibe-text-main:  [#HEX];
---vibe-primary:    [#HEX];
---vibe-secondary:  [#HEX];
---vibe-error:      #FF3E3E;
---vibe-success:    #00E676;
---vibe-warning:    #FFD600;
---vibe-radius:     [0px / 6px / 8px / 9999px];
---vibe-font-main:  '[Font Name]', sans-serif;
---vibe-font-head:  '[Heading Font]', serif;
---vibe-transition: all 0.2s ease-in-out;
-```
-- **Palette No.:** [1–15 atau UUPM] — **[Nama Kluster]**
-- **Theme Mode:** [Static Light / Static Dark / Dynamic Toggle]
-- **Nav Model:** [Top Sticky / Vertical Sidebar / Floating Dock]
-- **Icon Set:** [Phosphor / Heroicons / Lucide / Tabler]
-- **Box Radius:** [Sharp 0px / Rounded 6–8px / Pill 9999px]
-
----
-
-## §VISUAL_GATE
-<!-- 10 aturan visual anti-slop — embedded agar AI SELALU membaca setiap sesi -->
+## [VISUAL_GATE]
 icon_lib=[phosphor|heroicons|lucide|tabler]
-🔴 FORBIDDEN: ikon SVG mentah (hand-rolled) → gunakan icon_lib di atas
-🔴 FORBIDDEN: border/outline/stroke/shadow pada logo → logo as-is tanpa dekorasi
-🔴 FORBIDDEN: hardcode hex/rgb/hsl di CSS/JS → REQUIRED gunakan var(--vibe-*)
-🔴 FORBIDDEN: font-family: Inter tunggal → heading=[heading font] body=[body font]
-🔴 FORBIDDEN: background: white / color: black hardcode
-🔴 FORBIDDEN: spacing acak (13px, 19px) → kelipatan 8pt grid
-🔴 FORBIDDEN: mencampur lebih dari 1 icon library dalam satu proyek
-🔴 REQUIRED: output [Design Read] + Three Dials sebelum halaman/komponen baru
-🔴 REQUIRED: kontras elemen teks utama terhadap bg/surface ≥ 4.5:1
-🔴 REQUIRED: panggil view_file pada taste-skill-bridge/SKILL.md sebelum kode visual
+\ud83d\udd34 SVG mentah\u2192icon_lib | border logo\u2192as-is | hardcode hex\u2192var(--vibe-*)
+\ud83d\udd34 font tunggal\u21922 font | bg:white hardcode\u2192var(--vibe-background)
+\ud83d\udd34 spacing acak\u21928pt grid | campur icon lib\u2192ONE family
+\ud83d\udd34 [Design Read]+Three Dials sebelum halaman baru
+\ud83d\udd34 kontras text vs bg \u2265 4.5:1 | baca taste-skill sebelum visual
+\ud83d\udd34 scratchpad_dom=[FORBIDDEN|ALLOWED] | browser_gate=[STRICT|RELAXED]
 
----
+## [FLOWS]
+<!-- Per-feature data flow \u2014 1 baris per fitur utama -->
+[Login]=Form\u2192POST /auth/login\u2192verify\u2192JWT\u2192redirect /dashboard
+[Register]=Form\u2192POST /auth/register\u2192validate\u2192hash\u2192insert\u2192redirect
 
-## §TOOL_GATE
-<!-- Token Anti-Waste — dibaca AI setiap sesi dari app-context ini -->
-🔴 DOM/scratchpad cek  → read_url_content (BUKAN browser_subagent)
-🔴 Fetch docs library  → context7 MCP (BUKAN search_web + browser)
-🔴 File >100 baris     → view_file + StartLine/EndLine WAJIB
-🔴 Max 5 file/turn     → dari user-prefs.md [AI_BEHAVIOR].max_files_per_turn
-🔴 Max 200 baris/read  → dari user-prefs.md [AI_BEHAVIOR].max_lines_per_read
-🔴 browser_subagent    → HANYA jika: klik UI / JS / login browser / user minta recording
-Output wajib: [Browser Gate] Alasan: [kondisi valid] → Proceed ✅
+## [PAGES] BUILT
+<!-- Format: [path]=[NamaHalaman]=[public|member|admin]=[STABLE|WIP] -->
+[/]=[Landing]=public=STABLE
 
----
+## [PAGES] PENDING
+<!-- Format: [path]=[NamaHalaman]=[akses]=[Fase-X] -->
+[/dashboard]=[Dashboard]=member=Fase-4
 
-## §FLOWS
-<!-- Per-feature data flow — 1 baris per fitur utama (distilasi dari data flow) -->
-<!-- Format: [Nama Fitur]=Step1→Step2→...→StepN -->
-[Login]=Form→POST /auth/login→verify→JWT→redirect /dashboard
-[Register]=Form→POST /auth/register→validate→hash→insert→redirect
-[Example]=Form→POST /api/action→validate→process→update DB→response
+## [SCHEMA]
+<!-- Format: [table](col1,col2,col3,...) \u2014 1 baris per tabel -->
+[users](id,name,email,password,role,created_at)
 
----
+## [ADR]
+<!-- Architecture Decision Record \u2014 1 baris per keputusan -->
+[ADR-001] [keputusan diambil]: [alasan singkat 1 kalimat]
 
-## §STATE
-<!-- Distilasi dari handover.md + todo.md. Update setiap 5–6 task selesai -->
-- **Current Phase:** Fase [N] dari [TOTAL] — [Nama Fase Aktif]
-- **Dev Server:** `[start command]` → `http://localhost:[PORT]`
-- **Active Blockers:** [None / Deskripsi blocker jika ada]
-- **prd_hash:** [8-char hash atau last-modified: YYYY-MM-DD HH:MM] — deteksi drift jika diubah manual
-- **key_files:** prd=[modified], handover=[modified], todo=[modified]
+## [CREDS] DEV
+<!-- Kredensial dev saja \u2014 JANGAN isi production creds di sini -->
+admin=[email@dev.local]=[password_dev]
 
-**Last 5 Completed:**
-- [x] [Task selesai ke-5 terbaru]
-- [x] [Task selesai ke-4]
-- [x] [Task selesai ke-3]
-- [x] [Task selesai ke-2]
-- [x] [Task selesai ke-1 — paling baru]
+## [NEXT]
+<!-- 3 task berikutnya yang akan dikerjakan -->
+[ ] [task berikutnya 1]
+[ ] [task berikutnya 2]
+[ ] [task berikutnya 3]
 
-**Next 3 Tasks:**
-- [ ] [Task berikutnya 1]
-- [ ] [Task berikutnya 2]
-- [ ] [Task berikutnya 3]
-
----
-
-## §C7
-<!-- Pre-resolved Context7 Library IDs — AI gunakan langsung untuk query-docs() -->
-<!-- Tidak perlu resolve-library-id() lagi saat baca file ini -->
-
-**Primary Stack:**
-- `/[org/repo]` — [Nama Library] v[versi]
-- `/[org/repo]` — [Nama Library] v[versi]
-
-**Secondary:**
-- `/[org/repo]` — [Nama Library]
-
----
-
-## §RULES
-<!-- HANYA aturan HARD BLOCK yang relevan untuk stack proyek ini -->
-<!-- Filter dari gemini.md §1 — tidak perlu salin semua 98KB -->
-
-🔴 **FORBIDDEN:**
-- `migrate:fresh` / perintah reset DB destruktif → gunakan `migrate --force`
-- Truncate kode dengan `// kode lainnya...` → tulis UTUH
-- Ubah stack/palet/🔒 IMMUTABLE tanpa `[OVERRIDE IDENTITY: ...]`
-- Hardcode hex di CSS/JS → REQUIRED gunakan `--vibe-*` variables
-- Update semua dependencies sepihak saat debug
-
-🟡 **GATE (perlu izin):**
-- Git commit: unstage `.env*` dan metadata AI dulu (5 Tahap Git Commit)
-- Debug mode: tulis `issues.md` → STOP → minta izin sebelum ubah kode
-- Legacy purge: dry-run log sebelum hapus `/.legacy/`
-
-⬜ **STANDARD:**
-- Terminal: inject `CI=true` (Linux) atau `$Null |` (Windows PowerShell)
-- Port conflict: kill PID atau increment port + update `.env`
-- SEO: semua HTML REQUIRED punya title, meta desc, canonical, OG tags
-- Handover trigger: setiap 5–6 task selesai → update handover.md + app-context.md
-
----
-
-## §DOCS
-<!-- Pointer ke file detail — AI load HANYA jika task spesifik membutuhkannya -->
-
-| File | Load Kapan |
-|------|-----------|
-| `../prd.md` | Full PRD, core identity, atau feature list lengkap |
-| `../handover.md` | Full log sesi, error history, atau rollback state |
-| `../todo.md` | Seluruh task list atau tandai task selesai |
-| `./architecture.md` | Macro data flow (Presentation -> Middleware -> Storage) |
-| `./api-spec.md` | Endpoint list, request/response spec, auth flow |
-| `./database.md` | Schema lengkap, relasi tabel, migration history |
-| `./routes.md` | Peta routes aktif (Frontend & API) |
-| `./dependency-graph.md` | Critical files, high-impact files, circular deps |
-| `./issues.md` | Bug tracker — FIFO max 10 RESOLVED history + OPEN/IN_PROGRESS |
-| `./design-system/MASTER.md` | Design tokens lengkap, component specs, spacing system |
-| `./design-system/pages/[page].md` | Override design untuk halaman spesifik |
-
----
-
-## §PERF (opsional — isi setelah Fase 8 / audit performa)
-<!-- Baseline performa terakhir — AI gunakan untuk deteksi regresi -->
-- **LCP:** [X.Xs] | **CLS:** [X.XX] | **INP:** [XXXms]
-- **Lighthouse:** Perf=[XX] A11Y=[XX] SEO=[XX] BP=[XX]
-- **Last Audit:** [YYYY-MM-DD]
-- **Bottleneck:** [None / deskripsi jika ada]
-
----
-<!--
-  METADATA
-  Template Version: 2.1 (v4.1.0 — added §TOOL_GATE + §PERF sections)
-  Source: %USERPROFILE%\.gemini\config\app-context-template.md
-  Engine: Antigravity IDE — §APP Protocol v2.1
-  Update trigger: Setiap handover cycle (5–6 task) atau perubahan major stack/design
--->
+## [LIMITS]
+<!-- Known limitations dan workaround aktif saat ini -->
+[LIM-001] [masalah aktif]: [workaround yang sedang dipakai]
