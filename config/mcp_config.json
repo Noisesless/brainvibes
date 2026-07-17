@@ -3,7 +3,7 @@
     "context7": {
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "X-Context7-Client-IDE": "antigravity"
+        "X-Context7-Client-IDE": "opencode|gemini|antigravity|cursor|copilot"
       }
     },
     "sequential-thinking": {
@@ -22,7 +22,8 @@
       "args": [
         "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem",
         "C:\\XAMPP\\htdocs",
-        "C:\\Users\\GBC_PC\\.gemini"
+        "C:\\Users\\GBC_PC\\.gemini",
+        "C:\\Users\\GBC_PC\\.config\\opencode"
       ]
     },
     "time": {
@@ -35,6 +36,10 @@
     "fetch": {
       "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
       "args": ["mcp-server-fetch"]
+    },
+    "web_search": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@anthropic/mcp-server-web-search"]
     }
   }
 }

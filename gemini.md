@@ -14,6 +14,8 @@
     *   **Pembacaan Berkas Terarah:** Gunakan range-limited reads (`StartLine`/`EndLine`) untuk file >100 baris.
     *   **Penyuntingan Presisi Lokal:** Gunakan `replace_file_content` / `multi_replace_file_content`, bukan overwrite file.
     *   **RAG Lokal:** Maksimalkan MCP `context7` untuk dokumentasi library.
+5.  **Technical Debate Principle:** AI tidak wajib mengiyakan user. Jika AI memiliki data teknis yang lebih faktual, AI WAJIB menantang dengan argumen berbasis data, bukan opini. Debate harus konstruktif, bukan konfrontatif. Output wajib: `[TECH-DEBATE] Argumen saya: [alasan faktual] — Rekomendasi: [solusi lebih baik]`
+6.  **Concise Response Protocol:** Patuhi `user-prefs.md [AI_BEHAVIOR].response_style`. Jika `CONCISE` → maks 3-5 baris per respons, tanpa penjelasan berlebihan. Jika `COMPACT` → ringkas tapi lengkap. Jika `VERBOSE` → jelaskan detail. Default: `CONCISE`.
 
 ---
 
@@ -28,9 +30,11 @@
 5. **No-Truncation Law:** FORBIDDEN memotong kode dengan `// kode lainnya...`. Tulis UTUH.
 6. **Core Identity Lock:** FORBIDDEN mengubah nilai 🔒 IMMUTABLE di `prd.md` (palet, stack, tipe web).
 7. **Visual Output Gate (Anti-Slop UI):** → Lihat **§VISUAL RULES** di bawah untuk detail lengkap.
+8. **Anti-Fabrication Law:** FORBIDDEN menjawab dengan keyakinan jika tidak yakin. Jika bingung atau tidak tahu → STOP dan TANYA user. FORBIDDEN mengarang solusi, fakta, atau referensi yang tidak pasti. Output wajib: `[ASK-CLARIFY] Saya kurang yakin tentang [X]. Apakah Anda maksud: A) [opsi A] / B) [opsi B]`
+9. **Web-Search Fallback Law:** Jika pertanyaan user di luar training data atau butuh info real-time → gunakan MCP web_search (jika tersedia) atau beri tahu user. FORBIDDEN mengarang URL, versi, atau dokumentasi. Output wajib: `[INFO-SOURCE] Sumber: [web_search/context7/manual]`
 
 ### 🟡 GATE (Gerbang Checkpoint)
-1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-execution.md §6A`
+1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-templates.md §6A`
 2. **Mandor Approval Gate:** Pada `baca error`, STOP dan minta izin user sebelum ubah kode setelah `issues.md` ditulis.
 3. **Legacy Purge Gate:** Penghapusan `/.legacy/` butuh dry-run log & persetujuan tertulis.
 4. **Handover Trigger:** Update `handover.md` + **overwrite** `app-context.md` setiap 5-6 sub-task selesai.
@@ -298,13 +302,15 @@ admin=[email]=[password]
 | Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik |
 | UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only |
 | Browser Tool Gate + Scratchpad DOM enforcement | `AGENTS.md §BROWSER TOOL GATE` | Saat akan pakai browser_subagent | `§BROWSER TOOL GATE` only |
-| Browser Tool Gate detail + tabel substitusi tool | `gemini-execution.md §3G-ter` | Saat butuh decision tree lengkap | `§3G-ter` only |
+| Browser Tool Gate detail + tabel substitusi tool | `gemini-execution.md §4G-ter` | Saat butuh decision tree lengkap | `§4G-ter` only |
 | SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only |
 | Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar |
 | Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only |
 | Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit | `§6A` only |
 | Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna | §1 kluster saja |
 | File role definitions | `gemini-execution.md §4C` | Saat bingung prd vs gemini vs design-system | `§4C` only |
+| PRD blueprint 11-bab | `prd-template.md` | Saat `awal baru` wizard | Full read |
+| Yasei-2 CLI subsistem | `yasei-cli.ps1` | Saat token IDE habis / alternatif agent | Full read |
 
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.
 

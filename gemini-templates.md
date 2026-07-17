@@ -1,4 +1,4 @@
-# AI CODING AGENT — MACRO COMMANDS & TEMPLATES (VIBES CODING WORKFLOW V4.0)
+# AI CODING AGENT — MACRO COMMANDS & TEMPLATES (VIBES CODING WORKFLOW V4.0.0)
 *[Split Architecture: gemini-templates.md — dimuat AI via view_file hanya saat saklar aktif / butuh template]*
 
 ---
@@ -18,7 +18,7 @@
    Konfirmasi        : Apakah Anda ingin mengadopsi rekomendasi ini? (Ya/Tidak/Sebagian)
    ```
 4. **Scope Warning Gate:** Jika estimasi >20 halaman atau >15 fitur, berikan peringatan untuk membagi milestone.
-5. **Knowledge Priming (Silent):** Scan `%USERPROFILE%\.gemini\antigravity-ide\knowledge\` (`project-retrospectives`, `error-solutions`, `vibes-stack-patterns`) untuk pre-populate `todo.md` lebih presisi.
+5. **Knowledge Priming (Silent):** Scan `$HOME/.gemini/antigravity-ide/knowledge/` (Windows: `%USERPROFILE%\.gemini\antigravity-ide\knowledge\`) (`project-retrospectives`, `error-solutions`, `vibes-stack-patterns`) untuk pre-populate `todo.md` lebih presisi.
 6. Generate `prd.md` dan `todo.md` (8 Fase), lalu mulai eksekusi Fase 1.
 
 ### 2B. Saklar: `awal lanjut`

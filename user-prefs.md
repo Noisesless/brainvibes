@@ -33,6 +33,7 @@ default_domain     = localhost
 
 [AI_BEHAVIOR]
 output_mode        = COMPACT                      # VERBOSE | COMPACT | AUTO
+response_style     = CONCISE                      # CONCISE (max 3-5 baris) | COMPACT | VERBOSE
 uupm_auto_run      = true                         # Jalankan UUPM search otomatis (awal baru & redesign)
 taste_skill_auto   = true                         # Auto-trigger taste-skill-bridge saat redesign/buat halaman
 anti_slop_mode     = HARD                         # HARD (semua anti-slop rules aktif) | SOFT
@@ -68,8 +69,14 @@ drift_alert        = true                         # Cetak [HANDOVER DRIFT DETECT
 browser_gate_log   = true                         # Cetak [Browser Gate] saat pakai browser tool
 self_check_log     = true                         # Cetak [SELF-CHECK] setelah setiap task selesai
 
+[ACTION_BEHAVIOR]
+ask_before_assume  = true                         # AI wajib tanya jika ragu, jangan asumsi
+technical_debate   = true                         # AI boleh sanggah user dengan data faktual
+web_search_enabled = true                         # Aktifkan web search via MCP saat answer tidak tersedia
+fabrication_guard  = true                         # FORBIDDEN mengarang solusi/fakta/referensi yang tidak pasti
+
 [META]
-brainvibes_version = 4.0.0
+brainvibes_version = 4.1.0
 installed_at       = 2026-07-13
-last_updated       = 2026-07-16
-changelog          = v4.0.0-hotfix (2026-07-16): 17 celah ditutup — scratchpad_dom enforcement, handover→app-context refs, SEO 20-item checklist, §7 fase konkret, POINTER update, skill+config sync, [NOTIFICATION] binding
+last_updated       = 2026-07-17
+changelog          = v4.1.0 — 4 aturan baru: concise response, anti-fabrication, web search, technical debate

@@ -1,6 +1,6 @@
 # AGENTS.md — Global AI Behavior Rules (Antigravity IDE)
-# Path: C:\Users\ClasNet\.gemini\AGENTS.md
-# Berlaku untuk: Antigravity IDE (semua sesi, semua proyek)
+# Path: %USERPROFILE%\.gemini\AGENTS.md
+# Berlaku untuk: Gemini CLI | Antigravity IDE | Cursor | Copilot | OpenCode (semua sesi, semua proyek)
 # Rules ini MENAMBAH, bukan menggantikan, gemini.md
 
 ---
@@ -10,10 +10,10 @@
 ### Prioritas Baca Awal (Urutan Wajib — Setiap Sesi Baru)
 
 ```
-Step -1 : Baca user-prefs.md     → %USERPROFILE%\.gemini\user-prefs.md  [SILENT]
-Step  0 : Baca app-context.md    → [workspace]/app-context.md           [SILENT, jika ada]
-Step  1 : Baca prd.md §1-§3     → jika app-context.md tidak ada         [SILENT]
-Step  2 : Ambil task aktif       → grep [/] di todo.md                  [SILENT]
+Step -1 : Baca user-prefs.md     → $HOME/.gemini/user-prefs.md  [SILENT] (Windows: %USERPROFILE%\.gemini\user-prefs.md)
+Step  0 : Baca app-context.md    → [workspace]/app-context.md   [SILENT, jika ada]
+Step  1 : Baca prd.md §1-§3     → jika app-context.md tidak ada [SILENT]
+Step  2 : Ambil task aktif       → grep [/] di todo.md         [SILENT]
 ```
 
 FORBIDDEN: Membaca prd.md penuh, handover.md penuh, atau design-system.md
@@ -47,7 +47,7 @@ aturan berikut BERLAKU OTOMATIS — tanpa peduli apa kalimat perintah user:
 ```
 
 ### Untuk pembuatan halaman/komponen BARU atau REDESIGN — tambahan wajib:
-1. Panggil `view_file` pada `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`
+1. Panggil `view_file` pada `$HOME/.gemini/config/skills/taste-skill-bridge/SKILL.md` (Windows: `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`)
 2. Baca Visual DNA proyek dari `prd.md §3` atau `app-context.md §PALETTE`
 3. Keluarkan baris `[Design Read]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
 4. Jalankan UUPM Pipeline — `search.py` atau fallback `design-system.md`
@@ -154,18 +154,18 @@ dom_read_default   = read_url  → DEFAULT cek DOM via read_url_content, bukan b
 
 | Skill Name | Path | Auto-Trigger Keywords |
 |---|---|---|
-| `ui-ux-pro-max` | `config\skills\ui-ux-pro-max\` | awal baru, redesign, buat halaman |
-| `taste-skill-bridge` | `config\skills\taste-skill-bridge\` | redesign, buat halaman, UI baru, landing page |
-| `lessons-learned` | `config\skills\lessons-learned\` | baca error, pernah coba, jangan ulangi |
-| `code-snippets` | `config\skills\code-snippets\` | buat form, buat navbar, buat modal, buat toast |
-| `database-patterns` | `config\skills\database-patterns\` | desain database, migration, seeder, query |
-| `git-workflow` | `config\skills\git-workflow\` | commit, push, branch, merge, PR |
-| `accessibility-audit` | `config\skills\accessibility-audit\` | audit a11y, screen reader, WCAG, cek a11y |
-| `performance-audit` | `config\skills\performance-audit\` | audit performa, lighthouse, LCP, web vitals |
-| `deployment-checklist` | `config\skills\deployment-checklist\` | deploy, hosting, production, go live |
-| `security-patterns` | `config\skills\security-patterns\` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability |
-| `pentest-strix` | `config\skills\pentest-strix\` | **pentest, pentest cepat, pentest mendalam, pentest api, pentest auth, dast, dynamic scan, strix scan** |
-| `quick-scaffold` | `config\skills\quick-scaffold\` | buat komponen, buat model, buat controller, buat form, scaffold, generate file |
+| `ui-ux-pro-max` | `config/skills/ui-ux-pro-max/` | awal baru, redesign, buat halaman |
+| `taste-skill-bridge` | `config/skills/taste-skill-bridge/` | redesign, buat halaman, UI baru, landing page |
+| `lessons-learned` | `config/skills/lessons-learned/` | baca error, pernah coba, jangan ulangi |
+| `code-snippets` | `config/skills/code-snippets/` | buat form, buat navbar, buat modal, buat toast |
+| `database-patterns` | `config/skills/database-patterns/` | desain database, migration, seeder, query |
+| `git-workflow` | `config/skills/git-workflow/` | commit, push, branch, merge, PR |
+| `accessibility-audit` | `config/skills/accessibility-audit/` | audit a11y, screen reader, WCAG, cek a11y |
+| `performance-audit` | `config/skills/performance-audit/` | audit performa, lighthouse, LCP, web vitals |
+| `deployment-checklist` | `config/skills/deployment-checklist/` | deploy, hosting, production, go live |
+| `security-patterns` | `config/skills/security-patterns/` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability |
+| `pentest-strix` | `config/skills/pentest-strix/` | **pentest, pentest cepat, pentest mendalam, pentest api, pentest auth, dast, dynamic scan, strix scan** |
+| `quick-scaffold` | `config/skills/quick-scaffold/` | buat komponen, buat model, buat controller, buat form, scaffold, generate file |
 
 ---
 
@@ -192,4 +192,29 @@ secara SILENT sebelum menghasilkan kode:
 Cetak 1 baris pasif di bawah kode:
 ```
 ⚠️ Pola ini mirip [VULN-NNN] — telah diterapkan fix preventif secara otomatis.
+```
+
+---
+
+## WEB SEARCH PROTOCOL (MCP-based)
+
+Ketika AI tidak tahu jawaban atau butuh info real-time (patuhi `user-prefs.md [ACTION_BEHAVIOR].web_search_enabled`):
+
+**Priority Order:**
+1. Cek context7 MCP dulu (dokumentasi library resmi)
+2. Jika tidak ada → gunakan web_search MCP (jika tersedia)
+3. Jika MCP search tidak tersedia → beri tahu user:
+   `[WEB-SEARCH] Jawaban di luar training data saya. Silakan cek: [saran URL]`
+
+**Aturan:**
+- Selalu cantumkan sumber jika memberikan info dari web search
+- FORBIDDEN mengarang URL, versi, atau dokumentasi
+- Jika pakai web_search, output WAJIB:
+  ```
+  [INFO-SOURCE] Sumber: web_search — [judul sumber] (URL)
+  ```
+
+**Output jika MCP search tidak tersedia:**
+```
+[INFO-SOURCE] Sumber: manual — AI tidak memiliki akses web search saat ini.
 ```
