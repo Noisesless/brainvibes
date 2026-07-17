@@ -51,7 +51,7 @@
 | Skill | Trigger Keywords | Fungsi |
 | :--- | :--- | :--- |
 | 🎨 `ui-ux-pro-max` | awal baru, redesign | **UUPM** — Design intelligence dengan 15 CSV datasets, multi-stack support |
-| 🖌️ `taste-skill-bridge` | buat halaman, landing page, UI baru | Anti-slop frontend bridge, Three Dials system |
+| 🖌️ `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Anti-slop frontend bridge, Three Dials system |
 | 🔒 `security-patterns` | analisa keamanan, scan keamanan | Vulnerability database + secure coding patterns per stack |
 | 📝 `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |
 | 🗄️ `database-patterns` | desain database, migration | Schema design, query optimization, ORM patterns |

@@ -6,6 +6,7 @@ description: |
   Auto-aktif saat user meminta: buat halaman, redesign, landing page, portfolio, UI baru,
   tampilan baru, ubah desain, frontend, perbaiki halaman, buat artikel, halaman berita,
   template post, edit tampilan, update konten halaman, ubah layout, perbaiki artikel,
+  ubah bentuk, ubah tampilan, redesign visual, ubah visual,
   sesuai visual dna, sesuai vdna, visual dna, vdna, samakan visual, konsistensi visual,
   ikuti desain halaman utama, ikuti style halaman lain, perbaiki agar konsisten, update tampilan.
   

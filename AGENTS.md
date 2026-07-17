@@ -193,7 +193,7 @@ dom_read_default   = read_url  → DEFAULT cek DOM via read_url_content, bukan b
 | Skill Name | Path | Auto-Trigger Keywords | Read Protocol |
 |---|---|---|---|
 | `ui-ux-pro-max` | `config/skills/ui-ux-pro-max/` | awal baru, redesign, buat halaman | Baca ESSENTIAL.md (50 baris) → DETAILED.md jika complex |
-| `taste-skill-bridge` | `config/skills/taste-skill-bridge/` | redesign, buat halaman, UI baru, landing page | **WAJIB baca ESSENTIAL.md PENUH** → DETAILED.md jika complex → REFERENCE.md untuk pre-flight |
+| `taste-skill-bridge` | `config/skills/taste-skill-bridge/` | redesign, buat halaman, UI baru, landing page, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | **WAJIB baca ESSENTIAL.md PENUH** → DETAILED.md jika complex → REFERENCE.md untuk pre-flight |
 | `lessons-learned` | `config/skills/lessons-learned/` | baca error, pernah coba, jangan ulangi | Baca SKILL.md deskripsi → data/anti-patterns.md jika trigger |
 | `code-snippets` | `config/skills/code-snippets/` | buat form, buat navbar, buat modal, buat toast | Baca SKILL.md deskripsi → data/ jika perlu snippet |
 | `database-patterns` | `config/skills/database-patterns/` | desain database, migration, seeder, query | Baca SKILL.md deskripsi → data/ jika perlu pattern |

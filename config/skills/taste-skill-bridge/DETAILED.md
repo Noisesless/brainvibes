@@ -4,6 +4,7 @@ description: |
   Anti-slop frontend integration bridge — DETAILED section.
   Semua rules lengkap dari taste-skill-bridge/SKILL.md asli.
   Dibaca AI HANYA jika task complex atau perlu detail spesifik.
+  Trigger: redesign, buat halaman, UI baru, landing page, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual
 ---
 
 # TASTE-SKILL BRIDGE — DETAILED (Semua Rules Lengkap)

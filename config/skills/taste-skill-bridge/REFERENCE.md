@@ -4,6 +4,7 @@ description: |
   Anti-slop frontend integration bridge — REFERENCE section.
   Checklist, examples, dan reference materials.
   Dibaca AI HANYA untuk pre-flight check sebelum declare done.
+  Trigger: redesign, buat halaman, UI baru, landing page, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual
 ---
 
 # TASTE-SKILL BRIDGE — REFERENCE (Checklist & Examples)
