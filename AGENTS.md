@@ -47,16 +47,23 @@ aturan berikut BERLAKU OTOMATIS — tanpa peduli apa kalimat perintah user:
 ```
 
 ### Untuk pembuatan halaman/komponen BARU atau REDESIGN — tambahan wajib:
-1. Panggil `view_file` pada `$HOME/.gemini/config/skills/taste-skill-bridge/SKILL.md` (Windows: `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\SKILL.md`)
+1. **ENFORCED FULL READ:** Panggil `view_file` pada `$HOME/.gemini/config/skills/taste-skill-bridge/ESSENTIAL.md` (Windows: `%USERPROFILE%\.gemini\config\skills\taste-skill-bridge\ESSENTIAL.md`) — WAJIB baca PENUH 50 baris pertama
 2. Baca Visual DNA proyek dari `prd.md §3` atau `app-context.md §PALETTE`
-3. Keluarkan baris `[Design Read]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
-4. Jalankan UUPM Pipeline — `search.py` atau fallback `design-system.md`
+3. **HARD BLOCK:** FORBIDDEN menulis satu baris kode UI tanpa output `[Design Read]` + Three Dials
+4. Keluarkan baris `[Design Read]` + Three Dials + `[Style Rec]` SEBELUM kode apapun
+5. Jalankan UUPM Pipeline — `search.py` atau fallback `design-system.md`
+6. Jika task complex → baca `taste-skill-bridge/DETAILED.md` (STEP 2-6)
+7. Sebelum declare done → baca `taste-skill-bridge/REFERENCE.md` (Pre-Flight Checklist)
 
 **Output WAJIB sebelum kode (untuk pembuatan/redesign):**
 ```
 [Design Read] Reading this as: [X] untuk [Y], vibe [Z], dials: V=[n] M=[n] D=[n]
 [Style Rec] Rekomendasi: [style sesuai Visual DNA] — sumber: [UUPM/design-system.md/prd.md]
 ```
+
+> ⚠️ **MANDATORY:** AI REQUIRED membaca ESSENTIAL.md secara PENUH saat visual trigger.
+> FORBIDDEN mengeksekusi STEP 0-6 dari memori tanpa baca ulang.
+> Detail lengkap: `taste-skill-bridge/ESSENTIAL.md` (50 baris), `DETAILED.md` (STEP 2-6), `REFERENCE.md` (Pre-Flight)
 
 ---
 
@@ -75,6 +82,9 @@ Jika `user-prefs.md` tidak ada, gunakan defaults ini:
 
 ## ANTI-SLOP ENFORCEMENT (16 ATURAN WAJIB UI)
 
+> ⚠️ **SINGLE SOURCE OF TRUTH:** Semua 16 aturan Anti-AI-SLOP ada di `config/skills/visual-rules.md`
+> AI WAJIB baca visual-rules.md setiap visual task (token cost: 5K vs 25K = 80% reduction)
+
 1. ❌ FORBIDDEN warna `#6C63FF` (ungu AI), `#4CAF50` (hijau), `#2196F3` (biru) tanpa rekomendasi UUPM colors.csv
 2. ❌ FORBIDDEN `font-family: Inter` tunggal tanpa heading font pair — wajib pairing dari UUPM typography.csv
 3. ❌ FORBIDDEN `border-radius: 8px` hardcode — REQUIRED gunakan CSS token `--radius-md`
@@ -91,6 +101,8 @@ Jika `user-prefs.md` tidak ada, gunakan defaults ini:
 14. ❌ FORBIDDEN memberi border, outline, atau shadow pada logo — logo wajib as-is tanpa dekorasi
 15. ❌ FORBIDDEN mencampur > 1 icon library dalam satu proyek — ONE icon family rule
 16. ❌ FORBIDDEN menghasilkan output visual tanpa memeriksa kepatuhan visual gate ini
+
+> **Detail lengkap + output formats:** `config/skills/visual-rules.md`
 
 ---
 
@@ -150,22 +162,56 @@ dom_read_default   = read_url  → DEFAULT cek DOM via read_url_content, bukan b
 
 ---
 
+## RULE PRIORITY SYSTEM (Gap 10 Fix)
+
+### 🔴 CRITICAL (100% Compliance — FORBIDDEN skip)
+- Design Read output sebelum kode visual
+- Three Dials diset (V, M, D)
+- CSS tokens (`var(--vibe-*)`) — tidak hardcode hex
+- Font pairing (2 font: heading + body)
+- ESSENTIAL.md dibaca PENUH saat visual trigger
+
+### 🟡 IMPORTANT (90% Compliance — minimize skip)
+- 8pt grid spacing (kelipatan 8)
+- Visual DNA validation (tokens vs prd.md)
+- UUPM pipeline (search.py atau fallback)
+- DNA inheritance (halaman turunan inherit dari halaman utama)
+- Self-check sebelum declare done
+
+### 🟢 NICE-TO-HAVE (70% Compliance — optional jika token terbatas)
+- Rhythm Score output
+- Geometry variation (asymmetric/blob/oval/arch)
+- Motion guidelines (jika MOTION_INTENSITY ≥ 4)
+- Premium visual architecture (wave dividers, overlapping cards, dll)
+
+> AI tahu: Critical = FORBIDDEN skip, Important = minimize skip, Nice = optional
+
+---
+
 ## SKILLS REGISTRY (Auto-Discovery)
 
-| Skill Name | Path | Auto-Trigger Keywords |
-|---|---|---|
-| `ui-ux-pro-max` | `config/skills/ui-ux-pro-max/` | awal baru, redesign, buat halaman |
-| `taste-skill-bridge` | `config/skills/taste-skill-bridge/` | redesign, buat halaman, UI baru, landing page |
-| `lessons-learned` | `config/skills/lessons-learned/` | baca error, pernah coba, jangan ulangi |
-| `code-snippets` | `config/skills/code-snippets/` | buat form, buat navbar, buat modal, buat toast |
-| `database-patterns` | `config/skills/database-patterns/` | desain database, migration, seeder, query |
-| `git-workflow` | `config/skills/git-workflow/` | commit, push, branch, merge, PR |
-| `accessibility-audit` | `config/skills/accessibility-audit/` | audit a11y, screen reader, WCAG, cek a11y |
-| `performance-audit` | `config/skills/performance-audit/` | audit performa, lighthouse, LCP, web vitals |
-| `deployment-checklist` | `config/skills/deployment-checklist/` | deploy, hosting, production, go live |
-| `security-patterns` | `config/skills/security-patterns/` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability |
-| `pentest-strix` | `config/skills/pentest-strix/` | **pentest, pentest cepat, pentest mendalam, pentest api, pentest auth, dast, dynamic scan, strix scan** |
-| `quick-scaffold` | `config/skills/quick-scaffold/` | buat komponen, buat model, buat controller, buat form, scaffold, generate file |
+| Skill Name | Path | Auto-Trigger Keywords | Read Protocol |
+|---|---|---|---|
+| `ui-ux-pro-max` | `config/skills/ui-ux-pro-max/` | awal baru, redesign, buat halaman | Baca ESSENTIAL.md (50 baris) → DETAILED.md jika complex |
+| `taste-skill-bridge` | `config/skills/taste-skill-bridge/` | redesign, buat halaman, UI baru, landing page | **WAJIB baca ESSENTIAL.md PENUH** → DETAILED.md jika complex → REFERENCE.md untuk pre-flight |
+| `lessons-learned` | `config/skills/lessons-learned/` | baca error, pernah coba, jangan ulangi | Baca SKILL.md deskripsi → data/anti-patterns.md jika trigger |
+| `code-snippets` | `config/skills/code-snippets/` | buat form, buat navbar, buat modal, buat toast | Baca SKILL.md deskripsi → data/ jika perlu snippet |
+| `database-patterns` | `config/skills/database-patterns/` | desain database, migration, seeder, query | Baca SKILL.md deskripsi → data/ jika perlu pattern |
+| `git-workflow` | `config/skills/git-workflow/` | commit, push, branch, merge, PR | Baca SKILL.md deskripsi → data/ jika perlu workflow |
+| `accessibility-audit` | `config/skills/accessibility-audit/` | audit a11y, screen reader, WCAG, cek a11y | Baca SKILL.md deskripsi → checklist jika audit |
+| `performance-audit` | `config/skills/performance-audit/` | audit performa, lighthouse, LCP, web vitals | Baca SKILL.md deskripsi → checklist jika audit |
+| `deployment-checklist` | `config/skills/deployment-checklist/` | deploy, hosting, production, go live | Baca SKILL.md deskripsi → checklist jika deploy |
+| `security-patterns` | `config/skills/security-patterns/` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability | Baca SKILL.md deskripsi → data/known-vulns.md + data/secure-patterns.md |
+| `pentest-strix` | `config/skills/pentest-strix/` | **pentest, pentest cepat, pentest mendalam, pentest api, pentest auth, dast, dynamic scan, strix scan** | Baca SKILL.md deskripsi → docker jika pentest |
+| `quick-scaffold` | `config/skills/quick-scaffold/` | buat komponen, buat model, buat controller, buat form, scaffold, generate file | Baca SKILL.md deskripsi → data/ jika perlu scaffold |
+
+### Skill Loading Mechanism (Gap 11 Fix)
+**Default:** AI baca SKILL.md deskripsi (1-2 baris) → trigger detection
+**Visual tasks:** AI WAJIB baca ESSENTIAL.md PENUH (50 baris) → 5K tokens
+**Complex tasks:** AI baca DETAILED.md (STEP 2-6) → 15K tokens (jika perlu detail)
+**Pre-flight:** AI baca REFERENCE.md (checklist) → 5K tokens (sebelum declare done)
+
+> Token cost: 25K (full file) → 5K (ESSENTIAL only) = 80% reduction
 
 ---
 

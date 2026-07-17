@@ -169,6 +169,72 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
 ---
 
 ### G. Protokol Human-Like HTTP Request (Stealth Fetch Engine)
+
+---
+
+### G-bis. Visual DNA Extraction & Validation (Gap 3, 4, 12 Fix)
+
+#### STEP 1 — Visual DNA Extraction (Wajib Sebelum Code)
+AI REQUIRED ekstrak DNA tokens dari halaman utama sebelum menulis kode halaman turunan:
+
+**Extraction Checklist:**
+```
+1. Baca halaman utama → index.html / home.blade.php / page.tsx / index.php
+2. Ekstrak DNA tokens:
+   a. Palet aktif         → cari var(--vibe-*) atau :root CSS variables
+   b. Font pair           → cari font-family declaration (heading + body)
+   c. Border-radius system → cari --radius-* atau border-radius pattern
+   d. Spacing rhythm      → cari gap/padding pattern (kelipatan 8pt?)
+   e. Shadow style        → cari box-shadow (tinted? pure black? neumorphic?)
+   f. Nav pattern         → fixed/sticky? height? glassmorphism?
+   g. Section structure   → full-width? max-width container? padding pattern?
+   h. Button style        → solid? outline? ghost? pill shape?
+3. Catat di [DNA Source] sebelum menulis kode apapun
+```
+
+**Output Format:**
+```
+[DNA Source] Inheriting from: [nama file halaman utama] — tokens: --vibe-primary, --font-heading: Geist, --radius-md: 8px, shadow-style: tinted
+```
+
+#### STEP 2 — Visual DNA Validation (Gap 4 Fix)
+AI REQUIRED validasi tokens vs VDNA di prd.md §3 sebelum code:
+
+**Validation Checklist:**
+```
+1. Baca prd.md §3 → ekstrak VDNA specs (palette, font, vibe)
+2. Baca app.css → ekstrak CSS tokens aktual
+3. Compare: apakah tokens sesuai VDNA?
+4. Jika mismatch → output [DNA MISMATCH]
+5. Tanya user: "VDNA mana yang mau di-apply?"
+```
+
+**Output Format (jika mismatch):**
+```
+[DNA MISMATCH]
+prd.md §3: Acid Streetwear (orange, bold, high contrast)
+app.css: --vibe-accent-1: #6C63FF (purple, AI-default)
+→ Question: VDNA mana yang mau di-apply?
+  A) Acid Streetwear (dari prd.md §3)
+  B) Phantom Violet (dari app.css)
+  C) Random (UUPM search)
+```
+
+#### STEP 3 — Ask-Before-Design (Gap 6 Fix)
+Jika VDNA ambiguous → STOP dan tanya user:
+
+**Output Format:**
+```
+[ASK-CLARIFY] VDNA mana yang mau di-apply?
+  A) Phantom Violet (dari app.css)
+  B) Acid Streetwear (dari prd.md §3)
+  C) Random (UUPM search)
+FORBIDDEN asumsi VDNA tanpa konfirmasi
+```
+
+---
+
+### G-ter. Modern CSS Enforcement Gate (CSS 2026)
 Setiap HTTP request ke server eksternal REQUIRED menggunakan teknik kamuflase:
 
 1. **Hukum Header Manusia:** AI **FORBIDDEN** menggunakan header default fetch/axios. Gunakan header lengkap (`User-Agent` Chrome/Windows terbaru, `Accept-Language`, `Sec-Ch-Ua`, dll.).
@@ -236,7 +302,51 @@ Jika scratchpad_dom = FORBIDDEN dan target adalah localhost → [SCRATCHPAD BLOC
 
 ---
 
-### G-bis. Modern CSS Enforcement Gate (CSS 2026)
+### G-bis. Visual Self-Check & Pre-Flight (Gap 5, 9 Fix)
+
+#### Visual Self-Check (WAJIB untuk perubahan visual)
+AI REQUIRED jalankan self-check ini sebelum menyatakan task UI selesai:
+
+**Self-Check Checklist:**
+```
+- [ ] Design Read output?
+- [ ] Three Dials diset?
+- [ ] 8pt grid dipakai?
+- [ ] Font pairing (2 font)?
+- [ ] CSS tokens (var(--vibe-*))?
+- [ ] Visual DNA valid?
+- [ ] UUPM pipeline dijalankan?
+- [ ] DNA extraction dilakukan?
+- [ ] DNA validation dilakukan?
+
+Jika ada ❌ → perbaiki SEBELUM declare done
+```
+
+**Output Format:**
+```
+[VISUAL SELF-CHECK]
+Design Read: ✅ | Three Dials: ✅ | 8pt Grid: ✅ | Font Pairing: ✅
+CSS Tokens: ✅ | DNA Valid: ✅ | UUPM: ✅ | DNA Extract: ✅ | DNA Validate: ✅
+```
+
+#### Pre-Flight Checklist (Sebelum Declare Selesai)
+AI REQUIRED jalankan taste-skill pre-flight checklist sebelum menyatakan task UI selesai:
+
+**Output Format:**
+```
+[TASTE-SKILL PRE-FLIGHT]
+DNA: ✅ | File: ✅ | Typography: ✅ | Hero: ✅ | Center-bias: ✅ | Eyebrow: ✅
+CTA: ✅ | Contrast: ✅ | Shape: ✅ (Asymmetric/Blob/Oval/Arch) | Tokens: ✅ | Images: ✅ | Mobile: ✅ | Article: ✅
+Rhythm: ✅ [A→C→B→D→A] — WOW moment: ✅ | Full-bleed: ✅ | BG variety: ✅
+```
+
+Jika ada ❌ → perbaiki SEBELUM declare done.
+
+> Detail checklist lengkap: `taste-skill-bridge/REFERENCE.md` (STEP 5)
+
+---
+
+### G-ter. Modern CSS Enforcement Gate (CSS 2026)
 AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 - **Container Queries (`@container`):** Reusable components.
@@ -484,7 +594,19 @@ git add -A && git commit -m "feat: add login page"
 
 ---
 
-### H. Efficiency Summary (All 10 Gaps Fixed)
+### H. Rule Priority System (Gap 10 Fix)
+
+| Priority | Level | Compliance | Examples |
+|---|---|---|---|
+| 🔴 | CRITICAL | 100% — FORBIDDEN skip | Design Read, Three Dials, CSS tokens, Font pairing, ESSENTIAL.md read |
+| 🟡 | IMPORTANT | 90% — minimize skip | 8pt grid, DNA validation, UUPM pipeline, DNA inheritance, Self-check |
+| 🟢 | NICE-TO-HAVE | 70% — optional | Rhythm Score, Geometry variation, Motion guidelines, Premium architecture |
+
+> AI tahu: Critical = FORBIDDEN skip, Important = minimize skip, Nice = optional
+
+---
+
+### I. Efficiency Summary (All 10 Gaps Fixed)
 
 | Fix | Tokens Saved/Session | Context Impact |
 |---|---|---|
