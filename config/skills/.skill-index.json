@@ -1,0 +1,139 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-07-17T10:00:00+07:00",
+  "description": "Brainvibes Skill Index — AI-managed registry of all installed skills",
+  "skills": [
+    {
+      "name": "ui-ux-pro-max",
+      "path": "config/skills/ui-ux-pro-max/",
+      "triggers": ["awal baru", "redesign", "buat halaman"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": ["taste-skill-bridge"],
+      "conflicts_with": [],
+      "partial_overlap_with": [],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "taste-skill-bridge",
+      "path": "config/skills/taste-skill-bridge/",
+      "triggers": ["redesign", "buat halaman", "UI baru", "landing page"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": ["ui-ux-pro-max"],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "lessons-learned",
+      "path": "config/skills/lessons-learned/",
+      "triggers": ["baca error", "pernah coba", "jangan ulangi"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": ["code-snippets"],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "code-snippets",
+      "path": "config/skills/code-snippets/",
+      "triggers": ["buat form", "buat navbar", "buat modal", "buat toast"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": ["lessons-learned", "quick-scaffold"],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "database-patterns",
+      "path": "config/skills/database-patterns/",
+      "triggers": ["desain database", "migration", "seeder", "query"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": [],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "git-workflow",
+      "path": "config/skills/git-workflow/",
+      "triggers": ["commit", "push", "branch", "merge", "PR"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": [],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "accessibility-audit",
+      "path": "config/skills/accessibility-audit/",
+      "triggers": ["audit a11y", "screen reader", "WCAG", "cek a11y"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": [],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "performance-audit",
+      "path": "config/skills/performance-audit/",
+      "triggers": ["audit performa", "lighthouse", "LCP", "web vitals"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": [],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "deployment-checklist",
+      "path": "config/skills/deployment-checklist/",
+      "triggers": ["deploy", "hosting", "production", "go live"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": [],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "security-patterns",
+      "path": "config/skills/security-patterns/",
+      "triggers": ["analisa keamanan", "scan keamanan", "cek vulnerability", "security audit", "perbaiki keamanan", "fix vulnerability"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": ["lessons-learned"],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "pentest-strix",
+      "path": "config/skills/pentest-strix/",
+      "triggers": ["pentest", "pentest cepat", "pentest mendalam", "pentest api", "pentest auth", "dast", "dynamic scan", "strix scan"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": ["security-patterns"],
+      "conflicts_with": [],
+      "partial_overlap_with": ["security-patterns"],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    },
+    {
+      "name": "quick-scaffold",
+      "path": "config/skills/quick-scaffold/",
+      "triggers": ["buat komponen", "buat model", "buat controller", "buat form", "scaffold", "generate file"],
+      "version": "1.0.0",
+      "auto_trigger": true,
+      "dependencies": [],
+      "conflicts_with": [],
+      "partial_overlap_with": ["code-snippets"],
+      "installed_at": "2026-07-13T10:00:00+07:00"
+    }
+  ]
+}

@@ -76,7 +76,7 @@ web_search_enabled = true                         # Aktifkan web search via MCP 
 fabrication_guard  = true                         # FORBIDDEN mengarang solusi/fakta/referensi yang tidak pasti
 
 [META]
-brainvibes_version = 4.1.0
+brainvibes_version = 4.0.0
 installed_at       = 2026-07-13
 last_updated       = 2026-07-17
-changelog          = v4.1.0 — 4 aturan baru: concise response, anti-fabrication, web search, technical debate
+changelog          = v4.0.0 — Efficiency Intelligence (10 gap fixed), Smart Skill Integration (SSI), auto .docs update

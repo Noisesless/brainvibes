@@ -503,3 +503,108 @@ git add -A && git commit -m "feat: add login page"
 **Context Utilization:** 125% → 47% (within 128K window)  
 **Context Quality:** 50% noise → 90% signal  
 **Context Poisoning Risk:** HIGH → LOW
+
+---
+
+## §4N. SMART SKILL INTEGRATION (SSI) PROTOCOL
+
+### A. Auto-Detect Skill Baru
+AI REQUIRED scan `config/skills/` setiap sesi baru:
+- Jika ada folder baru tanpa entry di `.skill-index.json` → trigger `[SKILL DETECT]`
+- Baca `SKILL.md` → extract metadata (name, description, triggers)
+- Scan `data/` → list available files
+- Baca `manifest.json` (jika ada) → extract version
+
+### B. Gap & Conflict Check (5-Point Checklist)
+1. **Trigger Keywords Overlap** → COMBINE (tidak replace)
+2. **Data Files Path Collision** → SKIP jika collision, REPORT ke user
+3. **Logic/Functions Duplication** → SKIP jika duplicate, REPORT ke user
+4. **Dependencies Missing** → INSTALL dependency jika belum ada
+5. **Conflicts with Existing Skills** → REPORT ke user, tunggu konfirmasi
+
+### C. Smart Merge Rules
+| Conflict Type | Resolution | Example |
+|---|---|---|
+| Trigger keywords | COMBINE | `["baca error"] + ["pernah coba"] → ["baca error", "pernah coba"]` |
+| Data files | SKIP if collision | `data/form-validation.md` sudah ada → skip |
+| Logic/functions | SKIP if duplicate | `authenticate()` sudah ada → skip |
+| Dependencies | INSTALL if missing | Butuh `security-patterns` → install dulu |
+
+### D. Auto-Trigger Policy
+- Default: **ON** setelah integrate
+- User control: `disable auto-trigger <name>`, `enable auto-trigger <name>`, `test trigger <name> <keyword>`
+- AI auto-activate skill saat trigger keyword terdeteksi di user message
+
+### E. AI-Managed Index
+- `.skill-index.json` di-maintain oleh AI (bukan user)
+- Auto-update setelah integrate/remove skill
+- Format: name, path, triggers, version, dependencies, conflicts, installed_at
+- Timestamp: `last_updated` setiap ada perubahan
+
+### F. Quality Analysis Trigger
+- User ketik: `analisa kualitas brainvibes`
+- AI scan: context poisoning risk, skill gaps, skill conflicts, performance bottlenecks, .docs staleness
+- AI recommend: update existing skills, implement new skills, remove redundant skills, optimize high-cost skills, auto-update .docs
+
+### G. Auto-Update .docs Protocol
+**Trigger:** Setiap 5-6 task selesai → AI auto-scan `.docs/`
+
+**Checklist:**
+```
+1. architecture.md → scan codebase → update jika ada perubahan arsitektur
+2. api-spec.md → scan routes/endpoints → update jika ada endpoint baru
+3. database.md → scan migrations/schema → update jika ada table/column baru
+4. quality_review.md → run linter → update jika ada code smell baru
+5. routes.md → scan frontend/backend → update jika ada route baru
+6. dependency-graph.md → scan imports → update jika ada file baru
+7. issues.md → FIFO max 10 resolved → update jika ada issue baru
+```
+
+**Implementation:**
+```
+1. AI scan task completion di todo.md
+2. Jika task count mod 5 == 0 → trigger auto-update .docs
+3. AI scan .docs/ files → compare dengan codebase aktual
+4. Jika ada perubahan → update file
+5. Jika tidak ada perubahan → skip
+6. Print: "[DOCS UPDATE] X files updated, Y files skipped"
+```
+
+**Token Optimization:**
+```
+- Scan .docs/ files hanya jika ada perubahan di codebase
+- Gunakan mtime check → skip jika file tidak berubah
+- Batch update → 1x scan, update semua file yang perlu
+- Archive old .docs/ jika ukuran > 100 baris/file
+```
+
+### H. Error Handling
+```
+Skill Corrupt:
+→ AI detect: SKILL.md tidak valid
+→ Action: Log error, skip skill, report ke user
+→ Print: "[SKILL ERROR] X corrupt, skip until fixed"
+
+Dependency Missing:
+→ AI detect: Skill A butuh Skill B, tapi B belum ada
+→ Action: INSTALL B dulu, lalu A
+→ Print: "[DEPENDENCY] Installing B (required by A)..."
+
+Index Out of Sync:
+→ AI detect: .skill-index.json tidak match dengan codebase
+→ Action: Rebuild index dari codebase
+→ Print: "[INDEX SYNC] Rebuilding index from codebase..."
+```
+
+### I. SSI Workflow Summary
+```
+[STEP 1] Auto-Detect → Scan config/skills/
+[STEP 2] Extract Metadata → Baca SKILL.md, data/, manifest.json
+[STEP 3] Gap & Conflict Check → 5-point checklist
+[STEP 4] Generate Report → Output ke user
+[STEP 5] User Confirm → Y/n
+[STEP 6] Auto-Integrate → Copy files, merge triggers, update index
+[STEP 7] Notify User → "[SKILL INTEGRATED] X v1.0 aktif"
+```
+
+> Detail lengkap: `config/skills/integration-checker.md`

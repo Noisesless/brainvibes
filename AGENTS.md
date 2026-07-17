@@ -169,6 +169,55 @@ dom_read_default   = read_url  → DEFAULT cek DOM via read_url_content, bukan b
 
 ---
 
+## SMART SKILL INTEGRATION (SSI) PROTOCOL
+
+### Auto-Detect Skill Baru
+AI REQUIRED scan `config/skills/` setiap sesi baru:
+- Jika ada folder baru tanpa entry di `.skill-index.json` → trigger `[SKILL DETECT]`
+- Baca `SKILL.md` → extract metadata (name, description, triggers)
+- Jalankan **Gap & Conflict Check** (§2)
+
+### Gap & Conflict Check (5-Point Checklist)
+1. **Trigger Keywords Overlap** → COMBINE (tidak replace)
+2. **Data Files Path Collision** → SKIP jika collision, REPORT ke user
+3. **Logic/Functions Duplication** → SKIP jika duplicate, REPORT ke user
+4. **Dependencies Missing** → INSTALL dependency jika belum ada
+5. **Conflicts with Existing Skills** → REPORT ke user, tunggu konfirmasi
+
+### Smart Merge Rules
+| Conflict Type | Resolution | Example |
+|---|---|---|
+| Trigger keywords | COMBINE | `["baca error"] + ["pernah coba"] → ["baca error", "pernah coba"]` |
+| Data files | SKIP if collision | `data/form-validation.md` sudah ada → skip |
+| Logic/functions | SKIP if duplicate | `authenticate()` sudah ada → skip |
+| Dependencies | INSTALL if missing | Butuh `security-patterns` → install dulu |
+
+### Auto-Trigger Policy
+- Default: **ON** setelah integrate
+- User control: `disable auto-trigger <name>`, `enable auto-trigger <name>`, `test trigger <name> <keyword>`
+- AI auto-activate skill saat trigger keyword terdeteksi di user message
+
+### AI-Managed Index
+- `.skill-index.json` di-maintain oleh AI (bukan user)
+- Auto-update setelah integrate/remove skill
+- Format: name, path, triggers, version, dependencies, conflicts, installed_at
+- Timestamp: `last_updated` setiap ada perubahan
+
+### Quality Analysis Trigger
+- User ketik: `analisa kualitas brainvibes`
+- AI scan: context poisoning risk, skill gaps, skill conflicts, performance bottlenecks, .docs staleness
+- AI recommend: update existing skills, implement new skills, remove redundant skills, optimize high-cost skills, auto-update .docs
+
+### Auto-Update .docs Protocol
+- Trigger: Setiap 5-6 task selesai → AI auto-scan `.docs/`
+- Checklist: architecture.md, api-spec.md, database.md, quality_review.md, routes.md, dependency-graph.md, issues.md
+- Update jika ada perubahan di codebase, skip jika tidak ada
+- Print: `[DOCS UPDATE] X files updated, Y files skipped`
+
+> Detail lengkap: `config/skills/integration-checker.md`
+
+---
+
 ## SECURITY-AWARE CODING — SILENT AUTO-TRIGGER
 
 Ketika AI menulis kode yang mengandung konteks berikut, wajib baca
