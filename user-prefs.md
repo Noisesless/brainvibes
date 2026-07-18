@@ -42,6 +42,14 @@ security_reminder  = true                         # Enable milestone security re
 max_files_per_turn = 5                            # Batas file dibuka AI per turn (token guard)
 max_lines_per_read = 200                          # Batas baris per view_file call (token guard)
 
+# Context Budget Settings (Smart Context Loading)
+context_budget_32k = 25000                        # Max tokens untuk model 32K context (default 25K)
+context_budget_128k = 100000                      # Max tokens untuk model 128K context (default 100K)
+context_budget_warn = 20000                       # Warn saat used tokens melebihi ini
+context_budget_stop = 28000                       # STOP dan tanya user saat used tokens melebihi ini
+context_budget_tracker = true                     # Enable [CONTEXT BUDGET] output per session
+context_budget_per_trigger = true                 # Enable per-trigger token estimation
+
 # Library yang SELALU di-query via context7 tanpa instruksi eksplisit:
 context7_whitelist = next.js, laravel, tailwindcss, react, astro, vue, php, mysql, axios
 # Library yang SKIP dari context7 auto-query (timeout/tidak relevan):

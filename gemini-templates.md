@@ -210,7 +210,7 @@
 - **Endpoint API / Server Actions:** [Jalur data]
 
 ## 7. Catatan Teknis & Bug Fixes (Resolved)
-- [FIFO rolling log buffer 100 baris]
+- [FIFO rolling log buffer max 500 baris — auto-archive ke .archive/handover-YYYY-MM-DD.md jika melebihi]
 
 ## 8. Catatan Debugging Gagal & Solusi (Lessons Learned)
 - [Eksperimen yang gagal agar tidak diulangi]
@@ -225,9 +225,28 @@
 - App-context overwrite dan handover append setiap 5-6 task selesai.
 - Git commit dengan 5 tahap wajib.
 
+## 9B. Handover.md FIFO Buffer Rules (Max 500 Baris)
+- **Max Size:** 500 baris total (termasuk semua section)
+- **Archive Trigger:** Jika handover.md > 500 baris → archive otomatis
+- **Archive Format:** `.archive/handover-YYYY-MM-DD-HHMM.md`
+- **Keep:** 100 baris terbaru di handover.md aktif
+- **Archive Content:** Semua section + log changes dari versi sebelumnya
+- **Auto-Cleanup:** Archive > 30 hari → hapus otomatis (via sync.ps1)
+- **Token Cost:** Constant ~1.5K tokens (bukan unbounded growth)
+
+**Implementasi:**
+```markdown
+<!-- APPEND NEW ENTRIES TO SECTION 10 -->
+<!-- IF handover.md > 500 lines: -->
+<!-- 1. Copy current handover.md to .archive/handover-YYYY-MM-DD-HHMM.md -->
+<!-- 2. Keep only last 100 lines of Section 10 -->
+<!-- 3. Overwrite handover.md with fresh template + last 100 lines -->
+```
+
 ## 10. Log Perubahan Terbaru (Milestone Timeline)
-- [FIFO rolling log buffer 100 baris — format: `[YYYY-MM-DD HH:MM] [FASE N] [x] Deskripsi task`]
+- [FIFO rolling log buffer max 500 baris — format: `[YYYY-MM-DD HH:MM] [FASE N] [x] Deskripsi task`]
 - Contoh: `[2026-07-15 14:30] [FASE 2] [x] Setup CSS tokens — design-system aktif`
+- **Auto-Archive:** Jika handover.md > 500 baris → archive ke `.archive/handover-YYYY-MM-DD.md` + keep 100 baris terbaru
 ```
 
 ---
@@ -289,3 +308,36 @@
 - [ ] Tulis Retrospective di `knowledge/project-retrospectives/` + overwrite `app-context.md`
 
 *(Fase 9: Legacy Purge — Khusus Mode Konversi: dry-run log + persetujuan tertulis user → hapus `/.legacy/`)*
+
+---
+
+## §8. SMART SAKLAR LOADING (Inline vs File Read)
+
+**Prinsip:** Simple commands → inline template (0 tokens overhead). Complex commands → read file section (1-3K tokens).
+
+| Command | Type | Load Method | Token Cost |
+|---|---|---|---|
+| `status proyek` | Simple | Inline 10-baris template | 0.5K |
+| `sync` | Simple | Inline sync instructions | 0.5K |
+| `awal baru` | Complex | Read gemini-templates.md §2A | 4.6K |
+| `awal lanjut` | Complex | Read gemini-templates.md §2B | 2K |
+| `baca error` | Complex | Read gemini-templates.md §5 | 2K |
+| `tambah fitur` | Complex | Read gemini-templates.md §2D | 2K |
+| `awal konversi` | Complex | Read gemini-templates.md §2C | 3K |
+| `analisa kualitas` | Complex | Read gemini-templates.md §2H | 1K |
+| `analisa keamanan` | Complex | Read gemini-templates.md §2I | 1K |
+| `pentest` | Complex | Read pentest-strix/SKILL.md | 5K |
+
+**Inline Template Example (`status proyek`):**
+```
+Proyek     : [name dari app-context.md §APP]
+Fase Aktif : Fase X dari Y
+Progress   : [N]% ([N]/[Total] sub-task selesai)
+State      : [build dari app-context.md §STATE]
+Next Task  : [Task berikutnya dari todo.md]
+```
+
+**FORBIDDEN:**
+- ❌ Read gemini-templates.md FULL (4.6K) untuk simple commands
+- ❌ Load file > 500 baris tanpa range-limited read
+- ❌ Append ke handover.md tanpa FIFO check

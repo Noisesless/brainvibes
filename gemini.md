@@ -139,6 +139,42 @@ Step  3 : Self-Healing Handover   → Bandingkan [STATE].last di app-context.md
 | Visual rules | `app-context.md [VISUAL_GATE]` | Baca `gemini.md` penuh |
 | Feature flows | `app-context.md [FLOWS]` | Trace kode manual |
 
+### Smart Context Loading (Per-Trigger — Anti-Overflow):
+
+**Prinsip:** Load HANYA file yang dibutuhkan trigger, skip yang tidak relevan.
+
+| Trigger | WAJIB Load | OPSIONAL Load | SKIP Load | Est. Tokens |
+|---|---|---|---|---|
+| `awal baru` | gemini.md, gemini-templates.md §2A, prd-template.md | user-prefs.md, knowledge/ | gemini-execution.md, design-system.md | ~18K |
+| `awal lanjut` | gemini.md, app-context.md | gemini-templates.md §2B | prd-template.md, design-system.md | ~6K |
+| `baca error` | gemini.md, gemini-templates.md §5, issues.md | app-context.md | prd-template.md, design-system.md | ~8K |
+| `status proyek` | gemini.md, app-context.md | todo.md (grep only) | gemini-templates.md, prd-template.md | ~3K |
+| `tambah fitur` | gemini.md, app-context.md §NEXT, prd.md §2 | gemini-templates.md §2D, /.docs/dependency-graph.md | prd-template.md, design-system.md | ~7K |
+| `awal konversi` | gemini.md, gemini-templates.md §2C | app-context.md, knowledge/ | design-system.md | ~15K |
+| visual task | gemini.md, design-system.md §1 | app-context.md §PALETTE, taste-skill-bridge | prd-template.md | ~12K |
+| security task | gemini.md, security-patterns/data/ | app-context.md | prd-template.md, design-system.md | ~10K |
+
+**Context Budget Tracker (Per Session):**
+```
+[CONTEXT BUDGET] Session: [trigger] | Used: [N]K tokens | Remaining: [N]K tokens
+[CONTEXT BUDGET] gemini.md: 4.6K | app-context.md: 1.2K | [file]: [N]K
+→ Jika Used > 25K (32K model) atau > 100K (128K model): STOP dan tanya user
+```
+
+**Aturan Load:**
+1. **gemini.md** → ALWAYS load (4.6K tokens) — unavoidable, core rules
+2. **app-context.md** → ALWAYS load jika ada (1.2K tokens) — project state
+3. **gemini-templates.md** → load section SPESIFIK via view_file (range-limited)
+4. **design-system.md** → load HANYA untuk visual task (9K tokens)
+5. **prd-template.md** → load HANYA untuk awal baru (13.7K tokens)
+6. **gemini-execution.md** → load section SPESIFIK saat koding aktif
+
+**FORBIDDEN:**
+- ❌ Load gemini-templates.md FULL (4.6K) → load section only (0.5-2K)
+- ❌ Load design-system.md FULL (9K) → load §1 only (1K) untuk visual task
+- ❌ Load prd-template.md FULL (13.7K) → load §1-§3 only (3K) untuk awal baru
+- ❌ Load gemini-execution.md FULL (9.5K) → load section only (1-3K)
+
 ### Auto Workspace Verification (Silent):
 - `app-context.md` ADA → gunakan sebagai primary context
 - `app-context.md` TIDAK ADA tapi `prd.md` ADA → fallback normal
@@ -297,26 +333,73 @@ admin=[email]=[password]
 
 ## §POINTER (Cross-Reference ke File Detail)
 
-| Kebutuhan | Baca File | Kapan | Range |
-|---|---|---|---|
-| Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik |
-| UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only |
-| Browser Tool Gate + Scratchpad DOM enforcement | `AGENTS.md §BROWSER TOOL GATE` | Saat akan pakai browser_subagent | `§BROWSER TOOL GATE` only |
-| Browser Tool Gate detail + tabel substitusi tool | `gemini-execution.md §4G-ter` | Saat butuh decision tree lengkap | `§4G-ter` only |
-| SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only |
-| Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar |
-| Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only |
-| Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit | `§6A` only |
-| Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna | §1 kluster saja |
-| File role definitions | `gemini-execution.md §4C` | Saat bingung prd vs gemini vs design-system | `§4C` only |
-| PRD blueprint 11-bab | `prd-template.md` | Saat `awal baru` wizard | Full read |
-| Yasei-2 CLI subsistem | `yasei-cli.ps1` | Saat token IDE habis / alternatif agent | Full read |
+| Kebutuhan | Baca File | Kapan | Range | Est. Tokens |
+|---|---|---|---|---|
+| Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik | 1-3K |
+| UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only | 2K |
+| Browser Tool Gate + Scratchpad DOM enforcement | `AGENTS.md §BROWSER TOOL GATE` | Saat akan pakai browser_subagent | `§BROWSER TOOL GATE` only | 2K |
+| Browser Tool Gate detail + tabel substitusi tool | `gemini-execution.md §4G-ter` | Saat butuh decision tree lengkap | `§4G-ter` only | 3K |
+| SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only | 1K |
+| Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar | 0.5-2K |
+| Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only | 2K |
+| Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit | `§6A` only | 1K |
+| Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna | §1 kluster saja | 1K |
+| File role definitions | `gemini-execution.md §4C` | Saat bingung prd vs gemini vs design-system | `§4C` only | 1K |
+| PRD blueprint 11-bab | `prd-template.md` | Saat `awal baru` wizard | §1-§3 saja | 3K |
+| Yasei-2 CLI subsistem | `yasei-cli.ps1` | Saat token IDE habis / alternatif agent | Full read | 14K |
 
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.
+
+**Context Budget per Pointer Load:**
+- Low priority (1K tokens): §4L, §4C, §6A, §1 design-system
+- Medium priority (2K tokens): §5, §4K, §BROWSER TOOL GATE
+- High priority (3K tokens): §4G-ter
+- Extra large (14K tokens): yasei-cli.ps1 (load only when needed)
+
+---
+
+## §SMART HEALTH CHECK (Phase 3 — Proactive Features)
+
+### Auto-Sync Verification (Periodic — Setiap 5 sesi)
+**Trigger:** `status proyek` atau auto-trigger setiap 5 task selesai
+**Action:**
+```
+1. Compare master vs opencode brainvibes file count
+2. Verify AGENTS.md sync status
+3. Check .docs/ file completeness (7 files required)
+4. Verify skill-index.json match with disk
+5. Output: [SYNC HEALTH] master: N files, opencode: N files, sync: 100%
+```
+
+### Context Health Check (Per Session — Silent)
+**Trigger:** Setiap session start
+**Action:**
+```
+1. Check current context usage vs budget
+2. If used > warn threshold: print [CONTEXT WARN] Used: N tokens
+3. If used > stop threshold: STOP and ask user
+4. Output: [CONTEXT HEALTH] Status: OK/WARN/CRITICAL | Used: N tokens
+```
+
+### Performance Metrics (Periodic — Setiap 10 task)
+**Trigger:** `analisa kualitas` atau auto-trigger setiap 10 task
+**Action:**
+```
+1. Measure tokens/session average
+2. Measure session duration
+3. Measure file reads per task
+4. Output: [PERFORMANCE] Avg tokens: N/session, Avg duration: N min, Efficiency: X%
+```
+
+**FORBIDDEN:**
+- ❌ Run health check > 3 times per session (waste tokens)
+- ❌ Print full metrics unless user requests
+- ❌ Auto-fix without user confirmation
 
 ---
 <!--
   VERSION LOG
+  v4.0.0 (2026-07-16) — Split Architecture, Logic Mitigations & Refinements: Pemecahan monolith 146KB ke 3 tier. Mitigasi shell non-interactive, batas port drifting 3x, linter AST, auto-ignore /.legacy/, visual rules inline, §DOCS BLUEPRINT 7 file, §APP-CONTEXT v2.0 machine-optimized, dan full scratchpad_dom block enforcement.
   v4.0.0 (2026-07-16) — Split Architecture, Logic Mitigations & Refinements: Pemecahan monolith 146KB ke 3 tier. Mitigasi shell non-interactive, batas port drifting 3x, linter AST, auto-ignore /.legacy/, visual rules inline, §DOCS BLUEPRINT 7 file, §APP-CONTEXT v2.0 machine-optimized, dan full scratchpad_dom block enforcement.
   v3.1.0 (2026-07-07) — MCP v3.1.0, Context7, app-context.md system
   v2.2.0 (2026-06-xx) — UUPM Integration, Anti-Slop rules

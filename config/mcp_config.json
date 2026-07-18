@@ -1,45 +1,41 @@
 {
-  "mcpServers": {
+  "mcp": {
     "context7": {
+      "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
         "X-Context7-Client-IDE": "opencode|gemini|antigravity|cursor|copilot"
       }
     },
     "sequential-thinking": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
+      "type": "local",
+      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "memory": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
-      "env": {
+      "type": "local",
+      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
+      "environment": {
         "MEMORY_FILE_PATH": "C:\\Users\\GBC_PC\\.gemini\\brainvibes-memory.json"
       }
     },
     "filesystem": {
-      "command": "cmd",
-      "args": [
-        "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem",
-        "C:\\XAMPP\\htdocs",
-        "C:\\Users\\GBC_PC\\.gemini",
-        "C:\\Users\\GBC_PC\\.config\\opencode"
-      ]
+      "type": "local",
+      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\XAMPP\\htdocs", "C:\\Users\\GBC_PC\\.gemini", "C:\\Users\\GBC_PC\\.config\\opencode"]
     },
     "time": {
-      "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
-      "args": ["mcp-server-time"],
-      "env": {
+      "type": "local",
+      "command": ["C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe", "mcp-server-time"],
+      "environment": {
         "LOCAL_TIMEZONE": "Asia/Jakarta"
       }
     },
     "fetch": {
-      "command": "C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe",
-      "args": ["mcp-server-fetch"]
+      "type": "local",
+      "command": ["C:\\Users\\GBC_PC\\.local\\bin\\uvx.exe", "mcp-server-fetch"]
     },
     "web_search": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@anthropic/mcp-server-web-search"]
+      "type": "local",
+      "command": ["cmd", "/c", "npx", "-y", "@anthropic/mcp-server-web-search"]
     }
   }
 }

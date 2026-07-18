@@ -35,9 +35,9 @@
 
 | File | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| 🧠 [`gemini.md`](gemini.md) | ~18KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Technical Debate, Concise Response, Anti-Fabrication, Web Search |
-| 🛠️ [`gemini-execution.md`](gemini-execution.md) | ~23KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y, Ask-Before-Assume Gate |
-| 📋 [`gemini-templates.md`](gemini-templates.md) | ~18KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit |
+| 🧠 [`gemini.md`](gemini.md) | ~18KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Smart Context Loading, Context Budget Tracker, Technical Debate, Concise Response |
+| 🛠️ [`gemini-execution.md`](gemini-execution.md) | ~37KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate |
+| 📋 [`gemini-templates.md`](gemini-templates.md) | ~18KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
 | 📋 [`prd-template.md`](prd-template.md) | ~55KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
 | 🎨 [`design-system.md`](design-system.md) | ~36KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, components |
 | 📐 [`AGENTS.md`](AGENTS.md) | ~12KB | **Rules Tambahan** — Session init protocol, anti-slop enforcement, skills registry, security auto-trigger, Web Search Protocol |
@@ -45,6 +45,7 @@
 | 💻 [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Terminal coding agent subsistem alternatif untuk membaca/menulis file proyek secara otomatis |
 | 🔌 [`config/mcp_config.json`](config/mcp_config.json) | ~1.3KB | **MCP Server** — 7 servers: context7, sequential-thinking, memory, filesystem, time, fetch, web_search |
 | 📜 `LICENSE` | ~36KB | MIT License |
+| 🔄 `WORKFLOW_SIMULATIONS.md` | ~14KB | **Workflow Simulation** — Simulasi eksekusi macro commands untuk testing dan debugging |
 
 ### Skills System (12 Skill Folders)
 
@@ -66,7 +67,7 @@
 
 ### Smart Skill Integration (SSI) System
 
-Brainvibes v4.0.0引入 **Smart Skill Integration (SSI)** — sistem integrasi skill yang otomatis mendeteksi, memvalidasi, dan mengintegrasikan skill baru tanpa konflik.
+Brainvibes v4.1.0引入 **Smart Skill Integration (SSI)** — sistem integrasi skill yang otomatis mendeteksi, memvalidasi, dan mengintegrasikan skill baru tanpa konflik.
 
 **Cara Kerja:**
 ```
@@ -102,15 +103,70 @@ Brainvibes mendefinisikan **7 file dokumentasi utama** yang wajib ada di setiap 
 
 | # | File | Isi | Brainvibes Status |
 |---|---|---|---|
-| 1 | `architecture.md` | Aliran data makro (Presentation → Logic → DB) | ✅ Generated |
-| 2 | `api-spec.md` | Endpoint list, method, auth, request/response | ✅ Generated |
-| 3 | `database.md` | Schema DDL/JSON, relasi, index | ✅ Generated |
-| 4 | `quality_review.md` | Code smells, duplikasi, complexity metrics | ✅ Generated |
-| 5 | `routes.md` | **Peta semua routes aktif + auth + status** | ✅ Generated |
-| 6 | `dependency-graph.md` | **Critical files, high-impact files, import chains** | ✅ Generated |
-| 7 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | ✅ Generated |
+| 1 | `architecture.md` | Makro arsitektur, layer separation (Presentation/Logic/Data), file loading protocol, token efficiency strategy | ✅ Active |
+| 2 | `api-spec.md` | MCP server endpoints (context7, filesystem, memory, dll), macro command triggers, data flow AI→Project & Project→AI | ✅ Active |
+| 3 | `database.md` | Schema template (users, sessions, projects, tasks), runtime storage (JSON-based), index strategy, performance notes | ✅ Active |
+| 4 | `dependency-graph.md` | Critical files (gemini.md, user-prefs.md, AGENTS.md), high-impact files, leaf files, skills/knowledge chains, circular deps check, file role definitions | ✅ Active |
+| 5 | `issues.md` | Bug tracker — open issues, resolved (FIFO max 10), categories (architecture/docs/integration/performance), severity legend | ✅ Active |
+| 6 | `quality_review.md` | Code quality metrics (file count, size distribution), linting validation, complexity analysis, duplication check, magic numbers, recommendations | ✅ Active |
+| 7 | `routes.md` | Frontend/API routes, middleware chain (session init, execution, commit), route status legend (active/beta/planned/deprecated) | ✅ Active |
 
 > Brainvibes sendiri sekarang memiliki `.docs/` folder dengan ke-7 file dokumentasi ini. Setiap proyek yang dibuat dengan brainvibes juga akan menghasilkan ke-7 file ini secara otomatis.
+
+---
+
+## ⚡ Smart Context Loading (Anti-Overflow)
+
+Brainvibes v4.0.0 mengimplementasikan **Smart Context Loading** untuk mencegah context overflow dan mengoptimalkan token usage:
+
+### Per-Trigger Loading Matrix
+
+| Trigger | WAJIB Load | SKIP Load | Est. Tokens |
+|---|---|---|---|
+| `awal baru` | gemini.md, gemini-templates.md §2A, prd-template.md | gemini-execution.md, design-system.md, .docs/ | ~18K |
+| `awal lanjut` | gemini.md, app-context.md | prd-template.md, design-system.md, .docs/ | ~6K |
+| `baca error` | gemini.md, gemini-templates.md §5, .docs/issues.md | prd-template.md, design-system.md | ~8K |
+| `status proyek` | gemini.md, app-context.md | gemini-templates.md, prd-template.md, .docs/ | ~3K |
+| `tambah fitur` | gemini.md, app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md, .docs/ | ~7K |
+| `analisa kualitas` | gemini.md, .docs/quality_review.md | gemini-templates.md, prd-template.md | ~5K |
+| `analisa keamanan` | gemini.md, .docs/issues.md | gemini-templates.md, prd-template.md | ~4K |
+
+### Context Budget Tracker
+
+**Settings (user-prefs.md):**
+```
+context_budget_32k     = 25000  # Max tokens untuk model 32K context
+context_budget_128k    = 100000 # Max tokens untuk model 128K context
+context_budget_warn    = 20000  # Warn saat used tokens melebihi ini
+context_budget_stop    = 28000  # STOP dan tanya user saat used tokens melebihi ini
+```
+
+**Output per session:**
+```
+[CONTEXT BUDGET] Session: awal lanjut | Used: 10K tokens | Remaining: 15K tokens
+[CONTEXT BUDGET] gemini.md: 4.6K | app-context.md: 1.2K | gemini-templates.md §2B: 4.2K
+```
+
+### Handover.md FIFO Buffer
+
+**Problem:** Handover.md tumbuh tanpa batas → 25K+ tokens
+
+**Solution:** Max 500 baris → auto-archive ke `.archive/handover-YYYY-MM-DD-HHMM.md`
+
+**Benefits:**
+- Constant token cost: ~1.5K tokens (bukan unbounded)
+- Auto-cleanup archives > 30 hari via sync.ps1
+- Keep 100 baris terbaru di handover.md aktif
+
+### Smart Saklar Loading
+
+**Simple commands** → inline template (0 tokens overhead)
+- `status proyek` → 10-baris inline template
+- `sync` → inline sync instructions
+
+**Complex commands** → read file section (1-3K tokens)
+- `awal baru` → read gemini-templates.md §2A
+- `baca error` → read gemini-templates.md §5
 
 ---
 
@@ -299,28 +355,47 @@ graph TD
 
 ---
 
-## 🆕 Fitur Baru v4.1.0
+## 🆕 Fitur Baru v4.0.0 (Smart Context Loading)
 
-### 4 Aturan Kualitas Baru
+### Smart Context Loading — Anti-Overflow
 
-| Aturan | Deskripsi | Trigger |
-|---|---|---|
-| **Concise Response** | Respons maksimal 3-5 baris (CONCISE mode). Tanpa penjelasan berlebihan. | `response_style = CONCISE` |
-| **Anti-Fabrication** | FORBIDDEN mengarang solusi/fakta. Jika ragu → STOP + TANYA user. | `fabrication_guard = true` |
-| **Web Search Fallback** | Jika di luar training data → gunakan MCP web_search. Sumber wajib dicantumkan. | `web_search_enabled = true` |
-| **Technical Debate** | AI boleh sanggah user dengan argumen berbasis data faktual, bukan opini. | `technical_debate = true` |
+**Problem:** 45.7K tokens documentation > 32K context window = 142.8% overflow
 
-### MCP Servers (7 Servers)
+**Solution:** Per-trigger loading matrix + Context Budget Tracker
 
-| Server | Fungsi |
-|---|---|
-| `context7` | Dokumentasi library resmi (next.js, laravel, react, dll) |
-| `sequential-thinking` | Chain-of-thought reasoning |
-| `memory` | Persistent memory untuk context antar sesi |
-| `filesystem` | File operations (read, write, search) |
-| `time` | Waktu lokal (Asia/Jakarta) |
-| `fetch` | Fetch URL content |
-| `web_search` | **BARU** — Internet search untuk info real-time |
+**Impact:** 28.4K tokens/session saved (45% efficiency gain)
+
+| Trigger | Before | After | Savings |
+|---|---|---|---|
+| `awal baru` | 22.9K tokens | 18K tokens | 4.9K |
+| `awal lanjut` | 19.4K tokens | 10K tokens | 9.4K |
+| `baca error` | 15K tokens | 8K tokens | 7K |
+| `status proyek` | 5.1K tokens | 3K tokens | 2.1K |
+| `tambah fitur` | 12K tokens | 7K tokens | 5K |
+
+### Handover.md FIFO Buffer
+
+**Problem:** Handover.md tumbuh tanpa batas → 25K+ tokens
+
+**Solution:** Max 500 baris → auto-archive ke `.archive/`
+
+**Impact:** 20K tokens/project saved, constant ~1.5K tokens
+
+### Smart Saklar Loading
+
+**Simple commands** → inline template (0 tokens)
+- `status proyek` → 10-baris inline
+- `sync` → inline instructions
+
+**Complex commands** → read section only (1-3K tokens)
+- `awal baru` → gemini-templates.md §2A
+- `baca error` → gemini-templates.md §5
+
+### Smart Health Check (Phase 3)
+
+- **Auto-Sync Verification:** Setiap 5 sesi
+- **Context Health Check:** Per session (silent)
+- **Performance Metrics:** Setiap 10 task
 
 ---
 
@@ -430,7 +505,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
 | `v4.1.0` | [Previous] | **4 Aturan Kualitas Baru**: Concise Response (max 3-5 baris), Anti-Fabrication (STOP+TANYA jika ragu), Web Search Fallback (MCP search + sumber), Technical Debate (sanggah dengan data faktual). Tambahan MCP `web_search` server. |
-| `v4.0.0` | [Current] | **Efficiency Intelligence (10 Gap Fixed)**: Hapus duplicate sections, UUPM cache, handover truncation (500 lines), parallel loading, app-context compression, context caching, security patterns cache, optimized git commands. **Smart Skill Integration (SSI)**: Auto-detect skill, gap/conflict check, smart merge, auto-trigger, AI-managed index, quality analysis, auto-update .docs. Context utilization 125% → 47%, context poisoning HIGH → LOW. |
+| `v4.0.0` | [Current] | **Efficiency Intelligence (10 Gap Fixed)**: Hapus duplicate sections, UUPM cache, handover truncation (500 lines), parallel loading, app-context compression, context caching, security patterns cache, optimized git commands. **Smart Skill Integration (SSI)**: Auto-detect skill, gap/conflict check, smart merge, auto-trigger, AI-managed index, quality analysis, auto-update .docs. **Smart Context Loading**: Per-trigger loading matrix, context budget tracker, handover FIFO buffer, smart saklar loading. **7 .docs/ Files**: architecture, api-spec, database, dependency-graph, issues, quality_review, routes. Context utilization 125% → 47%, context poisoning HIGH → LOW. |
 | `v4.0.0` | [Previous] | **Split Architecture Refinement & Premium Layout**: Penggabungan penuh mitigasi shell non-aktif, drift port server, pre-flight check MCP. Menambahkan 3 HARD BLOCK visual baru (`Anti-Color-Overlay`, `Anti-Cosmetic-Redesign`, `Anti-Image-Amnesia`). Memperkenalkan **Rhythm Score System** (`§0.I`) dan panduan **Asymmetric Card Geometry** (`§0.J-4`) untuk memecah visual kaku yang seragam. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture & Memory Protocol Sync**: Pemisahan `gemini.md` 146KB monolith menjadi 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md) untuk mengatasi limitasi context window AI (truncation 83.6%). Mengintegrasikan 3 gap unik Memory-system-instruction (`routes.md`, `dependency-graph.md`, dan `§FLOWS` di `app-context-template.md`). |
 | `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |

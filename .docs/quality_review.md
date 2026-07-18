@@ -10,7 +10,7 @@
 | Skills | 12 folders | ✅ |
 | Knowledge Bases | 3 | ✅ |
 | MCP Servers | 7 | ✅ |
-| Version | 4.1.0 | ✅ |
+| Version | 4.0.0 | ✅ |
 | Total Size | ~550KB | ✅ |
 
 ### File Size Distribution
