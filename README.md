@@ -6,7 +6,7 @@
 
 **Satu ekosistem lengkap. Nol kompromi.**
 
-[![Version](https://img.shields.io/badge/version-4.0.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.1.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -35,13 +35,13 @@
 
 | File | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| 🧠 [`gemini.md`](gemini.md) | ~18KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Unified Dispatch Table, Context Budget Tracker, Technical Debate, Concise Response |
-| 🛠️ [`gemini-execution.md`](gemini-execution.md) | ~37KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate |
-| 📋 [`gemini-templates.md`](gemini-templates.md) | ~18KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
-| 📋 [`prd-template.md`](prd-template.md) | ~55KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
-| 🎨 [`design-system.md`](design-system.md) | ~36KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, components |
-| 📐 [`AGENTS.md`](AGENTS.md) | ~12KB | **Rules Tambahan** — Session init protocol, anti-slop enforcement, skills registry, security auto-trigger, Web Search Protocol |
-| ⚙️ [`user-prefs.md`](user-prefs.md) | ~5KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist, response_style, technical_debate, web_search |
+| 🧠 [`gemini.md`](gemini.md) | ~28KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Unified Dispatch Table, Context Budget Tracker, Technical Debate, Concise Response |
+| 🛠️ [`gemini-execution.md`](gemini-execution.md) | ~42KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate, Subheading Parent Prefixes |
+| 📋 [`gemini-templates.md`](gemini-templates.md) | ~22KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
+| 📋 [`prd-template.md`](prd-template.md) | ~29KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
+| 🎨 [`design-system.md`](design-system.md) | ~32KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, components |
+| 📐 [`AGENTS.md`](AGENTS.md) | ~6KB | **Skills & Pointer Hub** — Session init pointer, skills registry, security auto-trigger, Web Search Protocol |
+| ⚙️ [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist, response_style, technical_debate, web_search |
 | 💻 [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Terminal coding agent subsistem alternatif untuk membaca/menulis file proyek secara otomatis |
 | 🔌 [`config/mcp_config.json`](config/mcp_config.json) | ~1.3KB | **MCP Server** — 7 servers: context7, sequential-thinking, memory, filesystem, time, fetch, web_search |
 | 📜 `LICENSE` | ~36KB | MIT License |
