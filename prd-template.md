@@ -61,11 +61,11 @@
 
 ### B. Pola Arsitektur, Multi-Environment Deployment & Path-Based Routing Rules
 - **Environment Agnostic & Anti-Port Collision Policy (STRICT):** AI REQUIRED merancang sistem routing dan konfigurasi environment yang sepenuhnya adaptif, mandiri, dan terisolasi.
-  → **BACA `gemini.md §1`** (Dev Port Blacklist — HARD FORBIDDEN port `8000`/`3000`) dan **`gemini.md §4F`** (Tabel port dev per framework).
+  → **BACA `gemini.md §1`** (Dev Port Blacklist — HARD FORBIDDEN port `8000`/`3000`) dan **`user-prefs.md [DEVELOPMENT]`** (Tabel port dev per framework).
 - **Mekanisme Path-Based URL Sub-Folder Lokal:** Sistem routing REQUIRED dirancang agar mengenali dan mendukung penuh arsitektur lingkungan lokal berbasis sub-folder tanpa merusak *asset linkage*. Jika dijalankan di server lokal (seperti Apache XAMPP/Laragon), aplikasi harus dapat diakses dengan mulus via URL **`localhost/namafolderproject/`** (bukan root domain murni `localhost/` atau port `localhost:8000`). Sistem juga REQUIRED adaptif jika nantinya dideploy menggunakan sub-domain murni atau domain utama pada server produksi (Shared Hosting / VPS / Cloud).
-- **Strict Relative Asset Paths & Dynamic Base URL (Anti-Break Layout):** Untuk mencegah rusaknya tampilan visual (*broken layout*) dan munculnya error 404 pada aset atau endpoint API saat aplikasi dipindahkan antar server (dari lingkungan komputer lokal `localhost/namafolderproject/` ke hosting produksi), AI **MUTLAK** REQUIRED menuliskan seluruh pemanggilan aset (CSS, JS, Gambar, `<img src="...">`, `<a href="...">`, serta logika pengalihan/Redirect API di backend) menggunakan *Relative Path* (`./` atau `../`) atau menggunakan fungsi penangkap *Base URL* dinamis yang mendeteksi skema, host, dan sub-folder aktif secara otomatis dari runtime global request. Dilarang keras menggunakan *Absolute Path* kaku yang mengarah ke akar root domain seperti `/assets/img/` karena akan menyebabkan kegagalan pencarian aset di bawah struktur sub-folder `localhost/namafolderproject/`. *Pengecualian bagi Modern SPA/Framework Bundler (seperti Next.js App Router atau React Vite):* Jika framework mewajibkan absolute paths berbasis build time (seperti output bundler `/assets/`), AI REQUIRED menggunakan konfigurasi parameter Base Path yang disediakan resmi oleh framework (misal: `basePath` di `next.config.js` or `base` di `vite.config.js`) daripada menuliskan relative path (`./` or `../`) secara manual di file view, guna menghindari pecahnya asset linkage pada pemecahan modul (code splitting) di rute dinamis bertingkat.
+- **Strict Relative Asset Paths & Dynamic Base URL (Anti-Break Layout):** Untuk mencegah rusaknya tampilan visual (*broken layout*) and munculnya error 404 pada aset atau endpoint API saat aplikasi dipindahkan antar server (dari lingkungan komputer lokal `localhost/namafolderproject/` ke hosting produksi), AI **MUTLAK** REQUIRED menuliskan seluruh pemanggilan aset (CSS, JS, Gambar, `<img src="...">`, `<a href="...">`, serta logika pengalihan/Redirect API di backend) menggunakan *Relative Path* (`./` atau `../`) atau menggunakan fungsi penangkap *Base URL* dinamis yang mendeteksi skema, host, dan sub-folder aktif secara otomatis dari runtime global request. Dilarang keras menggunakan *Absolute Path* kaku yang mengarah ke akar root domain seperti `/assets/img/` karena akan menyebabkan kegagalan pencarian aset di bawah struktur sub-folder `localhost/namafolderproject/`. *Pengecualian bagi Modern SPA/Framework Bundler (seperti Next.js App Router atau React Vite):* Jika framework mewajibkan absolute paths berbasis build time (seperti output bundler `/assets/`), AI REQUIRED menggunakan konfigurasi parameter Base Path yang disediakan resmi oleh framework (misal: `basePath` di `next.config.js` or `base` di `vite.config.js`) daripada menuliskan relative path (`./` or `../`) secara manual di file view, guna menghindari pecahnya asset linkage pada pemecahan modul (code splitting) di rute dinamis bertingkat.
 - **Prinsip Modular & Pemisahan Kekuasaan Kode (Architectural Cleanliness):** Kode REQUIRED terbagi ke dalam 3 layer terisolasi ketat.
-  → **BACA `gemini.md §4A`** untuk definisi lengkap Anti-Spaghetti Layer Separation (Presentation / Business Logic / Data Access) dan aturan refaktor modular.
+  → **BACA `gemini-execution.md §4A`** untuk definisi lengkap Anti-Spaghetti Layer Separation (Presentation / Business Logic / Data Access) dan aturan refaktor modular.
 
 ### C. Kebijakan Anti-Bloatware & Tata Kelola Dependensi (Strict Dependency Policy)
 AI diwajibkan menjaga folder dependensi (`node_modules` atau folder vendor) tetap ramping, bersih, dan bebas dari pustaka pihak ketiga yang tidak efisien.
@@ -77,7 +77,7 @@ AI diwajibkan menjaga folder dependensi (`node_modules` atau folder vendor) teta
    - Untuk Node.js backend, arsitektur REQUIRED menerapkan metode *Single-File Distribution* (mengompilasi seluruh alur ke satu file JavaScript mandiri) atau pemisahan total kamar *DevDependencies*. 
    - Seluruh pustaka development (compiler, minifier, linter, css-processor) REQUIRED diisolasi penuh dan langsung dimatikan/dihapus fungsinya dari ruang runtime server produksi, sehingga ukuran akhir distribusi aplikasi siap saji tetap ramping, ringan, dan efisien.
 5. **Protokol Verifikasi Dokumentasi Library via Context7 (Jika Tersedia):** Sebelum menulis kode yang menggunakan library pihak ketiga, AI REQUIRED melakukan verifikasi dokumentasi versi terbaru melalui Context7 (MCP atau CLI `ctx7`) sesuai urutan eksekusi yang ditetapkan.
-   → **BACA `gemini.md §4I`** untuk hukum lengkap: trigger wajib, urutan eksekusi, dan aturan non-override.
+   → **BACA `gemini.md §SESSION PROTOCOL`** untuk hukum lengkap: trigger wajib, urutan eksekusi, dan aturan non-override.
 
 ### D. Arsitektur Fitur Ekspor File & Kebijakan Beban Kinerja (Export & Lazy Loading Policy)
 Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, PDF, atau CSV), AI REQUIRED menerapkan standar penanganan performa tingkat tinggi berikut:
@@ -103,19 +103,15 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Sumber Palet:** [UUPM Industry-Specific (colors.csv) / design-system.md Cluster / Custom]
 - **Nama Kluster Terpilih:** [Nama palet UUPM misal "Healthcare App" / Nama kluster DS misal "Oceanic Jade"]
 - **Tema Visual & Gaya UI:** [Nama gaya dari UUPM styles.csv — misal: "Soft UI Evolution", "Glassmorphism", "Minimalism"]
-  → AI REQUIRED menggunakan kolom `CSS/Technical Keywords` dan `Design System Variables` dari styles.csv
+  → AI REQUIRED menggunakan kolom `CSS/Technical Keywords` and `Design System Variables` dari styles.csv
 - **Sistem Transisi Tema Global:** [Pilih: Static Palette Mode (Tema Statis) / Dynamic Toggle Switch (Saklar Dinamis)]
 - **Color Switcher (Appearance Panel):** [Pilih: Aktif (AI kurasi 3-5 palet alternatif) / Tidak Aktif]
 
-
 ### A. Arsitektur Token Warna Dinamis (Tonal Preservation Theme Matrix)
-
 → **BACA `design-system.md §2`** untuk arsitektur CSS Token (Light/Dark mode), Hukum Sinkronisasi Token Warna, dan panduan oklch() 2026.
 
 ### H. Palette Kurasi Color Switcher (Diisi AI — Hanya Jika Color Switcher: Aktif)
-
 → **BACA `design-system.md §11`** untuk implementasi teknis Color Switcher System dan aturan kurasi palet.
-
 > **AI REQUIRED mengisi tabel ini setelah wawancara selesai, jika Color Switcher dipilih Aktif.**
 
 | Posisi | Nomor Palet | Nama Kluster | Aksen Utama | Alasan Kurasi AI |
@@ -127,7 +123,6 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 
 ### B. Typography Consistency Rule
 *AI REQUIRED mengunci hierarki ukuran huruf, jarak antar baris, dan ketebalan yang seragam. Dilarang menggunakan font default browser.*
-
 → **BACA `design-system.md §3`** untuk Typography Hierarchy dan panduan font loading per stack.
 
 - **Font Family Terpilih (Pilihan Wawancara):**
@@ -141,7 +136,6 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
   - **Laravel / PHP Native / Astro** → `@font-face` self-hosted di `/public/fonts/`
   - **Development only** → Google Fonts CDN link (boleh di localhost, FORBIDDEN di production)
   → Detail implementasi: **BACA `design-system.md §3` bagian "Font Loading — Development vs Production"**
-
 
 ### C. Unified Card, Radius & Shadow System
 - **Bentuk Geometri Elemen / Radius Box:** [Pilih: Sharp (0px) / Rounded (6px-8px) / Pill (Bulat penuh)]. Ukuran kelengkungan kotak REQUIRED identik di seluruh aplikasi termasuk frame pada halaman depan, kartu data dashboard, maupun modal pop-up panel admin.
@@ -164,398 +158,162 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 - **Implementasi Fisik & Fail-Safe Strategy (Anti-Broken Image & SVG Brand Local):**
   1. *Penyediaan File Cadangan Lokal:* AI REQUIRED menghasilkan aset gambar placeholder ber-resolusi HD yang sesuai dengan tema proyek, lalu menyimpannya secara fisik di dalam folder direktori aset statis bawaan framework (`/public/assets/images/` atau `/assets/img/`) sejak Fase 1 di `todo.md`.
   2. *Skrip Pencegat Error Runtime (`onerror` Guard):* Setiap tag `<img>` dari sumber CDN eksternal REQUIRED dipasangi `onerror` fallback ke file lokal agar tidak memicu broken image silang merah.
-     → **BACA `gemini.md §4G poin 6`** untuk implementasi teknis lengkap Anti-Broken Image Guard.
+     → **BACA `gemini-execution.md §4F`** untuk protokol HTTP request aman + hukum fallback lokal (onerror image guard).
   3. *Aturan Aset Lokal SVG Brand (Non-CDN):* Semua berkas SVG logo, brand, atau ikon utama (termasuk yang bersumber dari thesvg.org) wajib diunduh secara manual dan disimpan secara lokal (misal: `/public/assets/svg/`). Dilarang memuat SVG brand dari CDN luar langsung pada runtime.
      → **BACA `design-system.md §13`** untuk panduan lengkap integrasi SVG lokal dengan oklch() (fill/stroke via CSS variables, fallback hex injection, inline SVG component pattern).
 
-## 4. ADVANCED LAYOUTING, ACTIVE NAVIGATION, & UTILITY RULES
-*(AI patuh penuh pada tata kelola visual, manajemen z-index, dan siklus state navigasi berikut)*
+---
 
-### A. Aturan Link & Keaktifan Halaman (Zero-Dead-End Policy)
+## Bab 4. ADVANCED LAYOUTING, ACTIVE NAVIGATION, & UTILITY RULES
+*(AI patuh penuh pada tata kelola visual, manajemen z-index, dan siklus state navigasi)*
 
-> **[DATA KEPUTUSAN PER-PROYEK]** Bagian ini mencatat pilihan navigasi dan fallback. Hukum teknisnya diatur di `gemini.md §4A`.
-
-→ **BACA `gemini.md §4A`** untuk hukum lengkap: FORBIDDEN `href="#"`, Under Construction Card fallback, Dynamic Authentication State.
-
+- **Aturan Link & Keaktifan Halaman (Zero-Dead-End Policy):**
+  → **BACA `gemini-execution.md §4A`** untuk hukum lengkap.
 - **Pilihan Navigasi Model:** `[Top Sticky Navbar / Vertical Sidebar Kiri / Floating Dock Menu]`
 - **Strategi Fallback Halaman Belum Jadi:** `[Under Construction Card dengan estimasi fase / Redirect ke halaman sebelumnya]`
 
-### B. Arsitektur Navigasi Dinamis & Manajemen State Otentikasi
+- **Arsitektur Navigasi Dinamis & Manajemen State Otentikasi:**
+  → **BACA `gemini-execution.md §4A`** untuk spesifikasi teknis 3 state: Guest → Login button, Logged In → Avatar Dropdown, Admin → tambahan Admin Panel menu.
+  - **Sistem Login:** `[Pilih: Tanpa Login / JWT Based / Session Based]`
+  - **Avatar Shape (Mengikuti Bab 3):** `[rounded-full / rounded-md]`
+  - **Item Dropdown User:** `[Profil Saya, Pengaturan Akun, Logout]`
 
-> **[DATA KEPUTUSAN PER-PROYEK]** Pilihan state auth proyek ini. Implementasi teknisnya di `gemini.md §4A`.
+- **Geometri Layout & Kriteria Komponen Navigasi Makro:**
+  - **Gaya Hero Section:** `[Pilih: Fullscreen Background Image min-height 100vh / Split 50:50 Kiri-Teks Kanan-Gambar / Data Widget Dashboard Grid / Tanpa Hero]`
+  - **Komponen Gambar Grafik:** `[Pilih: Ya (Menggunakan Chart.js / ApexCharts) / Tidak Perlu Grafik]`
+  - **Mobile Navigation Mode:** `[Pilih: Bottom Tab Bar (default) / Floating Header]`
+    → **BACA `design-system.md §10`** untuk touch targets dan safe area.
+  - **Global Utility Buttons:** 1. *Back to Top Button (Wajib)*, 2. *Dark Mode Toggle*, 3. *Appearance Panel (Color Switcher)*.
 
-→ **BACA `gemini.md §4A`** untuk spesifikasi teknis 3 state: Guest → hanya Login button. Logged In → Avatar Dropdown. Admin → tambahan Admin Panel menu.
+- **Blueprint Manifest Halaman Fisik:**
+  AI wajib mengelompokkan dan menjabarkan rute fisik halaman ke dalam tabel:
+  | Kluster Akses | Nama Halaman | Target Path Berkas Fisik (View) | Controller yang Menangani | Model Database Terkait | Endpoint API / Integrasi Pihak ke-3 | Status Fungsional |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+  | **Kluster Publik (Guest View)** | Landing Page Utama | [Isi Path Fisik] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+  | **Kluster Publik (Guest View)** | Auth Login Center | [Isi Path Fisik] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+  | **Kluster Terproteksi (Member Area)** | Dashboard Utama User | [Isi Path Fisik] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
+  | **Kluster Pengelola (Admin Panel)** | Dashboard Analitik | [Isi Path Fisik] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
 
-- **Sistem Login:** `[Pilih: Tanpa Login / JWT Based / Session Based]`
-- **Avatar Shape (Mengikuti §3):** `[rounded-full / rounded-md]`
-- **Item Dropdown User:** `[Profil Saya, Pengaturan Akun, Logout]` *(tambah jika ada)*
+- **Parameter Properti Bayangan & Peta Z-Index:**
+  → **BACA `design-system.md §5`** untuk Z-Index Map lengkap.
 
-### C. Geometri Layout & Kriteria Komponen Navigasi Makro
-- **Gaya Hero Section:** [Pilih: Fullscreen Background Image min-height 100vh dengan overlay gradien / Split 50:50 Kiri-Teks Kanan-Gambar / Data Widget Dashboard Grid / Tanpa Hero]
-- **Komponen Gambar Grafik:** [Pilih: Ya (Menggunakan Chart.js / ApexCharts) / Tidak Perlu Grafik]
-- **Mobile Navigation Mode:** [Pilih: Bottom Tab Bar (default — auto-convert dari Top Navbar di ≤768px) / Floating Header (glassmorphism card melayang — cocok untuk blog/portfolio)]
-  → **BACA `design-system.md §10`** untuk implementasi lengkap Bottom Tab Bar dan Floating Header beserta aturan safe-area-inset dan touch targets.
-- **Global Utility Buttons:** 1. *Back to Top Button (Wajib):* Setiap halaman panjang **REQUIRED** dipasangkan komponen tombol melayang (*floating button*) "Back to Top" di pojok kanan bawah yang aktif me-scroll layar ke atas dengan efek smooth.
-    2. *Dark Mode Toggle:* [Pilih: Ya (Aktif terpasang tombol switch untuk Dynamic Toggle Switch) / Tidak (Sistem dikunci sebagai Static Palette Mode)].
-    3. *Appearance Panel (Color Switcher):* [Pilih: Aktif (Gabung Dark Mode + Palette Switcher dalam satu drawer) / Tidak Aktif].
-       → Jika Aktif: REQUIRED membangun komponen `AppearancePanel` — **BACA `design-system.md §11`** untuk implementasi.
-- **Komponen Footer Layout:** [Pilih: Simple Copyright Text / Multi-Column Links & Social Medias / Tanpa Footer]
+---
 
-> ### BLUEPRINT MANIFEST HALAMAN FISIK (MUTLAK DIKUNCI SAAT WAWANCARA)
-> AI FORBIDDEN hanya mencatat daftar halaman secara global atau kasar. Seluruh file visual REQUIRED dikelompokkan dan dijabarkan secara rinci ke dalam 3 Kluster Akses nyata tanpa boleh ada yang terlewat, dan REQUIRED ditulis eksplisit path fisiknya sesuai framework oleh AI sebelum masuk ke todo.md:
-> 
-> | Kluster Akses | Nama Halaman | Target Path Berkas Fisik (View) | Controller yang Menangani | Model Database Terkait | Endpoint API / Integrasi Pihak ke-3 | Status Fungsional |
-> | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-> | **Kluster Publik (Guest View)** | Landing Page Utama | [Isi Path Fisik Riil, misal: index.php atau /app/page.tsx] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Publik (Guest View)** | Auth Login Center | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Publik (Guest View)** | Register Onboarding | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Publik (Guest View)** | Lupa & Reset Password | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Terproteksi (Member Area)** | Dashboard Utama User | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Terproteksi (Member Area)** | User Profile Center | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Terproteksi (Member Area)** | Workspace Settings | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | Dashboard Analitik | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | Global App Settings | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | User Role CRUD Table | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **Kluster Pengelola (Admin Panel)** | Form Add New User | [Isi Path Fisik Riil oleh AI] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-> | **[Kluster Pengelola (Admin Panel)]** | CMS Media Slider Organizer | [Isi Path Fisik Riil oleh AI jika Carousel aktif] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-| **[Fitur Kustom — Tambahkan Baris Sesuai Kebutuhan]** | [Nama Halaman Kustom X] | [AI REQUIRED mengisi berdasarkan hasil wawancara] | [Controller] | [Model] | [API Path / Mock] | Belum Dibuat |
-
-> **[ATURAN EXTENSIBILITY TABEL]** Jumlah baris tabel di atas TIDAK TERBATAS pada contoh template. AI **REQUIRED** menambah baris baru untuk setiap halaman fisik yang disepakati saat wawancara (misal: Forum, Marketplace, Booking, Laporan, dll). Dilarang keras memangkas atau melewati halaman apapun yang disebutkan user hanya karena tidak ada di template ini.
-
-### D. Parameter Properti Bayangan & Peta Z-Index (Anti-Tabrakan Elemen)
-→ **BACA `design-system.md §5`** untuk Z-Index Map lengkap (Base z-0 / Card z-10 / Dropdown z-50 / Nav z-100 / Drawer z-500 / Modal z-999).
-
-## 5. COMPONENT REGISTRY (ANTI-DUPLICATION)
-*(AI REQUIRED mendaftarkan setiap komponen UI ke dalam daftar periksa di bawah ini segera setelah file fisiknya dibuat pada disk, guna melacak modularitas dan mencegah penulisan ulang komponen yang sama)*
+## Bab 5. COMPONENT REGISTRY (ANTI-DUPLICATION)
+*(AI wajib mencantumkan komponen yang telah dibuat agar modular dan tidak berulang)*
 
 **Komponen Dasar:**
-- [ ] `Button`: `[Path file komponen riil]`
-- [ ] `Input/Form Element`: `[Path file komponen riil]`
-- [ ] `Navbar / Sidebar`: `[Path file komponen riil]`
-- [ ] `Toast / Alert Notification`: `[Path file komponen riil]`
-- [ ] `BackToTop Button`: `[Path file komponen riil]`
-- [ ] `Captcha Generator`: `[Path file komponen riil]`
-- [ ] `PasswordVisibilityControl`: `[Path file komponen riil]`
+- [ ] `Button`: `[Path file komponen]`
+- [ ] `Input/Form Element`: `[Path file komponen]`
+- [ ] `Navbar / Sidebar`: `[Path file komponen]`
+- [ ] `Toast / Alert Notification`: `[Path file komponen]`
+- [ ] `BackToTop Button`: `[Path file komponen]`
+- [ ] `Captcha Generator`: `[Path file komponen]`
+- [ ] `PasswordVisibilityControl`: `[Path file komponen]`
 
-**Komponen Interaktif:**
-- [ ] `Modal / Dialog Box`: `[Path file komponen riil]`
-- [ ] `Dropdown Menu`: `[Path file komponen riil]`
-- [ ] `Skeleton Loader`: `[Path file komponen riil]`
-- [ ] `Avatar / Profile Image`: `[Path file komponen riil]`
-
-**Komponen Data:**
-- [ ] `Data Table` (dengan pagination): `[Path file komponen riil]`
-- [ ] `Chart / Grafik`: `[Path file komponen riil — atau N/A jika tidak ada grafik]`
-- [ ] `StealthFetchClient` (HTTP wrapper anti-bot): `[Path file komponen riil — lihat gemini.md §4G]`
-
-**Komponen Halaman Khusus:**
-- [ ] `Under Construction Card`: `[Path file komponen riil]`
-- [ ] `Error 403 Page`: `[Path file komponen riil]`
-- [ ] `Error 404 Page`: `[Path file komponen riil]`
+**Komponen Interaktif / Data / Halaman Khusus:**
+- [ ] `Modal / Dialog Box`: `[Path file komponen]`
+- [ ] `Dropdown Menu`: `[Path file komponen]`
+- [ ] `Skeleton Loader`: `[Path file komponen]`
+- [ ] `Avatar / Profile Image`: `[Path file komponen]`
+- [ ] `Data Table` (dengan pagination): `[Path file komponen]`
+- [ ] `Chart / Grafik`: `[Path file komponen]`
+- [ ] `StealthFetchClient`: `[Path file komponen]`
+- [ ] `Under Construction Card`: `[Path file komponen]`
+- [ ] `Error 403 / 404 Page`: `[Path file komponen]`
 
 ---
 
-## 6. DATA LOGIC & ACTIVE FEATURE ECOSYSTEM
-*(AI REQUIRED mematuhi arsitektur aliran data, ekosistem fitur otentikasi terproteksi, standardisasi pipeline media, dan hukum pembentukan skema database berikut)*
+## Bab 6. DATA LOGIC & ACTIVE FEATURE ECOSYSTEM
+*(Aturan aliran data, otentikasi terproteksi, media pipeline, dan skema database)*
 
-### A. Arsitektur Aliran Data & Manajemen State (Data Flow Engineering)
-- **Aliran Data & Identitas Dinamis (Data per Proyek):** Data mengalir melalui 3 layer (UI → Business Logic → Data Access). Nama Aplikasi + Logo ditarik dinamis dari tabel `settings` — FORBIDDEN hardcode.
-  → **BACA `gemini.md §4A`** untuk hukum lengkap: Layer Separation, ACID Compliance, Dynamic Application Identity, Anti-Dead-End Link Policy.
-
-### B. Sistem Otentikasi & Kewajiban Pembangunan Pilar Ekosistem Turunan [Opsional - Hanya jika Punya Login]
-- **Kebijakan Pilihan Sistem:** [Pilih: Tanpa Login / Punya Login (JWT Based / Session Based)]
-- **Hukum Fitur Aktif (MUTLAK):** Jika pilihan bertuliskan "Punya Login", sistem otentikasi tersebut **REQUIRED fungsional 100%**. AI FORBIDDEN membuat form login kosmetik. Sistem REQUIRED mampu menerbitkan token/session, menyimpannya di sisi client secara aman (HttpOnly Cookie / Secure LocalStorage), dan membersihkannya saat Logout.
-
-- **Spesifikasi Arsitektur Gerbang Login:**
-  1. *Dual Input Identity Engine:* Kotak input utama form REQUIRED diprogram menerima data string Email ataupun Username pengguna secara fleksibel.
-  2. *Password Eye Switcher Tool:* Isian password REQUIRED dibekali tombol manipulasi atribut `type` klien (*seen/unseen*) untuk mempermudah visibilitas sandi.
-  3. *Captcha Guard System:* [Pilih: Aktif / Tidak Aktif]. Jika aktif: [Pilih: Case-Sensitive / Case-Insensitive].
-     → BACA `gemini.md §4B` untuk spesifikasi teknis rendering (high-contrast, refresh control, state destruction on failure).
-  4. *Background Layout Overlay:* Komponen gerbang login REQUIRED dipasangkan gambar latar belakang HD (Unsplash/Picsum) yang ditutup lapisan *overlay semi-transparent gradient tint* di bawah objek form utama.
-
-- **Kewajiban Pilar Ekosistem Turunan Autentikasi (Otomatis Aktif Jika Opsi "Punya Login" Dipilih):**
-  AI FORBIDDEN mengabaikan atau menunda pembuatan modul-modul turunan berikut. Sistem REQUIRED otomatis melahirkan file fisik halaman dan logika fungsional untuk pilar-pilar ini:
-  1. **Flow Auth & Onboarding Lengkap:** Menyediakan halaman `Register` (Pendaftaran User Baru), `Lupa Password` (Request token), dan `Reset Password` yang fungsional terhubung ke backend.
-  2. **Halaman Profil User Aktif (User Profile Center):** Halaman user untuk mengubah data personal (Nama, Email), mengubah password lama ke password baru dengan validasi, serta fitur unggah foto profil (Avatar).
-  3. **Manajemen Pengaturan & Preferensi (App Settings Workspace):** Menyediakan komponen *toggle switch* aktif untuk memicu perubahan tema dari warna asli palet ke versi warna malam (Deep Tonal) yang langsung tersimpan di preferensi browser (LocalStorage) atau database (Hanya aktif jika opsi Dynamic Toggle Switch dipilih pada Bab 3).
-  4. **Halaman Global App Settings (Admin Control):** Halaman khusus berkredensial Admin untuk mengubah konfigurasi global aplikasi yang dinamis (Mengubah Nama Aplikasi, Logo Web, Hero Background Image, dan teks Hak Cipta pada Footer) langsung ke tabel database `settings`.
-     * **Aturan Tambahan Integrasi Sosmed (Dynamic Engagement Guard):** Jika user memilih opsi "DYNAMIC ENGAGEMENT" pada fase wawancara, Form Kontrol Administrator pada halaman ini REQUIRED menyediakan slot input file upload tambahan untuk memperbarui gambar `og:image` global ke database settings. Backend controller REQUIRED mengolah file tersebut menggunakan engine kompresi WebP otomatis dengan potongan geometri 1:1 dari titik tengah (center-focused adjustment) agar visual pratinjau link (Rich Preview) saat dibagikan ke WhatsApp, TikTok, Instagram, Threads, dan Facebook tidak buram, pecah, atau kosong.
-   5. **Manajemen User & Hak Akses (User Role Management Dashboard / Super Admin Privilege):** Halaman visual berbentuk tabel bagi Admin/Super Admin untuk memantau seluruh user yang terdaftar, menambah user baru langsung dari panel (*Add New User*), mengubah tingkatan hak akses (*Role Change* dari Member ke Admin atau sebaliknya), serta tombol aksi untuk memblokir akun (*Suspend/Banned User*) dan menghapus user menggunakan metode *Soft Delete*.
-  6. **Halaman CMS Media Slider/Banner Organizer (Otomatis Aktif jika Banner Slider/Carousel Dipilih):** Modul visual kontrol admin untuk memanipulasi data slider; mencakup fungsi mengunggah gambar baru (.webp kompresi otomatis), menghapus media lawas, serta memanipulasi urutan susunan sequence penayangan slider pada halaman depan.
-
-### C. Kebijakan Pengelolaan Media & Berkas (Upload Pipeline Policy)
-
-→ **BACA `gemini.md §4E`** untuk implementasi teknis penuh Secure Upload Pipeline (5 tahap wajib: Pre-Upload Validation → UUID Hashing → EXIF Strip → WebP Compression → JSON DB Storage). FORBIDDEN simpan nama file asli user.
-
-- **Tipe Upload yang Dipakai Proyek Ini:** `[Pilih: Avatar Profil User / Logo Aplikasi / Gambar Konten CMS / File Attachment / Tidak Ada Upload]`
-- **Direktori Target Upload:** `[Isi: /public/assets/images/ atau sesuai framework]`
-- **APP_SLUG untuk Naming:** Diambil otomatis dari `APP_SLUG` di `.env` — AI REQUIRED mengisi nilai ini di Fase 1 berdasarkan Core Identity Lock. Format nama file upload: `[app-slug]_[konteks]_[uuid-8char]_[timestamp].webp`
-
-### D. Skema Database & Hukum Penyemaian Data Awal (Database Schema & Rich Seeder Rules) [Opsional - Hanya jika menggunakan Database/Backend]
-- **Struktur Skema Dasar:** AI REQUIRED menuliskan struktur draf tabel secara lengkap di bawah ini, termasuk tipe data (DataType), Primary Key, Foreign Key, relasi antartabel yang presisi, serta penamaan Model ORM yang bersangkutan (e.g. `User`, `Transaction`, `Settings`).
-→ **BACA `gemini.md §1 🔴`** untuk Hukum Anti-Destructive DB (Dilarang `migrate:fresh`).
-- **Aturan Pembuatan Seeder (MUTLAK):** Pada file script SQL (`schema.sql` / `database.sql` / file migrations), AI **REQUIRED** menyertakan perintah `INSERT INTO` atau seeder class untuk data awal (termasuk migrasi data dummy dari database legacy jika mode `/migrate-stack` aktif).
-- **Database Compatibility Matrix (Khusus Konversi):** AI REQUIRED menganalisis skema tabel legacy dan memetakan struktur migrasinya di sini (misal keselarasan kolom lama vs kolom baru, perubahan tipe data, penyesuaian foreign key ORM baru) untuk menjamin tidak ada hilangnya relasi data.
-- **Kewajiban Akun Default & Rich Contextual Dummy Data Policy:** Script database REQUIRED menanamkan minimal satu akun admin default siap pakai. → **BACA `§6E`** untuk format password secure yang wajib digunakan (format `Adm![AppSlug]@[4digit]`) dan tabel kredensial yang harus diisi AI setelah seeder dibuat. FORBIDDEN menggunakan password generik seperti `admin123`, `password`, atau `12345678`.
-→ **Data Dummy Seeder:** AI REQUIRED menggunakan Faker library (Faker.js / PHP Faker / Python Faker). FORBIDDEN lorem ipsum atau data statis berulang. Lihat aturan lengkap di `gemini.md §4A`.
-- **Draft Schema Area / Global Local State Simulation Model / Database Compatibility Matrix (AI Generation Zone):**
-  - *[Tuliskan draf struktur tabel database, struktur penampung state JSON, serta tabel pemetaan skema compatibility database legacy di sini. Jika menggunakan komponen Slider, REQUIRED sertakan tabel/objek `sliders` (id, image_path, order_position, created_at)].*
-
-### E. Kebijakan Password Seeder & Kredensial Default (Secure Credential Policy)
-
-> ⚠️ **PENTING UNTUK DEVELOPER:** Bagian ini REQUIRED dibaca sebelum deploy ke production.
-
-AI REQUIRED menggunakan format password yang aman dan terdokumentasi untuk akun default seeder. Password WAJIB tercatat di sini agar developer tidak perlu bertanya ulang.
-
-**Format Password Default:**
-```
-Format  : Adm![SlugNamaApps]@[4DigitAcak]
-Contoh  : Adm!Brainvibes@7291
-Contoh  : Adm!Tokobaju@4823
-
-Aturan pembentukan:
-  - Prefix wajib  : Adm! (tidak berubah)
-  - Nama apps     : Ambil dari APP_SLUG, CamelCase (contoh: brainvibes-pro → Brainvibespro)
-  - Suffix         : @ diikuti 4 angka yang di-generate AI secara acak tiap proyek
-  - Panjang total  : Minimal 16 karakter
-  - Kompleksitas   : Sudah mengandung uppercase, lowercase, angka, dan simbol (!@)
-```
-
-**Tabel Kredensial Akun Default (REQUIRED diisi AI setelah seeder dibuat):**
-
-| Role | Username/Email | Password | Hash Algorithm | Status |
-| :--- | :--- | :--- | :--- | :--- |
-| Super Admin | `admin@[domain-app].com` | `[AI generates: Adm![AppSlug]@[4digit]]` | bcrypt (cost=12) | ⚠️ WAJIB GANTI sebelum production |
-| Demo Member | `member@[domain-app].com` | `[AI generates: Usr![AppSlug]@[4digit]]` | bcrypt (cost=12) | Akun demo testing |
-
-> ⚠️ **PERINGATAN PRODUCTION:** Password di atas adalah **kredensial development only**. Sebelum deploy ke production, REQUIRED lakukan:
-> 1. Ganti password admin via halaman Admin Settings
-> 2. Rotasi semua kredensial di file `.env`
-> 3. Pastikan akun demo member di-suspend atau dihapus jika tidak diperlukan
-> 4. Hapus atau disable endpoint seeder di production environment
-
-> ✅ **UNTUK DEVELOPER:** Password akun admin development tercatat di tabel di atas. Jika lupa, cek file `prd.md` bagian ini — AI selalu mencatatnya saat generate seeder di Fase 1.
-
-## 7. SECURITY, ROUTE GUARDING, & UX BEHAVIOR
-*(AI REQUIRED mematuhi protokol keamanan siber tingkat tinggi, proteksi jalur navigasi, dan standar interaksi antarmuka berikut)*
-
-### A. Mekanisme Proteksi Jalur Halaman & Middleware (Strict Route Guarding) [Opsional - Hanya jika Punya Login]
-AI REQUIRED mengunci sistem Router/Middleware ke dalam 3 Zona Proteksi berikut secara mutlak:
-1. **ZONA 1: PUBLIC ROUTES (Jalur Terbuka):** Dapat diakses oleh siapa saja tanpa session token (Landing Page, About, Artikel, Login, Register).
-2. **ZONA 2: PROTECTED ROUTES (Jalur Terproteksi / Member Area):** Jika token otentikasi tidak ditemukan atau tidak valid, sistem **REQUIRED memblokir akses secara instan dan mengarahkan paksa (redirect) user kembali ke halaman Login** disertai notifikasi peringatan.
-3. **ZONA 3: ADMIN ROUTES (Jalur Eksklusif Super User):** Wajib lolos Zona 2 dan memeriksa klaim parameter `role == 'Admin'`. Jika tidak sesuai, sistem **REQUIRED menolak akses secara mutlak dan menampilkan Halaman Error 403 (Unauthorized Access)**.
-
-### B. Keamanan Form Publik & Pertahanan Siber [Opsional - Hanya jika menggunakan Database/Backend]
-
-> **[DATA KEPUTUSAN PER-PROYEK]** Isi pilihan di bawah ini. Hukum implementasinya diatur penuh oleh `gemini.md §4B`.
-
-- **Captcha:** `[Pilih: Aktif / Tidak Aktif]`
-- **Validasi Captcha:** `[Pilih: Case-Sensitive / Case-Insensitive]`
-→ **BACA `gemini.md §4B`** untuk aturan teknis rate limiting, captcha rendering, dan semua mekanisme keamanan form publik.
-- **Sanitasi Input:** Menggunakan library validasi skema (Zod / Joi / native) untuk Anti-SQL Injection & Anti-XSS.
-
-### C. Standar Interaksi UI & Respons Feedback (UX Behavior Standard)
-- **Manajemen Notifikasi Responsif (Toast Engine):** AI FORBIDDEN menggunakan fungsi bawaan browser seperti `alert()`. Semua respons balik REQUIRED dirender menggunakan komponen Toast Notification melayang (Hijau untuk Sukses, Merah untuk Error/Gagal, Kuning untuk Peringatan) dengan durasi maksimal 3000ms.
-- **Manajemen Keterlambatan Data (Loading State):** Guna menghindari efek layar berkedip kosong saat fetching state, AI **REQUIRED menyediakan dan mernder komponen *Skeleton Loader*** (animasi kotak abu-abu berdenyut) atau *Spinner Component* yang presisi pada layout.
-- **Pesan Error yang Humanis:** Jika terjadi kegagalan sistem, AI REQUIRED memperlihatkan komponen visual pesan error yang ramah pengguna di layar (misal: "Gagal memuat data, silakan coba beberapa saat lagi").
-
-## 8. ENVIRONMENT VARIABLES, REPOSITORY SANITATION, & CREDENTIAL SECURITY (STRICT) [Opsional - Hanya jika menggunakan Database/Backend]
-*(AI REQUIRED mematuhi protokol perlindungan rahasia, isolasi berkas debug, dan hukum tata kelola repositori Git berikut secara mutlak untuk mencegah kebocoran data)*
-
-### A. Arsitektur Manajemen Variabel Lingkungan & Isolasi Kredensial (Strict Secrets Map)
-- **Hukum Utama Anti-Hardcode Kredensial:** Seluruh konfigurasi sensitif—termasuk kredensial database (database username, password, host, port), kunci API pihak ketiga (API Keys), secret key JWT/Session, dan mode environment (development/production)—**FORBIDDEN ditulis secara langsung (*hardcode*) di dalam file kode sumber aplikasi**.
-- **Peta Berkas `.env` Utama:** AI REQUIRED meletakkan seluruh kunci rahasia ke dalam satu file terpusat bernama `.env` di direktori utama (*root*). Di dalam dokumen PRD hasil generate, AI REQUIRED memetakan daftar *keys* yang dibutuhkan secara transparan tanpa menyertakan nilainya (*values* asli).
-- **Panduan Replikasi Lingkungan (`.env.example`):** AI REQUIRED menciptakan dan memperbarui berkas `.env.example` di root folder yang berisi daftar kunci kosong atau nilai dummy contoh sebagai panduan replikasi lingkungan bagi pengembang lain, tanpa membocorkan kredensial asli.
-- **Dynamic Port & Configuration Fetching:** Kode program REQUIRED dirancang untuk membaca konfigurasi port, host, dan koneksi secara dinamis dari variabel lingkungan ini, sehingga aplikasi siap dilempar ke environment produksi (Shared Hosting / VPS / Cloud Hosting) tanpa perlu mengubah struktur kode internal.
-- **APP_SLUG (REQUIRED di setiap proyek):** AI REQUIRED mendefinisikan variabel `APP_SLUG` di `.env` sejak Fase 1. Nilai ini digunakan sebagai prefix penamaan file upload (lihat `gemini.md §4E Tahap 2`). Format: `nama-aplikasi-lowercase-dengan-dash` tanpa spasi atau karakter spesial.
-  ```
-  # Contoh .env
-  APP_NAME="BrainVibes Pro"     # Nama asli untuk display
-  APP_SLUG=brainvibes-pro       # Slug untuk penamaan file upload & identifier internal
-  APP_PORT=5173                 # FORBIDDEN: 8000 atau 3000
-  ```
-
-### B. Konstitusi `.gitignore` Mutlak & Tata Kelola Git
-
-> **[DATA KEPUTUSAN PER-PROYEK]** File `.gitignore` REQUIRED dibuat AI di Fase 1. Daftar lengkap "Rahasia Dapur" yang wajib dicantumkan ada di `gemini.md §6`.
-→ **BACA `gemini.md §6` (Secret Leak Prevention Gate)** untuk daftar lengkap 5 kategori rahasia dapur, 5-tahap workflow commit wajib, dan post-commit verification.
-
-### C. Kebijakan Isolasi Berkas Uji Coba (Isolated Debugging Zone)
-
-→ **BACA `gemini.md §5A`** untuk aturan lengkap Scratchpad Zone (folder `/.scratchpad/`, larangan polusi folder fitur aktif).
-
-### D. Mekanisme Pembersihan Mandiri Pasca-Review
-
-→ **BACA `gemini.md §5B`** untuk protokol Self-Cleaning Routine (penghapusan file temporer, sanitasi repositori, log kebocoran rahasia).
-
-### E. Protokol Penanganan & Pelaporan Bug
-
-→ **BACA `gemini.md §5C`** untuk protokol lengkap YOLO Debugging Pipeline (Jurnal Percobaan Solusi 3x batas retry, pembersihan zombie port, auto-fix linting, dan Mandor Approval Gate sebelum koding).
+- **Arsitektur Aliran Data & Manajemen State:**
+  → **BACA `gemini-execution.md §4A`** untuk Layer Separation, ACID, dan Dynamic Identity.
+- **Sistem Otentikasi & Kewajiban Pilar Ekosistem Turunan:**
+  - **Sistem Login:** `[Pilih: Tanpa Login / JWT Based / Session Based]`
+  - Jika "Punya Login", wajib fungsional 100% dengan pilar-pilar: Onboarding/Register/Lupa Reset Password, User Profile Center, App Settings Preferensi, Global App Settings, Manajemen User & Hak Akses (CRUD + Ban + Soft Delete), CMS Media Slider (Carousel organizer).
+- **Kebijakan Pengelolaan Media & Berkas (Upload Pipeline Policy):**
+  → **BACA `gemini-execution.md §4E`** untuk 5 tahap secure upload. Format nama file: `[app-slug]_[konteks]_[uuid-8char]_[timestamp].webp`.
+  - **Tipe Upload yang Dipakai:** `[Avatar Profil User / Logo Aplikasi / Gambar Konten CMS / File Attachment / Tidak Ada]`
+  - **Direktori Target Upload:** `[Isi target dir]`
+  - **APP_SLUG untuk Naming:** Diambil dari `.env`.
+- **Skema Database & Hukum Penyemaian Data (Seeder):**
+  - **Draft Schema Area / Global Local State Model:** Tuliskan struktur tabel database, state JSON, atau compatibility matrix.
+  - **Password Akun Default (Secure Credential Policy):** Wajib format `Adm![AppSlug]@[4digit]`.
+  | Role | Username/Email | Password | Hash Algorithm | Status |
+  | :--- | :--- | :--- | :--- | :--- |
+  | Super Admin | `admin@[domain-app].com` | `[Adm![AppSlug]@[4digit]]` | bcrypt (cost=12) | ⚠️ WAJIB GANTI |
+  | Demo Member | `member@[domain-app].com` | `[Usr![AppSlug]@[4digit]]` | bcrypt (cost=12) | Akun demo |
 
 ---
 
-## 9. DEPLOYMENT TARGET, SEO & PRODUCTION READINESS
+## Bab 7. SECURITY, ROUTE GUARDING, & UX BEHAVIOR
+*(Protokol keamanan siber, middleware, dan UX feedback)*
 
-> **[REFERENSI REQUIRED]** Semua implementasi teknis SEO (Meta HTML, Open Graph, Twitter Card, Schema.org JSON-LD, robots.txt, sitemap.xml, Core Web Vitals) diatur penuh oleh **`gemini.md §4L`**. Bab 9 ini menyimpan **data konfigurasi spesifik proyek** yang digunakan §4L sebagai nilai pengisian. AI REQUIRED mengisi tabel-tabel di bawah ini saat wawancara `awal baru` selesai.
-
-### A. Target Deployment & Hosting Environment
-
-- **Target Hosting:** `[Pilih: Shared Hosting (cPanel) / VPS (Nginx/Apache) / Cloud (Vercel/Netlify/Railway) / Local XAMPP Apache Sub-folder]`
-- **Domain Produksi:** `[Isi URL produksi lengkap — misal: https://namadomain.com]`
-- **Sub-folder (jika Local XAMPP):** `[Isi jika ada — misal: /namafolder/ → localhost/namafolder/]`
-- **HTTPS:** `[Pilih: Aktif (SSL/TLS) / Belum — perlu setup Let's Encrypt]`
-- **www Redirect:** `[Pilih: www → non-www / non-www → www / Tidak Perlu]`
-
-### B. SEO Identity Lock (Per-Proyek — REQUIRED Diisi AI Setelah Wawancara)
-
-| Parameter SEO | Nilai | Aturan |
-| :--- | :--- | :--- |
-| **Site Title Default** | `[Nama Aplikasi]` | Max 60 karakter |
-| **Title Template** | `%s — [Nama Aplikasi]` | Format: `[Nama Halaman] — [Nama Aplikasi]` |
-| **Meta Description Default** | `[150–160 karakter]` | Berisi kata kunci utama & value proposition |
-| **Kata Kunci Utama** | `[kw1, kw2, kw3]` | 3–5 kata kunci paling relevan bisnis |
-| **Kata Kunci Pendukung (LSI)** | `[kw4, kw5, kw6]` | Sinonim/turunan dari primary keyword |
-| **og:site_name** | `[Nama Aplikasi]` | Sama dengan nama di Core Identity Lock |
-| **og:locale** | `id_ID` | Ganti jika multilingual: `en_US`, dll |
-| **twitter:site handle** | `@[handle]` | Isi `N/A` jika tidak punya akun Twitter/X |
-| **OG Image URL** | `https://[domain]/og-image.webp` | REQUIRED 1200×630px — AI generate via `generate_image` |
-| **Bahasa HTML (`lang=`)** | `id` | `id` Indonesia / `en` English |
-| **Google Search Console** | `[Verification code]` | Tambahkan setelah domain live |
-| **Canonical Strategy** | `[www→non-www / non-www→www / Tidak Ada]` | Pilih satu, konsisten — FORBIDDEN ganti di tengah proyek |
-| **hreflang** | `[id-ID saja / id-ID + en-US / Tidak Perlu]` | Isi jika proyek multilingual |
-| **Schema.org Type Utama** | `[Organization / WebApplication / Blog / Store]` | Cross-ref ke §9C — harus konsisten |
-
-### C. Schema.org Tipe Terpilih
-
-AI REQUIRED memilih berdasarkan Tipe Aplikasi di Core Identity Lock:
-
-| Tipe Aplikasi | Tipe Schema.org Utama | Tipe Tambahan |
-| :--- | :--- | :--- |
-| Company Profile | `Organization` | `LocalBusiness`, `BreadcrumbList` |
-| Blog / CMS | `Blog` + `Article` per post | `Person` (author), `BreadcrumbList` |
-| E-Commerce | `Store` + `Product` per item | `Review`, `Offer`, `BreadcrumbList` |
-| Web App / SaaS | `WebApplication` | `Organization`, `BreadcrumbList` |
-| Landing Page / Startup | `WebSite` + `Organization` | `FAQPage` jika ada FAQ |
-| Portal Pemerintahan | `GovernmentOrganization` | `BreadcrumbList` |
-
-- **Tipe Schema.org Terpilih:** `[AI isi: Organization / WebApplication / Blog / Store / ...]`
-- **Sitelinks Searchbox:** `[Pilih: Aktif (ada fitur search) / Tidak Aktif]`
-
-### D. robots.txt & Sitemap Configuration
-
-- **Tipe robots.txt:** `[Public Site / SaaS App / E-Commerce / Internal Only]`
-- **Path Private Tambahan (Disallow):** `[Isi path khusus proyek — misal: /laporan/, /export/]`
-- **URL Sitemap:** `https://[domain]/sitemap.xml`
-- **Tipe Sitemap:** `[Static XML / Dinamis via Framework / Plugin/Package]`
-- **Halaman di-exclude dari Sitemap:** `[/login, /register, /admin/*, ...]`
-
-### E. Core Web Vitals — Target Kinerja
-
-→ **BACA `gemini.md §4L-H`** untuk implementasi teknis (LCP preload, CLS prevention, INP optimization).
-
-| Metrik | Target | Tool |
-| :--- | :--- | :--- |
-| LCP (Largest Contentful Paint) | **≤ 2.5 detik** | PageSpeed Insights |
-| CLS (Cumulative Layout Shift) | **≤ 0.1** | PageSpeed Insights |
-| INP (Interaction to Next Paint) | **≤ 200ms** | Chrome DevTools → Performance |
-
-- **Hero Image Format:** REQUIRED WebP — AI generate via `generate_image` jika belum ada asset hero
-- **Font Loading:** `font-display: swap` REQUIRED di semua `@font-face`
-- **JS Defer Policy:** Semua script non-critical REQUIRED pakai `defer` atau `async`
-- **INP Performance Note:** Hindari long tasks dengan `scheduler.yield()` atau `setTimeout(..., 0)` untuk heavy JS execution
-
-### F. Analytics & Search Console Integration
-
-- **Google Analytics:** `[GA4 — Measurement ID: G-XXXXXXXX / Tidak Dipasang]`
-- **Google Search Console:** `[Aktif — verification meta tag / Tidak Dipasang]`
-- **Google Tag Manager:** `[Aktif — GTM-XXXXXXX / Tidak Dipasang]`
-
-> **Aturan:** Analytics REQUIRED hanya aktif di production. FORBIDDEN tracking di localhost. Gunakan kondisi `process.env.NODE_ENV === 'production'` atau setara.
+- **Middleware Proteksi Jalur Halaman (Strict Route Guarding):**
+  - **Zona 1 (Public Routes):** Landing Page, Login, Register, dll.
+  - **Zona 2 (Protected Routes / Member Area):** Redirect ke /login jika auth token tidak valid.
+  - **Zona 3 (Admin Routes):** Cek `role == 'Admin'`. Redirect ke Error 403 page jika tidak sah.
+- **Keamanan Form Publik & Pertahanan Siber:**
+  - **Captcha:** `[Pilih: Aktif / Tidak Aktif]`
+  - **Validasi Captcha:** `[Pilih: Case-Sensitive / Case-Insensitive]`
+    → BACA `gemini-execution.md §4B` untuk Captcha anti-bot.
+  - **Sanitasi Input:** Menggunakan schema validation (Zod / Joi) untuk Anti-SQLi & XSS.
+- **Standar Interaksi UI & Respons Feedback (UX Behavior Standard):**
+  - **Toast Engine:** Dilarang menggunakan `alert()`. Gunakan Toast (Sukses/Error/Warn) max 3000ms.
+  - **Loading State:** Sediakan `Skeleton Loader` or `Spinner`.
+  - **Pesan Error:** Ramah pengguna (misal: "Gagal memuat data...").
 
 ---
 
-## 10. PROJECT FILE STRUCTURE (ASCII TREE MAP)
+## Bab 8. ENVIRONMENT VARIABLES & CREDENTIAL SECURITY
+*(Perlindungan rahasia siber, .gitignore, isolasi debug, dan debug pipeline)*
 
-AI REQUIRED memutasi dan men-generate visualisasi ASCII Tree secara utuh ke dalam berkas prd.md sesuai dengan karakteristik arsitektur ekosistem teknologi pilihan hasil wawancara menggunakan aturan pemetaan di bawah ini:
-
-### SKENARIO A: Native HTML / PHP Environment Blueprint
-├── /.docs/                 <── [REQUIRED] Pusat seluruh dokumentasi teknis inti proyek
-│   ├── architecture.md     <── Dokumentasi penjelasan aliran data makro aplikasi
-│   ├── api-spec.md         <── Spesifikasi fungsi routing, parameter request, & backend
-│   ├── database.md         <── Skema data terstruktur DDL SQL / Local Store Object
-│   └── quality_review.md   <── Hasil audit kualitas kode (output saklar `analisa kualitas`)
-├── /.scratchpad/           <── Zona terisolasi pengujian, log dumping, & debug (Git-Ignored)
-├── /assets/                <── Kamar utama seluruh berkas statis di level root lingkungan native
-│   ├── /css/
-│   │   └── style.css       <── Berkas CSS utama penampung Core Utility Engine & aturan anti-gepeng
-│   └── /img/               <── Folder penyimpanan aset gambar lokal & asset fallback (Fail-Safe)
-├── /includes/              <── Bagian potongan layout global aplikasi (Navbar, Footer, Sidebar)
-├── index.php / index.html  <── Gerbang masuk utama aplikasi (Landing Page View fungsional)
-├── .env.example            <── Panduan blueprint variabel lingkungan proyek tanpa value asli
-├── .gitignore              <── Proteksi rahasia siber mencekal berkas sensitif, prd, todo, & handover
-├── handover.md             <── Kompas pelacak progress state harian (Auto-Generated Incremental Log)
-├── prd.md                  <── Kitab suci spesifikasi fitur proyek hasil konfirmasi wawancara
-├── app-context.md          <── Snapshot state machine-optimized (AI-only, Git-Ignored, overwrite per 5-6 task)
-└── todo.md                 <── Peta jalan linear aktivitas koding (8 Fase untuk proyek baru / 9 Fase untuk saklar `awal konversi`)
-
-### SKENARIO B: Modern Bundler Framework (React Vite / Next.js) App Router Architecture
-├── /.docs/                 <── [REQUIRED] Pusat seluruh dokumentasi teknis inti proyek
-│   ├── architecture.md     <── Dokumentasi penjelasan aliran data makro aplikasi
-│   ├── api-spec.md         <── Spesifikasi mutasi status, routing API, & server actions spec
-│   ├── database.md         <── Blueprint skema model data terstruktur / Local JSON Store
-│   └── quality_review.md   <── Hasil audit kualitas kode (output saklar `analisa kualitas`)
-├── /.scratchpad/           <── Zona terisolasi pengujian, log dumping, & debug (Git-Ignored)
-├── /public/                <── Folder aset statis REQUIRED untuk prasyarat kompilasi mesin bundler
-│   └── /images/            <── Tempat penyimpanan berkas cadangan gambar lokal (Fail-Safe Aset)
-├── /src/                   <── Kamar utama seluruh modul kode program aplikasi berjalan
-│   ├── /components/        <── Folder komponen visual modular global (Navbar, Button, UI Element)
-│   ├── /config/
-│   │   └── state.js        <── Tempat data state management simulator / Client memory dikunci
-│   ├── /styles/
-│   │   └── global.css      <── Integrasi Tailwind CSS v4 dengan cache-busting token dinamis
-│   └── /views / /app/      <── File fisik halaman aktif penyusun kluster akses sistem router
-├── .env.example            <── Panduan blueprint variabel lingkungan proyek tanpa value asli
-├── .gitignore              <── Proteksi rahasia siber mencekal berkas sensitif, prd, todo, & handover
-├── handover.md             <── Kompas pelacak progress state harian (Auto-Generated Incremental Log)
-├── prd.md                  <── Kitab suci spesifikasi fitur proyek hasil konfirmasi wawancara
-├── app-context.md          <── Snapshot state machine-optimized (AI-only, Git-Ignored, overwrite per 5-6 task)
-└── todo.md                 <── Peta jalan linear aktivitas koding (8 Fase untuk proyek baru / 9 Fase untuk saklar `awal konversi`)
-
-##[AI REQUIRED MEN-GENERATE ASCII TREE STRUKTUR FOLDER DI SINI SEBELUM MULAI KODING]
+- **Secrets Management:** Semua kredensial wajib di `.env` dan di-untrack.
+- **Peta Berkas `.env` Utama:** Petakan kunci rahasia yang digunakan (tanpa value asli) ke `.env.example`.
+- **APP_SLUG (REQUIRED):** Definisikan `APP_SLUG` di `.env` (Format: lowercase-with-dash).
+- **Konstitusi `.gitignore` Mutlak:**
+  → **BACA `gemini-templates.md §6A`** untuk 5 kategori rahasia dapur, 5-tahap workflow commit wajib.
+- **Debug & YOLO Debug Pipeline:**
+  → **BACA `gemini-execution.md §4H`** untuk Browser Tool Gate + scratchpad DOM rules, dan **`gemini-templates.md §5`** untuk YOLO Debugging.
 
 ---
 
-## 11. TRANSITION BLUEPRINT REGISTRY (KHUSUS KONVERSI STACK / RE-PLATFORMING)
-*(Bab ini REQUIRED diisi secara detail oleh AI saat menjalankan saklar `awal konversi` untuk memetakan transisi stack lama ke stack baru)*
+## Bab 9. DEPLOYMENT TARGET, SEO & PRODUCTION READINESS
+*(Deployment, SEO parameters, Core Web Vitals)*
 
-> **[REFERENSI REQUIRED]** Sebelum mengisi tabel-tabel di Bab 11 ini, AI **MUTLAK REQUIRED** membaca ulang **Bab 6D (Database Schema & Rich Seeder Rules)** untuk memastikan seluruh aturan ACID Compliance, anti-destructive migration, seeder legacy data, dan Database Compatibility Matrix sudah diterapkan secara konsisten pada kolom Status Porting setiap tabel di bawah ini.
+- **Target Hosting:** `[Shared Hosting / VPS / Cloud / Local XAMPP]`
+- **Domain Produksi:** `[URL produksi]`
+- **HTTPS:** `[Aktif (SSL/TLS) / Belum]`
+- **SEO Identity Lock (Per-Proyek):** Site Title, Meta Description, og:image, Schema.org type, robots.txt, sitemap.xml.
+  - **Tipe Schema.org Terpilih:** `[Organization / WebApplication / Blog / Store / GovernmentOrganization]`
+  - **robots.txt & Sitemap:** Tentukan target disallow (misal: `/admin/`, `/api/`).
+  - **Core Web Vitals Target:** LCP ≤ 2.5s (preload hero), CLS ≤ 0.1 (aspect ratio), INP ≤ 200ms (yield heavy JS).
 
-### A. Database Schema Conversion Map
-Memetakan nama tabel, tipe data, primary key, dan foreign key dari database lama ke database baru. Wajib diisi sebelum Fase 2 dimulai:
-| Tabel Legacy | Kolom Legacy | Tipe Data Legacy | Tabel Target Baru | Kolom Target Baru | Tipe Data Baru / ORM Type | Status Porting | Catatan / Blocker |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| [Contoh: users] | [usr_pwd] | [varchar(255)] | [users] | [password] | [String (Bcrypt/Argon2)] | [PENDING] | [Butuh upgrade-on-login fallback] |
+---
 
-### B. Database Model Registry
-Memetakan query, relasi data, dan representasi model database dari stack lama ke ORM modern target. Wajib diisi sebelum Fase 3 dimulai:
-| Model Legacy | Nama Berkas Legacy | Relasi Legacy | Model ORM Baru | Path Berkas Baru | Relasi / ORM Syntax Baru | Status Porting | Catatan / Blocker |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| [Contoh: User] | [models/user.php] | [none] | [User] | [src/models/user.js] | [@relation / User.hasMany] | [PENDING] | [-] |
+## Bab 10. PROJECT FILE STRUCTURE (ASCII TREE MAP)
+*(AI wajib memutasi ASCII Tree sesuai arsitektur terpilih)*
+- **SKENARIO A (Native HTML/PHP):** layout folder native.
+- **SKENARIO B (Modern Bundler Framework - React/Next.js):** layout folder bundler.
 
-### C. Backend Controller & API Translation Map
-Memetakan controller handler dan endpoint routing dari API lama ke rute target baru. Wajib diisi sebelum Fase 6 dimulai:
-| Controller Legacy | Endpoint Legacy | Logika Fungsional | Controller Target | API Route Target Baru | Status Porting | Catatan / Blocker |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| [Contoh: auth.php] | [POST /login.php] | [Captcha verify + password verification] | [AuthController] | [POST /api/auth/login] | [PENDING] | [-] |
+---
 
-### D. Third-Party API Integration Map
-Memetakan pustaka/package dan endpoint API eksternal dari stack lama ke stack baru. Wajib diisi sebelum Fase 6 dimulai:
-| Layanan Pihak Ketiga | Library Legacy | Konfigurasi Legacy | Library Target Baru | Konfigurasi Baru (.env) | Status Porting | Catatan / Blocker |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| [Contoh: Payment Gateway] | [Midtrans PHP SDK] | [Merchant ID static config] | [@midtrans/client] | [MIDTRANS_CLIENT_KEY] | [PENDING] | [-] |
+## Bab 11. TRANSITION BLUEPRINT REGISTRY (KHUSUS KONVERSI STACK)
+*(Matriks migrasi database, model, controller, dan view dari stack lama ke baru)*
 
-### E. Frontend View & Asset Translation Registry
-Memetakan tampilan antarmuka views lama ke React Components / Modern pages pada framework baru. Wajib diisi sebelum Fase 7 dimulai:
-| Berkas View Legacy | Kluster Akses | Komponen UI Utama | Berkas View Target | Deskripsi Visual Baru | Status Porting | Catatan / Blocker |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| [Contoh: login_form.html] | [Publik] | [Form container, inputs, captcha] | [src/views/pages/login.tsx] | [Responsive Card + HSL original palette Bg] | [PENDING] | [-] |
+- **A. Database Schema Conversion Map:**
+  | Tabel Legacy | Kolom Legacy | Tipe Data Legacy | Tabel Target Baru | Kolom Target Baru | Tipe Data Baru / ORM Type | Status Porting | Catatan / Blocker |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+- **B. Database Model Registry:**
+  | Model Legacy | Nama Berkas Legacy | Relasi Legacy | Model ORM Baru | Path Berkas Baru | Relasi / ORM Syntax Baru | Status Porting | Catatan / Blocker |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+- **C. Backend Controller & API Translation Map:**
+  | Controller Legacy | Endpoint Legacy | Logika Fungsional | Controller Target | API Route Target Baru | Status Porting | Catatan / Blocker |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+- **D. Third-Party API Integration Map:**
+  | Layanan Pihak Ketiga | Library Legacy | Konfigurasi Legacy | Library Target Baru | Konfigurasi Baru (.env) | Status Porting | Catatan / Blocker |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+- **E. Frontend View & Asset Translation Registry:**
+  | Berkas View Legacy | Kluster Akses | Komponen UI Utama | Berkas View Target | Deskripsi Visual Baru | Status Porting | Catatan / Blocker |
+  | :--- | :--- | :--- | :--- | :--- | :--- | :--- |

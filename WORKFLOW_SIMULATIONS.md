@@ -543,9 +543,7 @@ lanjut dari sini
 → Execute from last task
 
 [STEP 4] Parallel File Loading
-→ Group A: user-prefs.md, app-context.md → LOAD PARALLEL
-→ Group B: prd.md, todo.md → LOAD after A
-→ Group C: gemini-execution.md §4K → LOAD after B
+→ (Sama seperti Simulasi 2 Step 2: Parallel File Loading dari user-prefs, app-context, prd, todo, dan gemini-execution)
 
 [STEP 5] Handover Update (setiap 5-6 task)
 → Handover.md: 400 baris terbaru

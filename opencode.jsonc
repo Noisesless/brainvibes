@@ -1,4 +1,30 @@
 {
+  "$schema": "https://opencode.ai/config.json",
+  "disabled_providers": [],
+  "instructions": [
+    "C:\\Users\\GBC_PC\\.config\\opencode\\brainvibes\\gemini.md"
+  ],
+  "provider": {
+    "idihore": {
+      "name": "Hinata",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://hinata.idihore.id/llm/v1"
+      },
+      "models": {
+        "hinata": {
+          "name": "hinata",
+          "reasoning": true,
+          "limit": {
+            "context": 262144,
+            "output": 8192
+          }
+        }
+      }
+    }
+  },
+  // OpenCode MCP Configuration
+  // AI and IDE integrations for Model Context Protocol
   "mcp": {
     "context7": {
       "type": "remote",
@@ -20,7 +46,7 @@
     },
     "filesystem": {
       "type": "local",
-      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\xampp\\htdocs", "C:\\Users\\GBC_PC\\.gemini", "C:\\Users\\GBC_PC\\.config\\opencode"]
+      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\XAMPP\\htdocs", "C:\\Users\\GBC_PC\\.gemini", "C:\\Users\\GBC_PC\\.config\\opencode", "G:\\mymodel\\opencode"]
     },
     "time": {
       "type": "local",

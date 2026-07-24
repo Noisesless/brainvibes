@@ -8,7 +8,7 @@
 | `user-prefs.md` | 5+ (Semua sesi, execution, templates) | User preferences |
 | `AGENTS.md` | 3+ (opencode, .gemini, execution) | Behavior rules |
 | `design-system.md` | 3+ (UI components, visual gate) | Design tokens |
-| `config/mcp_config.json` | 3+ (context7, filesystem, memory) | MCP servers |
+| `config/mcp_config.json / opencode.jsonc` | 3+ (context7, filesystem, memory) | MCP servers |
 
 ## 🟡 High-Impact Files (ubah = efek luas)
 
@@ -18,7 +18,7 @@
 | `gemini-templates.md` | gemini.md, user-prefs.md | Macro commands | High |
 | `prd-template.md` | gemini.md, design-system.md | PRD generation | High |
 | `yasei-cli.ps1` | user-prefs.md, app-context.md | CLI subsystem | Medium |
-| `sync.ps1` | - | Sync mechanism | Medium |
+| `sync.ps1` | - | Sync mechanism (includes config & opencode) | Medium |
 | `app-context-template.md` | gemini.md | Context snapshot | Medium |
 
 ## 🟢 Leaf Files (aman diubah — minimal dependency)
@@ -57,17 +57,17 @@
 
 ## Import Chain Analysis
 
-### Core Instructions Chain
+### Core Instructions Chain & Silent Dependencies
 ```
-user-prefs.md (highest priority)
+user-prefs.md (highest priority — silent read)
     ↓
-gemini.md (core instructions)
+gemini.md (core instructions, §VISUAL RULES, §SESSION PROTOCOL, Dispatch Table)
     ↓
-AGENTS.md (extends gemini.md)
+AGENTS.md (extends gemini.md — deep links to gemini-execution.md #L92, #L261, #L608, #L642)
     ↓
-gemini-execution.md (loaded on-demand)
+gemini-execution.md (loaded on-demand — §3.A-C, §4.A-J, §4K-§4N)
     ↓
-gemini-templates.md (loaded on-demand)
+gemini-templates.md (loaded on-demand — macro commands §2A-§2J, §5 YOLO, §6A git)
 ```
 
 ### Skills Chain
@@ -81,7 +81,7 @@ visual gate enforcement (uses taste-skill-bridge)
 
 ### MCP Chain
 ```
-mcp_config.json
+mcp_config.json / opencode.jsonc
     ↓
 context7 (library docs)
     ↓
@@ -89,7 +89,7 @@ filesystem (file operations)
     ↓
 memory (persistent state)
     ↓
-web_search (real-time info)
+(web_search deprecated -> fallback context7/manual)
 ```
 
 ## Circular Dependencies

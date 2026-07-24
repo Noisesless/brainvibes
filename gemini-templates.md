@@ -22,7 +22,7 @@
 6. Generate `prd.md` dan `todo.md` (8 Fase), lalu mulai eksekusi Fase 1.
 
 ### 2B. Saklar: `awal lanjut`
-1. **Baca `app-context.md` PERTAMA (Silent - Priority Context).** Fallback jika tidak ada: baca `prd.md`, `todo.md`, `handover.md`, dan `/.docs/`.
+1. **Gunakan snapshot `app-context.md`** (yang telah dimuat saat Session Init). Jika `app-context.md` belum dimuat: fallback baca `prd.md`, `todo.md`, `handover.md`, dan `/.docs/`.
 2. **Analisis Kesenjangan & Konsistensi (Wawancara Kondisional):**
    - Checksum CORE IDENTITY LOCK: Bandingkan stack di `prd.md` dengan file manifest dependensi (`package.json`, `composer.json`, dll.).
    - Visual DNA Checksum (Auto-Sync): Bandingkan `app-context.md §PALETTE` dengan CORE IDENTITY LOCK di `prd.md`. Jika drift, update `app-context.md §PALETTE` sesuai `prd.md` lalu overwrite `app-context.md`.
@@ -139,6 +139,20 @@
 
 ## §6. OTOMATISASI WORKFLOW (HANDOVER & COMMIT)
 
+### 6A-bis. Pre-Flight Checklist Protocol (Sebelum Commit/Selesai)
+Sebelum melakukan commit atau menyatakan sub-task selesai, AI WAJIB mencetak checklist berikut ke terminal:
+```
+[PRE-FLIGHT CHECKLIST]
+- [ ] File yang diminta sudah dibuat/modified?
+- [ ] Tidak ada href="#" atau link mati?
+- [ ] CSS tokens dipakai (var(--vibe-*)), bukan hex hardcode?
+- [ ] app-context.md sudah diupdate (jika task ke-5/6)?
+- [ ] Self-check visual rules (jika task visual)?
+```
+Jika ada item yang belum dicentang `[ ]`, perbaiki SEBELUM melanjutkan ke tahap git commit.
+
+---
+
 ### 6A. Git Commit Protocol (5 Tahap Wajib)
 
 > ⛔ **HARD BLOCK:** AI **FORBIDDEN** menggunakan `git commit -am`, `git add .`, atau `git add -A` tanpa melalui 5 tahap di bawah ini. Pelanggaran = **Fatal Leak Violation**.
@@ -252,12 +266,12 @@
 ---
 
 ## §7. DEFINISI STRUKTUR FASE TODO.MD
-*(Struktur 8 fase untuk proyek baru / 9 fase untuk konversi. Hapus/skip fase yang tidak relevan dengan stack.)*
+*(Struktur 8 fase untuk proyek baru / 9 fase untuk konversi. Hapus/skip fase yang tidak relevan dengan stack. Gunakan dependency notation: `→` untuk tugas berurutan/sequential, `⬅️` untuk tugas dengan dependensi/parallel block.)*
 
 ### Fase 1: Foundation & Environment Setup
 - [ ] Init git repo + setup `.gitignore` (env, DB, handover, prd, node_modules, .scratchpad)
 - [ ] Buat `.env` + `.env.example` + setup koneksi DB (SQLite/MySQL/PostgreSQL)
-- [ ] Generate skeleton `app-context.md` + `handover.md` + folder `/.docs/`
+- [ ] Buat skeleton `app-context.md` dengan template kosong (struktur saja, tanpa data) + `handover.md` + folder `/.docs/`
 - [ ] Install AST security linter (`eslint-plugin-security` / `phpstan`) — Mitigasi L3 SAST
 - [ ] Verifikasi dev server jalan di port dari `user-prefs.md` (bukan port 3000/8000)
 
@@ -319,7 +333,7 @@
 |---|---|---|---|
 | `status proyek` | Simple | Inline 10-baris template | 0.5K |
 | `sync` | Simple | Inline sync instructions | 0.5K |
-| `awal baru` | Complex | Read gemini-templates.md §2A | 4.6K |
+| `awal baru` | Complex | Read gemini-templates.md §2A | 2K |
 | `awal lanjut` | Complex | Read gemini-templates.md §2B | 2K |
 | `baca error` | Complex | Read gemini-templates.md §5 | 2K |
 | `tambah fitur` | Complex | Read gemini-templates.md §2D | 2K |

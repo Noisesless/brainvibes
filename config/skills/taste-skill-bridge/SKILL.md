@@ -812,8 +812,8 @@ Jika ada ❌ → perbaiki SEBELUM declare done.
 | UUPM style database (84 gaya) | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\styles.csv` |
 | UUPM typography (73 pairings) | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\typography.csv` |
 | UUPM UX guidelines | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\ux-guidelines.csv` |
-| Auth + security rules | `gemini.md §4B` |
-| Active link policy | `gemini.md §4A` |
-| Upload pipeline | `gemini.md §4E` |
-| Anti-slop HARD BLOCK lengkap | `gemini.md §4K F` |
+| Auth + security rules | `gemini-execution.md §4B` |
+| Active link policy | `gemini-execution.md §4A` |
+| Upload pipeline | `gemini-execution.md §4E` |
+| Anti-slop HARD BLOCK lengkap | `gemini.md §VISUAL RULES` |
 | Anti-patterns library (AP-016 to AP-019) | `lessons-learned/data/anti-patterns.md` |

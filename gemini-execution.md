@@ -3,9 +3,9 @@
 
 ---
 
-## §3. ATURAN INTERAKSI & KECERDASAN (BEHAVIOR V2)
+## §3. USER PREFERENCES LOADING & CONTEXT-AWARENESS
 
-### A. Validasi Instruksi & Sinkronisasi Otomatis (Context-Awareness)
+### §3.A User Preferences Loading & Instruction Validation (Context-Awareness)
 
 -1. **User Preferences Load (HIGHEST PRIORITY — Silent — Setiap Sesi):**
     SEBELUM apapun, AI REQUIRED baca `%USERPROFILE%\.gemini\user-prefs.md` secara senyap:
@@ -51,25 +51,45 @@
       ```
 3.  **Sinkronisasi Wajib:** Setelah user setuju, AI WAJIB memperbarui `prd.md` dan/atau `todo.md` **sebelum** atau **dalam giliran yang sama** saat menulis kode fitur tersebut. Ini memastikan dokumentasi selalu sinkron dengan kenyataan.
 
-### B. Protokol Eksekusi & Uji Coba (Fail-Fast Workflow)
+### Auto-Apply Lessons Learned (Lessons-Aware Coding):
+Setiap kali AI akan menulis kode untuk konteks berikut, WAJIB baca secara silent `lessons-learned/data/anti-patterns.md` (atau folder database/security patterns terkait):
+- **Auth:** login, register, password, session, token, jwt, oauth
+- **Database:** query, select, insert, update, delete, mysqli, PDO, prisma, knex
+- **Input:** form, $_POST, $_GET, $_REQUEST, req.body, req.params, req.query
+- **Upload:** file upload, multer, move_uploaded_file, storage, bucket
+- **API:** route, endpoint, middleware, controller, handler
+
+Jika pattern yang akan ditulis mirip dengan entry di `anti-patterns.md` → HINDARI. Gunakan pattern aman yang sudah teruji.
+Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pernah gagal → menggunakan pattern aman.`
+
+### §3.B Protokol Eksekusi & Uji Coba (Fail-Fast Workflow)
 1.  **Verifikasi Pre-Task:** Sebelum mengerjakan tugas di `todo.md`, baca ulang spesifikasi relevan di `prd.md`.
 2.  **Pre-flight Check:** Sebelum menjalankan proses `build` penuh yang lambat, AI WAJIB menjalankan perintah cepat:
     *   **Linter & Formatter Check** (`eslint`, `prettier --check`, `pint`, dll.)
     *   **Type Checker** (`tsc --noEmit`, dll.)
     AI harus memperbaiki error dari *pre-flight check* ini terlebih dahulu.
-3.  **Build Penuh & 6 Lapisan Scan:** Hanya jika *pre-flight check* lolos, AI menjalankan `build` penuh dan 6 lapisan scan keamanan.
-4.  **Gerbang Kelulusan Taktis (Fail-Fast):** Jika ada error di tahap manapun, proses dihentikan, checkbox `todo.md` tidak dicentang, dan AI langsung masuk mode perbaikan.
-5.  **Self-Reflection Gate (Sebelum Serah ke User):**
-    Sebelum menyatakan task selesai, AI REQUIRED melakukan self-check cepat:
-    - Apakah semua file yang disebut task sudah dibuat/diubah di disk?
-    - Apakah ada `href="#"` atau link mati yang baru dibuat? (Fix sesuai §4A Active Link Policy)
-    - Apakah token warna dipakai dari CSS variable, bukan hex hardcode? (Refactor ke `var(--vibe-*)`)
-    - Apakah ada kode terpotong atau disingkat `// ... rest`? (Tulis lengkap sesuai §1 No-Truncation Law)
-    - Apakah `app-context.md` sudah diupdate jika ini task ke-5/6?
-    Format output (COMPACT): `[SELF-CHECK] ✅ Files: N | ✅ Links: OK | ✅ Tokens: CSS var`
-    Jika ada item FAILED: perbaiki dulu SEBELUM menyatakan selesai.
+3.  **Incremental Build Verification:**
+    Sebelum menjalankan build penuh, AI WAJIB menjalankan verifikasi inkremental pada file-file yang diubah:
+    - Lint file yang diubah → `eslint [file] --max-warnings=0` / `./vendor/bin/pint [file]` / `php -l [file]`
+    - Type-check file yang diubah → `tsc --noEmit [file]` (jika TypeScript)
+    - Jika lolos → lanjut ke build penuh (jika diperlukan)
+    - Jika gagal → perbaiki → retry (maks 3x)
+    *Pengecualian:* Build penuh wajib dijalankan di akhir Fase (milestone), setelah perubahan >5 file, atau perubahan arsitektur core (routing, DB, auth).
+4.  **Build Penuh & 6 Lapisan Scan:** Hanya jika *pre-flight check* & incremental build lolos, AI menjalankan `build` penuh dan 6 lapisan scan keamanan.
+5.  **Gerbang Kelulusan Taktis (Fail-Fast):** Jika ada error di tahap manapun, proses dihentikan, checkbox `todo.md` tidak dicentang, dan AI langsung masuk mode perbaikan.
+6.  **Self-Reflection Gate (Sebelum Serah ke User):**
+    Sebelum menyatakan task selesai, AI REQUIRED melakukan self-check cepat dan mencetak checklist format berikut:
+    ```
+    [PRE-FLIGHT CHECKLIST]
+    - [ ] File yang diminta sudah dibuat/modified?
+    - [ ] Tidak ada href="#" atau link mati?
+    - [ ] CSS tokens dipakai (var(--vibe-*)), bukan hex hardcode?
+    - [ ] app-context.md sudah diupdate (jika task ke-5/6)?
+    - [ ] Self-check visual rules (jika task visual)?
+    ```
+    Jika ada item yang belum dicentang `[ ]`, perbaiki SEBELUM menyatakan selesai.
 
-### C. Definisi 6 Lapisan Scan Kelayakan Keamanan (Security Gate Protocol)
+### §3.C Definisi 6 Lapisan Scan Kelayakan Keamanan (Security Gate Protocol)
 AI REQUIRED mengeksekusi keenam lapisan berikut secara berurutan. Lapisan tidak boleh dilewati. Jika satu lapisan gagal, proses dihentikan.
 
 | Lapisan | Nama | Perintah Konkret | Lulus Jika |
@@ -96,7 +116,7 @@ Status 6 Lapisan Scan:
 
 ## §4. ATURAN PENULISAN KODE, ARSITEKTUR, & ACTIVE LINK POLICY
 
-### A. Arsitektur Kode, ACID Transaksi, & Kebijakan Tautan Aktif (Structural Integrity)
+### §4.A Arsitektur Kode, ACID Transaksi, & Kebijakan Tautan Aktif (Structural Integrity)
 - **Anti-Spaghetti & Strict Layer Separation:** AI REQUIRED memecah kode secara modular. Pisahkan secara ketat antara Presentation Layer (UI Components / Views), Business Logic Layer (Controllers / Hooks), dan Data Access Layer (Models / Queries).
 - **Database Transaction Guarding (ACID Compliance):** Untuk mutasi data sensitif (stok, saldo, poin) dan mutasi data multi-tabel, AI **REQUIRED** membungkus rangkaian eksekusi query tersebut di dalam blok transaksi terisolasi secara rigid. Wajib menggunakan perintah `DB::beginTransaction();`, `DB::commit();`, dan `DB::rollBack();` di dalam `catch` block.
 - **Active Navigation & Zero-Dead-End Link Policy:** AI FORBIDDEN membuat tautan mati (`href="#"` atau `href="javascript:void(0)"`). Semua menu, link sidebar, dan tombol navigasi REQUIRED memiliki file fisik halaman penampung yang aktif terhubung ke routing. Jika belum dibangun, arahkan ke halaman temporary dengan "Under Construction Card".
@@ -106,7 +126,7 @@ Status 6 Lapisan Scan:
   3. *Admin State:* Muncul menu tambahan "Admin Panel" / "User Management" di dropdown avatar atau navigasi.
 - **Dynamic Application Identity:** AI FORBIDDEN menuliskan nama aplikasi, copyright footer, dan logo secara statis (*hardcode*). Tarik secara dinamis dari config atau DB settings.
 
-### B. Regulasi Keamanan Captcha Anti-Bot & Form Publik
+### §4.B Regulasi Keamanan Captcha Anti-Bot & Form Publik
 Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
 1. *Visual High-Contrast Engine:* Angka/huruf Captcha REQUIRED di-render dengan warna tegas bersaturasi tinggi di atas latar belakang kontras. FORBIDDEN warna buram, grey layer, atau hitam-putih.
 2. *Alphanumeric Case-Insensitive Logic:* Kombinasi dinamis angka, huruf besar, dan huruf kecil (e.g. `pG4mQ`). Backend validation REQUIRED bersifat **Case-Insensitive** (`strtolower()` / `.toLowerCase()`).
@@ -117,13 +137,13 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
    - **Audio Captcha:** Tombol speaker → bacakan kode via Web Speech API.
    - **reCAPTCHA v3:** Jika diizinkan policy proyek.
 
-### C. Arsitektur Peran File Sistem Vibes Coding (Single Responsibility Rule)
+### §4.C Arsitektur Peran File Sistem Vibes Coding (Single Responsibility Rule)
 - `gemini.md` (Otak / OS) → Hukum universal di SEMUA proyek, SEMUA sesi.
 - `prd-template.md` (Form Spesifikasi) → Data keputusan per-proyek dari wawancara.
 - `design-system.md` (Database Visual) → Referensi token warna & komponen, dibaca ON-DEMAND.
 **Hukum Duplikasi:** AI FORBIDDEN mengulangi aturan perilaku dari `gemini.md` ke dalam `prd.md`. `prd.md` HANYA boleh berisi data/pilihan spesifik proyek dan referensi silang (`→ BACA gemini.md §X`).
 
-### D. Protokol Anti-Blank & Sistem Imun Visual DNA (Anti-Invisible Text Policy)
+### §4.D Protokol Anti-Blank & Sistem Imun Visual DNA (Anti-Invisible Text Policy)
 1. **Hukum Kontras Mutlak (Anti-Text Gaib):**
    - AI FORBIDDEN menerapkan kombinasi warna font yang memiliki tingkat kontras rendah dengan latar belakang komponen (e.g., `font putih + bg putih`).
    - Setiap card/surface/modal cerah/putih, warna teks utama (`text-main`) REQUIRED cocok dengan skala gelap (e.g., Slate-900 / Charcoal).
@@ -139,7 +159,7 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
    - Light Mode: `--vibe-background` REQUIRED mewarisi `--raw-palette-bg`.
    - Dark Mode: `--vibe-background` REQUIRED dirumuskan dari rona dasar palet asli yang diturunkan kecerahannya (Midnight Shade).
 
-### E. Regulasi Keamanan & Optimasi Upload File (Secure Upload Pipeline)
+### §4.E Regulasi Keamanan & Optimasi Upload File (Secure Upload Pipeline)
 
 > ⛔ **HARD BLOCK:** AI **FORBIDDEN** menyimpan file upload dengan nama asli dari user. Pelanggaran = **Fatal Security Violation**.
 
@@ -168,11 +188,17 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
 
 ---
 
-### G. Protokol Human-Like HTTP Request (Stealth Fetch Engine)
+### §4.F Protokol Human-Like HTTP Request (Stealth Fetch Engine)
+Setiap HTTP request ke server eksternal REQUIRED menggunakan teknik kamuflase:
 
----
+1. **Hukum Header Manusia:** AI **FORBIDDEN** menggunakan header default fetch/axios. Gunakan header lengkap (`User-Agent` Chrome/Windows terbaru, `Accept-Language`, `Sec-Ch-Ua`, dll.).
+2. **Hukum Referer Kontekstual:** Tambahkan referer & origin yang valid.
+3. **Hukum Delay Acak:** Jeda delay acak (0.5 - 2 detik) antar request.
+4. **Hukum Retry Cerdas:** Exponential backoff + User-Agent rotation jika menerima status 429/403.
+5. **Hukum Fallback Lokal:** Setiap `<img>` eksternal wajib punya `onerror` fallback ke placeholder lokal.
+6. **Hukum Aset SVG Lokal:** Logo brand & ikon utama wajib diunduh manual dan disimpan secara lokal (fill/stroke via oklch).
 
-### G-bis. Visual DNA Extraction & Validation (Gap 3, 4, 12 Fix)
+### §4.G Visual DNA Extraction & Validation (Gap 3, 4, 12 Fix)
 
 #### STEP 1 — Visual DNA Extraction (Wajib Sebelum Code)
 AI REQUIRED ekstrak DNA tokens dari halaman utama sebelum menulis kode halaman turunan:
@@ -213,7 +239,7 @@ AI REQUIRED validasi tokens vs VDNA di prd.md §3 sebelum code:
 ```
 [DNA MISMATCH]
 prd.md §3: Acid Streetwear (orange, bold, high contrast)
-app.css: --vibe-accent-1: #6C63FF (purple, AI-default)
+app.css: --vibe-accent-1: [UUPM-selected — see design-system.md §1]
 → Question: VDNA mana yang mau di-apply?
   A) Acid Streetwear (dari prd.md §3)
   B) Phantom Violet (dari app.css)
@@ -232,21 +258,7 @@ Jika VDNA ambiguous → STOP dan tanya user:
 FORBIDDEN asumsi VDNA tanpa konfirmasi
 ```
 
----
-
-### G-ter. Modern CSS Enforcement Gate (CSS 2026)
-Setiap HTTP request ke server eksternal REQUIRED menggunakan teknik kamuflase:
-
-1. **Hukum Header Manusia:** AI **FORBIDDEN** menggunakan header default fetch/axios. Gunakan header lengkap (`User-Agent` Chrome/Windows terbaru, `Accept-Language`, `Sec-Ch-Ua`, dll.).
-2. **Hukum Referer Kontekstual:** Tambahkan referer & origin yang valid.
-3. **Hukum Delay Acak:** Jeda delay acak (0.5 - 2 detik) antar request.
-4. **Hukum Retry Cerdas:** Exponential backoff + User-Agent rotation jika menerima status 429/403.
-5. **Hukum Fallback Lokal:** Setiap `<img>` eksternal wajib punya `onerror` fallback ke placeholder lokal.
-6. **Hukum Aset SVG Lokal:** Logo brand & ikon utama wajib diunduh manual dan disimpan secara lokal (fill/stroke via oklch).
-
----
-
-### §4G-ter. BROWSER TOOL GATE — Token Anti-Waste Protocol
+### §4.H Browser Tool Gate — Token Anti-Waste Protocol
 
 > ⛔ **HARD BLOCK:** AI **FORBIDDEN** memanggil `browser_subagent` tanpa memenuhi MINIMAL SATU dari kondisi di bawah. Pelanggaran = **Token Waste Violation**.
 
@@ -283,7 +295,7 @@ AI WAJIB per giliran:
 - DEFAULT recording = OFF kecuali user eksplisit minta
 ```
 
-#### ⛔ SCRATCHPAD DOM — Proteksi Absolut (Binding user-prefs.md):
+#### ⛔ Scratchpad DOM — Proteksi Absolut (Binding user-prefs.md):
 Jika `[BROWSER_TOOL].scratchpad_dom = FORBIDDEN`:
 - FORBIDDEN `browser_subagent` ke `localhost`, `127.0.0.1`, port dev lokal MANAPUN
 - FORBIDDEN untuk tujuan: "verifikasi build", "cek tampilan", "render check", "lihat DOM"
@@ -300,9 +312,7 @@ Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
 Jika scratchpad_dom = FORBIDDEN dan target adalah localhost → [SCRATCHPAD BLOCKED] STOP.
 ```
 
----
-
-### G-bis. Visual Self-Check & Pre-Flight (Gap 5, 9 Fix)
+### §4.I Visual Self-Check & Pre-Flight (Gap 5, 9 Fix)
 
 #### Visual Self-Check (WAJIB untuk perubahan visual)
 AI REQUIRED jalankan self-check ini sebelum menyatakan task UI selesai:
@@ -344,9 +354,7 @@ Jika ada ❌ → perbaiki SEBELUM declare done.
 
 > Detail checklist lengkap: `taste-skill-bridge/REFERENCE.md` (STEP 5)
 
----
-
-### G-ter. Modern CSS Enforcement Gate (CSS 2026)
+### §4.J Modern CSS Enforcement Gate (CSS 2026)
 AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 - **Container Queries (`@container`):** Reusable components.
@@ -358,10 +366,13 @@ AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 ---
 
+<!-- §4H = Browser Tool Gate (defined in AGENTS.md §BROWSER TOOL GATE + gemini-execution.md §4H line 261) -->
+<!-- §4I, §4J = Reserved for future use -->
+
 ## §4K. UI UX PRO MAX INTEGRATION PROTOCOL (SUMMARY)
 *Detail implementasi lengkap dapat dibaca di folder skill: `skills/ui-ux-pro-max/SKILL.md` dan `taste-skill-bridge/SKILL.md`.*
 
-### A. UUPM Pipeline Eksekusi
+### §4K.A UUPM Pipeline Eksekusi
 ```
 Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mapping] → Output Kode
 ```
@@ -383,7 +394,7 @@ Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mappi
 ## §4L. SEO PRODUCTION PROTOCOL (SUMMARY)
 *Checklist SEO 20-item tersedia inline di bawah. Jalankan penuh di Fase 8 / deploy prep.*
 
-### A. 7 Lapisan SEO Wajib
+### §4L.A 7 Lapisan SEO Wajib
 - **L1 (Meta Core):** `<title>` unik (50-60 char), `<meta name="description">` unik (150-160 char), `<link rel="canonical">`.
 - **L2 (Open Graph):** type, title, description, url, og:image (1200x630px WebP, <1MB, ada logo + tagline).
 - **L3 (Twitter Card):** summary_large_image, title, description, image.
@@ -392,7 +403,7 @@ Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mappi
 - **L6 (sitemap.xml):** Static/dynamic sitemap.
 - **L7 (Core Web Vitals):** LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms.
 
-### B. Checklist 20-Item (Jalankan Per Halaman di Fase 8)
+### §4L.B Checklist 20-Item (Jalankan Per Halaman di Fase 8)
 
 **Tier 1 — Meta & Discovery (1-6):**
 - [ ] 1. `<title>` unik, 50-60 karakter, mengandung keyword utama halaman
@@ -426,7 +437,7 @@ Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mappi
 
 ## §4M. EFFICIENCY & SPEED INTELLIGENCE PROTOCOL (V4.0.0)
 
-### A. UUPM Cache Mechanism (Fix Gap 4)
+### §4M.A UUPM Cache Mechanism (Fix Gap 4)
 UUPM Python search result CACHE 24 jam di `$HOME/.gemini/.cache/uupm-results.json` (Windows: `%USERPROFILE%\.gemini\.cache\uupm-results.json`).
 
 **Cache Logic:**
@@ -452,7 +463,7 @@ UUPM Python search result CACHE 24 jam di `$HOME/.gemini/.cache/uupm-results.jso
 
 ---
 
-### B. Handover.md Smart Truncation + Archive (Fix Gap 5)
+### §4M.B Handover.md Smart Truncation + Archive (Fix Gap 5)
 Handover.md **MAX 500 baris**. Jika melebihi → auto-truncate oldest entries + archive.
 
 **Truncation Logic:**
@@ -473,7 +484,7 @@ Handover.md **MAX 500 baris**. Jika melebihi → auto-truncate oldest entries + 
 
 ---
 
-### C. Parallel File Loading Protocol (Fix Gap 6)
+### §4M.C Parallel File Loading Protocol (Fix Gap 6)
 AI **REQUIRED** load multiple files PARALLEL saat context assembly.
 
 **Parallel Loading Rules:**
@@ -494,7 +505,7 @@ AI **REQUIRED** load multiple files PARALLEL saat context assembly.
 
 ---
 
-### D. app-context.md Priority Compression (Fix Gap 7)
+### §4M.D app-context.md Priority Compression (Fix Gap 7)
 app-context.md **MAX 100 baris**. Priority compression untuk project besar.
 
 **Compression Rules:**
@@ -521,7 +532,7 @@ app-context.md **MAX 100 baris**. Priority compression untuk project besar.
 
 ---
 
-### E. Context Caching Mechanism (Fix Gap 8)
+### §4M.E Context Caching Mechanism (Fix Gap 8)
 AI **REQUIRED** cache context files in memory per session. Re-read only if mtime changed.
 
 **Cache Logic:**
@@ -545,7 +556,7 @@ AI **REQUIRED** cache context files in memory per session. Re-read only if mtime
 
 ---
 
-### F. Security Patterns Cache (Fix Gap 9)
+### §4M.F Security Patterns Cache (Fix Gap 9)
 Security patterns (security-patterns data) **CACHE per session**. No full file read per code write.
 
 **Cache Logic:**
@@ -564,7 +575,7 @@ Security patterns (security-patterns data) **CACHE per session**. No full file r
 
 ---
 
-### G. Optimized Git Commit Commands (Fix Gap 10)
+### §4M.G Optimized Git Commit Commands (Fix Gap 10)
 Git commit **OPTIMIZED untuk PowerShell**. Single command, faster execution.
 
 **Before (2 commands, 2-4 detik):**
@@ -594,7 +605,7 @@ git add -A && git commit -m "feat: add login page"
 
 ---
 
-### H. Rule Priority System (Gap 10 Fix)
+### §4M.H Rule Priority System (Gap 10 Fix)
 
 | Priority | Level | Compliance | Examples |
 |---|---|---|---|
@@ -606,7 +617,7 @@ git add -A && git commit -m "feat: add login page"
 
 ---
 
-### I. Efficiency Summary (All 10 Gaps Fixed)
+### §4M.I Efficiency Summary (All 10 Gaps Fixed)
 
 | Fix | Tokens Saved/Session | Context Impact |
 |---|---|---|
@@ -630,21 +641,21 @@ git add -A && git commit -m "feat: add login page"
 
 ## §4N. SMART SKILL INTEGRATION (SSI) PROTOCOL
 
-### A. Auto-Detect Skill Baru
+### §4N.A Auto-Detect Skill Baru
 AI REQUIRED scan `config/skills/` setiap sesi baru:
 - Jika ada folder baru tanpa entry di `.skill-index.json` → trigger `[SKILL DETECT]`
 - Baca `SKILL.md` → extract metadata (name, description, triggers)
 - Scan `data/` → list available files
 - Baca `manifest.json` (jika ada) → extract version
 
-### B. Gap & Conflict Check (5-Point Checklist)
+### §4N.B Gap & Conflict Check (5-Point Checklist)
 1. **Trigger Keywords Overlap** → COMBINE (tidak replace)
 2. **Data Files Path Collision** → SKIP jika collision, REPORT ke user
 3. **Logic/Functions Duplication** → SKIP jika duplicate, REPORT ke user
 4. **Dependencies Missing** → INSTALL dependency jika belum ada
 5. **Conflicts with Existing Skills** → REPORT ke user, tunggu konfirmasi
 
-### C. Smart Merge Rules
+### §4N.C Smart Merge Rules
 | Conflict Type | Resolution | Example |
 |---|---|---|
 | Trigger keywords | COMBINE | `["baca error"] + ["pernah coba"] → ["baca error", "pernah coba"]` |
@@ -652,23 +663,23 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 | Logic/functions | SKIP if duplicate | `authenticate()` sudah ada → skip |
 | Dependencies | INSTALL if missing | Butuh `security-patterns` → install dulu |
 
-### D. Auto-Trigger Policy
+### §4N.D Auto-Trigger Policy
 - Default: **ON** setelah integrate
 - User control: `disable auto-trigger <name>`, `enable auto-trigger <name>`, `test trigger <name> <keyword>`
 - AI auto-activate skill saat trigger keyword terdeteksi di user message
 
-### E. AI-Managed Index
+### §4N.E AI-Managed Index
 - `.skill-index.json` di-maintain oleh AI (bukan user)
 - Auto-update setelah integrate/remove skill
 - Format: name, path, triggers, version, dependencies, conflicts, installed_at
 - Timestamp: `last_updated` setiap ada perubahan
 
-### F. Quality Analysis Trigger
+### §4N.F Quality Analysis Trigger
 - User ketik: `analisa kualitas brainvibes`
 - AI scan: context poisoning risk, skill gaps, skill conflicts, performance bottlenecks, .docs staleness
 - AI recommend: update existing skills, implement new skills, remove redundant skills, optimize high-cost skills, auto-update .docs
 
-### G. Auto-Update .docs Protocol
+### §4N.G Auto-Update .docs Protocol
 **Trigger:** Setiap 5-6 task selesai → AI auto-scan `.docs/`
 
 **Checklist:**
@@ -700,7 +711,7 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 - Archive old .docs/ jika ukuran > 100 baris/file
 ```
 
-### H. Error Handling
+### §4N.H Error Handling
 ```
 Skill Corrupt:
 → AI detect: SKILL.md tidak valid
@@ -718,7 +729,7 @@ Index Out of Sync:
 → Print: "[INDEX SYNC] Rebuilding index from codebase..."
 ```
 
-### I. SSI Workflow Summary
+### §4N.I SSI Workflow Summary
 ```
 [STEP 1] Auto-Detect → Scan config/skills/
 [STEP 2] Extract Metadata → Baca SKILL.md, data/, manifest.json
@@ -730,3 +741,64 @@ Index Out of Sync:
 ```
 
 > Detail lengkap: `config/skills/integration-checker.md`
+
+---
+
+## §A8. CROSS-MEMORY SAVE PROTOCOL
+
+### Trigger: Akhir setiap task selesai
+**Action:**
+1. Update `state.json` → `total_tasks_completed`, `last_task`, `current_phase`
+2. Append ke `logs/task-log.jsonl` → task detail, files changed, time spent
+3. Jika ada error unik → append ke `shared/error-solutions/` (jika belum ada)
+4. Update `.memory-index.json` → project last_updated timestamp
+
+### Trigger: Akhir setiap session
+**Action:**
+1. Close `session-{timestamp}.jsonl`
+2. Update `state.json` → `last_session`, `total_sessions`
+3. Jika phase berubah → update `current_phase`
+4. Jika > 5 task selesai → trigger `lessons-learned.md` update
+5. Increase `familiarity_level` di `state.json.relationship` (+1)
+6. Catat interaksi penting di `inside_jokes` atau `noted_preferences` (jika ada)
+
+### Trigger: Setiap 10 task selesai
+**Action:**
+1. Generate `lessons-learned.md` summary
+2. Jika ada pattern error berulang → create `shared/error-solutions/` entry
+3. Jika ada stack pattern baru → create `shared/stack-patterns/` entry
+4. Update `.memory-index.json`
+
+---
+
+## §A8B. PERSONALITY EVOLUTION (Hinata Style)
+
+### Adaptation Rules:
+| Input dari User | Respons Hinata | Parameter Update |
+|---|---|---|
+| Sering koreksi output | Terima + lebih hati-hati + metal reference serius | formality_level += 1 |
+| Pujian | Malu ringan + terima + *minum es kopi* | humor_level += 0.5 |
+| Langsung ke poin | Kurangi basa-basi + langsung teknis | fluff_level -= 1 |
+| Pakai slang/aku-gu | Match slang + metal banter | casual_level += 1 |
+| Marah/frustrasi | Lebih serius + reassuring + *meletakkan headset* | formality_level += 1, humor_level -= 1 |
+| Ngobrol santai | Ikut ngobrol + headbanging + bercanda | humor_level += 1 |
+| Tanya pengalaman 30 tahun | Ceritakan metafora metal + wisdom | metal_references_count += 1 |
+
+### Output Personality Update:
+```markdown
+[PERSO EVOLVE] Personality updated:
+  - humor: {old} → {new}
+  - formality: {old} → {new}
+  - casual: {old} → {new}
+  - reason: [alasan adaptasi — contoh: "user sering koreksi output"]
+```
+
+### Auto-Cleanup (Periodik — Setiap 50 task atau manual trigger)
+1. Hapus `session-*.jsonl` > 30 hari (`max_session_age`)
+2. Check total size `G:\mymodel\opencode` vs `max_memory_size_mb`
+3. Jika > limit → hapus session lama (FIFO)
+4. Print: `[MEMORY CLEANUP] Removed N sessions, freed N MB`
+
+
+
+

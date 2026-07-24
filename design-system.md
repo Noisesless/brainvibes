@@ -431,8 +431,8 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 
 ## §9. NAVIGATION STATE LOGIC
 
-> **[REFERENSI SILANG]** Spesifikasi teknis 3 state navigasi (Guest / Member / Admin) ada di **`gemini.md §4A`** — bukan di file ini.
-> `design-system.md` hanya menyimpan referensi visual. Logika implementasi navigasi sepenuhnya diatur oleh `gemini.md`.
+> **[REFERENSI SILANG]** Spesifikasi teknis 3 state navigasi (Guest / Member / Admin) ada di **`gemini-execution.md §4A`** — bukan di file ini.
+> `design-system.md` hanya menyimpan referensi visual. Logika implementasi navigasi sepenuhnya diatur oleh `gemini-execution.md`.
 
 ---
 
@@ -442,7 +442,7 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 
 ### A. Mobile Navigation Mode (Pilihan Wawancara)
 
-AI REQUIRED menanyakan pilihan Mobile Navigation Mode saat wawancara, dan mencatatnya di `prd.md §4C`:
+AI REQUIRED menanyakan pilihan Mobile Navigation Mode saat wawancara, dan mencatatnya di `prd.md Bab 4 (Advanced Layouting)`:
 
 | Mode | Perilaku | Tampilan | Cocok Untuk |
 |---|---|---|---|
@@ -602,7 +602,7 @@ button, a, [role="button"] {
 
 ## §11. COLOR SWITCHER SYSTEM (APPEARANCE PANEL)
 
-*Fitur opsional — aktifkan dengan memilih "Color Switcher: Aktif" saat wawancara. Dicatat di `prd.md §3H`.*
+*Fitur opsional — aktifkan dengan memilih "Color Switcher: Aktif" saat wawancara. Dicatat di `prd.md Bab 3 (Design System)`.*
 
 ### A. Konsep Arsitektur
 
@@ -615,7 +615,7 @@ Appearance Panel = satu drawer/modal berisi 2 kontrol:
 - AI REQUIRED memilih **3–5 palet alternatif** dari 15 kluster `design-system.md §1` yang **harmonis** dengan palet utama
 - Kriteria harmonis: sama vibrasi karakter (misal: semua dark/moody, atau semua clean/minimal)
 - Palet utama dari wawancara = **default fallback** — tetap 🔒 IMMUTABLE
-- Palet alternatif REQUIRED dicatat di `prd.md §3H` dengan alasan kurasi
+- Palet alternatif REQUIRED dicatat di `prd.md Bab 3 (Design System)` dengan alasan kurasi
 - Jumlah maksimal: **5 palet** (termasuk palet utama) — FORBIDDEN lebih dari 5
 
 ### C. Implementasi CSS (data-palette + @layer)
@@ -819,15 +819,9 @@ COLOR_SWITCHER.init();
 Semua SVG brand dan ikon utama yang disimpan secara lokal wajib diintegrasikan dengan arsitektur warna oklch() agar warna aset dapat berubah secara dinamis sesuai state dan tema.
 
 ### A. Contoh Struktur SVG Lokal (Inline)
-Untuk logo merk/brand atau ikon interaktif, disarankan merendernya secara inline atau sebagai komponen agar properti fill/stroke-nya dapat dikontrol via CSS:
+Untuk logo merk/brand atau ikon interaktif, disarankan merendernya secara inline atau sebagai komponen agar properti fill/stroke-nya dapat dikontrol via CSS. 
 
-```html
-<svg class="brand-logo" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-  <!-- Gunakan currentColor agar fill mengikuti properti color CSS dari container -->
-  <circle cx="50" cy="50" r="40" fill="currentColor" />
-  <path d="M30 50 L70 50" stroke="var(--vibe-accent-1)" stroke-width="5" stroke-linecap="round" />
-</svg>
-```
+Contoh SVG logo yang diekstrak dapat dilihat di [brand-logo.svg](file:///c:/xampp/htdocs/brainvibes/config/skills/code-snippets/data/brand-logo.svg).
 
 ### B. CSS Styling dengan oklch()
 Terapkan warna kustom dan transisi pada berkas CSS utama:
@@ -852,117 +846,5 @@ Terapkan warna kustom dan transisi pada berkas CSS utama:
 Jika SVG lokal dipanggil sebagai berkas latar belakang statis, warna di dalamnya harus di-hardcode ke oklch() yang sesuai atau dimanipulasi dengan filter. Namun, pemuatan inline sangat direkomendasikan untuk fleksibilitas visual yang dinamis.
 
 ---
-
-## §14. ASTRO-SPECIFIC DESIGN SYSTEM EXAMPLES
-
-Berikut adalah pola integrasi arsitektur token `oklch()`, `@layer`, dan Appearance Switcher di framework Astro 5+.
-
-### A. Layout Utama (`src/layouts/Layout.astro`)
-
-Layout utama wajib menginisialisasi tema di `<head>` sebelum konten dirender untuk menghindari kilatan visual kasar (Flash of Unthemed Content - FOUT):
-
-```astro
----
-// src/layouts/Layout.astro
-import '../styles/global.css';
-
-interface Props {
-  title: string;
-  description?: string;
-}
-
-const { title, description = "Deskripsi default aplikasi" } = Astro.props;
----
-
-<!doctype html>
-<html lang="id" data-theme="light" suppressHydrationWarning>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    
-    <!-- Script Kritis Inisialisasi Tema (Inline & Pemblokir Sinkronis) -->
-    <script is:inline>
-      (function() {
-        const theme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        const palette = localStorage.getItem('app-palette') || 'primary';
-        document.documentElement.setAttribute('data-palette', palette);
-      })();
-    </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <slot />
-  </body>
-</html>
-```
-
-### B. Komponen SVG Inline Interaktif (`src/components/BrandLogo.astro`)
-
-Mendukung modifikasi oklch secara dinamis melalui properti:
-
-```astro
----
-// src/components/BrandLogo.astro
-interface Props {
-  class?: string;
-  size?: number;
-}
-
-const { class: className = "", size = 40 } = Astro.props;
----
-
-<svg 
-  class={`brand-logo ${className}`} 
-  width={size} 
-  height={size} 
-  viewBox="0 0 100 100" 
-  aria-hidden="true" 
-  xmlns="http://www.w3.org/2000/svg"
->
-  <!-- currentColor menggunakan properti color CSS induk -->
-  <circle cx="50" cy="50" r="40" fill="currentColor" />
-  <path d="M30 50 L70 50" stroke="var(--vibe-accent-1)" stroke-width="5" stroke-linecap="round" />
-</svg>
-
-<style>
-  .brand-logo {
-    display: inline-block;
-    color: var(--vibe-primary);
-    transition: var(--vibe-transition);
-  }
-  .brand-logo:hover {
-    color: var(--vibe-secondary);
-    transform: scale(1.05);
-  }
-</style>
-```
-
-### C. Astro View Transitions Integration
-
-Gunakan `@view-transition` di CSS global. Jika menggunakan fitur View Transitions bawaan Astro, pastikan skrip inisialisasi tema berjalan kembali setelah transisi halaman:
-
-```astro
----
-// Layout.astro dengan Astro ViewTransitions
-import { ClientRouter } from 'astro:transitions'; // Astro 5+ ClientRouter
----
-<head>
-  <!-- ... -->
-  <ClientRouter />
-  <script>
-    // Jalankan kembali inisialisasi tema saat navigasi ClientRouter selesai
-    document.addEventListener('astro:after-swap', () => {
-      const theme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', theme);
-    });
-  </script>
-</head>
-```
 
 

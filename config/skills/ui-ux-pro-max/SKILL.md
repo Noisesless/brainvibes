@@ -58,11 +58,4 @@ Jika komponen menggunakan library eksternal (Chart.js, Next.js, dll):
 
 ## Aturan Anti-AI-SLOP (HARD BLOCK)
 
-FORBIDDEN menghasilkan desain generik dengan:
-1. Warna `#6C63FF`, `#4CAF50`, `#2196F3` tanpa rekomendasi eksplisit UUPM
-2. Font tunggal `Inter` saja — wajib pairing dua font dari `typography.csv`
-3. `border-radius: 8px` hardcode — gunakan `--radius-md: 8px` CSS token
-4. Shadow `0 2px 4px rgba(0,0,0,0.1)` generik — ikuti design-system.md §4
-5. `transition: all 0.3s ease` — gunakan `var(--vibe-transition)`
-6. `background: white` atau `color: black` — gunakan `var(--vibe-background)` / `var(--vibe-text-main)`
-7. Pilih palet tanpa memeriksa `colors.csv` UUPM untuk industri terkait terlebih dahulu
+Semua visual task wajib mematuhi 16 larangan Anti-AI-SLOP yang tercantum dalam single source of truth: [visual-rules.md](../visual-rules.md) (atau `%USERPROFILE%\.gemini\config\skills\visual-rules.md`).

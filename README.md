@@ -35,7 +35,7 @@
 
 | File | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| 🧠 [`gemini.md`](gemini.md) | ~18KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Smart Context Loading, Context Budget Tracker, Technical Debate, Concise Response |
+| 🧠 [`gemini.md`](gemini.md) | ~18KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Unified Dispatch Table, Context Budget Tracker, Technical Debate, Concise Response |
 | 🛠️ [`gemini-execution.md`](gemini-execution.md) | ~37KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate |
 | 📋 [`gemini-templates.md`](gemini-templates.md) | ~18KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
 | 📋 [`prd-template.md`](prd-template.md) | ~55KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
@@ -115,21 +115,25 @@ Brainvibes mendefinisikan **7 file dokumentasi utama** yang wajib ada di setiap 
 
 ---
 
-## ⚡ Smart Context Loading (Anti-Overflow)
+## ⚡ Unified Dispatch Table (Anti-Overflow & Zero-Ambiguity)
 
-Brainvibes v4.0.0 mengimplementasikan **Smart Context Loading** untuk mencegah context overflow dan mengoptimalkan token usage:
+Brainvibes v4.0.0 mengimplementasikan **Unified Dispatch Table** di `gemini.md §2` yang menggabungkan rules eksekusi saklar makro dengan pemuatan context secara dinamis (Context-Aware Dynamic Loading). Ini menghindari duplikasi trigger dan meminimalkan mental-join overhead untuk LLM lokal:
 
-### Per-Trigger Loading Matrix
+### Unified Dispatch Matrix
 
-| Trigger | WAJIB Load | SKIP Load | Est. Tokens |
-|---|---|---|---|
-| `awal baru` | gemini.md, gemini-templates.md §2A, prd-template.md | gemini-execution.md, design-system.md, .docs/ | ~18K |
-| `awal lanjut` | gemini.md, app-context.md | prd-template.md, design-system.md, .docs/ | ~6K |
-| `baca error` | gemini.md, gemini-templates.md §5, .docs/issues.md | prd-template.md, design-system.md | ~8K |
-| `status proyek` | gemini.md, app-context.md | gemini-templates.md, prd-template.md, .docs/ | ~3K |
-| `tambah fitur` | gemini.md, app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md, .docs/ | ~7K |
-| `analisa kualitas` | gemini.md, .docs/quality_review.md | gemini-templates.md, prd-template.md | ~5K |
-| `analisa keamanan` | gemini.md, .docs/issues.md | gemini-templates.md, prd-template.md | ~4K |
+> **📌 Source of Truth:** `gemini.md §2` — tabel di bawah adalah salinan untuk dokumentasi.
+| Saklar | Aksi | WAJIB Load | SKIP Load | Detail |
+|---|---|---|---|---|
+| `awal baru` | Wizard 10 poin → prd.md → todo.md | gemini-templates.md §2A, prd-template.md | execution.md, design-system.md | §2A |
+| `awal lanjut` | Resume proyek aktif | app-context.md, gemini-templates.md §2B | prd-template.md, design-system.md | §2B |
+| `awal konversi` | Legacy Audit → migrasi 9 fase | gemini-templates.md §2C, prd-template.md | design-system.md | §2C |
+| `tambah fitur` | Incremental feature add | app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md | §2D |
+| `baca error` | YOLO Debug → issues.md → minta izin | gemini-templates.md §5, issues.md | prd-template.md, design-system.md | §2E |
+| `lanjut dari sini` | Mid-session context recovery | app-context.md, todo.md (grep) | prd-template.md | §2F |
+| `status proyek` | Quick brief 10 baris | app-context.md | gemini-templates.md, prd-template.md | §2G |
+| `analisa kualitas` | Code quality audit → quality_review.md | app-context.md, .docs/ | design-system.md, prd-template.md | §2H |
+| `analisa keamanan` | SAST scan 6 lapisan → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | §2I |
+| `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | §2J |
 
 ### Context Budget Tracker
 
@@ -355,17 +359,17 @@ graph TD
 
 ---
 
-## 🆕 Fitur Baru v4.0.0 (Smart Context Loading)
+## 🆕 Fitur Baru v4.0.0 (Unified Dispatch Table)
 
-### Smart Context Loading — Anti-Overflow
+### Unified Dispatch Table — Context-Aware & Zero-Ambiguity
 
-**Problem:** 45.7K tokens documentation > 32K context window = 142.8% overflow
+**Problem:** 45.7K tokens documentation > 32K context window = 142.8% overflow, plus dualitas tabel (Smart Context Loading vs Saklar Utama) yang membuat AI harus melakukan mental-join dan rentan kebingungan/orphan command.
 
-**Solution:** Per-trigger loading matrix + Context Budget Tracker
+**Solution:** Penggabungan Macro Commands dan Context Loading menjadi satu Unified Dispatch Table + Context Budget Tracker.
 
-**Impact:** 28.4K tokens/session saved (45% efficiency gain)
+**Impact:** Hemat 28.4K tokens/session (45% efisiensi token), menghilangkan kebingungan AI (0 saklar orphan, 0 kontradiksi instruksi).
 
-| Trigger | Before | After | Savings |
+| Trigger / Saklar | Before | After | Savings |
 |---|---|---|---|
 | `awal baru` | 22.9K tokens | 18K tokens | 4.9K |
 | `awal lanjut` | 19.4K tokens | 10K tokens | 9.4K |
@@ -504,10 +508,9 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.1.0` | [Previous] | **4 Aturan Kualitas Baru**: Concise Response (max 3-5 baris), Anti-Fabrication (STOP+TANYA jika ragu), Web Search Fallback (MCP search + sumber), Technical Debate (sanggah dengan data faktual). Tambahan MCP `web_search` server. |
-| `v4.0.0` | [Current] | **Efficiency Intelligence (10 Gap Fixed)**: Hapus duplicate sections, UUPM cache, handover truncation (500 lines), parallel loading, app-context compression, context caching, security patterns cache, optimized git commands. **Smart Skill Integration (SSI)**: Auto-detect skill, gap/conflict check, smart merge, auto-trigger, AI-managed index, quality analysis, auto-update .docs. **Smart Context Loading**: Per-trigger loading matrix, context budget tracker, handover FIFO buffer, smart saklar loading. **7 .docs/ Files**: architecture, api-spec, database, dependency-graph, issues, quality_review, routes. Context utilization 125% → 47%, context poisoning HIGH → LOW. |
-| `v4.0.0` | [Previous] | **Split Architecture Refinement & Premium Layout**: Penggabungan penuh mitigasi shell non-aktif, drift port server, pre-flight check MCP. Menambahkan 3 HARD BLOCK visual baru (`Anti-Color-Overlay`, `Anti-Cosmetic-Redesign`, `Anti-Image-Amnesia`). Memperkenalkan **Rhythm Score System** (`§0.I`) dan panduan **Asymmetric Card Geometry** (`§0.J-4`) untuk memecah visual kaku yang seragam. |
-| `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture & Memory Protocol Sync**: Pemisahan `gemini.md` 146KB monolith menjadi 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md) untuk mengatasi limitasi context window AI (truncation 83.6%). Mengintegrasikan 3 gap unik Memory-system-instruction (`routes.md`, `dependency-graph.md`, dan `§FLOWS` di `app-context-template.md`). |
+| `v4.1.0` | [Current] | **Zero-Noise Architecture & Single Source of Truth**: Pembersihan 100% persona noise dari system prompt (`gemini.md`), penambahan parent prefix unik pada sub-heading (`§3.A-C`, `§4.A-J`), penguatan Forced VDNA Cognitive Anchor (`[Design Read]`), pembersihan duplikasi aturan di `AGENTS.md`, perampingan `sync.ps1` ke master target `.gemini`, serta sinkronisasi penuh 7 berkas `/.docs/`. |
+| `v4.0.1` | [`7ec8b8c`](https://github.com/Noisesless/brainvibes/commit/7ec8b8c) | **Framework Cleanup & MCP Fix**: Perbaikan tautan cross-reference antar file framework, sentralisasi 16 larangan Anti-AI-SLOP ke `visual-rules.md`, pembersihan duplikasi simulasi, serta penghapusan server MCP `web_search` yang rusak agar terhindar dari hang loop. |
+| `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture, Efficiency Intelligence & SSI**: Pemecahan monolith 146KB ke 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md). Mengimplementasikan 10 gap fixes efisiensi (UUPM cache, handover truncation 500 lines, parallel loading, app-context compression, context caching). Mengintegrasikan Smart Skill Integration (SSI), sinkronisasi 7 berkas `.docs/`, mitigasi shell non-aktif, drift port server, pre-flight check MCP, 3 HARD BLOCK visual baru, Rhythm Score System (`§0.I`), dan Asymmetric Card Geometry (`§0.J-4`). |
 | `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
 | `v2.0.0` | [`8fcf799`](https://github.com/Noisesless/brainvibes/commit/8fcf799) | Fix 8 celah lanjutan: rename `## 2. Environment & Local Settings`, standardisasi log `## 10.`, tutup unclosed code block, deteksi `/.legacy/` untuk konversi, ASCII tree kondisional, cross-ref Section 11→6D |
 | `v1.9.0` | [`d588ac1`](https://github.com/Noisesless/brainvibes/commit/d588ac1) | Fix 7 konflik `awal konversi`: wizard 6-langkah, 9-fase atomik, klarifikasi `git mv` vs filesystem move, tracking `/.legacy/`, kolom Status Porting Section 11, handover trigger, Git checkpoint per fase |

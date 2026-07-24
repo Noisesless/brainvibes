@@ -7,15 +7,12 @@ $ErrorActionPreference = "Stop"
 $SourceDir = $PSScriptRoot
 $GeminiTargetDir = Join-Path $env:USERPROFILE ".gemini"
 $KnowledgeTargetDir = Join-Path $GeminiTargetDir "antigravity-ide\knowledge"
-$OpencodeTargetDir = Join-Path $env:USERPROFILE ".config\opencode"
-$OpencodeBrainvibesDir = Join-Path $OpencodeTargetDir "brainvibes"
 
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "   BRAINVIBES AUTO-SYNC SYSTEM           " -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "Sumber (Master) : $SourceDir"
 Write-Host "Target (Gemini) : $GeminiTargetDir"
-Write-Host "Target (Opencode): $OpencodeTargetDir"
 Write-Host "-----------------------------------------"
 
 # Pastikan folder target ada
@@ -29,9 +26,38 @@ if (!(Test-Path $KnowledgeTargetDir)) {
     Write-Host "[+] Membuat folder target knowledge: $KnowledgeTargetDir" -ForegroundColor Green
 }
 
-if (!(Test-Path $OpencodeBrainvibesDir)) {
-    New-Item -ItemType Directory -Force -Path $OpencodeBrainvibesDir | Out-Null
-    Write-Host "[+] Membuat folder target opencode brainvibes: $OpencodeBrainvibesDir" -ForegroundColor Green
+# Create cross-memory structure on G: drive
+$memoryRoot = "G:\mymodel\opencode"
+$folders = @(
+    "$memoryRoot\projects",
+    "$memoryRoot\shared\error-solutions",
+    "$memoryRoot\shared\stack-patterns",
+    "$memoryRoot\shared\retrospectives",
+    "$memoryRoot\cache"
+)
+
+foreach ($folder in $folders) {
+    if (-not (Test-Path $folder)) {
+        New-Item -ItemType Directory -Path $folder -Force | Out-Null
+        Write-Host "[+] Membuat folder memory target: $folder" -ForegroundColor Green
+    }
+}
+
+# Create memory index if not exists
+$indexPath = "$memoryRoot\.memory-index.json"
+if (-not (Test-Path $indexPath)) {
+    @{
+        version = "1.0.0"
+        created = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss+07:00")
+        last_updated = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss+07:00")
+        projects = @()
+        shared = @{
+            error_solutions_count = 0
+            stack_patterns_count = 0
+            retrospectives_count = 0
+        }
+    } | ConvertTo-Json -Depth 5 | Out-File $indexPath -Encoding utf8
+    Write-Host "[+] Membuat memory index di $indexPath" -ForegroundColor Green
 }
 
 # 1. Salin berkas-berkas inti di root ke .gemini
@@ -64,44 +90,7 @@ if (Test-Path $SrcKnowledge) {
     Write-Host "[OK] Folder knowledge tersinkronisasi." -ForegroundColor Green
 }
 
-# 4. Salin file inti ke .config\opencode\brainvibes\
-$OpencodeCoreFiles = @("gemini.md", "gemini-execution.md", "gemini-templates.md", "prd-template.md", "design-system.md", "AGENTS.md", "user-prefs.md", "WORKFLOW_SIMULATIONS.md", "yasei-cli.ps1")
-foreach ($File in $OpencodeCoreFiles) {
-    $SrcFile = Join-Path $SourceDir $File
-    $DstFile = Join-Path $OpencodeBrainvibesDir $File
-    if (Test-Path $SrcFile) {
-        Copy-Item -Path $SrcFile -Destination $DstFile -Force
-        Write-Host "[OK] Menyalin $File -> $DstFile" -ForegroundColor Gray
-    }
-}
 
-# 5. Salin AGENTS.md ke .config\opencode\brainvibes-AGENTS.md
-$SrcAgents = Join-Path $SourceDir "AGENTS.md"
-$DstAgents = Join-Path $OpencodeTargetDir "brainvibes-AGENTS.md"
-if (Test-Path $SrcAgents) {
-    Copy-Item -Path $SrcAgents -Destination $DstAgents -Force
-    Write-Host "[OK] Menyalin AGENTS.md -> $DstAgents" -ForegroundColor Gray
-}
-
-# 6. Salin .docs ke .config\opencode\brainvibes\.docs
-$SrcDocs = Join-Path $SourceDir ".docs"
-$DstDocs = Join-Path $OpencodeBrainvibesDir ".docs"
-if (Test-Path $SrcDocs) {
-    Write-Host "[i] Menyalin folder .docs..." -ForegroundColor Yellow
-    robocopy $SrcDocs $DstDocs /E /XO /NJH /NJS /NDL /NC /NS /NP | Out-Null
-    Write-Host "[OK] Folder .docs tersinkronisasi." -ForegroundColor Green
-}
-
-# 7. Salin file sekunder ke .config\opencode\brainvibes\
-$SecondaryFiles = @(".gitignore", "LICENSE", "sync.ps1", "README.md")
-foreach ($File in $SecondaryFiles) {
-    $SrcFile = Join-Path $SourceDir $File
-    $DstFile = Join-Path $OpencodeBrainvibesDir $File
-    if (Test-Path $SrcFile) {
-        Copy-Item -Path $SrcFile -Destination $DstFile -Force
-        Write-Host "[OK] Menyalin $File -> $DstFile" -ForegroundColor Gray
-    }
-}
 
 # 8. Merge mcpConfig dari mcp_config.json ke settings.json (untuk Gemini)
 $McpConfigSrc = Join-Path $SourceDir "config\mcp_config.json"
@@ -160,10 +149,84 @@ if (Test-Path $archiveDir) {
             Remove-Item $archive.FullName -Force
             Write-Host "  Removed: $($archive.Name)" -ForegroundColor Gray
         }
-        Write-Host "  ✅ Old archives cleaned" -ForegroundColor Green
+        Write-Host "  [OK] Old archives cleaned" -ForegroundColor Green
     } else {
-        Write-Host "  ✅ No old archives to clean" -ForegroundColor Gray
+        Write-Host "  [OK] No old archives to clean" -ForegroundColor Gray
     }
 } else {
-    Write-Host "  ℹ️  No .archive folder found (skip)" -ForegroundColor Gray
+    Write-Host "  [INFO] No .archive folder found (skip)" -ForegroundColor Gray
 }
+
+# 10. Sync Antigravity Knowledge (One-Way Bridge)
+function Sync-AntigravityKnowledge {
+    <#
+    .SYNOPSIS
+    One-way sync: Copy Antigravity IDE Knowledge Items → OpenCode shared/antigravity-bridge/
+    NEVER writes to Antigravity IDE folders. Read-only bridge.
+    #>
+    $agKnowledgePath = "$env:USERPROFILE\.gemini\antigravity-ide\knowledge"
+    $bridgePath = "G:\mymodel\opencode\shared\antigravity-bridge"
+    
+    if (-not (Test-Path $agKnowledgePath)) {
+        Write-Output "[BRIDGE] Antigravity IDE knowledge not found. Skipping."
+        return
+    }
+    
+    # Ensure bridge folder exists
+    if (-not (Test-Path $bridgePath)) {
+        New-Item -ItemType Directory -Path $bridgePath -Force | Out-Null
+    }
+    
+    # Scan Antigravity KI folders and merge artifacts into single MD per category
+    $categories = @{
+        "error-solutions"  = @()
+        "vibes-stack-patterns" = @()
+        "project-retrospectives" = @()
+    }
+    
+    foreach ($kiFolder in (Get-ChildItem $agKnowledgePath -Directory)) {
+        $artifactsPath = Join-Path $kiFolder.FullName "artifacts"
+        if (Test-Path $artifactsPath) {
+            foreach ($artifact in (Get-ChildItem $artifactsPath -Filter "*.md")) {
+                $category = $kiFolder.Name
+                if ($categories.ContainsKey($category)) {
+                    $categories[$category] += $artifact.FullName
+                }
+            }
+        }
+    }
+    
+    # Write merged snapshots
+    foreach ($cat in $categories.Keys) {
+        $outFile = Join-Path $bridgePath "$cat.md"
+        $content = "# Antigravity IDE Knowledge Bridge - $cat`n"
+        $content += "# Auto-generated by sync.ps1 - DO NOT EDIT MANUALLY`n"
+        $content += "# Last sync: $(Get-Date -Format 'yyyy-MM-ddTHH:mm:ss+07:00')`n`n"
+        
+        foreach ($file in $categories[$cat]) {
+            $content += "---`n## Source: $(Split-Path $file -Leaf)`n`n"
+            $content += (Get-Content $file -Raw -ErrorAction SilentlyContinue)
+            $content += "`n`n"
+        }
+        
+        $content | Out-File $outFile -Encoding utf8 -Force
+    }
+    
+    # Update knowledge index
+    $indexPath = Join-Path (Split-Path $bridgePath) ".knowledge-index.json"
+    @{
+        version = "1.0.0"
+        last_sync = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ss+07:00")
+        source = "antigravity-ide"
+        source_path = $agKnowledgePath
+        categories = @($categories.Keys)
+        total_artifacts = ($categories.Values | ForEach-Object { $_.Count } | Measure-Object -Sum).Sum
+    } | ConvertTo-Json -Depth 3 | Out-File $indexPath -Encoding utf8 -Force
+    
+    Write-Output "[BRIDGE] Synced $($categories.Values.Count) categories from Antigravity IDE → $bridgePath"
+}
+
+Write-Host ""
+Write-Host "[STEP 10] Sync Antigravity Knowledge (One-Way Bridge)" -ForegroundColor Yellow
+Sync-AntigravityKnowledge
+

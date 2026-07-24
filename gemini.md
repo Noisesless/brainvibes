@@ -46,7 +46,7 @@
 2. **Zombie Port Guard:** Port terkunci → kill PID. Access Denied → increment port + update `.env`.
 3. **Anti-Blind Dependency:** FORBIDDEN update semua dependensi sepihak saat debug.
 4. **Dev Port Blacklist:** FORBIDDEN port `8000` dan `3000`. Default: `5173` (Vite), `3100` (Next.js), `8080` (PHP/Laravel).
-5. **Security-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` data SILENT → terapkan pattern aman.
+5. **Security-Aware & Lessons-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` dan `lessons-learned` data SILENT → terapkan pattern aman dan hindari anti-patterns yang pernah gagal.
 6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` kecuali: butuh klik/interaksi UI, JS rendering URL eksternal, login browser, atau user eksplisit minta recording. Jika `user-prefs.md scratchpad_dom = FORBIDDEN` → localhost/DOM check TETAP FORBIDDEN tanpa permintaan eksplisit user di turn tersebut. Semua cek DOM/scratchpad/build → `read_url_content`. → Detail: `AGENTS.md §BROWSER TOOL GATE`
 7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser.
 
@@ -83,7 +83,7 @@
 ```
 
 **Untuk pembuatan halaman/komponen BARU atau REDESIGN:**
-1. Baca `taste-skill-bridge/SKILL.md` via `view_file` (1x per sesi)
+1. Baca `taste-skill-bridge/ESSENTIAL.md` via `view_file` (1x per sesi, 50 baris pertama)
 2. Baca Visual DNA dari `prd.md §3` atau `app-context.md §PALETTE`
 3. Output SEBELUM kode:
 ```
@@ -115,16 +115,22 @@
 
 ## §SESSION PROTOCOL (Prioritas Baca — Setiap Sesi)
 
-### Urutan Baca Wajib:
+### Urutan Baca Wajib (Parallel-Optimized):
 ```
-Step -1 : Baca user-prefs.md      → %USERPROFILE%\.gemini\user-prefs.md      [SILENT]
-Step  0 : Baca app-context.md     → [workspace]/app-context.md               [SILENT, jika ada]
-Step  1 : Baca prd.md §1-§3      → jika app-context.md tidak ada             [SILENT]
-Step  2 : Ambil task aktif        → grep [/] di todo.md                      [SILENT]
-Step  3 : Self-Healing Handover   → Bandingkan [STATE].last di app-context.md
-          dengan [x] terakhir di todo.md. Jika mismatch > 2 task:
-          → Cetak: [HANDOVER DRIFT DETECTED] dan tawarkan sync [SILENT check]
+Batch 1 (Parallel — 0.5 detik):
+  → Load user-prefs.md [section spesifik saja, max 50 lines]
+  → Load app-context.md [jika ada, max 100 lines]
+  → Load state.json [cross-memory, max 30 lines]
+
+Batch 2 (Sequential — 0.3 detik):
+  → Step 1: Baca prd.md §1-§3 [jika app-context.md tidak ada]
+  → Step 2: Grep [/] di todo.md [jangan baca penuh]
+  → Step 3: Load lessons-learned.md [jika ada]
+
+Batch 3 (Verification — 0.2 detik):
+  → Step 4: Self-Healing Handover [bandingkan app-context.md vs todo.md]
 ```
+**Total target session init: <1 detik (dari 3-5 detik sebelumnya)**
 
 ### Selective Context Loading (Anti-Full-File-Read):
 
@@ -139,41 +145,32 @@ Step  3 : Self-Healing Handover   → Bandingkan [STATE].last di app-context.md
 | Visual rules | `app-context.md [VISUAL_GATE]` | Baca `gemini.md` penuh |
 | Feature flows | `app-context.md [FLOWS]` | Trace kode manual |
 
-### Smart Context Loading (Per-Trigger — Anti-Overflow):
-
-**Prinsip:** Load HANYA file yang dibutuhkan trigger, skip yang tidak relevan.
-
-| Trigger | WAJIB Load | OPSIONAL Load | SKIP Load | Est. Tokens |
-|---|---|---|---|---|
-| `awal baru` | gemini.md, gemini-templates.md §2A, prd-template.md | user-prefs.md, knowledge/ | gemini-execution.md, design-system.md | ~18K |
-| `awal lanjut` | gemini.md, app-context.md | gemini-templates.md §2B | prd-template.md, design-system.md | ~6K |
-| `baca error` | gemini.md, gemini-templates.md §5, issues.md | app-context.md | prd-template.md, design-system.md | ~8K |
-| `status proyek` | gemini.md, app-context.md | todo.md (grep only) | gemini-templates.md, prd-template.md | ~3K |
-| `tambah fitur` | gemini.md, app-context.md §NEXT, prd.md §2 | gemini-templates.md §2D, /.docs/dependency-graph.md | prd-template.md, design-system.md | ~7K |
-| `awal konversi` | gemini.md, gemini-templates.md §2C | app-context.md, knowledge/ | design-system.md | ~15K |
-| visual task | gemini.md, design-system.md §1 | app-context.md §PALETTE, taste-skill-bridge | prd-template.md | ~12K |
-| security task | gemini.md, security-patterns/data/ | app-context.md | prd-template.md, design-system.md | ~10K |
-
-**Context Budget Tracker (Per Session):**
+### Token Budget Tracker (Real-Time):
+Setiap 10 turns, AI REQUIRED mencetak:
 ```
-[CONTEXT BUDGET] Session: [trigger] | Used: [N]K tokens | Remaining: [N]K tokens
-[CONTEXT BUDGET] gemini.md: 4.6K | app-context.md: 1.2K | [file]: [N]K
-→ Jika Used > 25K (32K model) atau > 100K (128K model): STOP dan tanya user
+[TOKEN BUDGET] Session: [trigger] | Used: [N]K tokens | Remaining: [N]K tokens
+[TOKEN BUDGET] gemini.md: 5.0K | AGENTS.md: 0.9K | [file]: [N]K
+→ Jika Used > warn threshold (dari user-prefs.md): Cetak [CONTEXT WARN]
+→ Jika Used > stop threshold (dari user-prefs.md): STOP dan tanya user
 ```
 
-**Aturan Load:**
-1. **gemini.md** → ALWAYS load (4.6K tokens) — unavoidable, core rules
-2. **app-context.md** → ALWAYS load jika ada (1.2K tokens) — project state
-3. **gemini-templates.md** → load section SPESIFIK via view_file (range-limited)
-4. **design-system.md** → load HANYA untuk visual task (9K tokens)
-5. **prd-template.md** → load HANYA untuk awal baru (13.7K tokens)
-6. **gemini-execution.md** → load section SPESIFIK saat koding aktif
+### File Load Rules (Berlaku Global):
+- **gemini.md** → ALWAYS loaded (system prompt, ~4.6K tokens)
+- **app-context.md** → ALWAYS load jika ada (~1.2K tokens)
+- FORBIDDEN load file FULL — selalu load **section spesifik** via range-limited `view_file`
+- Strategi Model Kecil (7B-13B): OPSIONAL Load = SKIP, max 50 baris/turn, cache agresif
 
-**FORBIDDEN:**
-- ❌ Load gemini-templates.md FULL (4.6K) → load section only (0.5-2K)
-- ❌ Load design-system.md FULL (9K) → load §1 only (1K) untuk visual task
-- ❌ Load prd-template.md FULL (13.7K) → load §1-§3 only (3K) untuk awal baru
-- ❌ Load gemini-execution.md FULL (9.5K) → load section only (1-3K)
+### Context Cache Mechanism (Per Session — STRICT ENFORCEMENT):
+- Session start → load mtime checksum untuk `gemini.md`, `AGENTS.md`, dan `user-prefs.md`.
+- File checksum → compare dengan cached checksum.
+- Jika mtime unchanged → **HARUS SKIP re-read**, gunakan cached content dari memori/session.
+- Jika mtime changed → re-read file, update cached content dan checksum.
+- Caching ini memotong token overhead hingga ~6K tokens per sesi.
+- **FORBIDDEN re-read file yang sudah di-cache jika mtime unchanged** — pelanggaran = token waste violation.
+
+### Session Init Speed Enforcement:
+- **Batasan Strict:** FORBIDDEN membaca file >100 baris atau >3 file di Batch 1.
+- **Target:** Total durasi init <1 detik. Jika >2 detik → cetak `[SLOW INIT] Detected: [N]s — check parallel loading`.
 
 ### Auto Workspace Verification (Silent):
 - `app-context.md` ADA → gunakan sebagai primary context
@@ -182,27 +179,34 @@ Step  3 : Self-Healing Handover   → Bandingkan [STATE].last di app-context.md
 
 ---
 
-## §2. SAKLAR UTAMA (MACRO COMMANDS — RINGKAS)
-*(Detail eksekusi setiap saklar ada di `gemini-templates.md`. Di bawah ini hanya ringkasan trigger.)*
+## §2. SAKLAR UTAMA (UNIFIED DISPATCH TABLE)
+*(Satu tabel = satu sumber kebenaran. AI tidak perlu cross-reference.)*
+*(gemini.md SELALU loaded sebagai system prompt — tidak perlu disebut per baris.)*
 
-| Saklar | Aksi | Detail |
-|---|---|---|
-| `awal baru` | Wizard 10 poin → `prd.md` → `todo.md` → eksekusi Fase 1 | `gemini-templates.md §2A` |
-| `awal lanjut` | Baca `app-context.md` → resume proyek aktif | `gemini-templates.md §2B` |
-| `awal konversi` | Legacy Audit → Wizard 7 poin → migrasi 9 fase | `gemini-templates.md §2C` |
-| `tambah fitur` | Incremental feature add tanpa wawancara ulang | `gemini-templates.md §2D` |
-| `baca error` | YOLO Debugging Pipeline → `issues.md` → minta izin | `gemini-templates.md §2E` |
-| `lanjut dari sini` | Mid-session context recovery (context terpotong) | `gemini-templates.md §2F` |
-| `status proyek` | Quick brief 10 baris | `gemini-templates.md §2G` |
-| `analisa kualitas` | Code quality audit → `quality_review.md` | `gemini-templates.md §2H` |
-| `analisa keamanan` | SAST — Static scan 6 lapisan → `security-audit.md` | `gemini-templates.md §2I` |
-| `pentest` | DAST — Dynamic pentest via Strix → `security-audit.md §DAST` | `gemini-templates.md §2J` |
-| `pentest cepat` | Strix quick mode (1 agent, scan singkat) | `gemini-templates.md §2J` |
-| `pentest mendalam` | Strix deep mode + business logic + race condition | `gemini-templates.md §2J` |
-| `pentest api` | Strix fokus API security (IDOR, auth, rate limit) | `gemini-templates.md §2J` |
-| `pentest auth` | Strix fokus authentication & session attack | `gemini-templates.md §2J` |
+| Saklar | Aksi | WAJIB Load | SKIP Load | Templates Section |
+|---|---|---|---|---|
+| `awal baru` | Wizard 10 poin → prd.md → todo.md | gemini-templates.md §2A, prd-template.md | execution.md, design-system.md | templates §2A |
+| `awal lanjut` | Resume proyek aktif | app-context.md, gemini-templates.md §2B | prd-template.md, design-system.md | templates §2B |
+| `awal konversi` | Legacy Audit → migrasi 9 fase | gemini-templates.md §2C, prd-template.md | design-system.md | templates §2C |
+| `tambah fitur` | Incremental feature add | app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md | templates §2D |
+| `baca error` | YOLO Debug → issues.md → minta izin | gemini-templates.md §5, issues.md | prd-template.md, design-system.md | templates §2E |
+| `lanjut dari sini` | Mid-session context recovery | app-context.md, todo.md (grep) | prd-template.md | templates §2F |
+| `status proyek` | Quick brief 10 baris | app-context.md | gemini-templates.md, prd-template.md | templates §2G |
+| `analisa kualitas` | Code quality audit → quality_review.md | app-context.md, .docs/ | design-system.md, prd-template.md | templates §2H |
+| `analisa keamanan` | SAST scan 6 lapisan → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | templates §2I |
+| `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | templates §2J |
 
-**Saat saklar diaktifkan:** AI REQUIRED baca section detail dari `gemini-templates.md` sebelum eksekusi.
+### Auto-Triggers (Bukan Saklar Manual — Aktif Otomatis)
+| Kondisi | Trigger | WAJIB Load | SKIP Load |
+|---|---|---|---|
+| AI menulis/edit kode visual (CSS, UI, layout, warna) | `visual-gate` | design-system.md §1, taste-skill-bridge | prd-template.md |
+| AI menulis kode auth/db/input/upload/API | `security-aware` | security-patterns/data/, lessons-learned | design-system.md |
+
+**Catatan:**
+- `pentest*` mencakup: `pentest`, `pentest cepat`, `pentest mendalam`, `pentest api`, `pentest auth`
+- Kolom `Detail` = section di `gemini-templates.md` yang WAJIB dibaca sebelum eksekusi
+- FORBIDDEN load file di kolom SKIP — gunakan `app-context.md` sebagai proxy
+- Jika app-context.md belum ada di context, boleh di-load sebagai OPSIONAL
 
 ---
 
@@ -219,6 +223,15 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **7 file**:
 | 5 | `routes.md` | **Peta semua routes aktif + auth + status** | **Fase 3+ (SEMUA proyek)** |
 | 6 | `dependency-graph.md` | **Critical files, high-impact files, import chains** | **Fase 6+ atau `analisa kualitas`** |
 | 7 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | `baca error` |
+
+### Auto-Update .docs Protocol (Setiap 5 task):
+- **Trigger:** Selesai task ke-5, 10, 15, dst.
+- **Action:**
+  1. Scan `todo.md` → deteksi task yang selesai.
+  2. Jika task count mod 5 == 0 → trigger auto-update `/.docs/`.
+  3. AI scan berkas `/.docs/` → bandingkan dengan codebase aktual.
+  4. Jika ada perubahan → update file. Jika tidak ada perubahan → skip.
+  5. Print output: `[DOCS UPDATE] X files updated, Y files skipped`
 
 ### Format `routes.md` (STANDAR — Semua Proyek):
 ```markdown
@@ -337,8 +350,7 @@ admin=[email]=[password]
 |---|---|---|---|---|
 | Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik | 1-3K |
 | UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only | 2K |
-| Browser Tool Gate + Scratchpad DOM enforcement | `AGENTS.md §BROWSER TOOL GATE` | Saat akan pakai browser_subagent | `§BROWSER TOOL GATE` only | 2K |
-| Browser Tool Gate detail + tabel substitusi tool | `gemini-execution.md §4G-ter` | Saat butuh decision tree lengkap | `§4G-ter` only | 3K |
+| Browser Tool Gate & Scratchpad DOM Protocol | `gemini-execution.md §4H` | Saat akan pakai browser_subagent | `§4H` only | 2-3K |
 | SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only | 1K |
 | Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar | 0.5-2K |
 | Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only | 2K |
@@ -351,25 +363,31 @@ admin=[email]=[password]
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.
 
 **Context Budget per Pointer Load:**
-- Low priority (1K tokens): §4L, §4C, §6A, §1 design-system
-- Medium priority (2K tokens): §5, §4K, §BROWSER TOOL GATE
-- High priority (3K tokens): §4G-ter
+- Low priority (1K tokens): §4K, §4C, §6A, §1 design-system
+- Medium priority (2K tokens): §5, §4L, §4H
+- High priority (3K tokens): §4H
 - Extra large (14K tokens): yasei-cli.ps1 (load only when needed)
+
 
 ---
 
 ## §SMART HEALTH CHECK (Phase 3 — Proactive Features)
 
-### Auto-Sync Verification (Periodic — Setiap 5 sesi)
-**Trigger:** `status proyek` atau auto-trigger setiap 5 task selesai
-**Action:**
-```
-1. Compare master vs opencode brainvibes file count
-2. Verify AGENTS.md sync status
-3. Check .docs/ file completeness (7 files required)
-4. Verify skill-index.json match with disk
-5. Output: [SYNC HEALTH] master: N files, opencode: N files, sync: 100%
-```
+### Auto-Sync Verification (Periodic — Setiap 5 task)
+- **Trigger:** Selesai task ke-5, 10, 15, dst.
+- **Action:**
+  1. Bandingkan `[STATE].last` di `app-context.md` dengan task `[x]` terakhir di `todo.md`.
+  2. Verifikasi seluruh file fisik yang disebut oleh task tersebut sudah ada di disk.
+  3. Periksa tidak ada rujukan mati (`href="#"` atau file missing).
+  4. Format Output:
+     ```
+     [SYNC HEALTH]
+     - app-context.md last: [Nama Task]
+     - todo.md last done: [Nama Task]
+     - Files verified: N/N
+     - Status: ✅ OK / ⚠️ DISCREPANCY (detail)
+     ```
+  5. Jika terdeteksi discrepancy → AI auto-fix (mencocokkan snapshot) atau minta konfirmasi user.
 
 ### Context Health Check (Per Session — Silent)
 **Trigger:** Setiap session start
@@ -396,10 +414,13 @@ admin=[email]=[password]
 - ❌ Print full metrics unless user requests
 - ❌ Auto-fix without user confirmation
 
+
 ---
+
+
 <!--
   VERSION LOG
-  v4.0.0 (2026-07-16) — Split Architecture, Logic Mitigations & Refinements: Pemecahan monolith 146KB ke 3 tier. Mitigasi shell non-interactive, batas port drifting 3x, linter AST, auto-ignore /.legacy/, visual rules inline, §DOCS BLUEPRINT 7 file, §APP-CONTEXT v2.0 machine-optimized, dan full scratchpad_dom block enforcement.
+  v4.0.1 (2026-07-18) — Section numbering fix (gemini-execution.md), Astro §14 removed from design-system.md, prd-template.md references corrected
   v4.0.0 (2026-07-16) — Split Architecture, Logic Mitigations & Refinements: Pemecahan monolith 146KB ke 3 tier. Mitigasi shell non-interactive, batas port drifting 3x, linter AST, auto-ignore /.legacy/, visual rules inline, §DOCS BLUEPRINT 7 file, §APP-CONTEXT v2.0 machine-optimized, dan full scratchpad_dom block enforcement.
   v3.1.0 (2026-07-07) — MCP v3.1.0, Context7, app-context.md system
   v2.2.0 (2026-06-xx) — UUPM Integration, Anti-Slop rules

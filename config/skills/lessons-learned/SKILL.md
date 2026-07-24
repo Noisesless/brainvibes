@@ -19,6 +19,7 @@ Skill ini aktif otomatis saat:
 | User minta konfirmasi | "cek dulu pernah coba ini" | Scan `fast-solutions.md` |
 | Komponen yang berulang | "buat login form lagi" | Cek `fast-solutions.md` untuk pattern siap pakai |
 | Hindari jebakan stack | Mulai proyek baru | Baca `stack-gotchas.md` untuk stack terpilih |
+| Penulisan kode kritis | Auth, DB, Input, Upload, API | Auto-scan `anti-patterns.md` SILENT |
 | Akhir fase 8 | Proyek selesai | Generate retrospective ke `knowledge/project-retrospectives/` |
 
 ## Protokol Baca Sebelum Debug (REQUIRED)

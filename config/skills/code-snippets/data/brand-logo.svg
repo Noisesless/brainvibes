@@ -1,0 +1,5 @@
+<svg class="brand-logo" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gunakan currentColor agar fill mengikuti properti color CSS dari container -->
+  <circle cx="50" cy="50" r="40" fill="currentColor" />
+  <path d="M30 50 L70 50" stroke="var(--vibe-accent-1)" stroke-width="5" stroke-linecap="round" />
+</svg>

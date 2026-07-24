@@ -60,6 +60,7 @@ User Input → Presentation → Logic → Data → Response
 - `~/.config/opencode/AGENTS.md` → Load dari brainvibes gemini.md
 - `~/.config/opencode/opencode.jsonc` → Skills + MCP registration
 - `~/.gemini/` → Runtime files untuk Gemini CLI/Antigravity
+- `G:\mymodel\opencode\` → Cross-memory storage (projects, shared, cache)
 
 ### Layer 2: Project Context
 - `app-context.md` → AI-optimized snapshot (≤100 baris)
@@ -69,19 +70,19 @@ User Input → Presentation → Logic → Data → Response
 ### Layer 3: Skills & Knowledge
 - `config/skills/` → 12 skills (ui-ux-pro-max, security-patterns, dll)
 - `knowledge/` → 3 knowledge bases (error-solutions, retrospectives, stack-patterns)
-- Symlink ke opencode via `brainvibes/skills/` dan `brainvibes/knowledge/`
+- Sync ke opencode & cross-memory via `sync.ps1`
 
 ## File Loading Protocol
 
-| File | Kapan Dibaca | Metode | Max Size |
+| File | Kapan Dibaca | Metode | Size |
 |---|---|---|---|
-| `user-prefs.md` | Setiap sesi (silent) | Full read | ~5KB |
+| `user-prefs.md` | Setiap sesi (silent) | Full read | ~8.8KB (136 lines) |
 | `app-context.md` | Setiap sesi (silent) | Full read | ≤100 baris |
 | `prd.md §1-§3` | Jika app-context tidak ada | Range read | Baris 1-100 |
 | `todo.md` | Ambil task aktif | Grep `[/]` | Partial |
-| `gemini-execution.md` | Saat koding aktif | View_file (section) | ~23KB |
-| `gemini-templates.md` | Saat saklar aktif | View_file (section) | ~18KB |
-| `design-system.md` | Saat setup CSS | Section specific | ~36KB |
+| `gemini-execution.md` | Saat koding aktif | View_file (§3.A-C, §4.A-J, etc.) | ~42KB (805 lines) |
+| `gemini-templates.md` | Saat saklar aktif | View_file (section) | ~22KB (358 lines) |
+| `design-system.md` | Saat setup CSS | Section specific (§1-§13) | ~32KB (840 lines) |
 
 ## Token Efficiency Strategy
 

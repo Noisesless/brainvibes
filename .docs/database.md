@@ -87,7 +87,9 @@ CREATE TABLE tasks (
 | File | Purpose | Format |
 |---|---|---|
 | `config/projects/*.json` | Project registry | UUID-based JSON |
-| `config/mcp_config.json` | MCP server config | JSON |
+| `config/mcp_config.json` | MCP server config (Gemini) | JSON |
+| `opencode.jsonc` | MCP server config (OpenCode) | JSONC (with comments) |
+| `knowledge/.knowledge-index.json` | Knowledge Base index tracking | JSON |
 | `app-context.md` | AI snapshot | Markdown (≤100 baris) |
 | `handover.md` | Human log | Markdown (100 baris rolling) |
 | `brainvibes-memory.json` | MCP memory | JSON |

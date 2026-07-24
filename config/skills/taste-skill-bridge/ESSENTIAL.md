@@ -94,16 +94,7 @@ Setelah Design Read, set 3 dials. Semua keputusan layout, motion, density mengac
 
 ## 🔴 HARD BLOCKS (100% Compliance)
 
-1. **FORBIDDEN** menulis satu baris kode UI tanpa output `[Design Read]` + Three Dials
-2. **FORBIDDEN** menggunakan `font-family: Inter` tunggal — wajib 2 font (heading + body)
-3. **FORBIDDEN** hardcode warna (`#6C63FF`, `white`, `black`) — gunakan `var(--vibe-*)`
-4. **FORBIDDEN** spacing acak (13px, 19px) — gunakan kelipatan 8pt grid
-5. **FORBIDDEN** centered Hero jika `DESIGN_VARIANCE > 4`
-6. **FORBIDDEN** `h-screen` pada hero — REQUIRED `min-h-[100dvh]`
-7. **FORBIDDEN** eyebrow label > 1 per 3 section
-8. **FORBIDDEN** ikon SVG mentah (hand-rolled) — gunakan icon library proyek
-9. **FORBIDDEN** border/outline/stroke pada logo — logo as-is tanpa dekorasi
-10. **FORBIDDEN** mencampur > 1 icon library dalam satu proyek
+Semua visual task wajib mematuhi 16 larangan Anti-AI-SLOP yang tercantum dalam single source of truth: [visual-rules.md](../visual-rules.md) (atau `%USERPROFILE%\.gemini\config\skills\visual-rules.md`).
 
 > **Detail lengkap:** Baca `taste-skill-bridge/DETAILED.md` (STEP 2-6)
 > **Checklist:** Baca `taste-skill-bridge/REFERENCE.md` (Pre-Flight Checklist)

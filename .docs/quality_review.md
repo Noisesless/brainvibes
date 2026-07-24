@@ -44,29 +44,30 @@
 ## Complexity Analysis
 
 ### gemini.md (Core Instructions)
-- **Lines:** 321
-- **Sections:** 8 (§0-§DOCS, §APP-CONTEXT, §POINTER)
+- **Lines:** 417
+- **Sections:** 9 (§0, §1, §VISUAL RULES, §SESSION PROTOCOL, §2, §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
 - **Hard Blocks:** 9
 - **Gates:** 6
 - **Standards:** 7
-- **Complexity:** Medium (well-structured)
+- **Complexity:** Medium (100% pure technical focus, zero persona noise, forced VDNA cognitive anchor)
 
 ### gemini-execution.md (Execution Details)
-- **Lines:** 301
-- **Sections:** 6 (§3A-§3F)
-- **Complexity:** High (detailed workflows)
+- **Lines:** 805
+- **Sections:** 8 main sections (§3.A-C, §4.A-J, §4K.A, §4L.A-B, §4M.A-I, §4N.A-I, §A8, §A8B)
+- **Subheadings:** Parent ID prefixed (§3.A-C, §4.A-J, etc.) — 0 collisions
+- **Complexity:** High (comprehensive execution & efficiency protocols)
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
-- **Lines:** 291
-- **Sections:** 8 (Macro commands 2A-2J)
-- **Complexity:** Medium (structured templates)
+- **Lines:** 358
+- **Sections:** 8 (Macro commands 2A-2J, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading)
+- **Complexity:** Medium (structured templates & macro dispatches)
 - **Load Method:** view_file on-demand
 
 ### design-system.md (Design DNA)
-- **Lines:** ~900
-- **Sections:** 6 (§1-§6)
-- **Complexity:** High (comprehensive CSS tokens)
+- **Lines:** 840
+- **Sections:** 13 (§1-§13)
+- **Complexity:** High (comprehensive CSS tokens & oklch integration)
 - **Load Method:** Section-specific read
 
 ## Duplication Check

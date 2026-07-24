@@ -43,6 +43,7 @@ max_files_per_turn = 5                            # Batas file dibuka AI per tur
 max_lines_per_read = 200                          # Batas baris per view_file call (token guard)
 
 # Context Budget Settings (Smart Context Loading)
+context_budget_7b  = 5000                         # Max tokens untuk model 7B-13B context (default 5K)
 context_budget_32k = 25000                        # Max tokens untuk model 32K context (default 25K)
 context_budget_128k = 100000                      # Max tokens untuk model 128K context (default 100K)
 context_budget_warn = 20000                       # Warn saat used tokens melebihi ini
@@ -83,8 +84,19 @@ technical_debate   = true                         # AI boleh sanggah user dengan
 web_search_enabled = true                         # Aktifkan web search via MCP saat answer tidak tersedia
 fabrication_guard  = true                         # FORBIDDEN mengarang solusi/fakta/referensi yang tidak pasti
 
+[CROSS_MEMORY]
+memory_root        = G:\mymodel\opencode    # Path storage memory
+memory_enabled     = true                   # true = aktifkan cross-memory
+auto_sync          = true                   # Auto-sync memory setiap task selesai
+max_session_age    = 30                     # Hapus session > 30 hari
+max_memory_size_mb = 500                    # Hard limit total memory
+scratch_enabled    = true                   # Enable scratchpad per project
+knowledge_bridge   = true                   # [v1.1] Sync Antigravity KIs ke shared/
+
+
+
 [META]
-brainvibes_version = 4.0.0
+brainvibes_version = 4.1.0
 installed_at       = 2026-07-13
 last_updated       = 2026-07-17
 changelog          = v4.0.0 — Efficiency Intelligence (10 gap fixed), Smart Skill Integration (SSI), auto .docs update
