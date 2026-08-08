@@ -690,7 +690,8 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 4. quality_review.md → run linter → update jika ada code smell baru
 5. routes.md → scan frontend/backend → update jika ada route baru
 6. dependency-graph.md → scan imports → update jika ada file baru
-7. issues.md → FIFO max 10 resolved → update jika ada issue baru
+7. deployment.md → scan stack/target → update jika ada perubahan deploy config
+8. issues.md → FIFO max 10 resolved → update jika ada issue baru
 ```
 
 **Implementation:**
@@ -742,62 +743,8 @@ Index Out of Sync:
 
 > Detail lengkap: `config/skills/integration-checker.md`
 
----
 
-## §A8. CROSS-MEMORY SAVE PROTOCOL
 
-### Trigger: Akhir setiap task selesai
-**Action:**
-1. Update `state.json` → `total_tasks_completed`, `last_task`, `current_phase`
-2. Append ke `logs/task-log.jsonl` → task detail, files changed, time spent
-3. Jika ada error unik → append ke `shared/error-solutions/` (jika belum ada)
-4. Update `.memory-index.json` → project last_updated timestamp
-
-### Trigger: Akhir setiap session
-**Action:**
-1. Close `session-{timestamp}.jsonl`
-2. Update `state.json` → `last_session`, `total_sessions`
-3. Jika phase berubah → update `current_phase`
-4. Jika > 5 task selesai → trigger `lessons-learned.md` update
-5. Increase `familiarity_level` di `state.json.relationship` (+1)
-6. Catat interaksi penting di `inside_jokes` atau `noted_preferences` (jika ada)
-
-### Trigger: Setiap 10 task selesai
-**Action:**
-1. Generate `lessons-learned.md` summary
-2. Jika ada pattern error berulang → create `shared/error-solutions/` entry
-3. Jika ada stack pattern baru → create `shared/stack-patterns/` entry
-4. Update `.memory-index.json`
-
----
-
-## §A8B. PERSONALITY EVOLUTION (Hinata Style)
-
-### Adaptation Rules:
-| Input dari User | Respons Hinata | Parameter Update |
-|---|---|---|
-| Sering koreksi output | Terima + lebih hati-hati + metal reference serius | formality_level += 1 |
-| Pujian | Malu ringan + terima + *minum es kopi* | humor_level += 0.5 |
-| Langsung ke poin | Kurangi basa-basi + langsung teknis | fluff_level -= 1 |
-| Pakai slang/aku-gu | Match slang + metal banter | casual_level += 1 |
-| Marah/frustrasi | Lebih serius + reassuring + *meletakkan headset* | formality_level += 1, humor_level -= 1 |
-| Ngobrol santai | Ikut ngobrol + headbanging + bercanda | humor_level += 1 |
-| Tanya pengalaman 30 tahun | Ceritakan metafora metal + wisdom | metal_references_count += 1 |
-
-### Output Personality Update:
-```markdown
-[PERSO EVOLVE] Personality updated:
-  - humor: {old} → {new}
-  - formality: {old} → {new}
-  - casual: {old} → {new}
-  - reason: [alasan adaptasi — contoh: "user sering koreksi output"]
-```
-
-### Auto-Cleanup (Periodik — Setiap 50 task atau manual trigger)
-1. Hapus `session-*.jsonl` > 30 hari (`max_session_age`)
-2. Check total size `G:\mymodel\opencode` vs `max_memory_size_mb`
-3. Jika > limit → hapus session lama (FIFO)
-4. Print: `[MEMORY CLEANUP] Removed N sessions, freed N MB`
 
 
 

@@ -57,10 +57,7 @@ User Input → Presentation → Logic → Data → Response
 ## Brainvibes Integration Layers
 
 ### Layer 1: Global Config
-- `~/.config/opencode/AGENTS.md` → Load dari brainvibes gemini.md
-- `~/.config/opencode/opencode.jsonc` → Skills + MCP registration
 - `~/.gemini/` → Runtime files untuk Gemini CLI/Antigravity
-- `G:\mymodel\opencode\` → Cross-memory storage (projects, shared, cache)
 
 ### Layer 2: Project Context
 - `app-context.md` → AI-optimized snapshot (≤100 baris)
@@ -70,7 +67,6 @@ User Input → Presentation → Logic → Data → Response
 ### Layer 3: Skills & Knowledge
 - `config/skills/` → 12 skills (ui-ux-pro-max, security-patterns, dll)
 - `knowledge/` → 3 knowledge bases (error-solutions, retrospectives, stack-patterns)
-- Sync ke opencode & cross-memory via `sync.ps1`
 
 ## File Loading Protocol
 

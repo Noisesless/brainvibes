@@ -4,11 +4,11 @@
 
 | File | Imported By (count) | Tipe |
 |---|---|---|
-| `gemini.md` | 5+ (AGENTS.md, opencode, .gemini, execution, templates) | Core instructions |
+| `gemini.md` | 4+ (AGENTS.md, .gemini, execution, templates) | Core instructions |
 | `user-prefs.md` | 5+ (Semua sesi, execution, templates) | User preferences |
-| `AGENTS.md` | 3+ (opencode, .gemini, execution) | Behavior rules |
+| `AGENTS.md` | 2+ (.gemini, execution) | Behavior rules |
 | `design-system.md` | 3+ (UI components, visual gate) | Design tokens |
-| `config/mcp_config.json / opencode.jsonc` | 3+ (context7, filesystem, memory) | MCP servers |
+| `config/mcp_config.json` | 3+ (context7, filesystem, memory) | MCP servers |
 
 ## 🟡 High-Impact Files (ubah = efek luas)
 
@@ -18,7 +18,7 @@
 | `gemini-templates.md` | gemini.md, user-prefs.md | Macro commands | High |
 | `prd-template.md` | gemini.md, design-system.md | PRD generation | High |
 | `yasei-cli.ps1` | user-prefs.md, app-context.md | CLI subsystem | Medium |
-| `sync.ps1` | - | Sync mechanism (includes config & opencode) | Medium |
+| `sync.ps1` | - | Sync mechanism (core files, config, knowledge) | Medium |
 | `app-context-template.md` | gemini.md | Context snapshot | Medium |
 
 ## 🟢 Leaf Files (aman diubah — minimal dependency)
@@ -81,7 +81,7 @@ visual gate enforcement (uses taste-skill-bridge)
 
 ### MCP Chain
 ```
-mcp_config.json / opencode.jsonc
+mcp_config.json
     ↓
 context7 (library docs)
     ↓

@@ -84,14 +84,8 @@ technical_debate   = true                         # AI boleh sanggah user dengan
 web_search_enabled = true                         # Aktifkan web search via MCP saat answer tidak tersedia
 fabrication_guard  = true                         # FORBIDDEN mengarang solusi/fakta/referensi yang tidak pasti
 
-[CROSS_MEMORY]
-memory_root        = G:\mymodel\opencode    # Path storage memory
-memory_enabled     = true                   # true = aktifkan cross-memory
-auto_sync          = true                   # Auto-sync memory setiap task selesai
-max_session_age    = 30                     # Hapus session > 30 hari
-max_memory_size_mb = 500                    # Hard limit total memory
-scratch_enabled    = true                   # Enable scratchpad per project
-knowledge_bridge   = true                   # [v1.1] Sync Antigravity KIs ke shared/
+
+
 
 
 

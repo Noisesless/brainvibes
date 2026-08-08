@@ -97,9 +97,9 @@ Brainvibes v4.1.0引入 **Smart Skill Integration (SSI)** — sistem integrasi s
 | 📗 `project-retrospectives/` | 1 retro + template | Post-mortem proyek — dibaca saat `awal baru` |
 | 📘 `vibes-stack-patterns/` | 3 file (PHP, Next.js, CSS) | Proven code patterns — dibaca saat menulis kode |
 
-### 📄 Dokumentasi Utama (/.docs/ — 7 File)
+### 📄 Dokumentasi Utama (/.docs/ — 8 File)
 
-Brainvibes mendefinisikan **7 file dokumentasi utama** yang wajib ada di setiap proyek (`/.docs/`):
+Brainvibes mendefinisikan **8 file dokumentasi utama** yang wajib ada di setiap proyek (`/.docs/`):
 
 | # | File | Isi | Brainvibes Status |
 |---|---|---|---|
@@ -107,11 +107,12 @@ Brainvibes mendefinisikan **7 file dokumentasi utama** yang wajib ada di setiap 
 | 2 | `api-spec.md` | MCP server endpoints (context7, filesystem, memory, dll), macro command triggers, data flow AI→Project & Project→AI | ✅ Active |
 | 3 | `database.md` | Schema template (users, sessions, projects, tasks), runtime storage (JSON-based), index strategy, performance notes | ✅ Active |
 | 4 | `dependency-graph.md` | Critical files (gemini.md, user-prefs.md, AGENTS.md), high-impact files, leaf files, skills/knowledge chains, circular deps check, file role definitions | ✅ Active |
-| 5 | `issues.md` | Bug tracker — open issues, resolved (FIFO max 10), categories (architecture/docs/integration/performance), severity legend | ✅ Active |
-| 6 | `quality_review.md` | Code quality metrics (file count, size distribution), linting validation, complexity analysis, duplication check, magic numbers, recommendations | ✅ Active |
-| 7 | `routes.md` | Frontend/API routes, middleware chain (session init, execution, commit), route status legend (active/beta/planned/deprecated) | ✅ Active |
+| 5 | `deployment.md` | Target deploy, environment mapping, pre-deploy checklist, build commands per stack, post-deploy verification, rollback plan | ✅ Active |
+| 6 | `issues.md` | Bug tracker — open issues, resolved (FIFO max 10), categories (architecture/docs/integration/performance), severity legend | ✅ Active |
+| 7 | `quality_review.md` | Code quality metrics (file count, size distribution), linting validation, complexity analysis, duplication check, magic numbers, recommendations | ✅ Active |
+| 8 | `routes.md` | Frontend/API routes, middleware chain (session init, execution, commit), route status legend (active/beta/planned/deprecated) | ✅ Active |
 
-> Brainvibes sendiri sekarang memiliki `.docs/` folder dengan ke-7 file dokumentasi ini. Setiap proyek yang dibuat dengan brainvibes juga akan menghasilkan ke-7 file ini secara otomatis.
+> Brainvibes sendiri sekarang memiliki `.docs/` folder dengan ke-8 file dokumentasi ini. Setiap proyek yang dibuat dengan brainvibes juga akan menghasilkan ke-8 file ini secara otomatis.
 
 ---
 
@@ -487,6 +488,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 │   ├── api-spec.md         ← Spesifikasi endpoint & server actions
 │   ├── database.md         ← Schema DDL SQL / Local JSON State blueprint
 │   ├── quality_review.md   ← Hasil audit linter, code smells, complexity
+│   ├── deployment.md       ← Target deploy, env mapping, checklist, rollback
 │   ├── routes.md           ← Peta routes aktif (Frontend & API)
 │   ├── dependency-graph.md ← Analisis import, critical files, circular deps
 │   └── issues.md           ← Bug tracker FIFO (max 10 resolved, OPEN wajib dipertahankan)

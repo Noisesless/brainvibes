@@ -120,7 +120,6 @@
 Batch 1 (Parallel — 0.5 detik):
   → Load user-prefs.md [section spesifik saja, max 50 lines]
   → Load app-context.md [jika ada, max 100 lines]
-  → Load state.json [cross-memory, max 30 lines]
 
 Batch 2 (Sequential — 0.3 detik):
   → Step 1: Baca prd.md §1-§3 [jika app-context.md tidak ada]
@@ -212,7 +211,7 @@ Setiap 10 turns, AI REQUIRED mencetak:
 
 ## §DOCS BLUEPRINT (Anti-Amnesia Dokumentasi)
 
-AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **7 file**:
+AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **8 file**:
 
 | # | File | Isi | Trigger Generate |
 |---|---|---|---|
@@ -222,7 +221,8 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **7 file**:
 | 4 | `quality_review.md` | Code smells, duplikasi, complexity metrics | `analisa kualitas` |
 | 5 | `routes.md` | **Peta semua routes aktif + auth + status** | **Fase 3+ (SEMUA proyek)** |
 | 6 | `dependency-graph.md` | **Critical files, high-impact files, import chains** | **Fase 6+ atau `analisa kualitas`** |
-| 7 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | `baca error` |
+| 7 | `deployment.md` | **Target deploy, env mapping, checklist, rollback plan** | **Fase 7+ atau `awal lanjut`** |
+| 8 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | `baca error` |
 
 ### Auto-Update .docs Protocol (Setiap 5 task):
 - **Trigger:** Selesai task ke-5, 10, 15, dst.
@@ -260,7 +260,29 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **7 file**:
 | File | Purpose |
 ```
 
-Otomatisasi: Setelah Fase 6, jika komponen dokumentasi absen → AI REQUIRED generate. Setelah `baca error` massal → AI REQUIRED sinkronisasi `/.docs/`.
+### Format `deployment.md`:
+```markdown
+## Deployment Targets
+| Target | Tipe | Port | Stack Support |
+
+## Environment Mapping
+| Variable | Development | Production | Notes |
+
+## Pre-Deploy Checklist
+- [ ] .env.example lengkap
+- [ ] APP_DEBUG = false
+- [ ] HTTPS aktif
+
+## Post-Deploy Verification
+1. Smoke test
+2. Console check
+3. SSL check
+
+## Rollback Plan
+| Skenario | Aksi |
+```
+
+Otomatisasi: Setelah Fase 6, jika komponen dokumentasi absen → AI REQUIRED generate. Setelah `baca error` massal → AI REQUIRED sinkronisasi `/.docs/`. Saat `awal lanjut`, AI REQUIRED cek dan update `deployment.md` jika ada perubahan stack/target.
 
 ---
 

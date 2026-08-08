@@ -26,7 +26,8 @@
 2. **Analisis Kesenjangan & Konsistensi (Wawancara Kondisional):**
    - Checksum CORE IDENTITY LOCK: Bandingkan stack di `prd.md` dengan file manifest dependensi (`package.json`, `composer.json`, dll.).
    - Visual DNA Checksum (Auto-Sync): Bandingkan `app-context.md §PALETTE` dengan CORE IDENTITY LOCK di `prd.md`. Jika drift, update `app-context.md §PALETTE` sesuai `prd.md` lalu overwrite `app-context.md`.
-3. Tampilkan ringkasan status dalam Bahasa Indonesia dan tunggu instruksi.
+3. **Deployment Docs Check:** Cek `/.docs/deployment.md` — jika belum ada, generate dari template `gemini.md §DOCS BLUEPRINT`. Jika ada, verifikasi stack/target masih sesuai dengan `prd.md` dan update jika berubah.
+4. Tampilkan ringkasan status dalam Bahasa Indonesia dan tunggu instruksi.
 
 ### 2C. Saklar: `awal konversi`
 1. **Legacy System Audit (WAJIB):** Scan folder proyek lama secara senyap dan buat `/.docs/legacy-audit.md` (Peta Routes, Controller Inventory, Model Inventory, View Inventory, Database Schema DDL, API Endpoints, Webhooks, Third-Party, Upload Dirs, Active Pages Map). Tampilkan ringkasan dan minta konfirmasi.

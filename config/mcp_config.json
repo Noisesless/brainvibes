@@ -4,7 +4,7 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
-        "X-Context7-Client-IDE": "opencode|gemini|antigravity|cursor|copilot"
+        "X-Context7-Client-IDE": "gemini|antigravity|cursor|copilot"
       }
     },
     "sequential-thinking": {
@@ -20,7 +20,7 @@
     },
     "filesystem": {
       "type": "local",
-      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\xampp\\htdocs", "C:\\Users\\GBC_PC\\.gemini", "C:\\Users\\GBC_PC\\.config\\opencode"]
+      "command": ["cmd", "/c", "npx", "-y", "@modelcontextprotocol/server-filesystem", "C:\\xampp\\htdocs", "C:\\Users\\GBC_PC\\.gemini"]
     },
     "time": {
       "type": "local",

@@ -36,7 +36,6 @@
 **Allowed Directories:**
 - `C:\XAMPP\htdocs`
 - `C:\Users\GBC_PC\.gemini`
-- `C:\Users\GBC_PC\.config\opencode`
 
 ### memory
 | Method | Route | Purpose | Auth |

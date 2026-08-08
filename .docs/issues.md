@@ -12,6 +12,7 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-020 | Pembatalan integrasi OpenCode & Cross-Memory | Menghapus opencode.jsonc, session-hook.ps1, cross-memory-implementation-plan.md, §A8/§A8B di gemini-execution.md, section [CROSS_MEMORY] di user-prefs.md, serta membersihkan mcp_config.json & sync.ps1 | 2026-08-02 |
 | RES-019 | Persona prompt noise & OpenCode sync bloat | Deleted persona sections (A9/LLM-Local) from gemini.md & user-prefs.md, cleaned up AGENTS.md duplication, and updated sync.ps1 to target .gemini exclusively | 2026-07-24 |
 | RES-018 | Dispatch table & Session Init duplication & ambiguous references | Cleaned up duplicate Session Init block, renamed Dispatch Detail column to Templates Section, and merged duplicate §4H POINTER table rows | 2026-07-24 |
 | RES-017 | `awal konversi` missing `prd-template.md` dependency | Added `prd-template.md` to WAJIB Load column for `awal konversi` in gemini.md & README.md | 2026-07-24 |
