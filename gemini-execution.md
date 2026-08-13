@@ -97,9 +97,9 @@ AI REQUIRED mengeksekusi keenam lapisan berikut secara berurutan. Lapisan tidak 
 | **L1** | Linter & Formatter | `npx eslint . --max-warnings=0` / `npx prettier --check .` / `./vendor/bin/pint --test` | Zero warnings, zero errors |
 | **L2** | Type Safety | `npx tsc --noEmit` / `npx tsc --noEmit --strict` | Zero type errors |
 | **L3** | SAST (Static Analysis) | Audit celah keamanan. Jika AST linter terinstall (e.g. `eslint-plugin-security` / `phpstan`), prioritaskan verifikasi via linter tersebut. Fallback: grep manual untuk pola berbahaya: `eval(`, `innerHTML =`, `dangerouslySetInnerHTML`, `exec(`, `system(`, query tanpa prepared statement | Zero pola berbahaya / scan clean |
-| **L4** | Form Input Validation Guard | Baca setiap file form/endpoint — pastikan ada: validasi panjang input, sanitasi string, rate-limiting pada endpoint login | Semua form & endpoint tervalidasi |
+| **L4** | Form Input Validation Guard | Baca setiap file form/endpoint — pastikan ada: validasi panjang input, sanitasi string, rate-limiting pada endpoint login/register/reset-password (rujuk `secure-patterns.md §SP-014/015` dan `xampp-php-patterns.md §SP-PHP-004`). Waspadai X-Forwarded-For spoofing (`lessons-learned §SG-016`). | Semua form & endpoint tervalidasi |
 | **L5** | Auth Integrity Verification | Cek setiap protected route — pastikan middleware/guard aktif, token/session diperiksa, tidak ada bypass `if(true)` | Semua route terproteksi |
-| **L6** | Security Headers Check | Cek middleware/response header handler — pastikan minimal ada: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`. Untuk HTTPS: `Strict-Transport-Security` | Semua 4 header wajib ada |
+| **L6** | Security Headers Check | Cek middleware/response header handler — pastikan minimal ada 6 header: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`. Untuk HTTPS: `Strict-Transport-Security: max-age=31536000; includeSubDomains`. Rujuk `secure-patterns.md §SP-011/012/013` untuk snippet per-stack. | Semua 6 header wajib ada |
 
 **Output Wajib Setelah Scan:**
 ```
@@ -111,6 +111,34 @@ Status 6 Lapisan Scan:
   L5 Auth           : VERIFIED / BROKEN ([route yang bypass])
   L6 Sec Headers    : COMPLETE / MISSING ([header yang tidak ada])
 ```
+
+### §3.C.1 Mode Compliance Check (untuk saklar `cek komponen`)
+Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI TIDAK menjalankan 6 Lapisan Scan penuh. Sebagai gantinya:
+
+1. **Deteksi stack proyek** dari `app-context.md §APP` (PHP Native / Laravel / Next.js).
+2. **Filter SP yang relevan** berdasarkan stack:
+   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-018, SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001
+   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-018
+   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-018
+   - Universal → SP-008, SP-009, SP-010, SP-016, SP-017, SP-018
+3. **OWASP Top 10:2025 mapping** — organisasikan temuan per kategori OWASP:
+
+   | OWASP | Kategori | SP Terkait | Grep Indicators |
+   |---|---|---|---|
+   | A01 | Broken Access Control | SP-006, SP-PHP-001, L5 | `getServerSession`, `requireAuth`, `csrf_token` |
+   | A02 | Security Misconfiguration | SP-008, SP-011/012/013, SP-HTACCESS-001 | `Content-Security-Policy`, `X-Frame-Options`, `Permissions-Policy` |
+   | A03 | Supply Chain Failures | **SP-016** | `package-lock.json` exists, no `*` versions, `npm ci` |
+   | A04 | Cryptographic Failures | SP-004, SP-007, SP-009 | `password_hash`, `PASSWORD_BCRYPT`, env check |
+   | A05 | Injection | SP-001, SP-002, L3 | `prepare(`, `htmlspecialchars`, no `eval(` |
+   | A06 | Insecure Design | SP-014/015, SP-PHP-004 | `rateLimit(`, `throttle:`, login attempts |
+   | A07 | Authentication Failures | SP-PHP-002, SP-004, CS-033 | `session_regenerate_id`, `cookie_httponly`, 429 |
+   | A08 | Software Integrity | **SP-017** | `integrity=` in CDN scripts, `npm ci`, `.gitignore` check |
+   | A09 | Logging Failures | **SP-018** | `display_errors=0`, `log_errors=1`, no password in logs |
+   | A10 | Exceptional Conditions | Partial | `try/catch`, `set_error_handler`, `APP_DEBUG=false` |
+
+4. **Grep codebase** per SP — cari indikator implementasi (function name, header value, config key).
+5. **Output checklist** ke `/.docs/security-audit.md` dengan format per-OWASP (lihat gemini-templates.md §2I).
+6. **FORBIDDEN** menjalankan `eslint`, `tsc`, `phpstan`, atau tool scanner lainnya dalam mode ini.
 
 ---
 

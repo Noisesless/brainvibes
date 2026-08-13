@@ -91,12 +91,26 @@
 2. Output wajib di `/.docs/quality_review.md` dengan format severity (CRITICAL, WARNING, INFO).
 3. Setelah review selesai, sajikan ringkasan dan rekomendasi refactoring konkret kepada user.
 
-### 2I. Saklar: `analisa keamanan`
-1. Jalankan **6 Lapisan Scan Kelayakan Keamanan** secara mendalam (SAST — Static Analysis).
-2. Scan dependencies terhadap vulnerability database (CVE).
-3. Output ke `/.docs/security-audit.md` menggunakan format dari `security-patterns/data/audit-template.md`.
-4. Laporkan temuan risiko dan rencana mitigasi ke user.
-5. *Tidak memerlukan Docker atau API key eksternal — murni static analysis.*
+### 2I. Saklar: `cek komponen` (alias: `analisa keamanan`)
+> Verifikasi kelengkapan komponen kode yang terpasang di codebase, berdasarkan regulasi OWASP Top 10:2025 dan SP registry di `secure-patterns.md` / `xampp-php-patterns.md`.
+
+1. **Baca SP Registry** dari `security-patterns/data/secure-patterns.md` (SP-001 s/d SP-018) dan `xampp-php-patterns.md` (SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001).
+2. **Deteksi stack** dari `app-context.md §APP` → filter SP yang relevan.
+3. **Scan codebase** menggunakan `grep_search` per komponen SP — cocokkan pattern aman dengan file proyek aktual. Organisasikan berdasarkan kategori OWASP:
+   - A01 (Access Control): CSRF, Auth Guard, API Auth
+   - A02 (Misconfiguration): Security Headers, CORS, .htaccess
+   - A03 (Supply Chain): Lockfile, version pinning, npm audit — SP-016
+   - A04 (Cryptographic): Password Hashing, Env Var, Hardcoded Creds
+   - A05 (Injection): Parameterized Query, XSS Escape, SAST patterns
+   - A06 (Insecure Design): Rate Limiting, Captcha
+   - A07 (Auth Failures): Session Hardening, Brute Force Protection
+   - A08 (Software Integrity): SRI, npm ci, build artifacts — SP-017
+   - A09 (Logging): Error logging, audit trail, sensitive data exclusion — SP-018
+   - A10 (Exceptional Conditions): try/catch, APP_DEBUG=false
+4. **Buat checklist compliance** per OWASP kategori (format: lihat §3.C.1).
+5. **Output ke `/.docs/security-audit.md`** — daftar komponen terpasang dan yang belum, dikelompokkan per OWASP.
+6. **Laporkan gap** ke user — komponen mana yang belum terpasang dan rekomendasikan SP mana yang perlu diimplementasikan.
+7. *Tidak menjalankan SAST scanner, CVE database, atau tool eksternal — hanya verifikasi source code terhadap SP registry internal + OWASP mapping.*
 
 ### 2J. Saklar: `pentest` / `pentest cepat` / `pentest mendalam` / `pentest api` / `pentest auth`
 > DAST — Dynamic Application Security Testing via Strix AI Pentest Agent.
@@ -340,7 +354,7 @@ Jika ada item yang belum dicentang `[ ]`, perbaiki SEBELUM melanjutkan ke tahap 
 | `tambah fitur` | Complex | Read gemini-templates.md §2D | 2K |
 | `awal konversi` | Complex | Read gemini-templates.md §2C | 3K |
 | `analisa kualitas` | Complex | Read gemini-templates.md §2H | 1K |
-| `analisa keamanan` | Complex | Read gemini-templates.md §2I | 1K |
+| `cek komponen` | Complex | Read gemini-templates.md §2I | 1K |
 | `pentest` | Complex | Read pentest-strix/SKILL.md | 5K |
 
 **Inline Template Example (`status proyek`):**

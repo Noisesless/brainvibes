@@ -89,7 +89,7 @@
 | `lanjut dari sini` | Context recovery | `app-context.md`, `handover.md` |
 | `status proyek` | Quick brief | Console output (10 baris) |
 | `analisa kualitas` | Code audit | `/.docs/quality_review.md` |
-| `analisa keamanan` | Security scan | `/.docs/security-audit.md` |
+| `cek komponen` | Component verification & compliance | `/.docs/security-audit.md` |
 | `pentest` | DAST validation | `/.docs/security-audit.md` |
 
 ## Data Flow: AI → Project

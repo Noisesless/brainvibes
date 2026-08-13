@@ -63,7 +63,10 @@ Kategori : Config
 Minimal .htaccess per proyek XAMPP:
   Options -Indexes                          (blokir directory listing)
   FilesMatch .env|composer.json - Deny from all (blokir file sensitif)
-  Header X-Content-Type-Options nosniff
-  Header X-Frame-Options SAMEORIGIN
-  Header Referrer-Policy strict-origin-when-cross-origin
+  Header set X-Content-Type-Options nosniff
+  Header set X-Frame-Options SAMEORIGIN
+  Header set Referrer-Policy strict-origin-when-cross-origin
+  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
   ServerSignature Off                       (sembunyikan versi Apache)

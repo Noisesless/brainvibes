@@ -52,3 +52,40 @@ Credential Seeder Default:
 Admin  : admin@[domain].com / Adm![AppSlug]@[4digit]
 Member : member@[domain].com / Mem![AppSlug]@[4digit]
 ```
+
+---
+
+### [CS-033] Rate Limiter Middleware Boilerplate (Brute Force Protection)
+Stack: PHP Native / Next.js / Laravel
+Kompleksitas: Medium
+Referensi: secure-patterns.md SP-014, SP-015, SP-PHP-004
+
+```php
+// PHP Native Session Rate Limiter (login / register / reset password)
+function checkRateLimit($endpoint_key = 'login', $max_attempts = 5, $decay_seconds = 900) {
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    $attempts_key = 'rate_limit_' . $endpoint_key . '_attempts';
+    $time_key = 'rate_limit_' . $endpoint_key . '_time';
+
+    $now = time();
+    $attempts = $_SESSION[$attempts_key] ?? 0;
+    $first_attempt = $_SESSION[$time_key] ?? $now;
+
+    if ($now - $first_attempt > $decay_seconds) {
+        $_SESSION[$attempts_key] = 1;
+        $_SESSION[$time_key] = $now;
+        return true;
+    }
+
+    if ($attempts >= $max_attempts) {
+        http_response_code(429);
+        header('Retry-After: ' . ($decay_seconds - ($now - $first_attempt)));
+        echo json_encode(['error' => 'Too many requests. Please try again later.']);
+        exit;
+    }
+
+    $_SESSION[$attempts_key] = $attempts + 1;
+    return true;
+}
+```
+

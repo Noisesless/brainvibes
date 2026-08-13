@@ -5,8 +5,8 @@ description: |
   - Database vulnerability yang pernah ditemukan per proyek (learned vulnerabilities)
   - Pattern aman per stack (secure coding patterns)
   - Template dokumentasi audit keamanan (security-audit.md)
-  Auto-aktif saat: "analisa keamanan", "scan keamanan", "cek vulnerability",
-  "security audit", "perbaiki keamanan", "fix vulnerability".
+  Auto-aktif saat: "cek komponen", "cek kelengkapan", "verifikasi kode",
+  "cek regulasi", "perbaiki keamanan", "fix vulnerability".
   Juga dibaca SILENT saat mode coding biasa untuk mencegah pengulangan vulnerability.
 ---
 
@@ -16,7 +16,7 @@ description: |
 
 | Skenario | Trigger | Aksi |
 |---|---|---|
-| Saklar `analisa keamanan` aktif | User ketik saklar | Baca `data/known-vulns.md` + `data/secure-patterns.md` → gunakan sebagai checklist audit |
+| Saklar `cek komponen` aktif | User ketik saklar | Baca `data/secure-patterns.md` + `data/xampp-php-patterns.md` → gunakan sebagai SP compliance checklist (OWASP mapping) |
 | Coding mode biasa (SILENT) | AI menulis kode auth/input/db/upload/api | Baca `data/known-vulns.md` → HINDARI pola yang pernah jadi vulnerability |
 | Setelah fix vulnerability | AI selesai perbaiki vuln dari audit | Tulis entry baru ke `data/known-vulns.md` (dengan approval user) |
 | Proyek baru (`awal baru`) | Knowledge Priming step | Baca `data/secure-patterns.md` → pre-populate todo.md dengan security best practices |
@@ -36,7 +36,7 @@ security-patterns/
 
 ## §1. Format Dokumentasi Vulnerability (known-vulns.md)
 
-Setiap vulnerability yang ditemukan saat `analisa keamanan` WAJIB didokumentasikan
+Setiap vulnerability yang ditemukan saat compliance check atau fix WAJIB didokumentasikan
 dengan format berikut di `data/known-vulns.md`:
 
 ```markdown
@@ -111,7 +111,7 @@ Alasan: [Mengapa pattern aman diperlukan — 1 kalimat]
 
 ## §3. Format Output Security Audit (audit-template.md)
 
-Saat `analisa keamanan` dijalankan, output WAJIB menggunakan format
+Saat `cek komponen` dijalankan dan menemukan gap kritis, output WAJIB menggunakan format
 di `data/audit-template.md`. Format ini dirancang agar:
 
 1. **AI bisa FIX tanpa merusak** — setiap temuan punya lokasi presisi + konteks ketergantungan
@@ -150,7 +150,7 @@ Saat AI memperbaiki vulnerability dari `security-audit.md`:
 
 ## §5. Integrasi dengan Coding Mode Biasa (SILENT READ)
 
-Saat AI menulis kode dalam mode koding biasa (BUKAN `analisa keamanan`):
+Saat AI menulis kode dalam mode koding biasa (BUKAN `cek komponen`):
 
 1. **SILENT READ** `data/known-vulns.md` — cek apakah kode yang sedang ditulis
    mirip dengan vulnerability yang pernah ditemukan

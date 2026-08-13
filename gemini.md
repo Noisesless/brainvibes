@@ -192,7 +192,8 @@ Setiap 10 turns, AI REQUIRED mencetak:
 | `lanjut dari sini` | Mid-session context recovery | app-context.md, todo.md (grep) | prd-template.md | templates §2F |
 | `status proyek` | Quick brief 10 baris | app-context.md | gemini-templates.md, prd-template.md | templates §2G |
 | `analisa kualitas` | Code quality audit → quality_review.md | app-context.md, .docs/ | design-system.md, prd-template.md | templates §2H |
-| `analisa keamanan` | SAST scan 6 lapisan → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | templates §2I |
+| `cek komponen` | Verifikasi kelengkapan komponen kode (OWASP + SP registry) → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | templates §2I |
+<!-- Alias fallback: `analisa keamanan` → maps ke `cek komponen` (backward-compatible) -->
 | `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | templates §2J |
 
 ### Auto-Triggers (Bukan Saklar Manual — Aktif Otomatis)

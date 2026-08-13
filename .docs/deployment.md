@@ -43,6 +43,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 - [ ] File upload validation aktif (type + size)
 - [ ] Build production berhasil tanpa error
 - [ ] Favicon dan meta tags lengkap
+- [ ] Security headers terpasang (6 header wajib: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy — rujuk gemini-execution.md §3C L6)
 
 ### 🟢 Nice-to-have
 - [ ] Gzip/Brotli compression aktif
@@ -109,6 +110,13 @@ server {
     listen 80;
     server_name [DOMAIN] www.[DOMAIN];
 
+    # === Security Headers (REQUIRED — rujuk gemini-execution.md §3C L6) ===
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()" always;
+    # Note: Content-Security-Policy & Strict-Transport-Security dikonfigurasi setelah SSL (Certbot)
+
     # Next.js / Node.js (reverse proxy)
     location / {
         proxy_pass http://127.0.0.1:[PORT];
@@ -137,6 +145,10 @@ sudo systemctl restart nginx
 
 # 12. SSL via Certbot
 sudo certbot --nginx -d [DOMAIN] -d www.[DOMAIN]
+
+# 12a. Verifikasi & Tambahkan Security Headers tambahan ke Nginx SSL block (server block port 443):
+#   add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+#   add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self';" always;
 
 # 13. Start app via PM2
 cd /var/www/[SLUG]

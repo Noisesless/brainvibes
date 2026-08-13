@@ -34,9 +34,11 @@ Skill ini aktif otomatis pada skenario:
 ### 3. Security
 - [ ] HTTPS aktif — redirect HTTP → HTTPS
 - [ ] CORS policy production sudah di-restrict (FORBIDDEN `Allow-Origin: *` di production)
-- [ ] Rate limiting aktif di API endpoints
+- [ ] Rate limiting aktif di API endpoints (rujuk `secure-patterns.md §SP-014/015`)
 - [ ] File sensitif (`prd.md`, `handover.md`, `todo.md`, `.env`) TIDAK bisa diakses via URL
 - [ ] Upload directory FORBIDDEN eksekusi PHP/JS (`.htaccess` / Nginx `location` block)
+- [ ] Security headers terpasang: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy (rujuk `gemini-execution.md §3C L6`)
+- [ ] HSTS max-age minimal 31536000 (1 tahun) dengan includeSubDomains
 
 ### 4. SEO (sesuai gemini.md §4L)
 - [ ] 20-item Pre-Deploy SEO Checklist sudah PASSED semua

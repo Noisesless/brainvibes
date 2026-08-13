@@ -40,7 +40,7 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 | `accessibility-audit` | `config/skills/accessibility-audit/` | audit a11y, screen reader, WCAG, cek a11y | Baca SKILL.md deskripsi → checklist jika audit |
 | `performance-audit` | `config/skills/performance-audit/` | audit performa, lighthouse, LCP, web vitals | Baca SKILL.md deskripsi → checklist jika audit |
 | `deployment-checklist` | `config/skills/deployment-checklist/` | deploy, hosting, production, go live | Baca SKILL.md deskripsi → checklist jika deploy |
-| `security-patterns` | `config/skills/security-patterns/` | analisa keamanan, scan keamanan, cek vulnerability, security audit, perbaiki keamanan, fix vulnerability | Baca SKILL.md deskripsi → data/known-vulns.md + data/secure-patterns.md |
+| `security-patterns` | `config/skills/security-patterns/` | cek komponen, cek kelengkapan, verifikasi kode, cek regulasi, perbaiki keamanan, fix vulnerability | Baca SKILL.md deskripsi → data/known-vulns.md + data/secure-patterns.md |
 | `pentest-strix` | `config/skills/pentest-strix/` | **pentest, pentest cepat, pentest mendalam, pentest api, pentest auth, dast, dynamic scan, strix scan** | Baca SKILL.md deskripsi → docker jika pentest |
 | `quick-scaffold` | `config/skills/quick-scaffold/` | buat komponen, buat model, buat controller, buat form, scaffold, generate file | Baca SKILL.md deskripsi → data/ jika perlu scaffold |
 

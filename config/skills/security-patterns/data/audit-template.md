@@ -1,6 +1,6 @@
 # Security Audit Template
 
-*Template ini digunakan AI saat menjalankan saklar `analisa keamanan`.*
+*Template ini digunakan AI saat menjalankan saklar `cek komponen` (atau saat remediation).*
 *Output ditulis ke `/.docs/security-audit.md` di root proyek.*
 
 ---

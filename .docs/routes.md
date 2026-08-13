@@ -33,7 +33,7 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 | `lanjut dari sini` | Context recovery | `app-context.md`, `todo.md` | ✅ Active |
 | `status proyek` | Quick brief 10-baris | `app-context.md` | ✅ Active |
 | `analisa kualitas` | Code quality audit | `app-context.md`, `/.docs/quality_review.md` | ✅ Active |
-| `analisa keamanan` | SAST 6-layer scan | `security-patterns/data/`, `app-context.md` | ✅ Active |
+| `cek komponen` | Component & OWASP compliance check | `security-patterns/data/`, `app-context.md` | ✅ Active |
 | `pentest*` | DAST via Strix AI | `security-patterns/data/`, `pentest-strix/` | ✅ Active |
 | `auto-sync` | Setiap 5 task selesai | Health check status | ✅ Active |
 | `auto-docs` | Setiap 5 task selesai | `/.docs/` files update | ✅ Active |

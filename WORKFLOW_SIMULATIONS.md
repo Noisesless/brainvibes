@@ -401,11 +401,11 @@ Status Proyek:
 
 ---
 
-## Simulasi 8: `analisa keamanan` (Security Audit)
+## Simulasi 8: `cek komponen` (Component Verification)
 
 ### User Input:
 ```
-analisa keamanan
+cek komponen
 ```
 
 ### AI Execution Flow:
@@ -416,17 +416,21 @@ analisa keamanan
 ✅ Load app-context.md (cached)
 ✅ Load security-patterns (cached, per-session)
 
-[STEP 1] 6 Lapisan Scan
-→ L1 Linter: npx eslint . --max-warnings=0
-→ L2 Type Safety: npx tsc --noEmit
-→ L3 SAST: grep dangerous patterns
-→ L4 Input Guard: check forms
-→ L5 Auth: check routes
-→ L6 Sec Headers: check middleware
+[STEP 1] OWASP Top 10:2025 + SP Registry Compliance Check
+→ A01 Access Control: check SP-006, SP-PHP-001, L5
+→ A02 Misconfig: check SP-008, SP-011/012/013, .htaccess
+→ A03 Supply Chain: check SP-016 (lockfile, npm ci)
+→ A04 Crypto: check SP-004, SP-007, SP-009
+→ A05 Injection: check SP-001, SP-002, L3
+→ A06 Insecure Design: check SP-014/015, SP-PHP-004
+→ A07 Auth: check SP-PHP-002, SP-004, CS-033
+→ A08 Integrity: check SP-017 (SRI, CI/CD)
+→ A09 Logging: check SP-018 (error_log, PII exclusion)
+→ A10 Exceptional: check try/catch, debug mode
 
-[STEP 2] Output Security Report
-→ Write to /.docs/security-audit.md
-→ Format:
+[STEP 2] Generate Security Audit Checklist
+→ Write /.docs/security-audit.md (OWASP formatted)
+→ Report compliance status & missing components
 ```
 Status 6 Lapisan Scan:
   L1 Linter         : PASSED
@@ -575,7 +579,7 @@ lanjut dari sini
 | 5. `baca error` massal | ~99.6K | 45% faster | 🔴 → 🟢 |
 | 6. `awal konversi` | ~99.6K | 55% faster | 🔴 → 🟢 |
 | 7. `status proyek` | ~99.6K | 50% faster | 🔴 → 🟢 |
-| 8. `analisa keamanan` | ~99.6K | 50% faster | 🔴 → 🟢 |
+| 8. `cek komponen` | ~99.6K | 50% faster | 🔴 → 🟢 |
 | 9. `pentest` | ~99.6K | 30% faster | 🔴 → 🟢 |
 | 10. `lanjut dari sini` | ~99.6K | 50% faster | 🔴 → 🟢 |
 

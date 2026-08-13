@@ -1,6 +1,6 @@
 # Known Vulnerabilities Database — Vibes Coding Workflow v3.1.0
 
-*Diisi otomatis setelah setiap `analisa keamanan` → fix → user approve.*
+*Diisi otomatis setelah compliance check / fix (`cek komponen`) → user approve.*
 *AI WAJIB baca file ini SILENT saat coding mode untuk mencegah pengulangan.*
 *Pre-populated v3.1.0: 10 entry umum untuk stack PHP Native + Next.js + XAMPP*
 
