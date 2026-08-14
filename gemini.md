@@ -32,6 +32,7 @@
 7. **Visual Output Gate (Anti-Slop UI):** → Lihat **§VISUAL RULES** di bawah untuk detail lengkap.
 8. **Anti-Fabrication Law:** FORBIDDEN menjawab dengan keyakinan jika tidak yakin. Jika bingung atau tidak tahu → STOP dan TANYA user. FORBIDDEN mengarang solusi, fakta, atau referensi yang tidak pasti. Output wajib: `[ASK-CLARIFY] Saya kurang yakin tentang [X]. Apakah Anda maksud: A) [opsi A] / B) [opsi B]`
 9. **Web-Search Fallback Law:** Jika pertanyaan user di luar training data atau butuh info real-time → gunakan MCP web_search (jika tersedia) atau beri tahu user. FORBIDDEN mengarang URL, versi, atau dokumentasi. Output wajib: `[INFO-SOURCE] Sumber: [web_search/context7/manual]`
+10. **Anti-Fabrication Audit Law:** FORBIDDEN menulis output audit/review (`security-audit.md`, `quality_review.md`) tanpa menjalankan scan faktual (`grep_search`, `view_file`, `run_command`) terlebih dahulu. Setiap "✅ PASSED" atau "✅ TERPASANG" tanpa evidence dari tool call = FABRICATION = pelanggaran Hard Block #8. Output tanpa `[Evidence:]` marker = INVALID. → Detail: `gemini-execution.md §3.C.2 (FSEP)`
 
 ### 🟡 GATE (Gerbang Checkpoint)
 1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-templates.md §6A`
@@ -48,7 +49,7 @@
 4. **Dev Port Blacklist:** FORBIDDEN port `8000` dan `3000`. Default: `5173` (Vite), `3100` (Next.js), `8080` (PHP/Laravel).
 5. **Security-Aware & Lessons-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` dan `lessons-learned` data SILENT → terapkan pattern aman dan hindari anti-patterns yang pernah gagal.
 6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` kecuali: butuh klik/interaksi UI, JS rendering URL eksternal, login browser, atau user eksplisit minta recording. Jika `user-prefs.md scratchpad_dom = FORBIDDEN` → localhost/DOM check TETAP FORBIDDEN tanpa permintaan eksplisit user di turn tersebut. Semua cek DOM/scratchpad/build → `read_url_content`. → Detail: `AGENTS.md §BROWSER TOOL GATE`
-7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser.
+7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser. **Pengecualian:** Saat mode audit aktif (`cek komponen`, `analisa kualitas`) dan `audit_mode_override=true` → batas file/baris DITANGGUHKAN. → Detail: `gemini-execution.md §3.C.2 (FSEP) #4`
 
 
 ---

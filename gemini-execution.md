@@ -113,7 +113,9 @@ Status 6 Lapisan Scan:
 ```
 
 ### §3.C.1 Mode Compliance Check (untuk saklar `cek komponen`)
-Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI TIDAK menjalankan 6 Lapisan Scan penuh. Sebagai gantinya:
+> **PENTING:** Ini adalah **verifikasi kelengkapan komponen kode** terhadap standar perusahaan (SP registry), BUKAN security audit/scan. Tujuannya: memastikan setiap komponen keamanan yang disyaratkan sudah TERPASANG di kode, bukan mencari vulnerability.
+
+Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan **Compliance Verification Mode**:
 
 1. **Deteksi stack proyek** dari `app-context.md §APP` (PHP Native / Laravel / Next.js).
 2. **Filter SP yang relevan** berdasarkan stack:
@@ -137,9 +139,49 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI TIDAK menja
    | A09 | Logging Failures | **SP-018** | `display_errors=0`, `log_errors=1`, no password in logs |
    | A10 | Exceptional Conditions | **SP-019** | `set_error_handler`, `error.tsx`, `Handler.php`, `APP_DEBUG=false`, no empty catch |
 
-4. **Grep codebase** per SP — cari indikator implementasi (function name, header value, config key).
-5. **Output checklist** ke `/.docs/security-audit.md` dengan format per-OWASP (lihat gemini-templates.md §2I).
-6. **FORBIDDEN** menjalankan `eslint`, `tsc`, `phpstan`, atau tool scanner lainnya dalam mode ini.
+4. **🔴 MANDATORY: Grep codebase FAKTUAL per SP** — AI WAJIB menjalankan `grep_search` untuk SETIAP SP yang relevan. Cari indikator implementasi (function name, header value, config key) di file kode aktual. FORBIDDEN menulis status komponen dari memori/asumsi tanpa grep.
+   - Jika SP relevan = 15 → minimum 15x `grep_search` (boleh di-batch per kategori OWASP)
+   - Setiap SP yang dicek WAJIB menyertakan evidence: `[Evidence: grep "pattern" → file:line | NOT FOUND]`
+   - Jika grep indicator DITEMUKAN → status: `✅ TERPASANG [file:line]`
+   - Jika grep indicator TIDAK DITEMUKAN → status: `❌ BELUM TERPASANG — rekomendasi: [SP-XXX]`
+5. **🔴 MANDATORY: Dependency Audit** — Jika `package-lock.json` ada → WAJIB jalankan `npm audit --json 2>$null`. Jika `composer.lock` ada → WAJIB jalankan `composer audit --format=json 2>$null`. Hasil masuk ke section A03. Jika tidak ada lockfile → catat "No lockfile found". FORBIDDEN skip step ini.
+6. **Output checklist** ke `/.docs/security-audit.md` dengan format per-OWASP (lihat gemini-templates.md §2I). Setiap finding WAJIB memiliki evidence marker.
+7. **Opsional** menjalankan linter/SAST tools (`eslint`, `tsc`, `phpstan`) jika terinstall — TIDAK FORBIDDEN, tapi bukan syarat wajib. Yang WAJIB: `grep_search` per SP + `view_file` untuk verifikasi konteks.
+8. **🔴 FORBIDDEN membaca `security-audit.md` lama** sebagai pengganti scan baru. Setiap eksekusi `cek komponen` = scan ulang penuh dari codebase aktual. File output lama di-overwrite.
+
+### §3.C.2 Factual Scan Enforcement Protocol (FSEP)
+> Aturan universal yang berlaku untuk SEMUA mode audit dan verifikasi: `cek komponen`, `analisa kualitas`, 6 Lapisan Scan.
+
+**🔴 HARD RULES (Tidak Dapat Dikecualikan):**
+
+1. **Anti-Fabrication Audit Rule:** FORBIDDEN menulis "PASSED", "✅ TERPASANG", "CLEAN", "OK", atau status positif lainnya tanpa bukti `grep_search`, `view_file`, atau `run_command` yang mendukung finding tersebut. Finding positif tanpa evidence = FABRICATION = pelanggaran Hard Block #10.
+
+2. **Evidence Requirement:** Setiap baris finding di output WAJIB menyertakan salah satu:
+   - `[Evidence: grep "pattern" → file.php:L42]` — ditemukan
+   - `[Evidence: grep "pattern" → NOT FOUND]` — tidak ditemukan
+   - `[Evidence: view_file path L42-L50]` — verifikasi konteks
+   - `[Evidence: run_command "npm audit" → 0 critical]` — tool output
+   Finding tanpa evidence marker = INVALID, WAJIB diulang.
+
+3. **Minimum Scan Depth:**
+   - `cek komponen`: Minimum 1x `grep_search` per SP yang di-filter. Jika 15 SP relevan → minimum 15x grep. SEMUA SP WAJIB dicek — komponen keamanan krusial, tidak boleh ada yang di-skip.
+   - `analisa kualitas`: Minimum scan semua file utama di direktori source (`src/`, `app/`, `pages/`, atau root project). Minimum 5x `grep_search` untuk code smells + 1x linter run.
+   - 6 Lapisan Scan: Sesuai §3.C (sudah ada minimum per lapisan).
+
+4. **Token Guard Suspension (Audit Exemption):** Selama mode audit aktif (`cek komponen` atau `analisa kualitas`), batas `max_files_per_turn` dan `max_lines_per_read` dari `user-prefs.md` **DITANGGUHKAN**. AI boleh membaca lebih dari 5 file dan lebih dari 200 baris per turn untuk keperluan scan. Batas di-restore setelah output audit selesai ditulis.
+
+5. **Scan Log Wajib:** Setelah scan selesai, AI WAJIB mencetak log berikut SEBELUM menyajikan hasil ke user:
+   ```
+   [SCAN LOG] Mode: [cek komponen | analisa kualitas | 6 Lapisan]
+   [SCAN LOG] grep_search: N queries executed
+   [SCAN LOG] view_file: N files inspected
+   [SCAN LOG] run_command: N commands executed (npm audit, linter, dll)
+   [SCAN LOG] SP checked: N/N (harus 100% untuk cek komponen)
+   [SCAN LOG] Findings: N total (X ❌ BELUM TERPASANG, Y ✅ TERPASANG)
+   ```
+   Jika `SP checked` < 100% pada `cek komponen` → scan TIDAK LENGKAP, WAJIB lanjutkan.
+
+6. **No Legacy Read:** FORBIDDEN membaca file output lama (`security-audit.md`, `quality_review.md`) sebagai pengganti scan baru. Setiap eksekusi saklar audit = scan ulang penuh. Output lama di-overwrite, bukan di-append.
 
 ---
 

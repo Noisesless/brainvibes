@@ -41,6 +41,7 @@ security_aware     = true                         # Enable silent security patte
 security_reminder  = true                         # Enable milestone security reminder (pasif, per fase)
 max_files_per_turn = 5                            # Batas file dibuka AI per turn (token guard)
 max_lines_per_read = 200                          # Batas baris per view_file call (token guard)
+audit_mode_override = true                         # Saat mode audit aktif (cek komponen/analisa kualitas), token guard ditangguhkan
 
 # Context Budget Settings (Smart Context Loading)
 context_budget_7b  = 5000                         # Max tokens untuk model 7B-13B context (default 5K)

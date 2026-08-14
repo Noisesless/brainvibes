@@ -87,16 +87,51 @@
    ```
 
 ### 2H. Saklar: `analisa kualitas`
-1. Scan codebase terhadap standard linter, type-safety, code smells, duplikasi, dan standard visual Vibes.
-2. Output wajib di `/.docs/quality_review.md` dengan format severity (CRITICAL, WARNING, INFO).
-3. Setelah review selesai, sajikan ringkasan dan rekomendasi refactoring konkret kepada user.
+> Audit kualitas kode faktual — AI WAJIB melakukan scan nyata terhadap codebase, BUKAN menulis checklist dari memori.
+> Tunduk pada §3.C.2 FSEP (Factual Scan Enforcement Protocol) di `gemini-execution.md`.
+
+**Prosedur Eksekusi (7 Langkah Wajib):**
+
+1. **Deteksi Stack & Struktur:** Baca `app-context.md §APP` → identifikasi framework, entry points, direktori source.
+2. **Jalankan Linter** (jika tersedia):
+   - Node.js/Next.js: `npx eslint . --max-warnings=0 --format=json 2>$null` atau `npx eslint . --format=compact 2>$null`
+   - PHP: `php -l [file]` pada setiap file PHP di source, atau `./vendor/bin/pint --test` jika Laravel
+   - Jika linter tidak terinstall → catat "Linter not available" dan lanjut ke step 3
+3. **Jalankan Type Checker** (jika TypeScript):
+   - `npx tsc --noEmit 2>$null` → catat jumlah error
+   - Jika bukan TypeScript → skip step, catat "Non-TS project"
+4. **Grep Code Smells** — AI WAJIB menjalankan `grep_search` untuk setiap pattern berikut:
+   - `console.log` / `var_dump` / `dd(` / `print_r` → debug artifacts
+   - `TODO` / `FIXME` / `HACK` / `XXX` → unresolved markers
+   - `eval(` / `innerHTML` / `dangerouslySetInnerHTML` → dangerous patterns
+   - Hardcoded hex (`#[0-9a-fA-F]{6}`) di CSS → seharusnya `var(--vibe-*)`
+   - `href="#"` / `src=""` → dead links/missing assets
+   - `catch {}` / `catch (e) {}` kosong → swallowed errors
+   Setiap grep WAJIB menyertakan evidence. Minimum 5x `grep_search`.
+5. **Cek Duplikasi:** Grep pattern matching untuk blok kode yang berulang (fungsi nama mirip, CSS rules duplikat).
+6. **Verifikasi Visual Compliance** (jika proyek memiliki UI):
+   - Cek penggunaan `var(--vibe-*)` tokens vs hardcoded values
+   - Cek font pairing (heading ≠ body)
+   - Cek spacing kelipatan 8pt grid
+7. **Output ke `/.docs/quality_review.md`** dengan format severity:
+   - **CRITICAL:** Security risk, broken functionality, data loss potential
+   - **WARNING:** Code smells, anti-patterns, maintainability issues
+   - **INFO:** Style improvements, minor optimizations
+   Setiap finding WAJIB menyertakan `[Evidence: tool "pattern" → file:line]` — finding tanpa evidence = INVALID (ref: FSEP §3.C.2).
+
+**🔴 FORBIDDEN:**
+- Menulis output dari memori/asumsi tanpa menjalankan tool scan
+- Membaca `quality_review.md` lama sebagai pengganti scan baru → output lama di-overwrite
+- Menulis "✅" tanpa evidence grep/linter yang mendukung
 
 ### 2I. Saklar: `cek komponen` (alias: `analisa keamanan`)
-> Verifikasi kelengkapan komponen kode yang terpasang di codebase, berdasarkan regulasi OWASP Top 10:2025 dan SP registry di `secure-patterns.md` / `xampp-php-patterns.md`.
+> **Verifikasi kelengkapan komponen kode** terhadap standar perusahaan Brainvibes (SP registry + OWASP Top 10:2025).
+> Ini BUKAN security audit/scan — ini adalah pengecekan: "Apakah komponen keamanan X sudah terpasang di kode?"
+> Tunduk pada §3.C.2 FSEP (Factual Scan Enforcement Protocol) di `gemini-execution.md`.
 
 1. **Baca SP Registry** dari `security-patterns/data/secure-patterns.md` (SP-001 s/d SP-022) dan `xampp-php-patterns.md` (SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001).
 2. **Deteksi stack** dari `app-context.md §APP` → filter SP yang relevan.
-3. **Scan codebase** menggunakan `grep_search` per komponen SP — cocokkan pattern aman dengan file proyek aktual. Organisasikan berdasarkan kategori OWASP:
+3. **🔴 MANDATORY: Scan codebase FAKTUAL** menggunakan `grep_search` per komponen SP — cocokkan pattern aman dengan file proyek aktual. SEMUA SP yang relevan WAJIB dicek tanpa kecuali. Organisasikan berdasarkan kategori OWASP:
    - A01 (Access Control): CSRF, Auth Guard, API Auth, SSRF Prevention (SP-020), IDOR/Ownership (SP-021), Open Redirect (SP-022)
    - A02 (Misconfiguration): Security Headers, CORS, .htaccess
    - A03 (Supply Chain): Lockfile, version pinning, npm audit — SP-016
@@ -107,15 +142,20 @@
    - A08 (Software Integrity): SRI, npm ci, build artifacts — SP-017
    - A09 (Logging): Error logging, audit trail, sensitive data exclusion — SP-018
    - A10 (Exceptional Conditions): Error/exception handling, error boundaries — SP-019
-4. **Dependency Audit** (otomatis jika lockfile terdeteksi):
-   - Jika `package-lock.json` ada → jalankan `npm audit --json 2>$null` → parse severity count (critical/high/moderate/low)
-   - Jika `composer.lock` ada → jalankan `composer audit --format=json 2>$null` → parse severity count
+4. **🔴 MANDATORY: Dependency Audit** (WAJIB jika lockfile terdeteksi):
+   - Jika `package-lock.json` ada → WAJIB jalankan `npm audit --json 2>$null` → parse severity count (critical/high/moderate/low)
+   - Jika `composer.lock` ada → WAJIB jalankan `composer audit --format=json 2>$null` → parse severity count
    - Masukkan temuan ke section **A03 (Supply Chain)** di output audit
-   - Jika tidak ada lockfile → skip step ini, catat "No lockfile found" di output
-5. **Buat checklist compliance** per OWASP kategori (format: lihat §3.C.1).
+   - Jika tidak ada lockfile → catat "No lockfile found" di output. FORBIDDEN skip step ini.
+5. **Buat checklist compliance** per OWASP kategori — setiap komponen disertai evidence marker (format: lihat §3.C.1 & §3.C.2 FSEP).
 6. **Output ke `/.docs/security-audit.md`** — daftar komponen terpasang dan yang belum, dikelompokkan per OWASP.
 7. **Laporkan gap** ke user — komponen mana yang belum terpasang dan rekomendasikan SP mana yang perlu diimplementasikan.
-8. *Tidak menjalankan SAST scanner, CVE database, atau tool eksternal (kecuali npm/composer audit) — hanya verifikasi source code terhadap SP registry internal + OWASP mapping.*
+8. *Opsional menjalankan SAST scanner/linter jika terinstall — bukan syarat wajib, tapi tidak dilarang.*
+
+**🔴 FORBIDDEN:**
+- Menulis status komponen dari memori/asumsi tanpa menjalankan `grep_search` → pelanggaran FSEP
+- Membaca `security-audit.md` lama sebagai pengganti scan baru → overwrite output lama
+- Skip SP manapun yang relevan dengan stack proyek — SEMUA harus dicek
 
 ### 2J. Saklar: `pentest` / `pentest cepat` / `pentest mendalam` / `pentest api` / `pentest auth`
 > DAST — Dynamic Application Security Testing via Strix AI Pentest Agent.
