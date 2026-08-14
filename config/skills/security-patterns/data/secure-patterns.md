@@ -256,10 +256,10 @@ Alasan: Source code bisa commit ke Git → credential tersebar.
 ---
 
 [SP-010] CSRF Token Implementation
-Stack    : PHP Native
+Stack    : Universal (PHP Native, Laravel, Next.js)
 Kategori : Auth
 
-Pattern Aman:
+Pattern Aman (PHP Native):
   ```php
   // Generate token di session
   if (empty($_SESSION['csrf_token'])) {
@@ -276,14 +276,49 @@ Pattern Aman:
   }
   ```
 
+Pattern Aman (Laravel — Built-in):
+  ```php
+  {{-- Blade form — @csrf otomatis generate hidden input --}}
+  <form method="POST" action="/transfer">
+      @csrf
+      <input name="amount" value="">
+      <button>Transfer</button>
+  </form>
+
+  {{-- Middleware VerifyCsrfToken aktif secara default di web routes --}}
+  {{-- Jika perlu exclude route tertentu (webhook): --}}
+  ```
+
+  ```php
+  // app/Http/Middleware/VerifyCsrfToken.php (Laravel 10)
+  protected $except = [
+      'webhook/*', // Hanya route webhook yang di-exclude
+  ];
+
+  // Laravel 11+: bootstrap/app.php
+  ->withMiddleware(function (Middleware $middleware) {
+      $middleware->validateCsrfTokens(except: ['webhook/*']);
+  })
+  ```
+
+Catatan Next.js:
+  Next.js API routes bersifat stateless (token-based / JWT). CSRF tradisional
+  tidak relevan. Proteksi dilakukan via:
+  - `SameSite=Strict` pada cookie session (`next-auth` default)
+  - Origin/Referer header validation di middleware
+  - Tidak menggunakan cookie-based form submission
+
 Anti-Pattern (FORBIDDEN):
   ```php
-  // NEVER DO THIS — form tanpa CSRF protection
+  // ❌ Form tanpa CSRF protection
   <form method="POST" action="/transfer">
       <input name="amount" value="1000000">
       <input name="to_account" value="attacker">
       <button>Transfer</button>
   </form>
+
+  // ❌ Laravel: exclude semua route dari CSRF (membunuh proteksi)
+  protected $except = ['*']; // NEVER DO THIS
   ```
 
 Alasan: Tanpa CSRF token, attacker bisa buat halaman yang auto-submit form atas nama user yang sudah login.
@@ -644,4 +679,431 @@ Grep Indicators (untuk `cek komponen`):
 
 Alasan: Tanpa logging, brute force dan intrusion tidak terdeteksi. Log yang mengandung password/token = data breach jika log bocor.
 
+---
+
+[SP-019] Error & Exception Handling (OWASP A10:2025)
+Stack    : Universal (PHP Native, Next.js, Laravel)
+Kategori : Exception Handling
+
+Pattern Aman (PHP Native):
+  ```php
+  // Di awal bootstrap / index.php
+  ini_set('display_errors', '0');
+  ini_set('log_errors', '1');
+  ini_set('error_log', '/var/log/php/app-error.log'); // DI LUAR webroot
+
+  set_error_handler(function ($severity, $message, $file, $line) {
+      throw new ErrorException($message, 0, $severity, $file, $line);
+  });
+
+  set_exception_handler(function (Throwable $e) {
+      error_log("[UNCAUGHT] {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}");
+      http_response_code(500);
+      include __DIR__ . '/views/error-500.php'; // Halaman error generik
+      exit;
+  });
+  ```
+
+Pattern Aman (Next.js):
+  ```typescript
+  // app/error.tsx — automatic error boundary per route segment
+  'use client';
+  export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+    // FORBIDDEN: jangan tampilkan error.message ke user di production
+    console.error('[App Error]', error); // server log only
+    return (
+      <div>
+        <h2>Terjadi kesalahan</h2>
+        <button onClick={reset}>Coba lagi</button>
+      </div>
+    );
+  }
+
+  // app/global-error.tsx — root layout fallback
+  'use client';
+  export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
+    return (
+      <html><body>
+        <h2>Sistem error</h2>
+        <button onClick={reset}>Reload</button>
+      </body></html>
+    );
+  }
+  ```
+
+Pattern Aman (Laravel):
+  ```php
+  // app/Exceptions/Handler.php (Laravel 10) atau bootstrap/app.php (Laravel 11+)
+  // report() → log ke file/service, render() → tampilkan halaman error generik
+  public function report(Throwable $e): void {
+      // Log detail ke server — BUKAN ke browser
+      Log::error($e->getMessage(), ['trace' => $e->getTraceAsString()]);
+      parent::report($e);
+  }
+
+  public function render($request, Throwable $e): Response {
+      if ($e instanceof ModelNotFoundException) {
+          return response()->view('errors.404', [], 404);
+      }
+      // FORBIDDEN: return response()->json(['error' => $e->getMessage()]) di production
+      return parent::render($request, $e);
+  }
+  ```
+
+Anti-Pattern (FORBIDDEN):
+  ```php
+  // ❌ Stack trace ke browser
+  ini_set('display_errors', 1); // PRODUCTION = selalu 0
+
+  // ❌ Generic catch kosong — error hilang tanpa jejak
+  try { riskyOperation(); } catch (Exception $e) { /* diam-diam */ }
+
+  // ❌ Error message langsung ke response
+  return response()->json(['error' => $e->getMessage()]); // leaks internal info
+  ```
+
+  ```typescript
+  // ❌ Throw tanpa catch — crash seluruh app
+  // ❌ console.log(error.stack) di client-side — leaks source code structure
+  ```
+
+Awareness Note — Prototype Pollution (Node.js/Next.js):
+  Tren CVE 2025-2026 menunjukkan kenaikan Prototype Pollution di environment Node.js.
+  Mitigasi ringan: gunakan `Object.create(null)` untuk dictionary objects, hindari
+  deep merge library yang tidak aman (lodash.merge < v4.6.2), dan pertimbangkan
+  `--frozen-intrinsics` flag di Node.js v22+. Supply chain audit (SP-016) juga
+  mendeteksi dependency yang rentan terhadap serangan ini.
+
+Grep Indicators (untuk `cek komponen`):
+  - PHP: `display_errors` = `0`, `set_error_handler`, `set_exception_handler`, error view file exists
+  - Next.js: `error.tsx` atau `global-error.tsx` exists di `app/`, no `error.stack` in client code
+  - Laravel: `Handler.php` atau `bootstrap/app.php` exception config, `APP_DEBUG=false` di `.env`
+  - Grep FORBIDDEN: `display_errors.*1` di production, empty `catch` block, `$e->getMessage()` in response
+
+Alasan: Tanpa penanganan error yang proper, stack trace bocor ke browser = information disclosure. Empty catch blocks = bug tersembunyi yang sulit di-debug. A10:2025 menjadikan ini kategori OWASP tersendiri.
+
+---
+
+[SP-020] SSRF Prevention (OWASP A01:2025)
+Stack    : Universal (PHP Native, Next.js, Laravel)
+Kategori : Access Control / Network
+
+Pattern Aman (PHP Native):
+  ```php
+  function validateUrl(string $url): bool {
+      $parsed = parse_url($url);
+      if (!$parsed || !isset($parsed['host'])) return false;
+
+      // Hanya izinkan scheme http/https
+      if (!in_array($parsed['scheme'] ?? '', ['http', 'https'])) return false;
+
+      // Block private IP ranges
+      $ip = gethostbyname($parsed['host']);
+      $privateRanges = [
+          '127.0.0.0/8', '10.0.0.0/8', '172.16.0.0/12',
+          '192.168.0.0/16', '169.254.0.0/16', '0.0.0.0/8',
+      ];
+      foreach ($privateRanges as $range) {
+          [$subnet, $mask] = explode('/', $range);
+          if ((ip2long($ip) & ~((1 << (32 - $mask)) - 1)) === ip2long($subnet)) {
+              return false; // Private IP — BLOCKED
+          }
+      }
+
+      // Allowlist domain (opsional — untuk use case spesifik)
+      // $allowedDomains = ['api.example.com', 'cdn.example.com'];
+      // if (!in_array($parsed['host'], $allowedDomains)) return false;
+
+      return true;
+  }
+
+  // Penggunaan
+  $userUrl = $_POST['url'];
+  if (!validateUrl($userUrl)) {
+      http_response_code(400);
+      die('URL tidak diizinkan');
+  }
+  $content = file_get_contents($userUrl, false, stream_context_create([
+      'http' => ['timeout' => 5, 'follow_location' => 0] // Jangan ikuti redirect
+  ]));
+  ```
+
+Pattern Aman (Next.js):
+  ```typescript
+  // lib/url-validator.ts
+  const BLOCKED_IP_PREFIXES = ['127.', '10.', '0.', '169.254.'];
+  const BLOCKED_IP_RANGES = [
+    { start: '172.16.0.0', end: '172.31.255.255' },
+    { start: '192.168.0.0', end: '192.168.255.255' },
+  ];
+
+  export function isUrlSafe(url: string): boolean {
+    try {
+      const parsed = new URL(url);
+      if (!['http:', 'https:'].includes(parsed.protocol)) return false;
+      if (parsed.hostname === 'localhost') return false;
+      if (BLOCKED_IP_PREFIXES.some(p => parsed.hostname.startsWith(p))) return false;
+      // DNS rebinding: resolve hostname dan cek ulang IP sebelum fetch
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  // API route usage
+  export async function POST(req: Request) {
+    const { url } = await req.json();
+    if (!isUrlSafe(url)) {
+      return Response.json({ error: 'URL blocked' }, { status: 400 });
+    }
+    const res = await fetch(url, { redirect: 'error', signal: AbortSignal.timeout(5000) });
+    // ... process response
+  }
+  ```
+
+Pattern Aman (Laravel):
+  ```php
+  // app/Services/UrlValidator.php
+  use Illuminate\Support\Facades\Http;
+
+  class UrlValidator {
+      private const BLOCKED_CIDRS = [
+          '127.0.0.0/8', '10.0.0.0/8', '172.16.0.0/12',
+          '192.168.0.0/16', '169.254.0.0/16',
+      ];
+
+      public static function isSafe(string $url): bool {
+          $parsed = parse_url($url);
+          if (!$parsed || !in_array($parsed['scheme'] ?? '', ['http', 'https'])) return false;
+          $ip = gethostbyname($parsed['host']);
+          foreach (self::BLOCKED_CIDRS as $cidr) {
+              if (self::ipInRange($ip, $cidr)) return false;
+          }
+          return true;
+      }
+  }
+
+  // Controller usage
+  if (!UrlValidator::isSafe($request->input('url'))) {
+      abort(400, 'URL not allowed');
+  }
+  $response = Http::timeout(5)->withoutRedirecting()->get($request->input('url'));
+  ```
+
+Anti-Pattern (FORBIDDEN):
+  ```php
+  // ❌ Fetch URL user tanpa validasi apapun
+  $content = file_get_contents($_GET['url']);
+
+  // ❌ cURL tanpa cek IP tujuan
+  curl_setopt($ch, CURLOPT_URL, $userInput);
+  curl_exec($ch);
+  ```
+
+  ```typescript
+  // ❌ Fetch langsung dari user input
+  const data = await fetch(req.body.url); // SSRF vector
+
+  // ❌ Redirect follow tanpa batas
+  const res = await fetch(url, { redirect: 'follow' }); // bisa redirect ke internal
+  ```
+
+Grep Indicators (untuk `cek komponen`):
+  - Cari `file_get_contents(` / `curl_setopt(` / `Http::get(` / `fetch(` yang menerima variabel user
+  - Cek apakah ada fungsi `validateUrl` / `isUrlSafe` / `UrlValidator`
+  - Cek apakah private IP blocking diimplementasikan (127.0, 10.0, 172.16, 192.168)
+  - Grep FORBIDDEN: `file_get_contents($` + variabel dari `$_GET`/`$_POST`/`$request->input`
+
+Alasan: SSRF naik 68% di 2025-2026 karena AI features yang fetch URL eksternal. Tanpa validasi, attacker bisa mengakses internal services (metadata endpoint, database, admin panel) melalui server-side request.
+
+---
+
+[SP-021] IDOR Prevention / Ownership Validation (OWASP A01:2025)
+Stack    : Universal (PHP Native, Next.js, Laravel)
+Kategori : Access Control / Authorization
+
+Pattern Aman (PHP Native):
+  ```php
+  // SELALU tambahkan ownership check — jangan query by ID saja
+  $stmt = $conn->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
+  $stmt->bind_param("ii", $orderId, $_SESSION['user_id']);
+  $stmt->execute();
+  $order = $stmt->get_result()->fetch_assoc();
+
+  if (!$order) {
+      http_response_code(403);
+      die('Akses ditolak');
+  }
+  ```
+
+Pattern Aman (Next.js):
+  ```typescript
+  // app/api/orders/[id]/route.ts
+  import { getServerSession } from 'next-auth';
+
+  export async function GET(req: Request, { params }: { params: { id: string } }) {
+    const session = await getServerSession(authOptions);
+    if (!session) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const order = await prisma.order.findFirst({
+      where: {
+        id: params.id,
+        userId: session.user.id, // OWNERSHIP CHECK — wajib
+      },
+    });
+
+    if (!order) return Response.json({ error: 'Not found' }, { status: 404 });
+    return Response.json(order);
+  }
+  ```
+
+Pattern Aman (Laravel):
+  ```php
+  // Opsi 1: Query scope — langsung filter by user
+  $order = Order::where('id', $id)
+      ->where('user_id', auth()->id()) // OWNERSHIP CHECK
+      ->firstOrFail();
+
+  // Opsi 2: Policy Gate — reusable authorization logic
+  // app/Policies/OrderPolicy.php
+  public function view(User $user, Order $order): bool {
+      return $user->id === $order->user_id;
+  }
+
+  // Controller
+  $order = Order::findOrFail($id);
+  $this->authorize('view', $order); // throws 403 if not owner
+  ```
+
+Anti-Pattern (FORBIDDEN):
+  ```php
+  // ❌ Query by ID tanpa ownership check — IDOR vulnerability
+  $order = Order::find($request->id); // siapa saja bisa akses order orang lain
+  return response()->json($order);
+
+  // ❌ Cek role tapi tidak cek ownership
+  if (auth()->user()->role === 'member') {
+      $order = Order::find($id); // member bisa lihat order member lain!
+  }
+  ```
+
+  ```typescript
+  // ❌ Fetch by ID tanpa session check
+  const order = await prisma.order.findUnique({ where: { id: params.id } });
+  // attacker: GET /api/orders/other-user-order-id → data bocor
+  ```
+
+Grep Indicators (untuk `cek komponen`):
+  - Cari semua query `findFirst`/`findUnique`/`find(`/`SELECT.*WHERE id =` yang TIDAK punya `user_id`/`userId` filter
+  - Cek apakah ada Policy/Gate di Laravel (`authorize(`, `$this->authorize`)
+  - Cek Next.js API routes: apakah `getServerSession` ada + ownership comparison
+  - Grep FORBIDDEN: `::find($request->` atau `findUnique({ where: { id:` tanpa userId filter
+
+Alasan: IDOR/BOLA memiliki prevalensi hampir 100% di assessments 2025-2026, terutama di kode yang di-generate AI karena AI sering tidak menambahkan authorization context. Setiap akses resource WAJIB divalidasi bahwa requester = owner.
+
+---
+
+[SP-022] Open Redirect Prevention (OWASP A01:2025)
+Stack    : Universal (PHP Native, Next.js, Laravel)
+Kategori : Access Control / Redirect
+
+Pattern Aman (PHP Native):
+  ```php
+  // Allowlist-based redirect — HANYA izinkan path internal
+  function safeRedirect(string $url, string $default = '/'): void {
+      $parsed = parse_url($url);
+
+      // Block: absolute URL ke domain lain
+      if (isset($parsed['host']) || isset($parsed['scheme'])) {
+          $url = $default; // Fallback ke default
+      }
+
+      // Block: protocol-relative URL (//evil.com)
+      if (str_starts_with($url, '//')) {
+          $url = $default;
+      }
+
+      // Hanya izinkan path yang dimulai dengan /
+      if (!str_starts_with($url, '/')) {
+          $url = $default;
+      }
+
+      header("Location: $url");
+      exit;
+  }
+
+  // Penggunaan setelah login
+  $redirect = $_GET['redirect'] ?? '/dashboard';
+  safeRedirect($redirect, '/dashboard');
+  ```
+
+Pattern Aman (Next.js):
+  ```typescript
+  // lib/safe-redirect.ts
+  const ALLOWED_HOSTS = [process.env.NEXT_PUBLIC_APP_URL];
+
+  export function getSafeRedirectUrl(url: string, fallback = '/'): string {
+    try {
+      const parsed = new URL(url, process.env.NEXT_PUBLIC_APP_URL);
+      // Hanya izinkan redirect ke domain sendiri
+      if (!ALLOWED_HOSTS.includes(parsed.origin)) return fallback;
+      return parsed.pathname + parsed.search; // Strip domain, ambil path saja
+    } catch {
+      // URL invalid → fallback
+      return fallback;
+    }
+  }
+
+  // API route / server action usage
+  const redirectTo = getSafeRedirectUrl(searchParams.get('callbackUrl') ?? '/', '/dashboard');
+  redirect(redirectTo);
+  ```
+
+Pattern Aman (Laravel):
+  ```php
+  // Gunakan built-in url()->previous() atau validasi manual
+  use Illuminate\Support\Str;
+
+  function safeRedirect(string $url, string $default = '/dashboard'): RedirectResponse {
+      // Hanya izinkan URL yang dimulai dengan app URL sendiri
+      if (!Str::startsWith($url, config('app.url'))) {
+          $url = $default;
+      }
+      return redirect($url);
+  }
+
+  // Atau: gunakan intended() setelah login (built-in Laravel)
+  return redirect()->intended('/dashboard');
+  // intended() otomatis validasi URL yang disimpan di session — AMAN
+  ```
+
+Anti-Pattern (FORBIDDEN):
+  ```php
+  // ❌ Redirect langsung dari user input tanpa validasi
+  header("Location: " . $_GET['redirect']);
+
+  // ❌ Redirect ke URL apapun yang diberikan user
+  return redirect($request->input('next'));
+
+  // ❌ Cek domain tapi bisa di-bypass
+  if (strpos($url, 'example.com') !== false) {
+      header("Location: $url"); // attacker: evil.com?example.com
+  }
+  ```
+
+  ```typescript
+  // ❌ Next.js: redirect tanpa validasi
+  redirect(searchParams.get('callbackUrl')!); // bisa ke domain lain
+
+  // ❌ String matching yang bisa di-bypass
+  if (url.includes('mysite.com')) redirect(url); // evil-mysite.com lolos
+  ```
+
+Grep Indicators (untuk `cek komponen`):
+  - Cari `header("Location:` / `redirect(` / `redirect()` yang menerima variabel dari user input
+  - Cek apakah ada fungsi `safeRedirect` / `getSafeRedirectUrl` / `intended()`
+  - Cari parameter `?redirect=` / `?next=` / `?callbackUrl=` / `?return_url=` di routes
+  - Grep FORBIDDEN: `header("Location: " . $_GET[` atau `redirect($request->input(` tanpa validasi
+
+Alasan: Open Redirect sering dieksploitasi untuk phishing — attacker mengirim link login yang legitimate (misal `yoursite.com/login?redirect=evil.com`) sehingga korban percaya dan memasukkan kredensial di situs palsu setelah redirect. Umum ditemukan di bug bounty programs.
 

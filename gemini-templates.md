@@ -94,10 +94,10 @@
 ### 2I. Saklar: `cek komponen` (alias: `analisa keamanan`)
 > Verifikasi kelengkapan komponen kode yang terpasang di codebase, berdasarkan regulasi OWASP Top 10:2025 dan SP registry di `secure-patterns.md` / `xampp-php-patterns.md`.
 
-1. **Baca SP Registry** dari `security-patterns/data/secure-patterns.md` (SP-001 s/d SP-018) dan `xampp-php-patterns.md` (SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001).
+1. **Baca SP Registry** dari `security-patterns/data/secure-patterns.md` (SP-001 s/d SP-022) dan `xampp-php-patterns.md` (SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001).
 2. **Deteksi stack** dari `app-context.md §APP` → filter SP yang relevan.
 3. **Scan codebase** menggunakan `grep_search` per komponen SP — cocokkan pattern aman dengan file proyek aktual. Organisasikan berdasarkan kategori OWASP:
-   - A01 (Access Control): CSRF, Auth Guard, API Auth
+   - A01 (Access Control): CSRF, Auth Guard, API Auth, SSRF Prevention (SP-020), IDOR/Ownership (SP-021), Open Redirect (SP-022)
    - A02 (Misconfiguration): Security Headers, CORS, .htaccess
    - A03 (Supply Chain): Lockfile, version pinning, npm audit — SP-016
    - A04 (Cryptographic): Password Hashing, Env Var, Hardcoded Creds
@@ -106,11 +106,16 @@
    - A07 (Auth Failures): Session Hardening, Brute Force Protection
    - A08 (Software Integrity): SRI, npm ci, build artifacts — SP-017
    - A09 (Logging): Error logging, audit trail, sensitive data exclusion — SP-018
-   - A10 (Exceptional Conditions): try/catch, APP_DEBUG=false
-4. **Buat checklist compliance** per OWASP kategori (format: lihat §3.C.1).
-5. **Output ke `/.docs/security-audit.md`** — daftar komponen terpasang dan yang belum, dikelompokkan per OWASP.
-6. **Laporkan gap** ke user — komponen mana yang belum terpasang dan rekomendasikan SP mana yang perlu diimplementasikan.
-7. *Tidak menjalankan SAST scanner, CVE database, atau tool eksternal — hanya verifikasi source code terhadap SP registry internal + OWASP mapping.*
+   - A10 (Exceptional Conditions): Error/exception handling, error boundaries — SP-019
+4. **Dependency Audit** (otomatis jika lockfile terdeteksi):
+   - Jika `package-lock.json` ada → jalankan `npm audit --json 2>$null` → parse severity count (critical/high/moderate/low)
+   - Jika `composer.lock` ada → jalankan `composer audit --format=json 2>$null` → parse severity count
+   - Masukkan temuan ke section **A03 (Supply Chain)** di output audit
+   - Jika tidak ada lockfile → skip step ini, catat "No lockfile found" di output
+5. **Buat checklist compliance** per OWASP kategori (format: lihat §3.C.1).
+6. **Output ke `/.docs/security-audit.md`** — daftar komponen terpasang dan yang belum, dikelompokkan per OWASP.
+7. **Laporkan gap** ke user — komponen mana yang belum terpasang dan rekomendasikan SP mana yang perlu diimplementasikan.
+8. *Tidak menjalankan SAST scanner, CVE database, atau tool eksternal (kecuali npm/composer audit) — hanya verifikasi source code terhadap SP registry internal + OWASP mapping.*
 
 ### 2J. Saklar: `pentest` / `pentest cepat` / `pentest mendalam` / `pentest api` / `pentest auth`
 > DAST — Dynamic Application Security Testing via Strix AI Pentest Agent.

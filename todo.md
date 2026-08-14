@@ -145,3 +145,48 @@ Semua 9 task dari 3 phase sudah diimplementasikan dan diverifikasi. Sistem sekar
 - ~100% elimination dalam error repetition dan state drift
 
 **Status:** ✅ READY FOR PRODUCTION
+
+---
+
+## 🔐 Phase 5: Security Gap Fix — Saklar `cek komponen` (2026-08-14)
+
+> Ref: Analisa mendalam kelengkapan saklar `cek komponen` — 7 gap ditemukan, 6 actionable.
+
+### 🔴 P1 — Buat SP-019: Error & Exception Handling (OWASP A10)
+- [x] Tambah entry SP-019 di `secure-patterns.md`
+- [x] Pattern PHP Native: `set_error_handler()` + `set_exception_handler()` + `display_errors=0`
+- [x] Pattern Next.js: `error.tsx` boundary + custom `ErrorBoundary`
+- [x] Pattern Laravel: `Handler.php` + `report()` vs `render()`
+- [x] Anti-pattern: stack trace ke browser, generic `catch {}` kosong
+
+### 🔴 P2 — Buat SP-020: SSRF Prevention (OWASP A01)
+- [x] Tambah entry SP-020 di `secure-patterns.md`
+- [x] Pattern: URL allowlist validation
+- [x] Pattern: Block private IP ranges (127.x, 10.x, 172.16-31.x, 192.168.x)
+- [x] Pattern: DNS rebinding protection
+- [x] Anti-pattern: `file_get_contents($userUrl)` / `fetch(userInput)` tanpa validasi
+
+### 🟡 P3 — Buat SP-021: IDOR Prevention (OWASP A01)
+- [x] Tambah entry SP-021 di `secure-patterns.md`
+- [x] Pattern PHP: `WHERE user_id = $_SESSION['user_id']` ownership check
+- [x] Pattern Next.js: `session.user.id === resource.userId`
+- [x] Pattern Laravel: `->where('user_id', auth()->id())` / Policy Gate
+- [x] Anti-pattern: query by ID tanpa ownership validation
+
+### 🟡 P4 — Update Multi-Stack Filter Logic
+- [x] Edit `gemini-execution.md` §3.C.1 baris 118-123
+- [x] Tambah rule: jika stack >1 framework → gabungkan SP set semua stack
+
+### 🟡 P5 — Tambah Auto Dependency Audit di Saklar
+- [x] Edit `gemini-templates.md` §2I — tambah step dependency audit
+- [x] Jika `package-lock.json` ada → `npm audit --json` → parse hasil
+- [x] Jika `composer.lock` ada → `composer audit --format=json` → parse hasil
+
+### 🟢 P6 — Tambah Compliance Score di Audit Template
+- [x] Edit `audit-template.md` — tambah section `## Compliance Score`
+- [x] Tabel per OWASP category + total skor X/10
+
+---
+
+**Total Tasks Phase 5:** 6 task, 22 sub-items — ✅ SEMUA SELESAI
+**Selesai:** 2026-08-14T07:07+07:00

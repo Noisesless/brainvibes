@@ -110,6 +110,28 @@
 
 ---
 
+## Compliance Score (OWASP Top 10:2025)
+
+| OWASP | Kategori | SP Checked | Implemented | Score |
+|---|---|---|---|---|
+| A01 | Broken Access Control | SP-006, SP-020, SP-021 | [N]/[total] | [0-1] |
+| A02 | Security Misconfiguration | SP-008, SP-011~013 | [N]/[total] | [0-1] |
+| A03 | Supply Chain Failures | SP-016 + dep audit | [N]/[total] | [0-1] |
+| A04 | Cryptographic Failures | SP-004, SP-007, SP-009 | [N]/[total] | [0-1] |
+| A05 | Injection | SP-001, SP-002 | [N]/[total] | [0-1] |
+| A06 | Insecure Design | SP-014/015 | [N]/[total] | [0-1] |
+| A07 | Authentication Failures | SP-004, session hardening | [N]/[total] | [0-1] |
+| A08 | Software Integrity | SP-017 | [N]/[total] | [0-1] |
+| A09 | Logging Failures | SP-018 | [N]/[total] | [0-1] |
+| A10 | Exceptional Conditions | SP-019 | [N]/[total] | [0-1] |
+| | | | **Total** | **[X]/10** |
+
+**Rating:** 🟢 EXCELLENT (9-10) / 🟡 GOOD (7-8) / 🟠 FAIR (5-6) / 🔴 POOR (<5)
+
+> Scoring: per kategori = (jumlah SP implemented / jumlah SP checked). Total = rata-rata semua kategori × 10.
+
+---
+
 ## Log Perbaikan
 
 | VULN-ID | Tanggal Fix | File Diubah | Verifikasi |

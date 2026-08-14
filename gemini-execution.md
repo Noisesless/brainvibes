@@ -117,15 +117,16 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI TIDAK menja
 
 1. **Deteksi stack proyek** dari `app-context.md §APP` (PHP Native / Laravel / Next.js).
 2. **Filter SP yang relevan** berdasarkan stack:
-   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-018, SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001
-   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-018
-   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-018
-   - Universal → SP-008, SP-009, SP-010, SP-016, SP-017, SP-018
+   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-022, SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001
+   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-022
+   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-022
+   - Universal → SP-008, SP-009, SP-010, SP-016, SP-017, SP-018, SP-019, SP-020, SP-021, SP-022
+   - **Multi-Stack Rule:** Jika proyek menggunakan >1 framework (misalnya PHP Native + Next.js), gabungkan SP set dari semua stack yang terdeteksi. Deduplikasi otomatis — setiap SP hanya diperiksa 1x.
 3. **OWASP Top 10:2025 mapping** — organisasikan temuan per kategori OWASP:
 
    | OWASP | Kategori | SP Terkait | Grep Indicators |
    |---|---|---|---|
-   | A01 | Broken Access Control | SP-006, SP-PHP-001, L5 | `getServerSession`, `requireAuth`, `csrf_token` |
+   | A01 | Broken Access Control | SP-006, SP-PHP-001, **SP-020**, **SP-021**, **SP-022**, L5 | `getServerSession`, `requireAuth`, `csrf_token`, `validateUrl`, `user_id` ownership, `safeRedirect` |
    | A02 | Security Misconfiguration | SP-008, SP-011/012/013, SP-HTACCESS-001 | `Content-Security-Policy`, `X-Frame-Options`, `Permissions-Policy` |
    | A03 | Supply Chain Failures | **SP-016** | `package-lock.json` exists, no `*` versions, `npm ci` |
    | A04 | Cryptographic Failures | SP-004, SP-007, SP-009 | `password_hash`, `PASSWORD_BCRYPT`, env check |
@@ -134,7 +135,7 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI TIDAK menja
    | A07 | Authentication Failures | SP-PHP-002, SP-004, CS-033 | `session_regenerate_id`, `cookie_httponly`, 429 |
    | A08 | Software Integrity | **SP-017** | `integrity=` in CDN scripts, `npm ci`, `.gitignore` check |
    | A09 | Logging Failures | **SP-018** | `display_errors=0`, `log_errors=1`, no password in logs |
-   | A10 | Exceptional Conditions | Partial | `try/catch`, `set_error_handler`, `APP_DEBUG=false` |
+   | A10 | Exceptional Conditions | **SP-019** | `set_error_handler`, `error.tsx`, `Handler.php`, `APP_DEBUG=false`, no empty catch |
 
 4. **Grep codebase** per SP — cari indikator implementasi (function name, header value, config key).
 5. **Output checklist** ke `/.docs/security-audit.md` dengan format per-OWASP (lihat gemini-templates.md §2I).

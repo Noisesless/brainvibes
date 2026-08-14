@@ -53,7 +53,7 @@
 | :--- | :--- | :--- |
 | `ui-ux-pro-max` | awal baru, redesign | **UUPM** — Design intelligence dengan 15 CSV datasets, multi-stack support |
 | `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Anti-slop frontend bridge, Three Dials system |
-| `security-patterns` | cek komponen, cek kelengkapan, verifikasi kode | Vulnerability database + secure coding patterns per stack |
+| `security-patterns` | cek komponen, cek kelengkapan, verifikasi kode | Vulnerability database + secure coding patterns per stack (27 SPs, OWASP Top 10:2025 100% coverage) |
 | `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |
 | `database-patterns` | desain database, migration | Schema design, query optimization, ORM patterns |
 | `lessons-learned` | baca error, jangan ulangi | Anti-patterns + fast solutions dari proyek nyata |
@@ -508,7 +508,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.1.0` | [Current] | **Zero-Noise Architecture & Single Source of Truth**: Pembersihan 100% persona noise dari system prompt (`gemini.md`), penambahan parent prefix unik pada sub-heading (`§3.A-C`, `§4.A-J`), penguatan Forced VDNA Cognitive Anchor (`[Design Read]`), pembersihan duplikasi aturan di `AGENTS.md`, perampingan `sync.ps1` ke master target `.gemini`, serta sinkronisasi penuh 7 berkas `/.docs/`. |
+| `v4.1.0` | [Current] | **Zero-Noise Architecture & Phase 5 Security Hardening**: Pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025, auto dependency audit, dan Compliance Score system. |
 | `v4.0.1` | [`7ec8b8c`](https://github.com/Noisesless/brainvibes/commit/7ec8b8c) | **Framework Cleanup & MCP Fix**: Perbaikan tautan cross-reference antar file framework, sentralisasi 16 larangan Anti-AI-SLOP ke `visual-rules.md`, pembersihan duplikasi simulasi, serta penghapusan server MCP `web_search` yang rusak agar terhindar dari hang loop. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture, Efficiency Intelligence & SSI**: Pemecahan monolith 146KB ke 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md). Mengimplementasikan 10 gap fixes efisiensi (UUPM cache, handover truncation 500 lines, parallel loading, app-context compression, context caching). Mengintegrasikan Smart Skill Integration (SSI), sinkronisasi 7 berkas `.docs/`, mitigasi shell non-aktif, drift port server, pre-flight check MCP, 3 HARD BLOCK visual baru, Rhythm Score System (`§0.I`), dan Asymmetric Card Geometry (`§0.J-4`). |
 | `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |

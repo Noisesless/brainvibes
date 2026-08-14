@@ -15,16 +15,48 @@ Pattern Aman:
 
 ---
 
-[SP-PHP-002] Session Hardening untuk XAMPP
-Stack    : PHP Native + XAMPP
+[SP-PHP-002] Session & Cookie Hardening
+Stack    : Universal (PHP Native + XAMPP, Next.js, Laravel)
 Kategori : Auth
 
-Pattern Aman (jalankan sebelum session_start()):
+Pattern Aman (PHP Native — jalankan sebelum session_start()):
   ini_set('session.cookie_httponly', 1)    - Blokir JS akses cookie
   ini_set('session.cookie_samesite', 'Strict') - Blokir CSRF cross-site
   ini_set('session.use_strict_mode', 1)   - Tolak session ID eksternal
   ini_set('session.gc_maxlifetime', 7200) - Hindari timeout terlalu cepat (2 jam)
   session_regenerate_id(true) - WAJIB dipanggil setelah login berhasil
+
+Pattern Aman (Next.js — next-auth / cookies):
+  ```typescript
+  // next-auth: authOptions cookies config
+  cookies: {
+    sessionToken: {
+      name: '__Secure-next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'strict',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
+  // Manual cookie: gunakan flags yang sama
+  cookies().set('token', value, {
+    httpOnly: true, sameSite: 'strict', secure: true, maxAge: 7200,
+  });
+  ```
+
+Pattern Aman (Laravel — config/session.php):
+  ```php
+  'http_only' => true,          // Blokir JS akses cookie
+  'same_site' => 'strict',      // Blokir CSRF cross-site
+  'secure' => env('SESSION_SECURE_COOKIE', true), // HTTPS only di production
+  'lifetime' => 120,            // 2 jam
+  // Setelah login: $request->session()->regenerate();
+  ```
+
+Anti-Pattern (FORBIDDEN):
+  cookie tanpa httpOnly flag, SameSite=None tanpa justifikasi, session tanpa regenerate setelah login
 
 ---
 
