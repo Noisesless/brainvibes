@@ -12,6 +12,7 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-021 | Phase 5 Security Gap Fix — Saklar `cek komponen` | Penambahan SP-019 (Error Handling), SP-020 (SSRF), SP-021 (IDOR), SP-022 (Open Redirect), multi-stack rule, npm/composer audit, Compliance Score (OWASP Top 10:2025 100% coverage) | 2026-08-14 |
 | RES-020 | Pembatalan integrasi OpenCode & Cross-Memory | Menghapus opencode.jsonc, session-hook.ps1, cross-memory-implementation-plan.md, §A8/§A8B di gemini-execution.md, section [CROSS_MEMORY] di user-prefs.md, serta membersihkan mcp_config.json & sync.ps1 | 2026-08-02 |
 | RES-019 | Persona prompt noise & OpenCode sync bloat | Deleted persona sections (A9/LLM-Local) from gemini.md & user-prefs.md, cleaned up AGENTS.md duplication, and updated sync.ps1 to target .gemini exclusively | 2026-07-24 |
 | RES-018 | Dispatch table & Session Init duplication & ambiguous references | Cleaned up duplicate Session Init block, renamed Dispatch Detail column to Templates Section, and merged duplicate §4H POINTER table rows | 2026-07-24 |
@@ -31,7 +32,7 @@
 | Count | Status |
 |---|---|
 | 0 | Open |
-| 3 | Resolved |
+| 4 | Resolved |
 
 ### Documentation
 | Count | Status |

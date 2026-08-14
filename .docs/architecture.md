@@ -18,7 +18,7 @@
     ↓
 [Project Workspace]
     ├── /src/              → Source code
-    ├── /.docs/            → Documentation (7 files)
+    ├── /.docs/            → Documentation (8 files)
     ├── /.legacy/          → Legacy code (konversi mode)
     ├── app-context.md     → AI snapshot (≤100 baris)
     ├── handover.md        → Human-readable log (100 baris)

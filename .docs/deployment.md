@@ -37,10 +37,14 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 - [ ] HTTPS aktif (SSL certificate)
 
 ### 🟡 Important (Sangat disarankan)
-- [ ] Error logging aktif (bukan ke browser)
-- [ ] Rate limiting aktif untuk auth endpoints
-- [ ] CSRF protection aktif
-- [ ] File upload validation aktif (type + size)
+- [ ] Error logging & exception handling (SP-019, bukan stack trace ke browser)
+- [ ] Rate limiting aktif untuk auth endpoints (SP-014/015)
+- [ ] CSRF protection aktif (SP-010)
+- [ ] File upload validation aktif (type + size, SP-003)
+- [ ] SSRF prevention & IDOR ownership validation (SP-020, SP-021)
+- [ ] Open Redirect validation (SP-022)
+- [ ] Dependency audit clean (`npm audit` / `composer audit`)
+- [ ] Compliance Score minimal GOOD (≥7/10) via saklar `cek komponen`
 - [ ] Build production berhasil tanpa error
 - [ ] Favicon dan meta tags lengkap
 - [ ] Security headers terpasang (6 header wajib: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy — rujuk gemini-execution.md §3C L6)

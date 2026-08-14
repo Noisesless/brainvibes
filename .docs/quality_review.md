@@ -52,17 +52,26 @@
 - **Complexity:** Medium (100% pure technical focus, zero persona noise, forced VDNA cognitive anchor)
 
 ### gemini-execution.md (Execution Details)
-- **Lines:** 751
+- **Lines:** 781
 - **Sections:** 6 main section groups (§3.A-C, §4.A-J, §4K.A, §4L.A-B, §4M.A-I, §4N.A-I)
 - **Subheadings:** Parent ID prefixed (§3.A-C, §4.A-J, etc.) — 0 collisions
-- **Complexity:** High (comprehensive execution & efficiency protocols)
+- **Security Protocols:** Multi-stack SP combination rule, OWASP Top 10:2025 100% coverage (A01-A10 mapped)
+- **Complexity:** High (comprehensive execution, security & efficiency protocols)
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
-- **Lines:** 358
+- **Lines:** 378
 - **Sections:** 8 (Macro commands 2A-2J, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading)
+- **Security Features:** Auto dependency audit (`npm audit` / `composer audit`), Compliance Score generator
 - **Complexity:** Medium (structured templates & macro dispatches)
 - **Load Method:** view_file on-demand
+
+### secure-patterns.md (Security Patterns Registry)
+- **Lines:** 1098
+- **Total Patterns:** 22 SPs + 5 SP-PHP = 27 Security Patterns
+- **OWASP Coverage:** 100% OWASP Top 10:2025 (A01 Broken Access Control through A10 Exceptional Conditions)
+- **Stack Support:** PHP Native, Next.js, Laravel, Universal
+- **Complexity:** High (comprehensive secure patterns + anti-patterns + grep indicators)
 
 ### design-system.md (Design DNA)
 - **Lines:** 840
