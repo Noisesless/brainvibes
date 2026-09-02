@@ -4,7 +4,7 @@
 
 ### codebase-memory (Code Intelligence Graph)
 
-**Binary:** `C:\Users\GBC_PC\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe`
+**Binary:** `%USERPROFILE%\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe`
 **Version:** 0.10.5
 **Type:** Local native binary (Pure C, zero runtime dependencies)
 **Cache:** `~/.cache/codebase-memory-mcp/`

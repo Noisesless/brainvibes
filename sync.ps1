@@ -89,6 +89,11 @@ if ((Test-Path $McpConfigSrc) -and (Test-Path $SettingsFile)) {
                     Write-Host "  [REMOVED] MCP server '$existing' (tidak ada di mcp_config.json)" -ForegroundColor DarkYellow
                 }
             }
+            # Bersihkan blok format lama 'mcpServers' jika format baru 'mcp' aktif
+            if ($settings.PSObject.Properties.Name -contains "mcpServers") {
+                $settings.PSObject.Properties.Remove("mcpServers")
+                Write-Host "  [CLEANED] Blok lama 'mcpServers' dibersihkan dari settings.json" -ForegroundColor Green
+            }
             Write-Host "[OK] MCP servers (format baru) berhasil di-sync ke settings.json" -ForegroundColor Green
         } elseif ($mcpConfig.PSObject.Properties.Name -contains "mcpServers") {
             # Format lama - gunakan key "mcpServers"
@@ -118,7 +123,7 @@ $ensureScript = Join-Path $SourceDir "scripts\ensure-cbm-daemon.ps1"
 if (Test-Path $ensureScript) {
     & $ensureScript
 } else {
-    $cbmExe = "C:\Users\GBC_PC\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    $cbmExe = "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
     if (Test-Path $cbmExe) {
         Start-Process -FilePath $cbmExe -ArgumentList "daemon","start" -WindowStyle Hidden
         Write-Host "[+] codebase-memory-mcp daemon started on port 9749" -ForegroundColor Green

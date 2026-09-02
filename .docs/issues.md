@@ -10,6 +10,7 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-025 | Dynamic Local PC Paths & Settings Cleanup | Mengganti hardcoded user path (GBC_PC) dengan dynamic `$env:LOCALAPPDATA` / `ClasNet` pada semua script helper (`sync.ps1`, `ensure-cbm-daemon.ps1`, `cbm-hook.ps1`, `index-project.ps1`) dan MCP config, serta auto-clean blok legacy `mcpServers` di settings.json | 2026-09-02 |
 | RES-024 | Overhaul Visual Pipeline & Component Tokens | Pemecahan `taste-skill-bridge/SKILL.md` 824 baris ke router 61 baris, pembuatan `CHEATSHEET.md` & `MODEL_HINTS.md` (anti-slop Gemini Flash), penambahan saklar `redesign` di `gemini.md`, implementasi §4K & §4I di `gemini-execution.md`, integrasi `ui-reasoning.csv` di UUPM, serta penetapan single source of truth komponen di `design-system.md §7B` | 2026-09-02 |
 | RES-023 | Otomatisasi Daemon & UI `codebase-memory-mcp` (Port 9749) | Menambahkan Antigravity IDE lifecycle hook (`hooks.json` + `cbm-hook.ps1`), standalone helper (`ensure-cbm-daemon.ps1`), index automation (`index-project.ps1`), dan auto-start step 10 pada `sync.ps1` | 2026-08-16 |
 | RES-022 | Integrasi `codebase-memory-mcp` & Lean MCP Stack (6→2) | Mengintegrasikan binary CBM v0.10.5 (AST graph intelligence, 15 tools, 3D UI), mengeliminasi 5 MCP server redundan (filesystem, memory, sequential-thinking, time, fetch), memperbarui seluruh .docs/ dan sync.ps1 true sync | 2026-08-16 |
@@ -19,7 +20,6 @@
 | RES-018 | Dispatch table & Session Init duplication & ambiguous references | Cleaned up duplicate Session Init block, renamed Dispatch Detail column to Templates Section, and merged duplicate §4H POINTER table rows | 2026-07-24 |
 | RES-017 | `awal konversi` missing `prd-template.md` dependency | Added `prd-template.md` to WAJIB Load column for `awal konversi` in gemini.md & README.md | 2026-07-24 |
 | RES-016 | Sub-heading collision di `gemini-execution.md` | Added parent section prefixes (§3.A-C, §4.A-J, §4K.A, §4L.A-B, §4M.A-I, §4N.A-I) to eliminate subheading ambiguity | 2026-07-24 |
-| RES-015 | Stale line references (`#L` links) di `AGENTS.md` | Corrected line references in AGENTS.md for §4H (#L261), §4M.H (#L608), §4N (#L642), and §3C (#L92) | 2026-07-24 |
 
 ## Issue Categories
 

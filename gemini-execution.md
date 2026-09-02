@@ -869,8 +869,8 @@ GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5 selesai
 
 > ⚠️ **PATH RESOLUTION (SearchPath Wajib Absolute):**
 > Tool `grep_search` mewajibkan `SearchPath` absolut. Gunakan direktori dataset UUPM:
-> - **Global Path (Default di semua proyek):** `C:\Users\GBC_PC\.gemini\config\skills\ui-ux-pro-max\data\`
-> - **Local Path (Khusus repo Brainvibes):** `c:\xampp\htdocs\brainvibes\config\skills\ui-ux-pro-max\data\`
+> - **Global Path (Default di semua proyek):** `C:\Users\ClasNet\.gemini\config\skills\ui-ux-pro-max\data\` (atau `%USERPROFILE%\.gemini\...`)
+> - **Local Path (Khusus repo Brainvibes):** `c:\xampp\htdocs\brainvibes-main\config\skills\ui-ux-pro-max\data\`
 
 Lakukan pembacaan data langsung via `grep_search` dengan langkah berikut:
 

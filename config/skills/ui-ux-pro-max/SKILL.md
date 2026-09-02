@@ -43,8 +43,8 @@ font pairing, efek CSS, dan checklist implementasi.
 
 **Opsi B — Direct-Read CSV (Jika Python tidak tersedia/gagal):**
 JANGAN skip desain. Lakukan manual CSV read via `grep_search` dengan `SearchPath` absolut:
-- **Global Path:** `C:\Users\GBC_PC\.gemini\config\skills\ui-ux-pro-max\data\`
-- **Workspace Path:** `c:\xampp\htdocs\brainvibes\config\skills\ui-ux-pro-max\data\`
+- **Global Path:** `C:\Users\ClasNet\.gemini\config\skills\ui-ux-pro-max\data\` (atau `%USERPROFILE%\.gemini\...`)
+- **Workspace Path:** `c:\xampp\htdocs\brainvibes-main\config\skills\ui-ux-pro-max\data\`
 
 ```
 1. grep_search SearchPath: "<PATH>\colors.csv" | Query: "[industri/Product Type]"

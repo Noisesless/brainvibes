@@ -1,7 +1,7 @@
 # ensure-cbm-daemon.ps1 — Ensure codebase-memory daemon is running on port 9749
 param(
     [int]$Port = 9749,
-    [string]$CbmExe = "C:\Users\GBC_PC\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    [string]$CbmExe = "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
 )
 
 function Test-PortListening {

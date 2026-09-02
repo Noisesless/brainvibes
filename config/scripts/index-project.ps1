@@ -2,7 +2,7 @@
 param(
     [string]$RepoPath = (Get-Location).Path,
     [string]$Mode = "full",
-    [string]$CbmExe = "C:\Users\GBC_PC\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    [string]$CbmExe = "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
 )
 
 $ErrorActionPreference = "Stop"

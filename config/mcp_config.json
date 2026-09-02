@@ -2,7 +2,7 @@
   "mcp": {
     "codebase-memory": {
       "type": "local",
-      "command": ["C:\\Users\\GBC_PC\\AppData\\Local\\Programs\\codebase-memory-mcp\\codebase-memory-mcp.exe"]
+      "command": ["C:\\Users\\ClasNet\\AppData\\Local\\Programs\\codebase-memory-mcp\\codebase-memory-mcp.exe"]
     },
     "context7": {
       "type": "remote",
