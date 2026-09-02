@@ -568,6 +568,47 @@ lanjut dari sini
 
 ---
 
+## Simulasi 11: `index project` (AST Knowledge Graph & UI Server)
+
+### User Input:
+```
+index this project
+```
+
+### AI Execution Flow:
+
+```
+[INVOCATION START]
+✅ Antigravity Lifecycle Hook (PreInvocation) executes cbm-hook.ps1
+✅ Socket check 127.0.0.1:9749 (<100ms) → CBM daemon verified warm
+
+[STEP 1] Execute Indexer Script
+→ Run: .\scripts\index-project.ps1 -RepoPath "." -Mode "full"
+→ codebase-memory-mcp cli --progress index_repository
+→ Parse AST nodes & edges (1.160+ nodes, 1.435+ edges)
+→ Store knowledge graph in ~/.cache/codebase-memory-mcp/
+
+[STEP 2] Graph UI Verification
+→ HTTP check http://localhost:9749/
+→ 3D Web UI responds with status 200 OK
+
+[STEP 3] State Update
+→ Update app-context.md [STATE]
+→ Output concise graph statistics to user
+
+[INVOCATION END]
+```
+
+### Efficiency Impact:
+| Metric | Grep Scan (Old) | CBM Graph Query (v4.1.0) |
+|---|---|---|
+| Query tokens | ~412K tokens | ~3.4K tokens (**-99%**) |
+| Analysis latency | 15-30 detik | <100ms |
+| Call chain tracing | Manual & error-prone | 100% AST precise |
+| Visualization | None | Interactive 3D Graph (:9749) |
+
+---
+
 ## Summary: Efficiency Impact Across All Scenarios
 
 | Scenario | Token Savings | Speed Improvement | Context Poisoning |
@@ -582,6 +623,7 @@ lanjut dari sini
 | 8. `cek komponen` | ~99.6K | 50% faster | 🔴 → 🟢 |
 | 9. `pentest` | ~99.6K | 30% faster | 🔴 → 🟢 |
 | 10. `lanjut dari sini` | ~99.6K | 50% faster | 🔴 → 🟢 |
+| 11. `index project` | ~400K+ | 90% faster | 🔴 → 🟢 |
 
 **Average Impact:**
 - **Token savings:** ~99.6K/session

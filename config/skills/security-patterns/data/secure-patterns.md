@@ -329,35 +329,61 @@ Alasan: Tanpa CSRF token, attacker bisa buat halaman yang auto-submit form atas 
 Stack    : PHP Native
 Kategori : Headers
 
-Pattern Aman (.htaccess):
+Pattern Aman (.htaccess — Clean & Deduplication Protected):
   ```apache
-  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self';"
-  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
-  Header set X-Frame-Options "SAMEORIGIN"
-  Header set X-Content-Type-Options "nosniff"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  <IfModule mod_headers.c>
+      # 1. Unset header sebelumnya untuk mencegah duplikasi dari upstream/framework
+      Header always unset Strict-Transport-Security
+      Header always unset Content-Security-Policy
+      Header always unset Permissions-Policy
+      Header always unset X-Content-Type-Options
+      Header always unset X-Frame-Options
+      Header always unset Referrer-Policy
+      Header always unset X-Permitted-Cross-Domain-Policies
+      Header always unset X-XSS-Protection
+      Header always unset Cross-Origin-Opener-Policy
+      Header always unset Cross-Origin-Resource-Policy
+
+      # 2. Pasang Security Headers Bersih & Hardened
+      Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+      Header always set X-Content-Type-Options "nosniff"
+      Header always set X-Frame-Options "SAMEORIGIN"
+      Header always set Referrer-Policy "strict-origin-when-cross-origin"
+      Header always set X-Permitted-Cross-Domain-Policies "none"
+      Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=(), usb=()"
+      Header always set Cross-Origin-Opener-Policy "same-origin"
+      Header always set Cross-Origin-Resource-Policy "same-origin"
+      Header always set X-XSS-Protection "0"
+
+      # CSP Standar (Environment Production)
+      Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+  </IfModule>
   ```
 
 Pattern Aman (PHP Header Fallback):
   ```php
-  header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self';");
-  if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-      header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
-  }
-  header("X-Frame-Options: SAMEORIGIN");
+  header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
   header("X-Content-Type-Options: nosniff");
+  header("X-Frame-Options: SAMEORIGIN");
   header("Referrer-Policy: strict-origin-when-cross-origin");
-  header("Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()");
+  header("X-Permitted-Cross-Domain-Policies: none");
+  header("X-XSS-Protection: 0");
+  header("Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=(), usb=()");
+  header("Cross-Origin-Opener-Policy: same-origin");
+  header("Cross-Origin-Resource-Policy: same-origin");
+  header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;");
   ```
 
 Anti-Pattern (FORBIDDEN):
   ```php
-  // NEVER DO THIS — Response tanpa HTTP security headers
-  // Mengandalkan konfigurasi server default tanpa mempertegas di kode/htaccess
+  // NEVER DO THIS:
+  // 1. Double header emission / duplikasi header di berbagai layer (proxy + webserver + app)
+  // 2. Mengirim Referrer-Policy bertabrakan (misal strict-origin-when-cross-origin + same-origin)
+  // 3. Membiarkan host localhost/ws di CSP connect-src production
+  // 4. Menggunakan X-XSS-Protection: 1; mode=block (legacy / deprecated, bisa memicu XS-Leaks)
   ```
 
-Alasan: Mencegah serangan XSS, Clickjacking, MIME-sniffing, info leakage via Referrer, dan penyalahgunaan fitur browser (kamera/mic/lokasi).
+Alasan: Mencegah serangan XSS, Clickjacking, MIME-sniffing, info leakage via Referrer, Cross-Origin info leaks (Spectre), dan penyalahgunaan fitur browser (kamera/mic/lokasi).
 
 ---
 
@@ -368,12 +394,16 @@ Kategori : Headers
 Pattern Aman (next.config.js headers):
   ```javascript
   const securityHeaders = [
-    { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self';" },
     { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
     { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
     { key: 'X-Content-Type-Options', value: 'nosniff' },
     { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-    { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' }
+    { key: 'X-Permitted-Cross-Domain-Policies', value: 'none' },
+    { key: 'X-XSS-Protection', value: '0' },
+    { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()' },
+    { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+    { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+    { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" }
   ];
 
   module.exports = {
@@ -395,12 +425,13 @@ Pattern Aman (Middleware Nonce-based CSP for strict XSS protection):
       default-src 'self';
       script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
       style-src 'self' 'nonce-${nonce}';
-      img-src 'self' blob: data:;
-      font-src 'self';
+      img-src 'self' blob: data: https:;
+      font-src 'self' data:;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'none';
+      upgrade-insecure-requests;
     `.replace(/\s{2,}/g, ' ').trim();
 
     const requestHeaders = new Headers(request.headers);
@@ -409,7 +440,14 @@ Pattern Aman (Middleware Nonce-based CSP for strict XSS protection):
 
     const response = NextResponse.next({ request: { headers: requestHeaders } });
     response.headers.set('Content-Security-Policy', cspHeader);
-    response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+    response.headers.set('X-Content-Type-Options', 'nosniff');
+    response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    response.headers.set('X-Permitted-Cross-Domain-Policies', 'none');
+    response.headers.set('X-XSS-Protection', '0');
+    response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+    response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+    response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
     return response;
   }
   ```
@@ -437,14 +475,18 @@ Pattern Aman (app/Http/Middleware/SecurityHeaders.php):
       public function handle(Request $request, Closure $next)
       {
           $response = $next($request);
-          $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self';");
+          $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;");
           if ($request->secure()) {
               $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
           }
           $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
           $response->headers->set('X-Content-Type-Options', 'nosniff');
           $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-          $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+          $response->headers->set('X-Permitted-Cross-Domain-Policies', 'none');
+          $response->headers->set('X-XSS-Protection', '0');
+          $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
+          $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+          $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self), payment=(), usb=()');
           return $response;
       }
   }
@@ -1106,4 +1148,73 @@ Grep Indicators (untuk `cek komponen`):
   - Grep FORBIDDEN: `header("Location: " . $_GET[` atau `redirect($request->input(` tanpa validasi
 
 Alasan: Open Redirect sering dieksploitasi untuk phishing — attacker mengirim link login yang legitimate (misal `yoursite.com/login?redirect=evil.com`) sehingga korban percaya dan memasukkan kredensial di situs palsu setelah redirect. Umum ditemukan di bug bounty programs.
+
+---
+
+[SP-023] Security Headers Hygiene, Conflict Prevention & Origin Isolation (OWASP A02:2025)
+Stack    : Universal (Semua Stack)
+Kategori : Headers / Misconfiguration
+
+Checklist Wajib:
+  1. Single Layer Emission: Konfigurasikan security headers HANYA di satu layer utama (Web Server ATAU App Middleware) untuk mencegah duplikasi (Double/Triple Header Emission).
+  2. Conflict Prevention: Pastikan tidak ada nilai bertentangan untuk header yang sama (misal `Referrer-Policy: strict-origin-when-cross-origin` vs `same-origin`).
+  3. Strict Origin Isolation: Pasang `Cross-Origin-Opener-Policy: same-origin` (COOP) dan `Cross-Origin-Resource-Policy: same-origin` (CORP).
+  4. Modern Policy Hardening: Pasang `X-Permitted-Cross-Domain-Policies: none`, nonaktifkan `X-XSS-Protection: 0` (deprecated), dan pasang `Permissions-Policy`.
+  5. Clean Production CSP: Jangan pernah memasukkan `localhost` atau `ws://` di directive `connect-src` pada environment production. Pastikan directive `upgrade-insecure-requests;` aktif jika HTTPS.
+
+Pattern Aman (Apache mod_headers with Unset Guard):
+  ```apache
+  <IfModule mod_headers.c>
+      # Bersihkan potensi duplikasi dari layer upstream/aplikasi
+      Header always unset Strict-Transport-Security
+      Header always unset Content-Security-Policy
+      Header always unset Permissions-Policy
+      Header always unset X-Content-Type-Options
+      Header always unset X-Frame-Options
+      Header always unset Referrer-Policy
+      Header always unset X-Permitted-Cross-Domain-Policies
+      Header always unset X-XSS-Protection
+      Header always unset Cross-Origin-Opener-Policy
+      Header always unset Cross-Origin-Resource-Policy
+
+      # Pasang header tunggal & presisi
+      Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+      Header always set X-Content-Type-Options "nosniff"
+      Header always set X-Frame-Options "SAMEORIGIN"
+      Header always set Referrer-Policy "strict-origin-when-cross-origin"
+      Header always set X-Permitted-Cross-Domain-Policies "none"
+      Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=(), usb=()"
+      Header always set Cross-Origin-Opener-Policy "same-origin"
+      Header always set Cross-Origin-Resource-Policy "same-origin"
+      Header always set X-XSS-Protection "0"
+      Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+  </IfModule>
+  ```
+
+Pattern Aman (Nginx):
+  ```nginx
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
+  add_header X-Content-Type-Options "nosniff" always;
+  add_header X-Frame-Options "SAMEORIGIN" always;
+  add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+  add_header X-Permitted-Cross-Domain-Policies "none" always;
+  add_header X-XSS-Protection "0" always;
+  add_header Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=(), usb=()" always;
+  add_header Cross-Origin-Opener-Policy "same-origin" always;
+  add_header Cross-Origin-Resource-Policy "same-origin" always;
+  add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;" always;
+  ```
+
+Anti-Pattern (FORBIDDEN):
+  - Mengirim header berulang kali dengan directive `Header add` atau `add_header` tanpa evaluasi multi-tier.
+  - Konflik `Referrer-Policy` (misal 2 policy berbeda dikirim bersamaan).
+  - Membiarkan `localhost` di CSP connect-src pada production.
+
+Grep Indicators (untuk `cek komponen`):
+  - Cek `Cross-Origin-Opener-Policy` dan `Cross-Origin-Resource-Policy` ada di config server / middleware
+  - Cek `X-Permitted-Cross-Domain-Policies` bernilai `none`
+  - Cek tidak ada `Header add` ganda atau policy yang saling bertentangan
+
+Alasan: Mencegah cross-origin data leaks, Spectre side-channel attacks, parser confusion pada browser akibat header bertabrakan, serta eksploitasi fitur internal via dev-mode leakage.
+
 

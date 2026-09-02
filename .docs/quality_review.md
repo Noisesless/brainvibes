@@ -9,7 +9,7 @@
 | Core Files | 10 | ✅ |
 | Skills | 12 folders | ✅ |
 | Knowledge Bases | 3 | ✅ |
-| MCP Servers | 7 | ✅ |
+| MCP Servers | 2 (Lean Stack) | ✅ |
 | Version | 4.1.0 | ✅ |
 | Total Size | ~540KB | ✅ |
 
@@ -20,8 +20,8 @@
 | Skills SKILL.md | 12 | ~100KB |
 | Skills data | ~40 | ~350KB |
 | Knowledge artifacts | ~10 | ~50KB |
-| Config/JSON | ~15 | ~5KB |
-| Scripts/Tools | 4 | ~50KB |
+| Config/JSON | ~17 | ~6KB |
+| Scripts/Tools | 7 | ~60KB |
 
 ## Linting & Validation
 
@@ -44,24 +44,25 @@
 ## Complexity Analysis
 
 ### gemini.md (Core Instructions)
-- **Lines:** 417
-- **Sections:** 9 (§0, §1, §VISUAL RULES, §SESSION PROTOCOL, §2, §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
-- **Hard Blocks:** 9
+- **Lines:** 473
+- **Sections:** 9 (§0, §1, §VISUAL RULES [18 ban + 5 enforcement], §SESSION PROTOCOL, §2 [11 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
+- **Hard Blocks:** 10
 - **Gates:** 6
 - **Standards:** 7
-- **Complexity:** Medium (100% pure technical focus, zero persona noise, forced VDNA cognitive anchor)
+- **Complexity:** Medium (technical focus, anti-AI-slop visual gate, unified dispatch table)
 
 ### gemini-execution.md (Execution Details)
-- **Lines:** 781
-- **Sections:** 6 main section groups (§3.A-C, §4.A-J, §4K.A, §4L.A-B, §4M.A-I, §4N.A-I)
+- **Lines:** 930
+- **Sections:** Main section groups (§3.A-C, §4.A-J, §4K Visual Pipeline, §4I Self-Check, §4L SEO, §4M Cache/Priority, §4N SSI)
 - **Subheadings:** Parent ID prefixed (§3.A-C, §4.A-J, etc.) — 0 collisions
 - **Security Protocols:** Multi-stack SP combination rule, OWASP Top 10:2025 100% coverage (A01-A10 mapped)
+- **Visual Protocols:** §4K 6-gate mandatory pipeline, Direct-Read CSV fallback, redesign execution protocol, §4I pre-flight self-check
 - **Complexity:** High (comprehensive execution, security & efficiency protocols)
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
-- **Lines:** 378
-- **Sections:** 8 (Macro commands 2A-2J, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading)
+- **Lines:** 418
+- **Sections:** Macro commands §2A-§2K, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading
 - **Security Features:** Auto dependency audit (`npm audit` / `composer audit`), Compliance Score generator
 - **Complexity:** Medium (structured templates & macro dispatches)
 - **Load Method:** view_file on-demand
@@ -74,9 +75,10 @@
 - **Complexity:** High (comprehensive secure patterns + anti-patterns + grep indicators)
 
 ### design-system.md (Design DNA)
-- **Lines:** 840
-- **Sections:** 13 (§1-§13)
-- **Complexity:** High (comprehensive CSS tokens & oklch integration)
+- **Lines:** 1160
+- **Sections:** 14 (§1-§13, §7B Component Token Registry)
+- **Component Tokens:** Button, Icon, Modal, Toast, Form, Card, Spacing semantic map (Single Source of Truth)
+- **Complexity:** High (comprehensive CSS tokens, oklch integration & component registry)
 - **Load Method:** Section-specific read
 
 ## Duplication Check

@@ -284,3 +284,66 @@ function getSetting(mysqli $conn, string $key, string $default = ''): string {
 // <title><?= getSetting($conn, 'app_name', 'My App') ?></title>
 // <img src="<?= getSetting($conn, 'app_logo', asset('img/logo-default.svg')) ?>">
 ```
+
+---
+
+## Pattern 8: Unified Security Headers Middleware (Clean & Hardened)
+
+```php
+<?php
+// includes/security_headers.php — Include di baris paling awal bootstrap / index.php sebelum output HTML
+
+function setSecurityHeaders(array $customCsp = []): void {
+    // 1. HSTS (Hanya jika HTTPS aktif)
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+    }
+
+    // 2. MIME & Clickjacking
+    header("X-Content-Type-Options: nosniff");
+    header("X-Frame-Options: SAMEORIGIN");
+
+    // 3. Referrer & Cross-Domain Policy
+    header("Referrer-Policy: strict-origin-when-cross-origin");
+    header("X-Permitted-Cross-Domain-Policies: none");
+
+    // 4. Legacy XSS Filter Deprecation (Modern standard: disable legacy auditor to prevent XS-Leaks)
+    header("X-XSS-Protection: 0");
+
+    // 5. Origin Isolation (Spectre & Cross-Window manipulation guard)
+    header("Cross-Origin-Opener-Policy: same-origin");
+    header("Cross-Origin-Resource-Policy: same-origin");
+
+    // 6. Device & API Permissions
+    header("Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=(), usb=()");
+
+    // 7. Environment-Aware CSP (No HTTP sources in production, automatic HTTPS upgrade)
+    $isDev = (getenv('APP_ENV') === 'development' || in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']));
+    
+    $connectSrc = "'self'";
+    if ($isDev) {
+        $connectSrc .= " http://localhost:* ws://localhost:*";
+    }
+
+    $defaultDirectives = [
+        "default-src 'self'",
+        "script-src 'self'",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src 'self' https://fonts.gstatic.com data:",
+        "img-src 'self' data: https:",
+        "connect-src {$connectSrc}",
+        "frame-ancestors 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "upgrade-insecure-requests"
+    ];
+
+    $mergedDirectives = array_merge($defaultDirectives, $customCsp);
+    header("Content-Security-Policy: " . implode('; ', $mergedDirectives) . ";");
+}
+
+// Panggil di awal bootstrap:
+// setSecurityHeaders();
+```
+

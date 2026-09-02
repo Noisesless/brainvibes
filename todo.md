@@ -190,3 +190,55 @@ Semua 9 task dari 3 phase sudah diimplementasikan dan diverifikasi. Sistem sekar
 
 **Total Tasks Phase 5:** 6 task, 22 sub-items — ✅ SEMUA SELESAI
 **Selesai:** 2026-08-14T07:07+07:00
+
+---
+
+## 🎨 Phase 6: Visual Pipeline Overhaul & Component Tokens (2026-09-02)
+
+> Ref: Mengatasi degradasi kualitas UI/UX pada Gemini 3.7 Flash & menghubungkan rantai UUPM + taste-skill yang terputus.
+
+### 🔴 P1 — Hubungkan Rantai Referensi & Tambah Saklar `redesign`
+- [x] Edit `gemini.md` §2 Dispatch Table — tambah saklar `redesign` standalone (alias: `ubah desain`, `ubah tampilan`, `redesign visual`, `ubah layout`, `perbaiki halaman`, `ubah visual`)
+- [x] Edit `gemini.md` §VISUAL RULES — tambah 5 enforcement positif (#19-#23: UUPM Gate, Design Read Gate, Layout Intel Gate, Capsule/Eyebrow Ban, Copy Blocklist)
+- [x] Perbaiki tabel `gemini.md §POINTER` — hapus phantom pointer (§4K, §4I, §4J), arahkan ke target file yang nyata
+
+### 🔴 P2 — Implementasi Eksekusi §4K & §4I di `gemini-execution.md`
+- [x] Tambah section §4K: `Visual Design Pipeline (UUPM + Taste-Skill Enforcement)` dengan 6-gate mandatory pipeline
+- [x] Tambah Direct-Read CSV protocol (fallback jika python search tidak aktif)
+- [x] Tambah execution protocol khusus saklar `redesign` (wajib ubah minimal 2 dari 4 dimensi)
+- [x] Tambah section §4I: `Visual Self-Check Protocol` (pre-flight checklist, copy anti-slop verification, model overrides)
+
+### 🟡 P3 — Optimasi Struktur `taste-skill-bridge`
+- [x] Konversi `SKILL.md` monolith (824 baris / ~9K token) menjadi router ramping (61 baris / ~1.5K token)
+- [x] Buat `CHEATSHEET.md` (template format cepat: Design Read, UUPM Source, Layout Intel, Rhythm Score, Pre-Flight)
+- [x] Buat `MODEL_HINTS.md` (override kecenderungan AI slop khusus Gemini 3.7 Flash & Claude)
+
+### 🟡 P4 — Tingkatkan Kapabilitas `ui-ux-pro-max` (UUPM)
+- [x] Integrasikan `ui-reasoning.csv` (163 baris decision rules per industri) ke Gate 4 pipeline
+- [x] Integrasikan `landing.csv` (36 baris pattern landing page + order section)
+- [x] Tambahkan Data Files Reference table (14 dataset CSV) di `SKILL.md`
+- [x] Dokumentasikan Direct-Read CSV workflow di `SKILL.md`
+
+### 🟢 P5 — Single Source of Truth: `design-system.md §7B`
+- [x] Tambah section §7B: `COMPONENT TOKEN REGISTRY` (single source of truth untuk UI components)
+- [x] §7B.1 Button Tokens (sizing, variants, typography, shape, interaction)
+- [x] §7B.2 Icon Tokens (scale 14-48px, stroke, sizing rules)
+- [x] §7B.3 Modal / Dialog Tokens (width, overlay, padding, anatomy diagram)
+- [x] §7B.4 Toast / Notification Tokens (position, auto-dismiss, variants, max 3 stack)
+- [x] §7B.5 Form Element Tokens (input, label, error state, layout gaps)
+- [x] §7B.6 Card Tokens (padding, radius, shadow, hover lift)
+- [x] §7B.7 Spacing Semantic Tokens (mapping kelipatan 8pt ke masing-masing komponen)
+- [x] Tambah pointer `design-system.md §7B` ke `gemini.md §POINTER`
+
+### 🟢 P6 — Penetapan Dokumen Utama ke-9: `/.docs/design-system.md`
+- [x] Tambah `design-system.md` ke `gemini.md §DOCS BLUEPRINT` (9 file dokumen wajib)
+- [x] Tambah format baku `design-system.md` & otomasi sinkronisasi visual di `gemini.md`
+- [x] Tambah `design-system.md` ke checklist auto-update `.docs` di `gemini-execution.md §4N.G`
+- [x] Generate berkas `/.docs/design-system.md` fisik sebagai Single Source of Truth visual design
+- [x] Update `app-context.md [SCHEMA]`, `README.md`, dan `architecture.md` (9 file di `/.docs/`)
+
+---
+
+**Total Tasks Phase 6:** 6 task, 27 sub-items — ✅ SEMUA SELESAI
+**Selesai:** 2026-09-02T07:45+07:00
+

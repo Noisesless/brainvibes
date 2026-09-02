@@ -10,20 +10,13 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 
 | Method | Route Path | Handler | Auth | Purpose |
 |---|---|---|---|---|
-| POST | `/mcp` | context7 | API Key | Query library docs |
-| POST | `/mcp` | filesystem | Local | File operations |
-| POST | `/mcp` | memory | Local | Persistent memory |
-| POST | `/mcp` | web_search | Local | (Deprecated/Removed) |
-| POST | `/mcp` | sequential-thinking | Local | Chain-of-thought |
-| POST | `/mcp` | time | Local | Get current time |
-| POST | `/mcp` | fetch | Local | Fetch URL content |
+| POST | `/mcp` | `codebase-memory` | Local Binary | Code intelligence AST & knowledge graph (15 tools) |
+| GET | `http://localhost:9749` | `codebase-memory (UI)` | None | Built-in 3D Graph Visualization Web Server |
+| POST | `/mcp` | `context7` | API Key | Query library docs RAG |
 
-### Brainvibes Internal Protocol
+### Brainvibes Internal Protocol & Automation Routes
 
-| Command | Trigger | Output | Status |
-|---|---|---|---|
-| `awal baru` | Wizard 10-poin | `prd.md`, `todo.md` | ✅ Active |
-| Route Path | Action / Purpose | Handler / Dependency | Status |
+| Route / Command | Action / Purpose | Handler / Dependency | Status |
 |---|---|---|---|
 | `awal baru` | Wizard 10-poin → prd.md → todo.md | `gemini-templates.md §2A`, `prd-template.md` | ✅ Active |
 | `awal lanjut` | Resume project aktif | `app-context.md`, `gemini-templates.md §2B` | ✅ Active |
@@ -35,7 +28,9 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 | `analisa kualitas` | Code quality audit | `app-context.md`, `/.docs/quality_review.md` | ✅ Active |
 | `cek komponen` | Component & OWASP compliance check | `security-patterns/data/`, `app-context.md` | ✅ Active |
 | `pentest*` | DAST via Strix AI | `security-patterns/data/`, `pentest-strix/` | ✅ Active |
-| `auto-sync` | Setiap 5 task selesai | Health check status | ✅ Active |
+| `redesign` | Visual overhaul & layout intelligence | `taste-skill router`, `UUPM Direct-Read`, `gemini-execution.md §4K`, `design-system.md §7B` | ✅ Active |
+| `index project` | AST graph index + daemon ensure | `scripts/index-project.ps1` | ✅ Active |
+| `auto-sync` | Setiap 5 task / manual sync | `sync.ps1` (Step 1-10) | ✅ Active |
 | `auto-docs` | Setiap 5 task selesai | `/.docs/` files update | ✅ Active |
 
 ## Middleware Chain
@@ -44,6 +39,7 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 
 | Middleware | Applied To | Purpose |
 |---|---|---|
+| `cbm daemon guard` | PreInvocation hook (`hooks.json`) | Ensure CBM daemon & UI on port 9749 are active (<100ms) |
 | `read user-prefs.md` | Setiap sesi (silent) | Load user preferences (highest priority) |
 | `read app-context.md` | Setiap sesi (silent) | Load AI snapshot (if exists) |
 | `fallback prd.md` | Jika app-context missing | Load project requirements (§1-§3) |
@@ -51,13 +47,14 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 | `handover drift check` | Setiap sesi | Detect state mismatch |
 | `context caching` | Setiap sesi | Check mtime checksum to skip re-reading |
 
+
 ### Execution Middleware
 
 | Middleware | Applied To | Purpose |
 |---|---|---|
 | `pre-flight check (§3.B)` | Sebelum build | Linter + type-check + incremental verification |
 | `security-aware (§3.C)` | Auth/db/input/upload/API | Silent read security & lessons-learned patterns |
-| `visual gate (§4.G)` | CSS/style changes | Anti-slop enforcement, ESSENTIAL.md read |
+| `visual gate (§4K, §4I)` | CSS/style/layout changes | 6-gate pipeline, UUPM direct-read, ui-reasoning, §7B tokens, pre-flight |
 | `ask-before-assume (§3.A)` | Ambiguous instructions | Clarify before acting |
 | `technical debate (§0.5)` | User proposal | Challenge with factual data if needed |
 

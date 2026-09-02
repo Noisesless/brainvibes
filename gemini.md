@@ -31,7 +31,7 @@
 6. **Core Identity Lock:** FORBIDDEN mengubah nilai 🔒 IMMUTABLE di `prd.md` (palet, stack, tipe web).
 7. **Visual Output Gate (Anti-Slop UI):** → Lihat **§VISUAL RULES** di bawah untuk detail lengkap.
 8. **Anti-Fabrication Law:** FORBIDDEN menjawab dengan keyakinan jika tidak yakin. Jika bingung atau tidak tahu → STOP dan TANYA user. FORBIDDEN mengarang solusi, fakta, atau referensi yang tidak pasti. Output wajib: `[ASK-CLARIFY] Saya kurang yakin tentang [X]. Apakah Anda maksud: A) [opsi A] / B) [opsi B]`
-9. **Web-Search Fallback Law:** Jika pertanyaan user di luar training data atau butuh info real-time → gunakan MCP web_search (jika tersedia) atau beri tahu user. FORBIDDEN mengarang URL, versi, atau dokumentasi. Output wajib: `[INFO-SOURCE] Sumber: [web_search/context7/manual]`
+9. **Web-Search Fallback Law:** Jika pertanyaan user di luar training data atau butuh info real-time → gunakan `search_web` / `read_url_content` tool bawaan IDE atau beri tahu user. FORBIDDEN mengarang URL, versi, atau dokumentasi. Output wajib: `[INFO-SOURCE] Sumber: [web_search/context7/manual]`
 10. **Anti-Fabrication Audit Law:** FORBIDDEN menulis output audit/review (`security-audit.md`, `quality_review.md`) tanpa menjalankan scan faktual (`grep_search`, `view_file`, `run_command`) terlebih dahulu. Setiap "✅ PASSED" atau "✅ TERPASANG" tanpa evidence dari tool call = FABRICATION = pelanggaran Hard Block #8. Output tanpa `[Evidence:]` marker = INVALID. → Detail: `gemini-execution.md §3.C.2 (FSEP)`
 
 ### 🟡 GATE (Gerbang Checkpoint)
@@ -58,23 +58,32 @@
 
 > ⛔ **HARD BLOCK #7 DETAIL:** Aturan ini BERLAKU OTOMATIS setiap kali AI menulis/mengedit kode visual (CSS, style, class, komponen UI, ikon, warna, font, spacing, layout, animasi).
 
-### 16 Larangan Anti-AI-SLOP (FORBIDDEN):
+### 18 Larangan Anti-AI-SLOP (FORBIDDEN):
 1. ❌ Warna `#6C63FF`, `#4CAF50`, `#2196F3` tanpa rekomendasi UUPM
 2. ❌ `font-family: Inter` tunggal — wajib 2 font (heading + body) dari `typography.csv` UUPM
-3. ❌ `border-radius: 8px` hardcode — gunakan `var(--radius-md)`
+3. ❌ `border-radius: 8px` hardcode — gunakan `var(--radius-md)` dan variasikan kontur geometri (Arched/Chamfered/Asymmetric)
 4. ❌ `box-shadow: 0 2px 4px rgba(0,0,0,0.1)` generik — gunakan `design-system.md §4`
 5. ❌ `transition: all 0.3s ease` — gunakan `var(--vibe-transition)`
 6. ❌ `background: white` / `color: black` hardcode — gunakan `var(--vibe-background)`, `var(--vibe-text-main)`
 7. ❌ Pilih palet tanpa cek `colors.csv` UUPM terlebih dahulu
 8. ❌ Spacing acak (13px, 19px) — kelipatan 8pt grid (`design-system.md §6`)
 9. ❌ Inter satu-satunya font tanpa heading pair
-10. ❌ Centered Hero jika DESIGN_VARIANCE > 4 — gunakan Split/Asymmetric
+10. ❌ Centered Hero jika DESIGN_VARIANCE > 4 — gunakan Split/Asymmetric/Bento
 11. ❌ `h-screen` pada hero — REQUIRED `min-h-[100dvh]`
 12. ❌ Eyebrow label > 1 per 3 section
 13. ❌ Ikon SVG mentah (hand-rolled) — REQUIRED icon library proyek (`@phosphor-icons` > `@tabler/icons` > `@radix-ui`)
 14. ❌ Border/outline/stroke/box-shadow pada logo — logo WAJIB as-is tanpa dekorasi
 15. ❌ Campur > 1 icon library dalam 1 proyek — ONE icon family rule
 16. ❌ Output visual tanpa cek kepatuhan §VISUAL RULES
+17. ❌ **3-Equal Cards Default Monoculture:** FORBIDDEN formasi default 3-kolom kartu simetris identik. Wajib utamakan Bento Matrix, Staggered Step Grid, atau Split Offset. *(Pengecualian: Formasi 3-card asymmetric HANYA boleh digunakan jika diminta secara spesifik oleh user)*.
+18. ❌ **Flat Box-in-a-Box Monoculture:** FORBIDDEN section berjejer datar tanpa kedalaman siluet. Wajib terapkan minimal 1 negative margin overlap (`margin-top: -32px` s/d `-60px`) atau kontur asimetris antar-section.
+
+### Enforcement Positif (REQUIRED — Anti-Slop Pipeline Wajib Jalan):
+19. ✅ **UUPM Gate:** REQUIRED jalankan UUPM `search.py --design-system` ATAU Direct-Read CSV (`grep_search` di `colors.csv`/`styles.csv`/`typography.csv`) SEBELUM menulis CSS token baru. FORBIDDEN deklarasi `:root` tanpa sumber data UUPM.
+20. ✅ **Design Read Gate:** REQUIRED output `[Design Read]` + `[RHYTHM SCORE]` sebelum menulis HTML/JSX halaman baru atau redesign. Kode tanpa Design Read = INVALID.
+21. ✅ **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
+22. ✅ **Capsule/Eyebrow Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. Eyebrow = salah satu tanda AI slop paling umum.
+23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN headline words: "Unlock", "Empower", "Revolutionize", "Seamless", "Cutting-edge", "Next-gen", "World-class", "Game-changing", "Elevate", "Transform", "Unleash". Gunakan bahasa spesifik industri dari `prd.md`. FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
 
 ### Protokol Output Wajib:
 
@@ -84,14 +93,18 @@
 ```
 
 **Untuk pembuatan halaman/komponen BARU atau REDESIGN:**
-1. Baca `taste-skill-bridge/ESSENTIAL.md` via `view_file` (1x per sesi, 50 baris pertama)
+1. Baca `taste-skill-bridge/SKILL.md` via `view_file` (router → arahkan ke ESSENTIAL/DETAILED)
 2. Baca Visual DNA dari `prd.md §3` atau `app-context.md §PALETTE`
-3. Output SEBELUM kode:
+3. `grep_search` industri di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns`
+4. Jalankan UUPM search atau Direct-Read CSV (detail: `taste-skill-bridge/DETAILED.md §STEP 2`)
+5. Output SEBELUM kode:
 ```
 [Design Read] Reading this as: [tipe] untuk [audience], vibe [keyword], dials: V=[n] M=[n] D=[n]
-[Style Rec] Rekomendasi: [style] — sumber: [UUPM/design-system.md/prd.md]
+[UUPM Source] Palet: [nama] dari [colors.csv baris N] | Style: [nama] dari [styles.csv] | Font: [pair] dari [typography.csv]
+[Layout Intel] ui-reasoning.csv: Pattern=[X] | Anti-Patterns=[Y] | Decision=[Z]
+[RHYTHM SCORE] Nav:[X] Hero:[X] S2:[X] S3:[X] ... Footer:[X]
 ```
-4. Jalankan UUPM pipeline → Detail: `gemini-execution.md §4K`
+6. Tulis kode — semua CSS token via `var(--vibe-*)`, semua warna dari UUPM output
 
 ### Token Warna Wajib (REQUIRED di setiap proyek):
 ```css
@@ -165,8 +178,8 @@ Setiap 10 turns, AI REQUIRED mencetak:
 - File checksum → compare dengan cached checksum.
 - Jika mtime unchanged → **HARUS SKIP re-read**, gunakan cached content dari memori/session.
 - Jika mtime changed → re-read file, update cached content dan checksum.
-- Caching ini memotong token overhead hingga ~6K tokens per sesi.
 - **FORBIDDEN re-read file yang sudah di-cache jika mtime unchanged** — pelanggaran = token waste violation.
+- → Detail arsitektur & token cache: `gemini-execution.md §4M.E` (anchor:4M.E).
 
 ### Session Init Speed Enforcement:
 - **Batasan Strict:** FORBIDDEN membaca file >100 baris atau >3 file di Batch 1.
@@ -196,6 +209,8 @@ Setiap 10 turns, AI REQUIRED mencetak:
 | `cek komponen` | Verifikasi kelengkapan komponen kode (OWASP + SP registry) → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | templates §2I |
 <!-- Alias fallback: `analisa keamanan` → maps ke `cek komponen` (backward-compatible) -->
 | `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | templates §2J |
+| `redesign` | Visual overhaul → taste-skill pipeline → UUPM → kode anti-slop | taste-skill-bridge/ESSENTIAL.md, UUPM data/ (grep industri), app-context.md §PALETTE | prd-template.md | templates §2K |
+<!-- Alias: `ubah desain`, `ubah tampilan`, `redesign visual`, `ubah layout`, `perbaiki halaman`, `ubah visual` -->
 
 ### Auto-Triggers (Bukan Saklar Manual — Aktif Otomatis)
 | Kondisi | Trigger | WAJIB Load | SKIP Load |
@@ -213,7 +228,7 @@ Setiap 10 turns, AI REQUIRED mencetak:
 
 ## §DOCS BLUEPRINT (Anti-Amnesia Dokumentasi)
 
-AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **8 file**:
+AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **9 file**:
 
 | # | File | Isi | Trigger Generate |
 |---|---|---|---|
@@ -225,15 +240,13 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **8 file**:
 | 6 | `dependency-graph.md` | **Critical files, high-impact files, import chains** | **Fase 6+ atau `analisa kualitas`** |
 | 7 | `deployment.md` | **Target deploy, env mapping, checklist, rollback plan** | **Fase 7+ atau `awal lanjut`** |
 | 8 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | `baca error` |
+| 9 | `design-system.md` | **1 Source of Truth Visual Design: Palet, tipografi, geometri, token komponen (§7B)** | **Fase 1+ (setelah DNA disepakati) atau `redesign`** |
 
 ### Auto-Update .docs Protocol (Setiap 5 task):
-- **Trigger:** Selesai task ke-5, 10, 15, dst.
-- **Action:**
-  1. Scan `todo.md` → deteksi task yang selesai.
-  2. Jika task count mod 5 == 0 → trigger auto-update `/.docs/`.
-  3. AI scan berkas `/.docs/` → bandingkan dengan codebase aktual.
-  4. Jika ada perubahan → update file. Jika tidak ada perubahan → skip.
-  5. Print output: `[DOCS UPDATE] X files updated, Y files skipped`
+- **Trigger:** Selesai task ke-5, 10, 15, dst. (task count mod 5 == 0).
+- **Aksi:** AI scan berkas `/.docs/` vs codebase aktual → update jika ada perubahan → skip jika identik.
+- **Output:** `[DOCS UPDATE] X files updated, Y files skipped`
+- → Detail checklist 9 file & optimasi token: `gemini-execution.md §4N.G` (anchor:4N.G).
 
 ### Format `routes.md` (STANDAR — Semua Proyek):
 ```markdown
@@ -284,7 +297,25 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **8 file**:
 | Skenario | Aksi |
 ```
 
-Otomatisasi: Setelah Fase 6, jika komponen dokumentasi absen → AI REQUIRED generate. Setelah `baca error` massal → AI REQUIRED sinkronisasi `/.docs/`. Saat `awal lanjut`, AI REQUIRED cek dan update `deployment.md` jika ada perubahan stack/target.
+### Format `design-system.md` (1 Source of Truth Visual Design):
+```markdown
+## 1. Visual DNA & Tokens
+- Background, Surface, Text, Accent 1, Accent 2 (HEX & oklch)
+- Font Heading & Font Body pairing (Google Fonts URL / CDN)
+- Corner-radius system (--radius-md: 0px / 8px / 9999px)
+- Shadow & Elevation tokens (soft, hover, dialog)
+
+## 2. Component Token Registry (§7B)
+- Button, Icon, Modal, Toast, Form, Card tokens
+- Spacing semantic map (kelipatan 8pt per komponen)
+
+## 3. Section Rhythm & Layout Constraints
+- Rhythm pattern default (A/B/C/D/E)
+- Inferred decision rules & anti-patterns dari ui-reasoning.csv
+```
+
+Otomatisasi: Setelah Fase 6, jika komponen dokumentasi absen → AI REQUIRED generate. Setelah `baca error` massal → AI REQUIRED sinkronisasi `/.docs/`. Saat `awal lanjut`, AI REQUIRED cek dan update `deployment.md` jika ada perubahan stack/target. Saat DNA visual disepakati di Fase 1 atau diperbarui lewat `redesign` → AI REQUIRED sinkronisasi `/.docs/design-system.md`.
+
 
 ---
 
@@ -368,28 +399,39 @@ admin=[email]=[password]
 
 ---
 
-## §POINTER (Cross-Reference ke File Detail)
+## §POINTER (Cross-Reference ke File Detail — v4.0.1)
+<!-- Sync check: Gunakan anchor tag (<!-- anchor:... -->) di target file untuk navigasi presisi -->
 
-| Kebutuhan | Baca File | Kapan | Range | Est. Tokens |
+| Kebutuhan | Baca File | Kapan | Range / Anchor | Est. Tokens |
 |---|---|---|---|---|
-| Aturan penulisan kode, arsitektur, upload pipeline, CSS modern | `gemini-execution.md` | Saat eksekusi task koding aktif | Ambil section spesifik | 1-3K |
-| UUPM + taste-skill pipeline detail | `gemini-execution.md §4K` | Saat buat/redesign halaman | `§4K` only | 2K |
-| Browser Tool Gate & Scratchpad DOM Protocol | `gemini-execution.md §4H` | Saat akan pakai browser_subagent | `§4H` only | 2-3K |
-| SEO protocol | `gemini-execution.md §4L` | Fase 8 / deploy prep | `§4L` only | 1K |
+| Aturan penulisan kode, arsitektur, upload pipeline | `gemini-execution.md` | Saat eksekusi task koding aktif | §4.A - §4.F (anchor:4A-4F) | 1-3K |
+| UUPM + taste-skill pipeline (FULL) | `taste-skill-bridge/SKILL.md` → router ke ESSENTIAL/DETAILED | Saat `redesign` / buat halaman / visual-gate trigger | SKILL.md (router ~50 baris) | 1.5K |
+| UUPM data: warna, style, font, layout intelligence | `ui-ux-pro-max/data/` via `grep_search` | Saat UUPM Gate aktif | grep industri di colors/styles/typography/ui-reasoning.csv | 0.5-2K |
+| Browser Tool Gate & Scratchpad DOM Protocol | `gemini-execution.md §4.H` | Saat akan pakai browser_subagent | §4.H (anchor:4H) | 3K |
+| Visual Self-Check & Pre-Flight | `taste-skill-bridge/REFERENCE.md` | Saat task visual selesai | REFERENCE.md (128 baris) | 1K |
+| Visual Design Pipeline (execution detail) | `gemini-execution.md §4K` | Saat redesign/buat halaman | §4K (anchor:4K) | 2K |
+| Visual Self-Check Protocol (execution) | `gemini-execution.md §4I` | Saat declare done visual task | §4I (anchor:4I) | 1K |
+| Model-specific anti-slop hints | `taste-skill-bridge/MODEL_HINTS.md` | Saat visual task dengan Gemini Flash | MODEL_HINTS.md (~40 baris) | 0.5K |
+| Component tokens (button, modal, toast, card, form, icon, spacing) | `design-system.md §7B` | Saat menulis komponen UI apapun | §7B (anchor:7B) | 2K |
+| Compliance Check (`cek komponen`) detail | `gemini-execution.md §3.C.1` | Saat `cek komponen` aktif | §3.C.1 (anchor:3C1) | 2K |
+| Factual Scan Enforcement Protocol (FSEP) | `gemini-execution.md §3.C.2` | Saat mode audit aktif | §3.C.2 (anchor:3C2) | 1K |
+| Smart Skill Integration (SSI) | `gemini-execution.md §4N` | Saat integrasi skill baru | §4N (anchor:4N) | 2K |
+| Auto-Update .docs checklist & rules | `gemini-execution.md §4N.G` | Setiap 5 task selesai | §4N.G (anchor:4N.G) | 1K |
+| SEO protocol & 20-item checklist | `gemini-execution.md §4L` | Fase 8 / deploy prep | §4L (anchor:4L) | 1K |
 | Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar | 0.5-2K |
-| Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | `§5` only | 2K |
-| Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit | `§6A` only | 1K |
+| Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | §5 only | 2K |
+| Git commit protocol 5 tahap | `gemini-templates.md §6A` | Saat commit | §6A only | 1K |
 | Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna | §1 kluster saja | 1K |
-| File role definitions | `gemini-execution.md §4C` | Saat bingung prd vs gemini vs design-system | `§4C` only | 1K |
+| File role definitions | `gemini-execution.md §4.C` | Saat bingung prd vs gemini vs design-system | §4.C (anchor:4C) | 1K |
 | PRD blueprint 11-bab | `prd-template.md` | Saat `awal baru` wizard | §1-§3 saja | 3K |
 | Yasei-2 CLI subsistem | `yasei-cli.ps1` | Saat token IDE habis / alternatif agent | Full read | 14K |
 
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.
 
 **Context Budget per Pointer Load:**
-- Low priority (1K tokens): §4K, §4C, §6A, §1 design-system
-- Medium priority (2K tokens): §5, §4L, §4H
-- High priority (3K tokens): §4H
+- Low priority (0.5 - 1K tokens): MODEL_HINTS.md, §3.C.2, §4.C, §4N.G, §4L, §6A, §1 design-system, UUPM grep
+- Medium priority (1-2K tokens): SKILL.md router, ESSENTIAL.md, REFERENCE.md, §4K, §4I, §3.C.1, §4N, §5
+- High priority (3K tokens): §4.H (Browser Tool Gate), §1-§3 prd-template, DETAILED.md (complex task only)
 - Extra large (14K tokens): yasei-cli.ps1 (load only when needed)
 
 

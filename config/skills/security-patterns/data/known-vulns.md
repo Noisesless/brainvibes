@@ -352,3 +352,56 @@ Kode Aman (SETELAH fix):
 Pelajaran:
   WAJIB NEXT_PUBLIC_ HANYA untuk nilai yang boleh dilihat siapapun.
   FORBIDDEN prefix NEXT_PUBLIC_ pada API key, DB URL, secret apapun.
+
+---
+
+[VULN-011] Security Header Duplication, Conflicting Policy & Missing Origin Isolation
+Severity   : MEDIUM
+OWASP      : A02 Security Misconfiguration
+Stack      : Universal (PHP Native, Laravel, Next.js, Apache, Nginx)
+Tanggal    : 2026-08-28
+
+Lokasi:
+  Konteks  : Konfigurasi HTTP Response Headers di-set di multiple layer (proxy/web server/app) tanpa deduplikasi, menyebabkan header ganda, nilai Referrer-Policy bertabrakan, localhost leak di CSP production, dan absennya COOP/CORP isolation.
+
+Kode Rentan (SEBELUM fix):
+  ```apache
+  # Menggunakan Header add tanpa unset, memasang nilai Referrer-Policy ganda
+  Header add Referrer-Policy "strict-origin-when-cross-origin"
+  Header add Referrer-Policy "same-origin"
+  # CSP memuat localhost di environment production
+  Header add Content-Security-Policy "connect-src 'self' http://localhost:* ws://localhost:* https://*.example.com;"
+  # Legacy XSS Protection masih aktif
+  Header add X-XSS-Protection "1; mode=block"
+  # Tidak ada COOP & CORP
+  ```
+
+Vektor Serangan:
+  1. Parser confusion pada browser akibat nilai Referrer-Policy bertabrakan (`strict-origin-when-cross-origin` vs `same-origin`) menyebabkan kebocoran URL path sensitif ke pihak ketiga.
+  2. CSP connect-src yang mengizinkan `localhost:*` di production memungkinkan script jahat berinteraksi dengan internal developer services/ports milik pengguna.
+  3. Absennya COOP & CORP membuka celah XS-Leaks dan Spectre side-channel attacks.
+
+Kode Aman (SETELAH fix):
+  ```apache
+  <IfModule mod_headers.c>
+      # 1. Unset semua header lama untuk cegah duplikasi
+      Header always unset Referrer-Policy
+      Header always unset Content-Security-Policy
+      Header always unset X-XSS-Protection
+      Header always unset Cross-Origin-Opener-Policy
+      Header always unset Cross-Origin-Resource-Policy
+
+      # 2. Set header tunggal & hardened
+      Header always set Referrer-Policy "strict-origin-when-cross-origin"
+      Header always set X-XSS-Protection "0"
+      Header always set Cross-Origin-Opener-Policy "same-origin"
+      Header always set Cross-Origin-Resource-Policy "same-origin"
+      Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.example.com; upgrade-insecure-requests;"
+  </IfModule>
+  ```
+
+Pelajaran:
+  WAJIB konfigurasikan security headers di 1 layer saja atau gunakan Header always unset sebelum Header always set.
+  WAJIB pisahkan CSP development vs production (jangan bawa localhost ke production).
+  WAJIB sertakan COOP (`same-origin`) dan CORP (`same-origin`) untuk isolasi proses browser.
+

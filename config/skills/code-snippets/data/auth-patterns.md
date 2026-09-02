@@ -89,3 +89,34 @@ function checkRateLimit($endpoint_key = 'login', $max_attempts = 5, $decay_secon
 }
 ```
 
+---
+
+### [CS-034] Unified Security Headers Middleware (Clean & Hardened)
+Stack: PHP Native
+Kompleksitas: Medium
+Referensi: secure-patterns.md SP-011, SP-023
+
+```php
+<?php
+// includes/security_headers.php — Proteksi 8 Header Modern + Anti-Duplikasi + HTTPS-Only CSP
+function applySecurityHeaders(): void {
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+    }
+    header("X-Content-Type-Options: nosniff");
+    header("X-Frame-Options: SAMEORIGIN");
+    header("Referrer-Policy: strict-origin-when-cross-origin");
+    header("X-Permitted-Cross-Domain-Policies: none");
+    header("X-XSS-Protection: 0");
+    header("Cross-Origin-Opener-Policy: same-origin");
+    header("Cross-Origin-Resource-Policy: same-origin");
+    header("Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=(), usb=()");
+
+    $isDev = (getenv('APP_ENV') === 'development' || in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']));
+    $connectSrc = "'self'" . ($isDev ? " http://localhost:* ws://localhost:*" : "");
+
+    header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src {$connectSrc}; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;");
+}
+```
+
+

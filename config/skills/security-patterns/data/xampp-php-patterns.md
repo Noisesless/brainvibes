@@ -88,17 +88,44 @@ Pattern Aman:
 
 ---
 
-[SP-HTACCESS-001] .htaccess Keamanan Dasar XAMPP
+[SP-HTACCESS-001] .htaccess Keamanan Dasar XAMPP (Hardened & Clean)
 Stack    : PHP Native + XAMPP Apache
 Kategori : Config
 
 Minimal .htaccess per proyek XAMPP:
-  Options -Indexes                          (blokir directory listing)
-  FilesMatch .env|composer.json - Deny from all (blokir file sensitif)
-  Header set X-Content-Type-Options nosniff
-  Header set X-Frame-Options SAMEORIGIN
-  Header set Referrer-Policy strict-origin-when-cross-origin
-  Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;"
-  Header set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
-  # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
-  ServerSignature Off                       (sembunyikan versi Apache)
+  ```apache
+  Options -Indexes
+  ServerSignature Off
+
+  <FilesMatch "^\.env|composer\.json|package\.json|\.git">
+      Order allow,deny
+      Deny from all
+  </FilesMatch>
+
+  <IfModule mod_headers.c>
+      # Unset untuk mencegah duplikasi jika di-set juga oleh PHP/upstream
+      Header always unset Strict-Transport-Security
+      Header always unset Content-Security-Policy
+      Header always unset Permissions-Policy
+      Header always unset X-Content-Type-Options
+      Header always unset X-Frame-Options
+      Header always unset Referrer-Policy
+      Header always unset X-Permitted-Cross-Domain-Policies
+      Header always unset X-XSS-Protection
+      Header always unset Cross-Origin-Opener-Policy
+      Header always unset Cross-Origin-Resource-Policy
+
+      # Security Headers
+      Header always set X-Content-Type-Options "nosniff"
+      Header always set X-Frame-Options "SAMEORIGIN"
+      Header always set Referrer-Policy "strict-origin-when-cross-origin"
+      Header always set X-Permitted-Cross-Domain-Policies "none"
+      Header always set X-XSS-Protection "0"
+      Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=(), usb=()"
+      Header always set Cross-Origin-Opener-Policy "same-origin"
+      Header always set Cross-Origin-Resource-Policy "same-origin"
+      Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+      Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com data:; connect-src 'self'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+  </IfModule>
+  ```
+

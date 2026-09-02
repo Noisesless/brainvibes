@@ -56,10 +56,14 @@ leaning toward Oceanic Jade palette + asymmetric layout, dials: V=7 M=6 D=4
 [DNA Source] NEW — ini halaman utama, Visual DNA dimulai di sini. UUPM akan menentukan token.
 ```
 
-### 0.C Anti-Default Discipline (HARD BLOCK)
+### 0.C Anti-Default Discipline (HARD BLOCK — Shape-First Architecture)
+> 📐 **Prinsip Inti:** BENTUK & GEOMETRI > WARNA. Hindari bentuk kotak datar dan simetris monoton.
+
 FORBIDDEN defaulting ke:
 - AI-purple gradients + centered dark mesh hero
-- 3 equal feature cards (symmetrical)
+- 3 equal feature cards (symmetrical grid)
+- **Formasi 3 kartu (termasuk 3-card asymmetric) HANYA boleh digunakan jika diminta secara spesifik oleh user (`[User Explicit Opt-In]`).** Default bentuk wajib: Bento Matrix, Staggered Step Grid, Split 60/40 Offset, atau Inset Island.
+- Section flat tanpa overlap (wajib terapkan minimal 1 negative margin overlap `-32px` s/d `-60px`).
 - Glassmorphism everywhere tanpa alasan
 - Infinite loop micro-animations di semua elemen
 - Inter + slate-900 tanpa heading font pair

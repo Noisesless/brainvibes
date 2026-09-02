@@ -76,10 +76,20 @@ if ((Test-Path $McpConfigSrc) -and (Test-Path $SettingsFile)) {
             if ($settings.PSObject.Properties.Name -notcontains "mcp") {
                 Add-Member -InputObject $settings -MemberType NoteProperty -Name "mcp" -Value ([PSCustomObject]@{})
             }
+            # Sync: tambah/update server dari sumber
             foreach ($server in $mcpConfig.mcp.PSObject.Properties) {
                 Add-Member -InputObject $settings.mcp -MemberType NoteProperty -Name $server.Name -Value $server.Value -Force
             }
-            Write-Host "[OK] MCP servers (format baru) berhasil di-merge ke settings.json" -ForegroundColor Green
+            # Sync: hapus server yang tidak ada di sumber (true sync, bukan merge-only)
+            $sourceNames = @($mcpConfig.mcp.PSObject.Properties.Name)
+            $existingNames = @($settings.mcp.PSObject.Properties.Name)
+            foreach ($existing in $existingNames) {
+                if ($existing -notin $sourceNames) {
+                    $settings.mcp.PSObject.Properties.Remove($existing)
+                    Write-Host "  [REMOVED] MCP server '$existing' (tidak ada di mcp_config.json)" -ForegroundColor DarkYellow
+                }
+            }
+            Write-Host "[OK] MCP servers (format baru) berhasil di-sync ke settings.json" -ForegroundColor Green
         } elseif ($mcpConfig.PSObject.Properties.Name -contains "mcpServers") {
             # Format lama - gunakan key "mcpServers"
             if ($settings.PSObject.Properties.Name -notcontains "mcpServers") {
@@ -101,9 +111,24 @@ if ((Test-Path $McpConfigSrc) -and (Test-Path $SettingsFile)) {
     Write-Warning "settings.json tidak ditemukan di target: $SettingsFile"
 }
 
+# 10. Codebase Memory Daemon & UI Auto-Start (Port 9749)
+Write-Host ""
+Write-Host "[STEP 10] codebase-memory-mcp Daemon & UI Server" -ForegroundColor Yellow
+$ensureScript = Join-Path $SourceDir "scripts\ensure-cbm-daemon.ps1"
+if (Test-Path $ensureScript) {
+    & $ensureScript
+} else {
+    $cbmExe = "C:\Users\GBC_PC\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    if (Test-Path $cbmExe) {
+        Start-Process -FilePath $cbmExe -ArgumentList "daemon","start" -WindowStyle Hidden
+        Write-Host "[+] codebase-memory-mcp daemon started on port 9749" -ForegroundColor Green
+    }
+}
+
 Write-Host "-----------------------------------------"
 Write-Host "[SUKSES] Sinkronisasi master Brainvibes selesai!" -ForegroundColor Green
 Write-Host "=========================================" -ForegroundColor Cyan
+
 
 # 9. Handover.md Archive Cleanup (Auto-cleanup > 30 days)
 Write-Host ""

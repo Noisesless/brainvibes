@@ -5,7 +5,7 @@
 
 ## §3. USER PREFERENCES LOADING & CONTEXT-AWARENESS
 
-### §3.A User Preferences Loading & Instruction Validation (Context-Awareness)
+### §3.A User Preferences Loading & Instruction Validation (Context-Awareness) <!-- anchor:3A -->
 
 -1. **User Preferences Load (HIGHEST PRIORITY — Silent — Setiap Sesi):**
     SEBELUM apapun, AI REQUIRED baca `%USERPROFILE%\.gemini\user-prefs.md` secara senyap:
@@ -62,7 +62,7 @@ Setiap kali AI akan menulis kode untuk konteks berikut, WAJIB baca secara silent
 Jika pattern yang akan ditulis mirip dengan entry di `anti-patterns.md` → HINDARI. Gunakan pattern aman yang sudah teruji.
 Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pernah gagal → menggunakan pattern aman.`
 
-### §3.B Protokol Eksekusi & Uji Coba (Fail-Fast Workflow)
+### §3.B Protokol Eksekusi & Uji Coba (Fail-Fast Workflow) <!-- anchor:3B -->
 1.  **Verifikasi Pre-Task:** Sebelum mengerjakan tugas di `todo.md`, baca ulang spesifikasi relevan di `prd.md`.
 2.  **Pre-flight Check:** Sebelum menjalankan proses `build` penuh yang lambat, AI WAJIB menjalankan perintah cepat:
     *   **Linter & Formatter Check** (`eslint`, `prettier --check`, `pint`, dll.)
@@ -89,7 +89,7 @@ Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pe
     ```
     Jika ada item yang belum dicentang `[ ]`, perbaiki SEBELUM menyatakan selesai.
 
-### §3.C Definisi 6 Lapisan Scan Kelayakan Keamanan (Security Gate Protocol)
+### §3.C Definisi 6 Lapisan Scan Kelayakan Keamanan (Security Gate Protocol) <!-- anchor:3C -->
 AI REQUIRED mengeksekusi keenam lapisan berikut secara berurutan. Lapisan tidak boleh dilewati. Jika satu lapisan gagal, proses dihentikan.
 
 | Lapisan | Nama | Perintah Konkret | Lulus Jika |
@@ -99,7 +99,7 @@ AI REQUIRED mengeksekusi keenam lapisan berikut secara berurutan. Lapisan tidak 
 | **L3** | SAST (Static Analysis) | Audit celah keamanan. Jika AST linter terinstall (e.g. `eslint-plugin-security` / `phpstan`), prioritaskan verifikasi via linter tersebut. Fallback: grep manual untuk pola berbahaya: `eval(`, `innerHTML =`, `dangerouslySetInnerHTML`, `exec(`, `system(`, query tanpa prepared statement | Zero pola berbahaya / scan clean |
 | **L4** | Form Input Validation Guard | Baca setiap file form/endpoint — pastikan ada: validasi panjang input, sanitasi string, rate-limiting pada endpoint login/register/reset-password (rujuk `secure-patterns.md §SP-014/015` dan `xampp-php-patterns.md §SP-PHP-004`). Waspadai X-Forwarded-For spoofing (`lessons-learned §SG-016`). | Semua form & endpoint tervalidasi |
 | **L5** | Auth Integrity Verification | Cek setiap protected route — pastikan middleware/guard aktif, token/session diperiksa, tidak ada bypass `if(true)` | Semua route terproteksi |
-| **L6** | Security Headers Check | Cek middleware/response header handler — pastikan minimal ada 6 header: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`. Untuk HTTPS: `Strict-Transport-Security: max-age=31536000; includeSubDomains`. Rujuk `secure-patterns.md §SP-011/012/013` untuk snippet per-stack. | Semua 6 header wajib ada |
+| **L6** | Security Headers Check | Cek middleware/response header handler — pastikan minimal ada 8 header: `Content-Security-Policy`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=(self)`, `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Resource-Policy: same-origin`, `X-Permitted-Cross-Domain-Policies: none`. Untuk HTTPS: `Strict-Transport-Security: max-age=31536000; includeSubDomains`. Pastikan tidak ada duplikasi / konflik header antar-layer. Rujuk `secure-patterns.md §SP-011/012/013/023` untuk snippet per-stack. | Semua security header wajib lengkap, hardened, dan bebas duplikasi |
 
 **Output Wajib Setelah Scan:**
 ```
@@ -112,24 +112,24 @@ Status 6 Lapisan Scan:
   L6 Sec Headers    : COMPLETE / MISSING ([header yang tidak ada])
 ```
 
-### §3.C.1 Mode Compliance Check (untuk saklar `cek komponen`)
+### §3.C.1 Mode Compliance Check (untuk saklar `cek komponen`) <!-- anchor:3C1 -->
 > **PENTING:** Ini adalah **verifikasi kelengkapan komponen kode** terhadap standar perusahaan (SP registry), BUKAN security audit/scan. Tujuannya: memastikan setiap komponen keamanan yang disyaratkan sudah TERPASANG di kode, bukan mencari vulnerability.
 
 Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan **Compliance Verification Mode**:
 
 1. **Deteksi stack proyek** dari `app-context.md §APP` (PHP Native / Laravel / Next.js).
 2. **Filter SP yang relevan** berdasarkan stack:
-   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-022, SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001
-   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-022
-   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-022
-   - Universal → SP-008, SP-009, SP-010, SP-016, SP-017, SP-018, SP-019, SP-020, SP-021, SP-022
+   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-023, SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001
+   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-023
+   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-023
+   - Universal → SP-008, SP-009, SP-010, SP-016, SP-017, SP-018, SP-019, SP-020, SP-021, SP-022, SP-023
    - **Multi-Stack Rule:** Jika proyek menggunakan >1 framework (misalnya PHP Native + Next.js), gabungkan SP set dari semua stack yang terdeteksi. Deduplikasi otomatis — setiap SP hanya diperiksa 1x.
 3. **OWASP Top 10:2025 mapping** — organisasikan temuan per kategori OWASP:
 
    | OWASP | Kategori | SP Terkait | Grep Indicators |
    |---|---|---|---|
    | A01 | Broken Access Control | SP-006, SP-PHP-001, **SP-020**, **SP-021**, **SP-022**, L5 | `getServerSession`, `requireAuth`, `csrf_token`, `validateUrl`, `user_id` ownership, `safeRedirect` |
-   | A02 | Security Misconfiguration | SP-008, SP-011/012/013, SP-HTACCESS-001 | `Content-Security-Policy`, `X-Frame-Options`, `Permissions-Policy` |
+   | A02 | Security Misconfiguration | SP-008, SP-011/012/013, **SP-023**, SP-HTACCESS-001 | `Content-Security-Policy`, `X-Frame-Options`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy` |
    | A03 | Supply Chain Failures | **SP-016** | `package-lock.json` exists, no `*` versions, `npm ci` |
    | A04 | Cryptographic Failures | SP-004, SP-007, SP-009 | `password_hash`, `PASSWORD_BCRYPT`, env check |
    | A05 | Injection | SP-001, SP-002, L3 | `prepare(`, `htmlspecialchars`, no `eval(` |
@@ -149,7 +149,7 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan
 7. **Opsional** menjalankan linter/SAST tools (`eslint`, `tsc`, `phpstan`) jika terinstall — TIDAK FORBIDDEN, tapi bukan syarat wajib. Yang WAJIB: `grep_search` per SP + `view_file` untuk verifikasi konteks.
 8. **🔴 FORBIDDEN membaca `security-audit.md` lama** sebagai pengganti scan baru. Setiap eksekusi `cek komponen` = scan ulang penuh dari codebase aktual. File output lama di-overwrite.
 
-### §3.C.2 Factual Scan Enforcement Protocol (FSEP)
+### §3.C.2 Factual Scan Enforcement Protocol (FSEP) <!-- anchor:3C2 -->
 > Aturan universal yang berlaku untuk SEMUA mode audit dan verifikasi: `cek komponen`, `analisa kualitas`, 6 Lapisan Scan.
 
 **🔴 HARD RULES (Tidak Dapat Dikecualikan):**
@@ -187,7 +187,7 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan
 
 ## §4. ATURAN PENULISAN KODE, ARSITEKTUR, & ACTIVE LINK POLICY
 
-### §4.A Arsitektur Kode, ACID Transaksi, & Kebijakan Tautan Aktif (Structural Integrity)
+### §4.A Arsitektur Kode, ACID Transaksi, & Kebijakan Tautan Aktif (Structural Integrity) <!-- anchor:4A -->
 - **Anti-Spaghetti & Strict Layer Separation:** AI REQUIRED memecah kode secara modular. Pisahkan secara ketat antara Presentation Layer (UI Components / Views), Business Logic Layer (Controllers / Hooks), dan Data Access Layer (Models / Queries).
 - **Database Transaction Guarding (ACID Compliance):** Untuk mutasi data sensitif (stok, saldo, poin) dan mutasi data multi-tabel, AI **REQUIRED** membungkus rangkaian eksekusi query tersebut di dalam blok transaksi terisolasi secara rigid. Wajib menggunakan perintah `DB::beginTransaction();`, `DB::commit();`, dan `DB::rollBack();` di dalam `catch` block.
 - **Active Navigation & Zero-Dead-End Link Policy:** AI FORBIDDEN membuat tautan mati (`href="#"` atau `href="javascript:void(0)"`). Semua menu, link sidebar, dan tombol navigasi REQUIRED memiliki file fisik halaman penampung yang aktif terhubung ke routing. Jika belum dibangun, arahkan ke halaman temporary dengan "Under Construction Card".
@@ -197,7 +197,7 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan
   3. *Admin State:* Muncul menu tambahan "Admin Panel" / "User Management" di dropdown avatar atau navigasi.
 - **Dynamic Application Identity:** AI FORBIDDEN menuliskan nama aplikasi, copyright footer, dan logo secara statis (*hardcode*). Tarik secara dinamis dari config atau DB settings.
 
-### §4.B Regulasi Keamanan Captcha Anti-Bot & Form Publik
+### §4.B Regulasi Keamanan Captcha Anti-Bot & Form Publik <!-- anchor:4B -->
 Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
 1. *Visual High-Contrast Engine:* Angka/huruf Captcha REQUIRED di-render dengan warna tegas bersaturasi tinggi di atas latar belakang kontras. FORBIDDEN warna buram, grey layer, atau hitam-putih.
 2. *Alphanumeric Case-Insensitive Logic:* Kombinasi dinamis angka, huruf besar, dan huruf kecil (e.g. `pG4mQ`). Backend validation REQUIRED bersifat **Case-Insensitive** (`strtolower()` / `.toLowerCase()`).
@@ -208,13 +208,13 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
    - **Audio Captcha:** Tombol speaker → bacakan kode via Web Speech API.
    - **reCAPTCHA v3:** Jika diizinkan policy proyek.
 
-### §4.C Arsitektur Peran File Sistem Vibes Coding (Single Responsibility Rule)
+### §4.C Arsitektur Peran File Sistem Vibes Coding (Single Responsibility Rule) <!-- anchor:4C -->
 - `gemini.md` (Otak / OS) → Hukum universal di SEMUA proyek, SEMUA sesi.
 - `prd-template.md` (Form Spesifikasi) → Data keputusan per-proyek dari wawancara.
 - `design-system.md` (Database Visual) → Referensi token warna & komponen, dibaca ON-DEMAND.
 **Hukum Duplikasi:** AI FORBIDDEN mengulangi aturan perilaku dari `gemini.md` ke dalam `prd.md`. `prd.md` HANYA boleh berisi data/pilihan spesifik proyek dan referensi silang (`→ BACA gemini.md §X`).
 
-### §4.D Protokol Anti-Blank & Sistem Imun Visual DNA (Anti-Invisible Text Policy)
+### §4.D Protokol Anti-Blank & Sistem Imun Visual DNA (Anti-Invisible Text Policy) <!-- anchor:4D -->
 1. **Hukum Kontras Mutlak (Anti-Text Gaib):**
    - AI FORBIDDEN menerapkan kombinasi warna font yang memiliki tingkat kontras rendah dengan latar belakang komponen (e.g., `font putih + bg putih`).
    - Setiap card/surface/modal cerah/putih, warna teks utama (`text-main`) REQUIRED cocok dengan skala gelap (e.g., Slate-900 / Charcoal).
@@ -230,7 +230,7 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
    - Light Mode: `--vibe-background` REQUIRED mewarisi `--raw-palette-bg`.
    - Dark Mode: `--vibe-background` REQUIRED dirumuskan dari rona dasar palet asli yang diturunkan kecerahannya (Midnight Shade).
 
-### §4.E Regulasi Keamanan & Optimasi Upload File (Secure Upload Pipeline)
+### §4.E Regulasi Keamanan & Optimasi Upload File (Secure Upload Pipeline) <!-- anchor:4E -->
 
 > ⛔ **HARD BLOCK:** AI **FORBIDDEN** menyimpan file upload dengan nama asli dari user. Pelanggaran = **Fatal Security Violation**.
 
@@ -259,7 +259,7 @@ Untuk Formulir Login, Registrasi, atau Formulir Input Publik:
 
 ---
 
-### §4.F Protokol Human-Like HTTP Request (Stealth Fetch Engine)
+### §4.F Protokol Human-Like HTTP Request (Stealth Fetch Engine) <!-- anchor:4F -->
 Setiap HTTP request ke server eksternal REQUIRED menggunakan teknik kamuflase:
 
 1. **Hukum Header Manusia:** AI **FORBIDDEN** menggunakan header default fetch/axios. Gunakan header lengkap (`User-Agent` Chrome/Windows terbaru, `Accept-Language`, `Sec-Ch-Ua`, dll.).
@@ -269,7 +269,7 @@ Setiap HTTP request ke server eksternal REQUIRED menggunakan teknik kamuflase:
 5. **Hukum Fallback Lokal:** Setiap `<img>` eksternal wajib punya `onerror` fallback ke placeholder lokal.
 6. **Hukum Aset SVG Lokal:** Logo brand & ikon utama wajib diunduh manual dan disimpan secara lokal (fill/stroke via oklch).
 
-### §4.G Visual DNA Extraction & Validation (Gap 3, 4, 12 Fix)
+### §4.G Visual DNA Extraction & Validation (Gap 3, 4, 12 Fix) <!-- anchor:4G -->
 
 #### STEP 1 — Visual DNA Extraction (Wajib Sebelum Code)
 AI REQUIRED ekstrak DNA tokens dari halaman utama sebelum menulis kode halaman turunan:
@@ -329,7 +329,7 @@ Jika VDNA ambiguous → STOP dan tanya user:
 FORBIDDEN asumsi VDNA tanpa konfirmasi
 ```
 
-### §4.H Browser Tool Gate — Token Anti-Waste Protocol
+### §4.H Browser Tool Gate — Token Anti-Waste Protocol <!-- anchor:4H -->
 
 > ⛔ **HARD BLOCK:** AI **FORBIDDEN** memanggil `browser_subagent` tanpa memenuhi MINIMAL SATU dari kondisi di bawah. Pelanggaran = **Token Waste Violation**.
 
@@ -383,7 +383,7 @@ Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
 Jika scratchpad_dom = FORBIDDEN dan target adalah localhost → [SCRATCHPAD BLOCKED] STOP.
 ```
 
-### §4.I Visual Self-Check & Pre-Flight (Gap 5, 9 Fix)
+### §4.I Visual Self-Check & Pre-Flight (Gap 5, 9 Fix) <!-- anchor:4I -->
 
 #### Visual Self-Check (WAJIB untuk perubahan visual)
 AI REQUIRED jalankan self-check ini sebelum menyatakan task UI selesai:
@@ -425,7 +425,7 @@ Jika ada ❌ → perbaiki SEBELUM declare done.
 
 > Detail checklist lengkap: `taste-skill-bridge/REFERENCE.md` (STEP 5)
 
-### §4.J Modern CSS Enforcement Gate (CSS 2026)
+### §4.J Modern CSS Enforcement Gate (CSS 2026) <!-- anchor:4J -->
 AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 - **Container Queries (`@container`):** Reusable components.
@@ -437,10 +437,10 @@ AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 ---
 
-<!-- §4H = Browser Tool Gate (defined in AGENTS.md §BROWSER TOOL GATE + gemini-execution.md §4H line 261) -->
+<!-- §4H = Browser Tool Gate (defined in gemini-execution.md §4.H <!-- anchor:4H -->) -->
 <!-- §4I, §4J = Reserved for future use -->
 
-## §4K. UI UX PRO MAX INTEGRATION PROTOCOL (SUMMARY)
+## §4K. UI UX PRO MAX INTEGRATION PROTOCOL (SUMMARY) <!-- anchor:4K -->
 *Detail implementasi lengkap dapat dibaca di folder skill: `skills/ui-ux-pro-max/SKILL.md` dan `taste-skill-bridge/SKILL.md`.*
 
 ### §4K.A UUPM Pipeline Eksekusi
@@ -462,7 +462,7 @@ Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mappi
 
 ---
 
-## §4L. SEO PRODUCTION PROTOCOL (SUMMARY)
+## §4L. SEO PRODUCTION PROTOCOL (SUMMARY) <!-- anchor:4L -->
 *Checklist SEO 20-item tersedia inline di bawah. Jalankan penuh di Fase 8 / deploy prep.*
 
 ### §4L.A 7 Lapisan SEO Wajib
@@ -506,7 +506,7 @@ Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mappi
 
 ---
 
-## §4M. EFFICIENCY & SPEED INTELLIGENCE PROTOCOL (V4.0.0)
+## §4M. EFFICIENCY & SPEED INTELLIGENCE PROTOCOL (V4.0.0) <!-- anchor:4M -->
 
 ### §4M.A UUPM Cache Mechanism (Fix Gap 4)
 UUPM Python search result CACHE 24 jam di `$HOME/.gemini/.cache/uupm-results.json` (Windows: `%USERPROFILE%\.gemini\.cache\uupm-results.json`).
@@ -603,7 +603,7 @@ app-context.md **MAX 100 baris**. Priority compression untuk project besar.
 
 ---
 
-### §4M.E Context Caching Mechanism (Fix Gap 8)
+### §4M.E Context Caching Mechanism (Fix Gap 8) <!-- anchor:4M.E -->
 AI **REQUIRED** cache context files in memory per session. Re-read only if mtime changed.
 
 **Cache Logic:**
@@ -676,7 +676,7 @@ git add -A && git commit -m "feat: add login page"
 
 ---
 
-### §4M.H Rule Priority System (Gap 10 Fix)
+### §4M.H Rule Priority System (Gap 10 Fix) <!-- anchor:4M.H -->
 
 | Priority | Level | Compliance | Examples |
 |---|---|---|---|
@@ -710,7 +710,7 @@ git add -A && git commit -m "feat: add login page"
 
 ---
 
-## §4N. SMART SKILL INTEGRATION (SSI) PROTOCOL
+## §4N. SMART SKILL INTEGRATION (SSI) PROTOCOL <!-- anchor:4N -->
 
 ### §4N.A Auto-Detect Skill Baru
 AI REQUIRED scan `config/skills/` setiap sesi baru:
@@ -750,7 +750,7 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 - AI scan: context poisoning risk, skill gaps, skill conflicts, performance bottlenecks, .docs staleness
 - AI recommend: update existing skills, implement new skills, remove redundant skills, optimize high-cost skills, auto-update .docs
 
-### §4N.G Auto-Update .docs Protocol
+### §4N.G Auto-Update .docs Protocol <!-- anchor:4N.G -->
 **Trigger:** Setiap 5-6 task selesai → AI auto-scan `.docs/`
 
 **Checklist:**
@@ -763,6 +763,7 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 6. dependency-graph.md → scan imports → update jika ada file baru
 7. deployment.md → scan stack/target → update jika ada perubahan deploy config
 8. issues.md → FIFO max 10 resolved → update jika ada issue baru
+9. design-system.md → scan tokens/CSS & prd.md §3 → update jika ada perubahan token visual/komponen/palet
 ```
 
 **Implementation:**
@@ -814,6 +815,150 @@ Index Out of Sync:
 
 > Detail lengkap: `config/skills/integration-checker.md`
 
+
+---
+
+## §4K. Visual Design Pipeline (UUPM + Taste-Skill Enforcement) <!-- anchor:4K -->
+
+> **Kapan di-load:** Saat saklar `redesign` aktif, saat `visual-gate` auto-trigger, atau saat buat halaman baru.
+> **Sumber:** `gemini.md §VISUAL RULES` → section ini → `taste-skill-bridge/` → `ui-ux-pro-max/data/`
+
+### §4K.1 Visual Task Detection (Kapan Pipeline Ini Aktif)
+
+AI SEDANG mengerjakan visual task jika SALAH SATU kondisi terpenuhi:
+1. Menulis/mengedit file CSS, SCSS, atau style block dalam komponen
+2. Menulis HTML/JSX/Blade/PHP dengan class/style yang mengatur layout, warna, font, spacing
+3. Membuat halaman baru atau memodifikasi struktur section halaman existing
+4. User memakai saklar `redesign` atau alias-nya
+
+**Jika terdeteksi → WAJIB jalankan pipeline berikut secara URUT:**
+
+### §4K.2 Mandatory Pipeline (6 Gate — Tidak Boleh Skip)
+
+```
+GATE 1 — [Design Read]     : Baca taste-skill-bridge/SKILL.md (router) → ESSENTIAL.md
+                              Output: [Design Read] + [DNA Source]
+
+GATE 2 — [Three Dials]     : Set V/M/D berdasarkan tabel inferensi di ESSENTIAL.md §1
+                              Output: dials: V=[n] M=[n] D=[n]
+
+GATE 3 — [UUPM Search]     : Jalankan SALAH SATU:
+                              A) python search.py "[industri] [vibe]" --design-system
+                              B) Direct-Read: grep_search industri di colors.csv → styles.csv → typography.csv
+                              Output: [UUPM Source] Palet + Style + Font pair
+
+GATE 4 — [Layout Intel]    : grep_search industri/tipe proyek di ui-reasoning.csv
+                              (WAJIB dijalankan mandiri via grep_search — search.py TIDAK mencari file ini!)
+                              Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns
+                              Jika landing page → grep juga landing.csv untuk Section Order
+                              Output: [Layout Intel] Pattern=[X] | Anti-Patterns=[Y]
+
+GATE 5 — [Rhythm Score]    : Susun section order dengan treatment visual A/B/C/D/E
+                              Validasi: tidak ada 3 treatment berturut sama
+                              Output: [RHYTHM SCORE] per section
+
+GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5 selesai
+                              Semua warna via var(--vibe-*), semua dari UUPM output
+```
+
+**HARD BLOCK:** FORBIDDEN menulis `:root { --vibe-*` tanpa output [UUPM Source] terlebih dahulu.
+**HARD BLOCK:** Gate 4 `ui-reasoning.csv` WAJIB dieksekusi via `grep_search` — dilarang berasumsi sudah tercakup di `search.py`.
+**HARD BLOCK:** FORBIDDEN menulis `<section>` atau layout HTML tanpa output [RHYTHM SCORE] terlebih dahulu.
+
+### §4K.3 Direct-Read CSV Protocol (Jika Python Tidak Tersedia / Eksekusi Mandiri)
+
+> ⚠️ **PATH RESOLUTION (SearchPath Wajib Absolute):**
+> Tool `grep_search` mewajibkan `SearchPath` absolut. Gunakan direktori dataset UUPM:
+> - **Global Path (Default di semua proyek):** `C:\Users\GBC_PC\.gemini\config\skills\ui-ux-pro-max\data\`
+> - **Local Path (Khusus repo Brainvibes):** `c:\xampp\htdocs\brainvibes\config\skills\ui-ux-pro-max\data\`
+
+Lakukan pembacaan data langsung via `grep_search` dengan langkah berikut:
+
+```
+1. SearchPath: "<UUPM_DATA>\colors.csv" | Query: "[industri/product_type]"
+   → Ambil: Primary, Accent, Background hex → konversi ke oklch() → --vibe-*
+2. SearchPath: "<UUPM_DATA>\styles.csv" | Query: "[vibe/keyword]"
+   → Ambil: Design System Variables + Effects & Animations
+3. SearchPath: "<UUPM_DATA>\typography.csv" | Query: "[mood/category]"
+   → Ambil: Font Pairing (Heading + Body + CSS Import Google Fonts)
+4. SearchPath: "<UUPM_DATA>\ui-reasoning.csv" | Query: "[UI_Category/industri]"
+   → Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns (Wajib — tidak di-cover oleh search.py!)
+5. Jika Landing Page: SearchPath: "<UUPM_DATA>\landing.csv" | Query: "[tipe_bisnis]"
+   → Ambil: Section Order & Primary CTA placement
+```
+
+Catat: `[UUPM Source] Direct-Read CSV — colors.csv, styles.csv, typography.csv, ui-reasoning.csv (Path: <UUPM_DATA>)`
+
+### §4K.4 Saklar `redesign` Execution Protocol
+
+Saat saklar `redesign` di-trigger:
+1. Baca `app-context.md §PALETTE` → catat DNA saat ini
+2. Jalankan Existing Page Audit (taste-skill-bridge/DETAILED.md §0.D)
+3. Jalankan Anti-Cosmetic-Redesign check (§0.G) → WAJIB ubah minimal 2 dari 4 dimensi
+4. Jika redesign ke-2+ → STOP, tampilkan 3 opsi layout berbeda, tunggu user pilih
+5. Jalankan Gate 1-6 di atas
+6. Setelah kode selesai → jalankan §4I Visual Self-Check
+
+### §4K.5 Visual DNA Reverse-Engineering Protocol (Proyek Lanjutan / Sedang Berjalan)
+
+> **Kapan Digunakan:** Saat `awal lanjut`, `awal konversi`, atau saat `/.docs/design-system.md` belum ada pada proyek eksisting.
+> **Prinsip Utama (Anchor Immutability):** Halaman Utama (Landing Page / Homepage) adalah **Master Anchor**. Semua sub-halaman WAJIB tunduk dan mewarisi DNA halaman utama.
+
+**Langkah Ekstraksi Visual DNA (5 Tahap):**
+1. **Identifikasi Berkas Halaman Utama (Anchor Priority Hierarchy):**
+   - *Tier 1 (Public Anchor):* `index.*`, `landing.*`, `home.*`, `page.tsx` (root)
+   - *Tier 2 (App/Dashboard Anchor):* `layout.*`, `app.*`, `dashboard.*`, `main.*`
+   - *Tier 3 (Auth/Entry Anchor):* `login.*`, `auth.*` (fallback terakhir)
+2. **Identifikasi Berkas Styling Global:**
+   - Cari berkas CSS/SCSS global (misal `styles.css`, `global.css`, `app.css`).
+   - Cari deklarasi `:root` variables, `@theme`, atau konfigurasi Tailwind (`tailwind.config.js`).
+3. **Ekstraksi Token Dominan:**
+   - *Warna:* Background dominan, Surface (card), Teks utama, Accent 1 (CTA button), Accent 2.
+   - *Tipografi:* Heading font vs Body font (dari `@import`, tag `<link>` Google Fonts, atau CSS font-family).
+   - *Geometri:* `border-radius` dominan pada tombol dan kartu (`0px` / `8px` / `9999px`).
+   - *Spacing:* Nilai grid margin dan padding section utama.
+4. **Generate / Sinkronisasi `/.docs/design-system.md`:**
+   - Tulis seluruh hasil ekstraksi ke `/.docs/design-system.md` sesuai format baku.
+   - Perbarui snapshot `app-context.md §PALETTE`.
+5. **Enforcement Sub-Halaman (Anti-Drift):**
+   - Setiap kali AI membuat atau mengedit sub-halaman (detail, auth, checkout, blog, dashboard), AI **FORBIDDEN** menciptakan palet atau font baru.
+   - AI **WAJIB** membaca `/.docs/design-system.md` dan menggunakan token yang telah di-anchor dari halaman utama.
+
+---
+
+## §4I. Visual Self-Check Protocol <!-- anchor:4I -->
+
+> **Kapan di-load:** Setelah task visual selesai, sebelum declare done.
+> **Sumber:** `taste-skill-bridge/REFERENCE.md` (pre-flight checklist)
+
+### §4I.1 Mandatory Self-Check (Sebelum Declare Done)
+
+AI REQUIRED menjalankan checklist berikut dan mencetak hasilnya:
+
+```
+[TASTE-SKILL PRE-FLIGHT]
+DNA: [✅|❌] | File: [✅|❌] | Typography: [✅|❌] | Hero: [✅|❌]
+Center-bias: [✅|❌] | Eyebrow: [✅|❌] | CTA: [✅|❌] | Contrast: [✅|❌]
+Shape: [✅|❌] | Tokens: [✅|❌] | Images: [✅|❌] | Mobile: [✅|❌]
+Rhythm: [✅|❌] | Copy-slop: [✅|❌] | UUPM-sourced: [✅|❌]
+```
+
+### §4I.2 Copy Anti-Slop Verification
+
+Sebelum declare done, AI REQUIRED scan semua visible text di output dan:
+1. Cek tidak ada kata dari Copy Blocklist (`gemini.md §VISUAL RULES #23`)
+2. Cek tidak ada eyebrow/capsule di halaman auth
+3. Cek headline ≤ 8 kata, subtext ≤ 25 kata
+4. Cek tidak ada fake-precise numbers tanpa real data
+
+Jika ada pelanggaran → FIX sebelum declare done. FORBIDDEN declare done dengan ❌ di pre-flight.
+
+### §4I.3 Model-Specific Override
+
+Jika terdeteksi model Gemini Flash (atau model dengan tendency AI slop):
+- Baca `taste-skill-bridge/MODEL_HINTS.md` (1x per sesi, ~40 baris)
+- Apply override tambahan yang spesifik model
+- Prioritaskan Bento/Staggered/Split layout daripada centered
 
 
 

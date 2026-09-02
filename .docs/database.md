@@ -91,7 +91,8 @@ CREATE TABLE tasks (
 | `knowledge/.knowledge-index.json` | Knowledge Base index tracking | JSON |
 | `app-context.md` | AI snapshot | Markdown (≤100 baris) |
 | `handover.md` | Human log | Markdown (100 baris rolling) |
-| `brainvibes-memory.json` | MCP memory | JSON |
+| `~/.cache/codebase-memory-mcp/` | CBM knowledge graph cache | SQLite + FTS5 + LZ4 |
+| `.codebase-memory/graph.db.zst` | Team-shared graph snapshot (opsional) | Zstandard compressed SQLite |
 
 ## Index Strategy
 

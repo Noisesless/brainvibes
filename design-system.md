@@ -397,6 +397,312 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 
 ---
 
+## §7B. COMPONENT TOKEN REGISTRY (Single Source of Truth) <!-- anchor:7B -->
+
+> ⚠️ **HARD RULE:** Setiap kali AI menulis komponen UI (button, modal, toast, card, form, icon),
+> AI REQUIRED menggunakan token dari section ini. FORBIDDEN improvise nilai acak.
+> Jika proyek sudah punya `prd.md §3` yang menetapkan geometry/radius → ikuti prd.md.
+> Jika belum ada prd.md → gunakan default di bawah sebagai starting point.
+
+### §7B.1 BUTTON TOKENS
+
+```css
+:root {
+  /* === SIZING === */
+  --btn-height-sm:    32px;    /* inline action, table row */
+  --btn-height-md:    40px;    /* default form submit */
+  --btn-height-lg:    48px;    /* hero CTA, standalone */
+  --btn-height-xl:    56px;    /* full-width mobile CTA */
+
+  --btn-padding-sm:   8px 16px;
+  --btn-padding-md:   10px 24px;
+  --btn-padding-lg:   14px 32px;
+
+  /* === TYPOGRAPHY === */
+  --btn-font:         var(--vibe-font-main);
+  --btn-font-size-sm: 0.8125rem;  /* 13px */
+  --btn-font-size-md: 0.875rem;   /* 14px */
+  --btn-font-size-lg: 1rem;       /* 16px */
+  --btn-font-weight:  600;
+  --btn-letter-spacing: 0.01em;
+
+  /* === SHAPE === */
+  --btn-radius:       var(--radius-md);  /* dari prd.md — Sharp:0 / Rounded:8px / Pill:9999px */
+  --btn-border:       none;              /* solid: 1.5px solid var(--vibe-border) */
+
+  /* === INTERACTION === */
+  --btn-transition:   var(--vibe-transition);
+  --btn-hover-lift:   translateY(-1px);
+  --btn-active-press: translateY(0) scale(0.98);
+  --btn-focus-ring:   0 0 0 3px var(--vibe-focus-ring);
+
+  /* === ICON DI DALAM BUTTON === */
+  --btn-icon-size:    1em;       /* relatif ke font-size button */
+  --btn-icon-gap:     var(--space-xs, 4px);
+}
+```
+
+**Variant Rules:**
+| Variant | Background | Text | Border | Kapan Pakai |
+|---|---|---|---|---|
+| `primary` | `var(--vibe-accent-1)` | `var(--vibe-background)` | none | CTA utama — max 1 per section |
+| `secondary` | `transparent` | `var(--vibe-accent-1)` | `1.5px solid var(--vibe-accent-1)` | Aksi sekunder |
+| `ghost` | `transparent` | `var(--vibe-text-sub)` | none | Link-like, toolbar |
+| `danger` | `var(--vibe-error)` | `#fff` | none | Hapus, batalkan, aksi destruktif |
+
+**HARD BLOCKS:**
+- FORBIDDEN button tanpa `min-height` — gunakan `--btn-height-*`
+- FORBIDDEN mix variant dalam 1 button group (primary + primary = salah)
+- FORBIDDEN `border-radius` hardcode — gunakan `var(--btn-radius)`
+- FORBIDDEN label > 3 kata per button
+- FORBIDDEN `cursor: pointer` manual — button sudah default pointer
+
+### §7B.2 ICON TOKENS
+
+```css
+:root {
+  /* === SIZING SCALE === */
+  --icon-xs:          14px;    /* inline text, badge, meta */
+  --icon-sm:          16px;    /* nav item, list prefix */
+  --icon-md:          20px;    /* default UI icon */
+  --icon-lg:          24px;    /* card header, toolbar */
+  --icon-xl:          32px;    /* empty state, feature */
+  --icon-hero:        48px;    /* hero section, onboarding */
+
+  /* === WARNA === */
+  --icon-color:       var(--vibe-text-sub);      /* default */
+  --icon-color-active: var(--vibe-accent-1);     /* active/selected */
+  --icon-color-muted: var(--vibe-text-sub);      /* disabled state — opacity 0.4 */
+
+  /* === STROKE === */
+  --icon-stroke:      1.5;     /* default stroke-width untuk outline icons */
+}
+```
+
+**HARD BLOCKS:**
+- FORBIDDEN ikon SVG hand-rolled (path mentah di HTML) — gunakan icon library proyek
+- FORBIDDEN campur icon library — ONE family rule
+- FORBIDDEN ikon tanpa `aria-hidden="true"` (kecuali ikon satu-satunya elemen interaktif)
+- FORBIDDEN ikon tanpa explicit `width`/`height` — gunakan `--icon-*` token
+
+### §7B.3 MODAL / DIALOG TOKENS
+
+```css
+:root {
+  /* === SIZING === */
+  --modal-width-sm:    400px;    /* konfirmasi, alert */
+  --modal-width-md:    560px;    /* form, detail */
+  --modal-width-lg:    720px;    /* tabel, preview */
+  --modal-width-full:  calc(100vw - 48px);  /* mobile */
+  --modal-max-height:  calc(100dvh - 48px);
+
+  /* === SPACING === */
+  --modal-padding:     var(--space-lg, 24px);
+  --modal-header-gap:  var(--space-md, 16px);
+  --modal-footer-gap:  var(--space-md, 16px);
+
+  /* === SHAPE === */
+  --modal-radius:      calc(var(--radius-md) * 1.5);  /* sedikit lebih besar dari card */
+  --modal-shadow:      var(--shadow-dialog);
+
+  /* === OVERLAY === */
+  --modal-overlay:     var(--vibe-overlay);
+  --modal-overlay-blur: 4px;   /* backdrop-filter: blur() */
+}
+```
+
+**Anatomy Wajib:**
+```
+┌────────────────────────────┐
+│ [Icon?] Title          [✕] │  ← header: --modal-padding, border-bottom: --vibe-divider
+│────────────────────────────│
+│                            │
+│  Body Content              │  ← body: --modal-padding, overflow-y: auto
+│                            │
+│────────────────────────────│
+│          [Cancel] [Action] │  ← footer: --modal-padding, gap: --space-sm
+└────────────────────────────┘
+```
+
+**HARD BLOCKS:**
+- FORBIDDEN modal tanpa overlay backdrop — gunakan `var(--modal-overlay)`
+- FORBIDDEN modal tanpa close button (✕) atau ESC handler
+- FORBIDDEN modal yang menutupi >90% viewport di desktop — max `--modal-width-lg`
+- FORBIDDEN scroll pada body saat modal terbuka — gunakan `body { overflow: hidden }`
+
+### §7B.4 TOAST / NOTIFICATION TOKENS
+
+```css
+:root {
+  /* === SIZING === */
+  --toast-width:       360px;
+  --toast-min-height:  48px;
+  --toast-max-width:   calc(100vw - 32px);  /* mobile */
+
+  /* === SPACING === */
+  --toast-padding:     12px 16px;
+  --toast-gap:         var(--space-sm, 8px);   /* antar elemen di dalam toast */
+  --toast-stack-gap:   var(--space-sm, 8px);   /* gap antar toast bertumpuk */
+
+  /* === POSITION === */
+  --toast-position:    fixed;
+  --toast-inset:       auto 16px 16px auto;    /* bottom-right default */
+  --toast-z:           var(--z-toast, 9000);
+
+  /* === SHAPE === */
+  --toast-radius:      var(--radius-md);
+  --toast-shadow:      var(--shadow-dialog);
+
+  /* === TIMING === */
+  --toast-duration:    4000ms;       /* auto-dismiss */
+  --toast-enter:       200ms ease-out;
+  --toast-exit:        150ms ease-in;
+}
+```
+
+**Variant Colors:**
+| Variant | Icon | BG | Border-left |
+|---|---|---|---|
+| `success` | ✓ checkmark | `var(--vibe-success)` 10% opacity | `3px solid var(--vibe-success)` |
+| `error` | ✕ cross | `var(--vibe-error)` 10% opacity | `3px solid var(--vibe-error)` |
+| `warning` | ⚠ triangle | `var(--vibe-warning)` 10% opacity | `3px solid var(--vibe-warning)` |
+| `info` | ℹ circle | `var(--vibe-accent-1)` 10% opacity | `3px solid var(--vibe-accent-1)` |
+
+**HARD BLOCKS:**
+- FORBIDDEN toast yang blocking — harus auto-dismiss setelah `--toast-duration`
+- FORBIDDEN toast tanpa dismiss button (✕)
+- FORBIDDEN lebih dari 3 toast visible bersamaan — yang lama auto-dismiss
+
+### §7B.5 FORM ELEMENT TOKENS
+
+```css
+:root {
+  /* === INPUT === */
+  --input-height:      40px;
+  --input-padding:     10px 14px;
+  --input-bg:          var(--vibe-input-bg);
+  --input-border:      1.5px solid var(--vibe-border);
+  --input-radius:      var(--radius-md);
+  --input-font-size:   0.875rem;    /* 14px — FORBIDDEN < 14px untuk readability */
+
+  /* === LABEL === */
+  --label-font-size:   0.8125rem;   /* 13px */
+  --label-font-weight: 500;
+  --label-color:       var(--vibe-text-sub);
+  --label-gap:         var(--space-xs, 4px);  /* gap label ke input */
+
+  /* === STATE === */
+  --input-focus-border: var(--vibe-accent-1);
+  --input-focus-ring:   0 0 0 3px rgba(var(--vibe-focus-ring), 0.15);
+  --input-error-border: var(--vibe-error);
+  --input-disabled-opacity: 0.5;
+
+  /* === HELPER TEXT === */
+  --helper-font-size:  0.75rem;     /* 12px */
+  --helper-color:      var(--vibe-text-sub);
+  --helper-error-color: var(--vibe-error);
+  --helper-gap:        var(--space-xs, 4px);  /* gap input ke helper */
+
+  /* === FORM LAYOUT === */
+  --form-field-gap:    var(--space-md, 16px);  /* gap antar field */
+  --form-group-gap:    var(--space-lg, 24px);  /* gap antar group/section */
+}
+```
+
+**HARD BLOCKS:**
+- FORBIDDEN input tanpa label (gunakan `<label>` atau `aria-label`)
+- FORBIDDEN input `font-size` < 14px — iOS zoom issue
+- FORBIDDEN placeholder sebagai pengganti label — hanya sebagai hint
+- FORBIDDEN form tanpa error state visual (border merah + helper text)
+- FORBIDDEN submit button tanpa loading state
+
+### §7B.6 CARD TOKENS
+
+```css
+:root {
+  /* === SPACING === */
+  --card-padding:      var(--space-lg, 24px);
+  --card-padding-compact: var(--space-md, 16px);  /* card kecil/dense grid */
+  --card-gap:          var(--space-md, 16px);      /* gap antar card dalam grid */
+  --card-content-gap:  var(--space-sm, 8px);       /* gap antar elemen di dalam card */
+
+  /* === SHAPE === */
+  --card-radius:       var(--radius-md);
+  --card-border:       1px solid var(--vibe-border);
+  --card-shadow:       var(--shadow-card, none);   /* dari §4 Shadow System */
+  --card-bg:           var(--vibe-surface);
+
+  /* === HOVER === */
+  --card-hover-shadow: var(--shadow-hover);
+  --card-hover-lift:   translateY(-2px);
+  --card-hover-transition: var(--vibe-transition);
+}
+```
+
+**HARD BLOCKS:**
+- FORBIDDEN card tanpa `border` atau `box-shadow` — minimal salah satu untuk visual boundary
+- FORBIDDEN mix `--card-radius` dan `--btn-radius` yang berbeda dalam satu halaman (kecuali documented geometry kustom di taste-skill §0.J-4)
+- FORBIDDEN `padding` hardcode pada card — gunakan `var(--card-padding)`
+
+### §7B.7 SPACING SEMANTIC TOKENS (Per Komponen)
+
+> Mapping spacing token (§6) ke komponen spesifik — mencegah "spacing acak" lintas halaman.
+
+```css
+:root {
+  /* === SPACING ALIASES (dari §6 8pt grid) === */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+  --space-3xl:  64px;
+
+  /* === SECTION SPACING === */
+  --section-padding-y:   var(--space-3xl);    /* 64px — padding atas/bawah section */
+  --section-padding-y-sm: var(--space-2xl);   /* 48px — section kecil/compact */
+  --section-gap:         var(--space-2xl);    /* 48px — gap antar section (jika pakai flex/grid) */
+
+  /* === CONTAINER === */
+  --container-max:       72rem;               /* 1152px — max-width content */
+  --container-padding:   clamp(1rem, 5vw, 2rem);  /* responsive side padding */
+
+  /* === COMPONENT INTERNAL SPACING MAP === */
+  /* Gunakan token ini BUKAN angka acak */
+}
+```
+
+| Komponen | padding | gap internal | margin-bottom |
+|---|---|---|---|
+| Section | `--section-padding-y` `--container-padding` | `--space-xl` | 0 (pakai gap/padding section berikutnya) |
+| Card | `--card-padding` | `--card-content-gap` | 0 (pakai grid gap) |
+| Button | `--btn-padding-*` | `--btn-icon-gap` | — |
+| Form field | — | `--label-gap` (label→input), `--helper-gap` (input→helper) | `--form-field-gap` |
+| Form group | — | `--form-field-gap` | `--form-group-gap` |
+| Modal | `--modal-padding` | `--modal-header-gap` / `--modal-footer-gap` | — |
+| Toast | `--toast-padding` | `--toast-gap` | `--toast-stack-gap` |
+| Nav | `--space-md` | `--space-sm` | — |
+| Hero | `--section-padding-y` | `--space-lg` | — |
+| Footer | `--section-padding-y` | `--space-lg` | — |
+
+**HARD BLOCKS:**
+- FORBIDDEN spacing hardcode (13px, 19px, 21px, 7px) — wajib kelipatan 8pt atau gunakan token di atas
+- FORBIDDEN `margin-top` dan `margin-bottom` bersamaan pada 1 elemen — pilih salah satu arah (bottom-only atau gap-based)
+- FORBIDDEN section tanpa `--section-padding-y` — minimal 48px
+
+---
+
+### §7B Enforcement Rule (Wajib Diikuti AI)
+
+AI REQUIRED melakukan hal berikut saat menulis komponen UI:
+1. **Cek §7B** terlebih dahulu — apakah komponen yang ditulis sudah ada tokennya
+2. **Gunakan token** — FORBIDDEN menulis nilai mentah jika token tersedia
+3. **Jika token belum ada** — deklarasikan token baru di `:root` mengikuti pola penamaan `--[komponen]-[properti]`, lalu catat di `[DESIGN TOKEN] Menambah: --[nama-token]: [nilai]`
+4. **Cross-check consistency** — pastikan `--btn-radius`, `--card-radius`, `--modal-radius`, `--toast-radius` semua mengacu ke `--radius-md` (atau varian documented)
+
+```
+
 ## §8. LAYOUT RULES
 
 ### Sidebar + Content Layout (Anti-Clipping):

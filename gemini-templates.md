@@ -27,6 +27,7 @@
    - Checksum CORE IDENTITY LOCK: Bandingkan stack di `prd.md` dengan file manifest dependensi (`package.json`, `composer.json`, dll.).
    - Visual DNA Checksum (Auto-Sync): Bandingkan `app-context.md §PALETTE` dengan CORE IDENTITY LOCK di `prd.md`. Jika drift, update `app-context.md §PALETTE` sesuai `prd.md` lalu overwrite `app-context.md`.
 3. **Deployment Docs Check:** Cek `/.docs/deployment.md` — jika belum ada, generate dari template `gemini.md §DOCS BLUEPRINT`. Jika ada, verifikasi stack/target masih sesuai dengan `prd.md` dan update jika berubah.
+3b. **Design System Docs Check (Auto-Extraction):** Cek `/.docs/design-system.md` — jika belum ada pada proyek eksisting: jalankan **Visual DNA Reverse-Engineering Protocol** (`gemini-execution.md §4K.5`) pada Halaman Utama untuk mengekstrak token dan generate `/.docs/design-system.md` secara otomatis.
 4. Tampilkan ringkasan status dalam Bahasa Indonesia dan tunggu instruksi.
 
 ### 2C. Saklar: `awal konversi`
@@ -46,6 +47,7 @@
     ⚠️ [DEP-IMPACT] File [nama] adalah Critical File (diimport oleh [N] modul).
        Perubahan ini berisiko tinggi. Pastikan test regression setelah edit.
     ```
+2b. **Visual DNA Inheritance (Anchor Halaman Utama):** Jika fitur baru melibatkan UI/komponen/halaman baru, AI WAJIB membaca `/.docs/design-system.md` dan mewarisi seluruh token visual yang bersumber dari Halaman Utama. DILARANG menciptakan palet atau font baru yang melenceng dari Master Anchor.
 3. Cetak gerbang konfirmasi cerdas:
    ```
    [TAMBAH FITUR] Fitur yang diminta : [nama fitur]
@@ -179,6 +181,46 @@
 5. **Eksekusi Strix** → monitor progress → parse hasil dari `strix_runs/`
 6. **Merge findings** ke `/.docs/security-audit.md` section `## DAST FINDINGS (Strix)`
 7. **Mandor Gate:** STOP setelah report — tampilkan ringkasan, tunggu instruksi fix user.
+
+### 2K. Saklar: `redesign` (alias: `ubah desain`, `ubah tampilan`, `redesign visual`, `ubah layout`, `perbaiki halaman`, `ubah visual`)
+> **Visual Overhaul & Anti-Slop Re-engineering** — Merombak tata visual halaman/komponen dengan panduan Taste-Skill + UUPM + Layout Intelligence, mencegah AI slop dan layout generik yang membosankan.
+> Tunduk pada `gemini.md §VISUAL RULES` dan `gemini-execution.md §4K`.
+
+**Prosedur Eksekusi (6 Langkah Wajib):**
+
+1. **Identifikasi Scope & Anchor Visual:**
+   - Tentukan apakah target adalah **Halaman Utama / Landing Page** atau **Sub-Halaman**.
+   - Jika **Sub-halaman:** WAJIB membaca `/.docs/design-system.md` atau halaman utama sebagai *Immutable Anchor*. Dilarang mengubah token inti palet/font secara sepihak.
+   - Jika **Halaman Utama:** Ini adalah pembaruan *Master Anchor* yang nantinya akan diwariskan ke `/.docs/design-system.md`.
+2. **Audit Eksisting & Anti-Cosmetic Rule:**
+   - Identifikasi kelemahan tampilan lama (misal: 3 kartu simetris datar, eyebrow capsule berlebihan, font tunggal, warna flat).
+   - **WAJIB merombak minimal 2 dari 4 dimensi:**
+     1. *Formasi Layout:* Ganti 3-kartu simetris menjadi Bento Grid (2×2+1×1), Staggered Grid, atau Split Asymmetric.
+     2. *Tipografi:* Pasang 2-font pairing baru dari `typography.csv` (Heading font ekspresif + Body font clean).
+     3. *Rhythm & Depth:* Terapkan minimal 1 negative margin overlap (`-32px` s/d `-60px`) dan alternasi perlakuan section (Airy → Dense → Dark-Moment).
+     4. *Kontur Geometri:* Variasikan radius card/button (Sharp 0px, Rounded 8px, atau Asymmetric/Pill).
+3. **Pemuatan Wajib Taste-Skill & UUPM Data:**
+   - AI WAJIB membaca `taste-skill-bridge/ESSENTIAL.md` via `view_file` (dilarang berhenti di router!).
+   - AI WAJIB membaca `taste-skill-bridge/MODEL_HINTS.md` jika menggunakan model dengan tendency slop (Gemini Flash).
+   - Lakukan `grep_search` industri proyek pada `ui-reasoning.csv` untuk mendapatkan `Recommended_Pattern`, `Decision_Rules`, dan `Anti_Patterns`.
+   - Ekstrak palet & font dari `colors.csv`, `styles.csv`, dan `typography.csv` (via `search.py` atau Direct-Read CSV).
+4. **Keluarkan Mandatory Output Pre-Code:**
+   AI WAJIB mencetak 4 blok ini ke terminal SEBELUM menulis sebaris kode pun:
+   ```
+   [Design Read] Reading this as: [tipe] untuk [audience], vibe [keyword], dials: V=[n] M=[n] D=[n]
+   [UUPM Source] Palet: [nama] dari [colors.csv] | Style: [nama] dari [styles.csv] | Font: [pair] dari [typography.csv]
+   [Layout Intel] ui-reasoning.csv: Pattern=[X] | Anti-Patterns=[Y] | Decision=[Z]
+   [RHYTHM SCORE] Nav:[X] Hero:[X] S2:[X] S3:[X] ... Footer:[X]
+   ```
+5. **Eksekusi Kode Anti-Slop:**
+   - Terapkan seluruh token ke file CSS/komponen melalui `var(--vibe-*)`.
+   - Patuhi komponen token dari `design-system.md §7B` (Button, Modal, Toast, Card, Spacing).
+   - ❌ FORBIDDEN hand-rolled raw SVG path (wajib icon library).
+   - ❌ FORBIDDEN eyebrow badge di halaman auth.
+   - ❌ FORBIDDEN copy slop ("Unlock", "Empower", "Revolutionize", dll).
+6. **Pre-Flight Checklist (§4I) & Docs Sync:**
+   - Jalankan pre-flight check dan cetak `[TASTE-SKILL PRE-FLIGHT]`.
+   - Sinkronkan hasil perubahan ke `app-context.md §PALETTE` dan `/.docs/design-system.md`.
 
 ---
 

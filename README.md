@@ -31,28 +31,31 @@
 
 ## Struktur Ekosistem
 
-### Berkas Inti & Tools Tambahan (10 File)
+### Berkas Inti & Tools Tambahan
 
-| File | Ukuran | Fungsi |
+| File / Direktori | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| [`gemini.md`](gemini.md) | ~28KB | **Core Otak** — Global system instructions, §VISUAL_GATE, §SESSION_PROTOCOL, Unified Dispatch Table, Context Budget Tracker, Technical Debate, Concise Response |
-| [`gemini-execution.md`](gemini-execution.md) | ~42KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate, Subheading Parent Prefixes |
-| [`gemini-templates.md`](gemini-templates.md) | ~22KB | **Templates & Commands** — Detail 10 makro command, YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
+| [`gemini.md`](gemini.md) | ~28KB | **Core Otak** — Global system instructions, §VISUAL_GATE (18 larangan + 5 enforcement positif), §SESSION_PROTOCOL, Unified Dispatch Table (11 saklar termasuk `redesign`), Context Budget Tracker, Technical Debate, Concise Response |
+| [`gemini-execution.md`](gemini-execution.md) | ~52KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, §4K Visual Design Pipeline, §4I Visual Self-Check, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate |
+| [`gemini-templates.md`](gemini-templates.md) | ~26KB | **Templates & Commands** — Detail 11 makro command (§2A-§2K), YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
 | [`prd-template.md`](prd-template.md) | ~29KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
-| [`design-system.md`](design-system.md) | ~32KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, components |
+| [`design-system.md`](design-system.md) | ~44KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, §7B Component Token Registry (Button, Icon, Modal, Toast, Form, Card, Spacing) |
 | [`AGENTS.md`](AGENTS.md) | ~6KB | **Skills & Pointer Hub** — Session init pointer, skills registry, security auto-trigger, Web Search Protocol |
 | [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist, response_style, technical_debate, web_search |
+| [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **MCP Server** — 2 servers: codebase-memory (code intelligence graph), context7 (library docs RAG) |
+| [`config/hooks.json`](config/hooks.json) & [`.agents/hooks.json`](.agents/hooks.json) | ~0.3KB | **Antigravity Lifecycle Hooks** — Otomasi event `PreInvocation` untuk memastikan CBM daemon (port 9749) selalu aktif |
+| [`scripts/`](scripts/) | ~4KB | **Automation Scripts** — `ensure-cbm-daemon.ps1`, `index-project.ps1` (auto-index + UI assurance), `cbm-hook.ps1` (IDE hook) |
+| [`sync.ps1`](sync.ps1) | ~7KB | **Auto-Sync Engine** — Sinkronisasi master ke `~/.gemini/`, true-sync MCP settings, auto-clean archive, CBM daemon health check (Step 10) |
 | [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Terminal coding agent subsistem alternatif untuk membaca/menulis file proyek secara otomatis |
-| [`config/mcp_config.json`](config/mcp_config.json) | ~1.3KB | **MCP Server** — 7 servers: context7, sequential-thinking, memory, filesystem, time, fetch, web_search |
 | `LICENSE` | ~36KB | MIT License |
-| `WORKFLOW_SIMULATIONS.md` | ~14KB | **Workflow Simulation** — Simulasi eksekusi macro commands untuk testing dan debugging |
+| `WORKFLOW_SIMULATIONS.md` | ~15KB | **Workflow Simulation** — Simulasi eksekusi macro commands untuk testing dan debugging |
 
 ### Skills System (12 Skill Folders)
 
 | Skill | Trigger Keywords | Fungsi |
 | :--- | :--- | :--- |
-| `ui-ux-pro-max` | awal baru, redesign | **UUPM** — Design intelligence dengan 15 CSV datasets, multi-stack support |
-| `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Anti-slop frontend bridge, Three Dials system |
+| `ui-ux-pro-max` | awal baru, redesign | **UUPM** — Design intelligence dengan 14 CSV datasets (termasuk `ui-reasoning.csv` & `landing.csv`), Direct-Read CSV fallback, multi-stack support |
+| `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Anti-slop frontend bridge, Three Dials, router v2.0 (61 baris), `MODEL_HINTS.md` (Gemini Flash anti-slop), `CHEATSHEET.md` |
 | `security-patterns` | cek komponen, cek kelengkapan, verifikasi kode | Vulnerability database + secure coding patterns per stack (27 SPs, OWASP Top 10:2025 100% coverage) |
 | `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |
 | `database-patterns` | desain database, migration | Schema design, query optimization, ORM patterns |
@@ -88,6 +91,17 @@ Brainvibes v4.1.0 menghadirkan **Smart Skill Integration (SSI)** — sistem inte
 
 > Detail: `config/skills/integration-checker.md`
 
+### Code Intelligence & 3D Knowledge Graph (`codebase-memory-mcp`)
+
+Brainvibes mengintegrasikan **`codebase-memory-mcp`** (CBM v0.10.5) — server MCP native performa tinggi berbasis graph AST untuk analisis struktur kode, dependensi, dan semantic search:
+
+- **15 Graph Tools** — `index_repository`, `search_graph`, `query_graph`, `trace_path`, `get_code_snippet`, `get_architecture`, `detect_changes`, `manage_adr`, dll.
+- **3D Web UI Visualization** — Server visualisasi 3D interaktif yang berjalan di `http://localhost:9749/`.
+- **Antigravity IDE Lifecycle Automation (`hooks.json` & `cbm-hook.ps1`)** — Hook event `PreInvocation` otomatis mendeteksi status port 9749 (<100ms) dan menyalakan daemon CBM di background secara instan.
+- **Indexing Script (`scripts/index-project.ps1`)** — Pengindeksan instan dengan jaminan port 9749 selalu aktif.
+- **True Sync Health Check (`sync.ps1` Step 10)** — Verifikasi otomatis kesiapan daemon CBM setiap kali sinkronisasi dijalankan.
+
+
 ### Knowledge Items (3 Knowledge Bases)
 
 | Knowledge | Isi | Fungsi |
@@ -96,22 +110,23 @@ Brainvibes v4.1.0 menghadirkan **Smart Skill Integration (SSI)** — sistem inte
 | `project-retrospectives/` | 1 retro + template | Post-mortem proyek — dibaca saat `awal baru` |
 | `vibes-stack-patterns/` | 3 file (PHP, Next.js, CSS) | Proven code patterns — dibaca saat menulis kode |
 
-### Dokumentasi Utama (/.docs/ — 8 File)
+### Dokumentasi Utama (/.docs/ — 9 File)
 
-Brainvibes mendefinisikan **8 file dokumentasi utama** yang wajib ada di setiap proyek (`/.docs/`):
+Brainvibes mendefinisikan **9 file dokumentasi utama** yang wajib ada di setiap proyek (`/.docs/`):
 
 | # | File | Isi | Brainvibes Status |
 |---|---|---|---|
 | 1 | `architecture.md` | Makro arsitektur, layer separation (Presentation/Logic/Data), file loading protocol, token efficiency strategy | Active |
-| 2 | `api-spec.md` | MCP server endpoints (context7, filesystem, memory, dll), macro command triggers, data flow AI→Project & Project→AI | Active |
+| 2 | `api-spec.md` | MCP server endpoints (codebase-memory, context7), macro command triggers, data flow AI→Project & Project→AI | Active |
 | 3 | `database.md` | Schema template (users, sessions, projects, tasks), runtime storage (JSON-based), index strategy, performance notes | Active |
 | 4 | `dependency-graph.md` | Critical files (gemini.md, user-prefs.md, AGENTS.md), high-impact files, leaf files, skills/knowledge chains, circular deps check, file role definitions | Active |
 | 5 | `deployment.md` | Target deploy, environment mapping, pre-deploy checklist, build commands per stack, post-deploy verification, rollback plan | Active |
 | 6 | `issues.md` | Bug tracker — open issues, resolved (FIFO max 10), categories (architecture/docs/integration/performance), severity legend | Active |
 | 7 | `quality_review.md` | Code quality metrics (file count, size distribution), linting validation, complexity analysis, duplication check, magic numbers, recommendations | Active |
 | 8 | `routes.md` | Frontend/API routes, middleware chain (session init, execution, commit), route status legend (active/beta/planned/deprecated) | Active |
+| 9 | `design-system.md` | **1 Source of Truth Visual Design:** Palet warna, tipografi, geometri, token komponen (§7B: button, icon, modal, toast, form, card, spacing) | Active |
 
-> Brainvibes sendiri sekarang memiliki `.docs/` folder dengan ke-8 file dokumentasi ini. Setiap proyek yang dibuat dengan brainvibes juga akan menghasilkan ke-8 file ini secara otomatis.
+> Brainvibes sendiri memiliki `.docs/` folder dengan ke-9 file dokumentasi ini. Setiap proyek yang dibuat dengan brainvibes juga akan menghasilkan ke-9 file ini secara otomatis.
 
 ---
 
@@ -135,6 +150,7 @@ Brainvibes v4.0.0 mengimplementasikan **Unified Dispatch Table** di `gemini.md �
 | `analisa kualitas` | Code quality audit → quality_review.md | app-context.md, .docs/ | design-system.md, prd-template.md | §2H |
 | `cek komponen` | Verifikasi kelengkapan komponen kode (OWASP + SP registry) → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | §2I |
 | `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | §2J |
+| `redesign` | Visual overhaul → taste-skill pipeline → UUPM → kode anti-slop | taste-skill-bridge/ESSENTIAL.md, UUPM data/ (grep industri), app-context.md §PALETTE | prd-template.md | §2K |
 
 ### Context Budget Tracker
 
@@ -508,7 +524,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.1.0` | [Current] | **Zero-Noise Architecture & Phase 5 Security Hardening**: Pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025, auto dependency audit, dan Compliance Score system. |
+| `v4.1.0` | [Current] | **Code Intelligence Graph, Daemon Automation & Security Hardening**: Integrasi native `codebase-memory-mcp` (AST knowledge graph, 15 tools, 3D Web UI di port 9749) dengan otomatisasi daemon pada siklus Antigravity IDE (`hooks.json` + `cbm-hook.ps1`), skrip indexing terintegrasi (`index-project.ps1`), sinkronisasi true sync MCP (`sync.ps1` Step 10), pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025. |
 | `v4.0.1` | [`7ec8b8c`](https://github.com/Noisesless/brainvibes/commit/7ec8b8c) | **Framework Cleanup & MCP Fix**: Perbaikan tautan cross-reference antar file framework, sentralisasi 16 larangan Anti-AI-SLOP ke `visual-rules.md`, pembersihan duplikasi simulasi, serta penghapusan server MCP `web_search` yang rusak agar terhindar dari hang loop. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture, Efficiency Intelligence & SSI**: Pemecahan monolith 146KB ke 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md). Mengimplementasikan 10 gap fixes efisiensi (UUPM cache, handover truncation 500 lines, parallel loading, app-context compression, context caching). Mengintegrasikan Smart Skill Integration (SSI), sinkronisasi 7 berkas `.docs/`, mitigasi shell non-aktif, drift port server, pre-flight check MCP, 3 HARD BLOCK visual baru, Rhythm Score System (`§0.I`), dan Asymmetric Card Geometry (`§0.J-4`). |
 | `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |
