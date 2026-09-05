@@ -6,7 +6,7 @@
 [User/Developer]
     ↓
 [AI Agent — Gemini CLI / Antigravity IDE / Cursor / Copilot]
-    ├── Lifecycle Hooks (hooks.json) → cbm-hook.ps1 (PreInvocation auto-start daemon)
+    ├── Lifecycle Hooks (hooks.json) → cbm-hook.ps1 / cbm-hook.sh (PreInvocation auto-start daemon)
     ↓
 [Brainvibes System]
     ├── gemini.md          → Core instructions (≤22KB)
@@ -16,7 +16,7 @@
     ├── user-prefs.md      → User preferences (highest priority)
     ├── design-system.md   → CSS tokens & design DNA
     ├── prd-template.md    → PRD blueprint
-    └── scripts/           → ensure-cbm-daemon.ps1, index-project.ps1, cbm-hook.ps1
+    └── scripts/           → ensure-cbm-daemon (.ps1/.sh), index-project (.ps1/.sh), cbm-hook (.ps1/.sh)
     ↓
 [MCP Layer — 2 servers]
     ├── codebase-memory    → AST knowledge graph (15 tools, 158 bahasa) + 3D UI (:9749)
@@ -96,4 +96,4 @@ User Input → Presentation → Logic → Data → Response
 5. **Symlink Architecture** — Skills & knowledge via symlink, tidak duplikasi file
 6. **Graph-First Query** — `codebase-memory-mcp` structural query (~3.4K tokens) menggantikan file-grep (~412K tokens) untuk analisis arsitektur, call chain, dan routes
 7. **Lean MCP Stack** — 2 server (dari 6) mengurangi startup overhead dan tool definition tokens
-8. **Daemon Persistence & Hook Auto-Start** — Background daemon CBM pada port 9749 dijaga selalu warm via `PreInvocation` hook (`cbm-hook.ps1`), mengeliminasi startup cold-boot per perintah CLI/tool.
+8. **Daemon Persistence & Hook Auto-Start** — Background daemon CBM pada port 9749 dijaga selalu warm via `PreInvocation` hook (`cbm-hook.sh` / `cbm-hook.ps1`), mengeliminasi startup cold-boot per perintah CLI/tool.

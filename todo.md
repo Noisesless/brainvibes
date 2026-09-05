@@ -242,3 +242,46 @@ Semua 9 task dari 3 phase sudah diimplementasikan dan diverifikasi. Sistem sekar
 **Total Tasks Phase 6:** 6 task, 27 sub-items — ✅ SEMUA SELESAI
 **Selesai:** 2026-09-02T07:45+07:00
 
+---
+
+## 🟢 PHASE 7: BRAINVIBES LINUX ADAPTATION & REFINEMENT
+
+### Tier 1 — Critical Runtime Files
+- [x] Buat `sync.sh` (Bash port dari sync.ps1)
+- [x] Buat `scripts/cbm-hook.sh` (Bash port dari cbm-hook.ps1)
+- [x] Buat `scripts/ensure-cbm-daemon.sh` (Bash port dari ensure-cbm-daemon.ps1)
+- [x] Buat `scripts/index-project.sh` (Bash port dari index-project.ps1)
+- [x] Salin bash scripts ke `config/scripts/` (cbm-hook.sh, ensure-cbm-daemon.sh, index-project.sh)
+- [x] Update `config/hooks.json` → path Linux (`bash ~/.gemini/config/scripts/cbm-hook.sh`)
+- [x] Update `.agents/hooks.json` → path Linux
+- [x] Update `config/mcp_config.json` → command Linux (`codebase-memory-mcp`)
+- [x] Update `user-prefs.md` → path Linux (`local_base_path`, `user_name = gbc`)
+- [x] Install `codebase-memory-mcp` di Linux (v0.10.8 via AUR)
+- [x] `gemini-execution.md` (runtime paths, UUPM Python search, cache, git commands)
+- [x] `config/skills/ui-ux-pro-max/SKILL.md` (UUPM global paths & Python search)
+- [x] `config/skills/taste-skill-bridge/DETAILED.md` (UUPM paths & search)
+- [x] `config/skills/taste-skill-bridge/ESSENTIAL.md` (visual-rules path)
+- [x] `config/skills/taste-skill-bridge/REFERENCE.md` (UUPM file path table)
+- [x] `config/skills/visual-rules.md` (UUPM database path table)
+- [x] `config/skills/ui-ux-pro-max/templates/base/skill-content.md` (code block language)
+- [x] `config/app-context-template.md` (global path)
+
+### Tier 2 — Important Documentation & User Instructions
+- [x] `README.md` (dual-platform commands, Linux install instructions)
+- [x] `gemini-templates.md` (knowledge path, sync script references)
+- [x] `prd-template.md` (UUPM search path)
+- [x] `.docs/architecture.md` & `.docs/deployment.md` (Linux dual-platform updates)
+
+### Tier 3 — Nice-to-have Guides & Verification
+- [x] `config/skills/pentest-strix/SKILL.md` (code block language)
+- [x] `config/skills/pentest-strix/data/strix-usage-guide.md` (shell agnostic/bash snippets)
+- [x] `AGENTS.md` (dual-platform header path)
+- [x] Run verification grep tests (C:\Users\GBC_PC, %USERPROFILE%, sync.ps1)
+- [x] Execute `./sync.sh` to update `$HOME/.gemini/`
+- [x] Final validation (cbm-hook test JSON output, daemon port 9749 check)
+
+---
+
+**Total Tasks Phase 7:** 25 items — ✅ SEMUA SELESAI
+**Selesai:** 2026-09-04T21:08+07:00
+

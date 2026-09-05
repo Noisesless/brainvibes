@@ -132,10 +132,10 @@ Rhythm: ✅ [A→C→B→D→A] — WOW moment: ✅ | Full-bleed: ✅ | BG varie
 | Page Composition Rhythm | `taste-skill-bridge/DETAILED.md §0.I` |
 | Anti-Color-Overlay | `taste-skill-bridge/DETAILED.md §0.F` |
 | Anti-Cosmetic-Redesign | `taste-skill-bridge/DETAILED.md §0.G` |
-| UUPM color database (193 palet) | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\colors.csv` |
-| UUPM style database (84 gaya) | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\styles.csv` |
-| UUPM typography (73 pairings) | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\typography.csv` |
-| UUPM UX guidelines | `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\ux-guidelines.csv` |
+| UUPM color database (193 palet) | `$HOME/.gemini/config/skills/ui-ux-pro-max/data/colors.csv` (Windows: `%USERPROFILE%\...`) |
+| UUPM style database (84 gaya) | `$HOME/.gemini/config/skills/ui-ux-pro-max/data/styles.csv` (Windows: `%USERPROFILE%\...`) |
+| UUPM typography (73 pairings) | `$HOME/.gemini/config/skills/ui-ux-pro-max/data/typography.csv` (Windows: `%USERPROFILE%\...`) |
+| UUPM UX guidelines | `$HOME/.gemini/config/skills/ui-ux-pro-max/data/ux-guidelines.csv` (Windows: `%USERPROFILE%\...`) |
 | Auth + security rules | `gemini-execution.md §4B` |
 | Active link policy | `gemini-execution.md §4A` |
 | Upload pipeline | `gemini-execution.md §4E` |

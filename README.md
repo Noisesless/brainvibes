@@ -43,9 +43,8 @@
 | [`AGENTS.md`](AGENTS.md) | ~6KB | **Skills & Pointer Hub** — Session init pointer, skills registry, security auto-trigger, Web Search Protocol |
 | [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist, response_style, technical_debate, web_search |
 | [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **MCP Server** — 2 servers: codebase-memory (code intelligence graph), context7 (library docs RAG) |
-| [`config/hooks.json`](config/hooks.json) & [`.agents/hooks.json`](.agents/hooks.json) | ~0.3KB | **Antigravity Lifecycle Hooks** — Otomasi event `PreInvocation` untuk memastikan CBM daemon (port 9749) selalu aktif |
-| [`scripts/`](scripts/) | ~4KB | **Automation Scripts** — `ensure-cbm-daemon.ps1`, `index-project.ps1` (auto-index + UI assurance), `cbm-hook.ps1` (IDE hook) |
-| [`sync.ps1`](sync.ps1) | ~7KB | **Auto-Sync Engine** — Sinkronisasi master ke `~/.gemini/`, true-sync MCP settings, auto-clean archive, CBM daemon health check (Step 10) |
+| [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Auto-Sync Engine (Dual-Platform)** — Sinkronisasi master ke `~/.gemini/` (Windows via PowerShell, Linux/macOS via Bash), true-sync MCP settings, auto-clean archive, CBM daemon health check (Step 10) |
+| [`scripts/`](scripts/) | ~6KB | **Automation Scripts (Dual-Platform)** — `ensure-cbm-daemon.ps1/.sh`, `index-project.ps1/.sh` (auto-index + UI assurance), `cbm-hook.ps1/.sh` (IDE PreInvocation hook) |
 | [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Terminal coding agent subsistem alternatif untuk membaca/menulis file proyek secara otomatis |
 | `LICENSE` | ~36KB | MIT License |
 | `WORKFLOW_SIMULATIONS.md` | ~15KB | **Workflow Simulation** — Simulasi eksekusi macro commands untuk testing dan debugging |
@@ -93,13 +92,13 @@ Brainvibes v4.1.0 menghadirkan **Smart Skill Integration (SSI)** — sistem inte
 
 ### Code Intelligence & 3D Knowledge Graph (`codebase-memory-mcp`)
 
-Brainvibes mengintegrasikan **`codebase-memory-mcp`** (CBM v0.10.5) — server MCP native performa tinggi berbasis graph AST untuk analisis struktur kode, dependensi, dan semantic search:
+Brainvibes mengintegrasikan **`codebase-memory-mcp`** (CBM v0.10.8) — server MCP native performa tinggi berbasis graph AST untuk analisis struktur kode, dependensi, dan semantic search:
 
 - **15 Graph Tools** — `index_repository`, `search_graph`, `query_graph`, `trace_path`, `get_code_snippet`, `get_architecture`, `detect_changes`, `manage_adr`, dll.
 - **3D Web UI Visualization** — Server visualisasi 3D interaktif yang berjalan di `http://localhost:9749/`.
-- **Antigravity IDE Lifecycle Automation (`hooks.json` & `cbm-hook.ps1`)** — Hook event `PreInvocation` otomatis mendeteksi status port 9749 (<100ms) dan menyalakan daemon CBM di background secara instan.
-- **Indexing Script (`scripts/index-project.ps1`)** — Pengindeksan instan dengan jaminan port 9749 selalu aktif.
-- **True Sync Health Check (`sync.ps1` Step 10)** — Verifikasi otomatis kesiapan daemon CBM setiap kali sinkronisasi dijalankan.
+- **Antigravity IDE Lifecycle Automation (`hooks.json`, `cbm-hook.sh` / `cbm-hook.ps1`)** — Hook event `PreInvocation` otomatis mendeteksi status port 9749 (<100ms) dan menyalakan daemon CBM di background secara instan.
+- **Indexing Script (`scripts/index-project.sh` / `scripts/index-project.ps1`)** — Pengindeksan instan dengan jaminan port 9749 selalu aktif.
+- **True Sync Health Check (`sync.sh` / `sync.ps1` Step 10)** — Verifikasi otomatis kesiapan daemon CBM setiap kali sinkronisasi dijalankan.
 
 
 ### Knowledge Items (3 Knowledge Bases)
@@ -176,7 +175,7 @@ context_budget_stop    = 28000  # STOP dan tanya user saat used tokens melebihi 
 
 **Benefits:**
 - Constant token cost: ~1.5K tokens (bukan unbounded)
-- Auto-cleanup archives > 30 hari via sync.ps1
+- Auto-cleanup archives > 30 hari via sync.sh / sync.ps1
 - Keep 100 baris terbaru di handover.md aktif
 
 ### Smart Saklar Loading
@@ -191,13 +190,51 @@ context_budget_stop    = 28000  # STOP dan tanya user saat used tokens melebihi 
 
 ---
 
-## Instalasi Cepat (3 Langkah)
+## Instalasi Cepat (Dual-Platform)
+
+### Opsi A — Otomatis via Auto-Sync (Direkomendasikan)
+Clone repositori dan jalankan skrip sinkronisasi platform Anda:
 
 ```bash
 # 1. Clone repositori ini
 git clone https://github.com/Noisesless/brainvibes.git
+cd brainvibes
 
-# 2. Salin berkas konfigurasi utama ke direktori AI Anda
+# 2. Jalankan sync engine sesuai OS:
+#    Linux / macOS (Bash):
+chmod +x sync.sh scripts/*.sh
+./sync.sh
+
+#    Windows (PowerShell):
+.\sync.ps1
+```
+
+> Skrip auto-sync otomatis menyalin berkas framework, mengonfigurasi MCP servers, menjalankan pre-flight check, dan memverifikasi daemon CBM port 9749.
+
+### Prasyarat Codebase Memory MCP (CBM)
+Untuk mengaktifkan fitur Code Intelligence Graph:
+- **Linux (Arch / CachyOS / Manjaro via AUR):**
+  ```bash
+  yay -S codebase-memory-mcp-bin
+  # atau: paru -S codebase-memory-mcp-bin
+  ```
+- **Windows / Linux / macOS (NPM Global):**
+  ```bash
+  npm install -g codebase-memory-mcp
+  ```
+
+### Opsi B — Manual Copy
+```bash
+# 1. Clone repositori ini
+git clone https://github.com/Noisesless/brainvibes.git
+
+# 2. Salin berkas konfigurasi utama ke direktori AI Anda:
+#    Linux / macOS:
+cp brainvibes/gemini*.md brainvibes/prd-template.md brainvibes/design-system.md \
+   brainvibes/AGENTS.md brainvibes/user-prefs.md ~/.gemini/
+cp -r brainvibes/config/* ~/.gemini/config/
+cp -r brainvibes/knowledge/* ~/.gemini/antigravity-ide/knowledge/
+
 #    Windows (Gemini CLI / Antigravity IDE):
 copy brainvibes\gemini.md               %USERPROFILE%\.gemini\gemini.md
 copy brainvibes\gemini-execution.md     %USERPROFILE%\.gemini\gemini-execution.md
@@ -210,21 +247,14 @@ xcopy brainvibes\config                  %USERPROFILE%\.gemini\config /E /I /Y
 xcopy brainvibes\knowledge               %USERPROFILE%\.gemini\antigravity-ide\knowledge /E /I /Y
 
 # 3. Setup Yasei-2 Agentic CLI Subsistem (Windows):
-#    Membuat folder target dan menyalin core script + global wrapper
 mkdir %USERPROFILE%\.qwen
 copy brainvibes\yasei-cli.ps1            %USERPROFILE%\.qwen\yasei.ps1
 mkdir %USERPROFILE%\.local\bin
 echo @echo off > %USERPROFILE%\.local\bin\yasei.cmd
 echo powershell -NoProfile -ExecutionPolicy Bypass -File "%USERPROFILE%\.qwen\yasei.ps1" %%* >> %USERPROFILE%\.local\bin\yasei.cmd
-
-#    Unix / macOS:
-cp brainvibes/gemini*.md brainvibes/prd-template.md brainvibes/design-system.md \
-   brainvibes/AGENTS.md brainvibes/user-prefs.md ~/.gemini/
-cp -r brainvibes/config/* ~/.gemini/config/
-cp -r brainvibes/knowledge/* ~/.gemini/antigravity-ide/knowledge/
 ```
 
-> Selesai. AI utama (IDE) akan otomatis membaca DNA brainvibes di sesi berikutnya, dan perintah `yasei` sekarang bisa dipanggil dari terminal di direktori mana pun!
+> Selesai. AI utama (IDE) akan otomatis membaca DNA brainvibes di sesi berikutnya, dan daemon CBM siap menyuplai graph intelligence!
 
 ---
 
@@ -320,7 +350,7 @@ CLI ini berjalan sebagai orchestrator lokal yang menangkap tag aksi dari respons
 - **Melihat Isi Direktori**: `[LIST_DIR:path/to/folder]` -> List file di dalam subdirektori proyek Anda.
 
 ### Integrasi Protokol Settings
-- **Global Settings**: CLI secara otomatis mem-parse berkas `%USERPROFILE%\.gemini\user-prefs.md` untuk mengidentifikasi preferensi bahasa (`user_language`), stack default, dan batasan `anti_slop_mode`.
+- **Global Settings**: CLI secara otomatis mem-parse berkas `$HOME/.gemini/user-prefs.md` (Windows: `%USERPROFILE%\.gemini\user-prefs.md`) untuk mengidentifikasi preferensi bahasa (`user_language`), stack default, dan batasan `anti_slop_mode`.
 - **Project Context**: CLI mendeteksi keberadaan berkas `app-context.md` atau `prd.md` di direktori kerja aktif dan menyisipkannya ke asisten agar memahami konteks spesifikasi proyek secara otomatis.
 
 ---
@@ -433,7 +463,7 @@ Brainvibes v4.0.0 mengimplementasikan **10 perbaikan efisiensi** yang secara sig
 | 7 | **app-context.md Priority Compression** (stable pages compressed) | ~15K | High — 30-50% reduction |
 | 8 | **Context Caching Mechanism** (mtime check, skip re-read) | ~20K | CRITICAL — no duplicate reads |
 | 9 | **Security Patterns Cache** (per-session cache) | ~8K | High — 50 writes = 400K saved |
-| 10 | **Optimized Git Commit Commands** (PowerShell single command) | ~0.1K | Minimal — faster execution |
+| 10 | **Optimized Git Commit Commands** (Single command) | ~0.1K | Minimal — faster execution |
 | **TOTAL** | | **~99.6K** | |
 
 ### Context Before vs After
@@ -524,7 +554,8 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.1.0` | [Current] | **Code Intelligence Graph, Daemon Automation & Security Hardening**: Integrasi native `codebase-memory-mcp` (AST knowledge graph, 15 tools, 3D Web UI di port 9749) dengan otomatisasi daemon pada siklus Antigravity IDE (`hooks.json` + `cbm-hook.ps1`), skrip indexing terintegrasi (`index-project.ps1`), sinkronisasi true sync MCP (`sync.ps1` Step 10), pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025. |
+| `v4.2.0` | [Current] | **Dual-Platform Linux Support & Native Shell Automation**: Implementasi sinkronisasi Bash native (`sync.sh`), porting seluruh skrip otomasi ke Linux (`cbm-hook.sh`, `ensure-cbm-daemon.sh`, `index-project.sh`), adaptasi path dinamis Linux di `hooks.json`, `mcp_config.json`, dan `user-prefs.md`, serta verifikasi instalasi paket Arch/AUR `codebase-memory-mcp-bin` di Linux (CachyOS/Arch). |
+| `v4.1.0` | [`a2f10bc`](https://github.com/Noisesless/brainvibes/commit/a2f10bc) | **Code Intelligence Graph, Daemon Automation & Security Hardening**: Integrasi native `codebase-memory-mcp` (AST knowledge graph, 15 tools, 3D Web UI di port 9749) dengan otomatisasi daemon pada siklus Antigravity IDE (`hooks.json` + `cbm-hook.ps1`), skrip indexing terintegrasi (`index-project.ps1`), sinkronisasi true sync MCP (`sync.ps1` Step 10), pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025. |
 | `v4.0.1` | [`7ec8b8c`](https://github.com/Noisesless/brainvibes/commit/7ec8b8c) | **Framework Cleanup & MCP Fix**: Perbaikan tautan cross-reference antar file framework, sentralisasi 16 larangan Anti-AI-SLOP ke `visual-rules.md`, pembersihan duplikasi simulasi, serta penghapusan server MCP `web_search` yang rusak agar terhindar dari hang loop. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture, Efficiency Intelligence & SSI**: Pemecahan monolith 146KB ke 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md). Mengimplementasikan 10 gap fixes efisiensi (UUPM cache, handover truncation 500 lines, parallel loading, app-context compression, context caching). Mengintegrasikan Smart Skill Integration (SSI), sinkronisasi 7 berkas `.docs/`, mitigasi shell non-aktif, drift port server, pre-flight check MCP, 3 HARD BLOCK visual baru, Rhythm Score System (`§0.I`), dan Asymmetric Card Geometry (`§0.J-4`). |
 | `v2.3.0` | [`a1b2c3d`](https://github.com/Noisesless/brainvibes/commit/a1b2c3d) | **Visual Output Gate & Anti-Slop UI Enforcement**: Mengubah mekanisme pemicuan taste-skill dari kata kunci (input-based) menjadi tipe output (output-based). Menambahkan 4 aturan Anti-AI-SLOP baru: larangan ikon SVG mentah, larangan border/hiasan pada logo, larangan mencampur pustaka ikon, serta kewajiban rekomendasi style sesuai Visual DNA sebelum koding. |

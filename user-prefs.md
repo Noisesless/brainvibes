@@ -6,7 +6,7 @@
 [IDENTITY]
 user_language      = id-ID                        # Bahasa interaksi ke user
 fallback_lang      = en-US                        # Fallback untuk istilah teknis
-user_name          = GBC_PC                       # Username mesin lokal
+user_name          = gbc                          # Username mesin lokal
 
 [DEVELOPMENT]
 default_port_vite  = 5173                         # Default Vite/React dev server
@@ -14,7 +14,7 @@ default_port_next  = 3100                         # Default Next.js dev server
 default_port_php   = 8080                         # Default PHP/Laravel dev server
 package_manager    = npm                          # npm | pnpm | yarn | bun
 local_server       = XAMPP Apache                 # Server lokal yang digunakan
-local_base_path    = C:\xampp\htdocs\             # Base path XAMPP
+local_base_path    = /run/media/gbc/8EE4D697E4D680BF/xampp/htdocs/  # Base path XAMPP (ext drive)
 db_engine          = MySQL                        # Database engine default
 
 [DESIGN_DEFAULTS]

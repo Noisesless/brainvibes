@@ -48,7 +48,7 @@
 3. **Anti-Blind Dependency:** FORBIDDEN update semua dependensi sepihak saat debug.
 4. **Dev Port Blacklist:** FORBIDDEN port `8000` dan `3000`. Default: `5173` (Vite), `3100` (Next.js), `8080` (PHP/Laravel).
 5. **Security-Aware & Lessons-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` dan `lessons-learned` data SILENT → terapkan pattern aman dan hindari anti-patterns yang pernah gagal.
-6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` kecuali: butuh klik/interaksi UI, JS rendering URL eksternal, login browser, atau user eksplisit minta recording. Jika `user-prefs.md scratchpad_dom = FORBIDDEN` → localhost/DOM check TETAP FORBIDDEN tanpa permintaan eksplisit user di turn tersebut. Semua cek DOM/scratchpad/build → `read_url_content`. → Detail: `AGENTS.md §BROWSER TOOL GATE`
+6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` ke localhost/port lokal. FORBIDDEN tanpa log `[Browser Gate]`. Cek DOM/build → `read_url_content`. → Enforcement: `AGENTS.md §BROWSER TOOL GATE`
 7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser. **Pengecualian:** Saat mode audit aktif (`cek komponen`, `analisa kualitas`) dan `audit_mode_override=true` → batas file/baris DITANGGUHKAN. → Detail: `gemini-execution.md §3.C.2 (FSEP) #4`
 
 

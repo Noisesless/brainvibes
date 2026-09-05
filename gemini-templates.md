@@ -347,7 +347,7 @@ Jika ada item yang belum dicentang `[ ]`, perbaiki SEBELUM melanjutkan ke tahap 
 - **Archive Format:** `.archive/handover-YYYY-MM-DD-HHMM.md`
 - **Keep:** 100 baris terbaru di handover.md aktif
 - **Archive Content:** Semua section + log changes dari versi sebelumnya
-- **Auto-Cleanup:** Archive > 30 hari → hapus otomatis (via sync.ps1)
+- **Auto-Cleanup:** Archive > 30 hari → hapus otomatis (via sync.sh / sync.ps1)
 - **Token Cost:** Constant ~1.5K tokens (bukan unbounded growth)
 
 **Implementasi:**

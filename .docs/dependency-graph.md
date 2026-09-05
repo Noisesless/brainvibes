@@ -18,11 +18,11 @@
 | `gemini-execution.md` | gemini.md, user-prefs.md | Execution workflow | High |
 | `gemini-templates.md` | gemini.md, user-prefs.md | Macro commands | High |
 | `prd-template.md` | gemini.md, design-system.md | PRD generation | High |
-| `sync.ps1` | scripts/ensure-cbm-daemon.ps1 | Sync mechanism (core, config, knowledge, CBM) | High |
-| `scripts/cbm-hook.ps1` | codebase-memory-mcp.exe | Antigravity IDE PreInvocation hook | High |
-| `scripts/index-project.ps1` | scripts/ensure-cbm-daemon.ps1 | Indexing AST graph + UI assurance | Medium |
-| `scripts/ensure-cbm-daemon.ps1` | codebase-memory-mcp.exe | CBM daemon background health guard | Medium |
-| `yasei-cli.ps1` | user-prefs.md, app-context.md | CLI subsystem | Medium |
+| `sync.sh` / `sync.ps1` | scripts/ensure-cbm-daemon (.sh/.ps1) | Sync mechanism (core, config, knowledge, CBM) | High |
+| `scripts/cbm-hook` (.sh/.ps1) | codebase-memory-mcp binary | Antigravity IDE PreInvocation hook | High |
+| `scripts/index-project` (.sh/.ps1) | scripts/ensure-cbm-daemon (.sh/.ps1) | Indexing AST graph + UI assurance | Medium |
+| `scripts/ensure-cbm-daemon` (.sh/.ps1) | codebase-memory-mcp binary | CBM daemon background health guard | Medium |
+| `yasei-cli.ps1` | user-prefs.md, app-context.md | CLI subsystem (Windows) | Medium |
 | `app-context-template.md` | gemini.md | Context snapshot | Medium |
 
 
@@ -92,7 +92,7 @@ Antigravity IDE (User Turn / Invocations)
     ↓
 hooks.json (PreInvocation)
     ↓
-scripts/cbm-hook.ps1 (<100ms socket check)
+scripts/cbm-hook (.sh/.ps1) (<100ms socket check)
     ↓
 codebase-memory daemon (port 9749 background listener & 3D UI)
     ↓

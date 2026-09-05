@@ -1,12 +1,12 @@
 <!--
-  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557
-  \u2551  APP-CONTEXT MASTER TEMPLATE \u2014 Antigravity IDE Global Config        \u2551
-  \u2551  Path: C:\Users\GBC_PC\.gemini\config\app-context-template.md      \u2551
-  \u2551  Format: MACHINE-OPTIMIZED v2.0 \u2014 sesuai gemini.md \u00a7APP-CONTEXT      \u2551
-  \u2551  Tujuan: Template acuan AI saat generate app-context.md per proyek  \u2551
-  \u2551  Target ukuran output: \u2264100 baris, \u22645 KB per proyek                 \u2551
-  \u2551  Version: 2.1 (2026-07-16 \u2014 migrated to machine-optimized format)   \u2551
-  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d
+  ╔════════════════════════════════════════════════════════════════════════════╗
+  ║  APP-CONTEXT MASTER TEMPLATE — Antigravity IDE Global Config        ║
+  ║  Path: ~/.gemini/config/app-context-template.md                    ║
+  ║  Format: MACHINE-OPTIMIZED v2.0 — sesuai gemini.md §APP-CONTEXT      ║
+  ║  Tujuan: Template acuan AI saat generate app-context.md per proyek  ║
+  ║  Target ukuran output: ≤100 baris, ≤5 KB per proyek                 ║
+  ║  Version: 2.1 (2026-07-16 — migrated to machine-optimized format)   ║
+  ╚════════════════════════════════════════════════════════════════════════════╝
 
   CARA GENERATE app-context.md:
   1. Baca prd.md \u00a71\u2013\u00a73 + todo.md + .env untuk mendapatkan data aktual proyek

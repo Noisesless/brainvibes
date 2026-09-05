@@ -8,7 +8,7 @@
 ### §3.A User Preferences Loading & Instruction Validation (Context-Awareness) <!-- anchor:3A -->
 
 -1. **User Preferences Load (HIGHEST PRIORITY — Silent — Setiap Sesi):**
-    SEBELUM apapun, AI REQUIRED baca `%USERPROFILE%\.gemini\user-prefs.md` secara senyap:
+    SEBELUM apapun, AI REQUIRED baca `$HOME/.gemini/user-prefs.md` (Windows: `%USERPROFILE%\.gemini\user-prefs.md`) secara senyap:
     - Ambil `[DEVELOPMENT]` → gunakan sebagai default port, package manager, db engine
     - Ambil `[DESIGN_DEFAULTS]` → gunakan sebagai fallback jika user tidak memilih font/palet/geometry
     - Ambil `[AI_BEHAVIOR].context7_whitelist` → aktifkan auto-trigger context7 untuk library ini
@@ -331,6 +331,8 @@ FORBIDDEN asumsi VDNA tanpa konfirmasi
 
 ### §4.H Browser Tool Gate — Token Anti-Waste Protocol <!-- anchor:4H -->
 
+> **⚠️ Primary enforcement di `AGENTS.md §BROWSER TOOL GATE` (selalu di context). Section ini adalah supplementary detail.**
+
 > ⛔ **HARD BLOCK:** AI **FORBIDDEN** memanggil `browser_subagent` tanpa memenuhi MINIMAL SATU dari kondisi di bawah. Pelanggaran = **Token Waste Violation**.
 
 #### Decision Tree (Wajib Dijalankan Sebelum Pakai Browser Tool):
@@ -647,16 +649,16 @@ Security patterns (security-patterns data) **CACHE per session**. No full file r
 ---
 
 ### §4M.G Optimized Git Commit Commands (Fix Gap 10)
-Git commit **OPTIMIZED untuk PowerShell**. Single command, faster execution.
+Git commit **OPTIMIZED single command**, faster execution.
 
 **Before (2 commands, 2-4 detik):**
-```powershell
+```bash
 git add -A
 git commit -m "feat: add login page"
 ```
 
 **After (1 command, 0.5 detik):**
-```powershell
+```bash
 git add -A && git commit -m "feat: add login page"
 ```
 
@@ -869,8 +871,8 @@ GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5 selesai
 
 > ⚠️ **PATH RESOLUTION (SearchPath Wajib Absolute):**
 > Tool `grep_search` mewajibkan `SearchPath` absolut. Gunakan direktori dataset UUPM:
-> - **Global Path (Default di semua proyek):** `C:\Users\GBC_PC\.gemini\config\skills\ui-ux-pro-max\data\`
-> - **Local Path (Khusus repo Brainvibes):** `c:\xampp\htdocs\brainvibes\config\skills\ui-ux-pro-max\data\`
+> - **Global Path (Default di semua proyek):** `$HOME/.gemini/config/skills/ui-ux-pro-max/data/` (Windows: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\`)
+> - **Local Path (Khusus repo Brainvibes):** `<workspace-root>/config/skills/ui-ux-pro-max/data/`
 
 Lakukan pembacaan data langsung via `grep_search` dengan langkah berikut:
 

@@ -34,8 +34,9 @@ Ekstrak dari permintaan:
 ### Step 2 — Generate Design System (REQUIRED — Diam-diam)
 
 **Opsi A — Python tersedia:**
-```powershell
-python "$env:USERPROFILE\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<tipe_produk> <industri> <kata_kunci>" --design-system
+```bash
+python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "<tipe_produk> <industri> <kata_kunci>" --design-system
+# Windows: python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<tipe_produk> <industri> <kata_kunci>" --design-system
 ```
 
 Output memberikan: palet warna (Primary, Accent, Background), gaya visual terbaik,
@@ -43,8 +44,8 @@ font pairing, efek CSS, dan checklist implementasi.
 
 **Opsi B — Direct-Read CSV (Jika Python tidak tersedia/gagal):**
 JANGAN skip desain. Lakukan manual CSV read via `grep_search` dengan `SearchPath` absolut:
-- **Global Path:** `C:\Users\GBC_PC\.gemini\config\skills\ui-ux-pro-max\data\`
-- **Workspace Path:** `c:\xampp\htdocs\brainvibes\config\skills\ui-ux-pro-max\data\`
+- **Global Path:** `$HOME/.gemini/config/skills/ui-ux-pro-max/data/` (Windows: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\`)
+- **Workspace Path:** `<workspace-root>/config/skills/ui-ux-pro-max/data/`
 
 ```
 1. grep_search SearchPath: "<PATH>\colors.csv" | Query: "[industri/Product Type]"
@@ -71,9 +72,9 @@ JANGAN skip desain. Lakukan manual CSV read via `grep_search` dengan `SearchPath
 Catat sumber: `[UUPM Source] Direct-Read CSV — colors.csv, styles.csv, typography.csv, ui-reasoning.csv (SearchPath: <PATH>)`
 
 ### Step 3 — Domain Search Spesifik (Jika Dibutuhkan)
-```powershell
-python "$env:USERPROFILE\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<query>" --domain [color|style|typography|ux|chart|landing]
-python "$env:USERPROFILE\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "<query>" --stack [laravel|nextjs|react|vue|astro|...]
+```bash
+python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "<query>" --domain [color|style|typography|ux|chart|landing]
+python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "<query>" --stack [laravel|nextjs|react|vue|astro|...]
 ```
 
 ### Step 4 — Konversi ke design-system.md Token

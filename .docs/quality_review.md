@@ -10,8 +10,8 @@
 | Skills | 12 folders | ✅ |
 | Knowledge Bases | 3 | ✅ |
 | MCP Servers | 2 (Lean Stack) | ✅ |
-| Version | 4.1.0 | ✅ |
-| Total Size | ~540KB | ✅ |
+| Version | 4.2.0 | ✅ |
+| Total Size | ~550KB | ✅ |
 
 ### File Size Distribution
 | Category | Files | Total Size |
@@ -21,7 +21,7 @@
 | Skills data | ~40 | ~350KB |
 | Knowledge artifacts | ~10 | ~50KB |
 | Config/JSON | ~17 | ~6KB |
-| Scripts/Tools | 7 | ~60KB |
+| Scripts/Tools | 10 | ~65KB |
 
 ## Linting & Validation
 
@@ -36,10 +36,11 @@
 - ✅ Consistent indentation (2 spaces)
 - ✅ Required fields present
 
-### PowerShell Scripts
-- ✅ Syntax validation
-- ✅ Error handling (try/catch)
-- ✅ Comment documentation
+### Shell & PowerShell Scripts (Dual-Platform)
+- ✅ Syntax validation (Bash `set -euo pipefail` & PowerShell StrictMode)
+- ✅ Fast socket checks (<100ms port 9749)
+- ✅ Error handling (try/catch & fallback checks)
+- ✅ Comment documentation & execution permissions (`chmod +x`)
 
 ## Complexity Analysis
 
@@ -116,7 +117,7 @@
 5. **Knowledge Base** — 3 bases untuk error, retro, patterns
 
 ### Areas for Improvement
-1. **Documentation Coverage** — `.docs/` lengkap (8 files termasuk deployment.md)
+1. **Documentation Coverage** — `.docs/` lengkap (9 files termasuk deployment.md & design-system.md)
 2. **Version Tracking** — Changelog perlu update di semua instansi
 3. **Testing** — Belum ada test suite untuk validasi instructions
 4. **Size Optimization** — `taste-skill-bridge/SKILL.md` 36.5KB (bisa di-split)
