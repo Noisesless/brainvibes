@@ -4,8 +4,8 @@
 
 ### codebase-memory (Code Intelligence Graph)
 
-**Binary:** `%USERPROFILE%\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe`
-**Version:** 0.10.5
+**Binary:** Linux: `/usr/bin/codebase-memory-mcp` (AUR `codebase-memory-mcp-bin`) | Windows: `%LOCALAPPDATA%\Programs\codebase-memory-mcp\codebase-memory-mcp.exe`
+**Version:** 0.10.8 (Linux) | 0.10.5+ (Windows)
 **Type:** Local native binary (Pure C, zero runtime dependencies)
 **Cache:** `~/.cache/codebase-memory-mcp/`
 **Graph UI:** `http://localhost:9749` (built-in 3D visualization)
@@ -92,16 +92,16 @@
 
 | Hook Event | Matcher | Handler Script | Purpose |
 |---|---|---|---|
-| `PreInvocation` | (global) | `cbm-hook.ps1` | Fast socket check 127.0.0.1:9749 (<100ms) & start CBM daemon in hidden window if inactive |
+| `PreInvocation` | (global) | `cbm-hook.sh` / `cbm-hook.ps1` | Fast socket check 127.0.0.1:9749 (<100ms) & start CBM daemon in background if inactive |
 
 ### Automation Scripts
 
-| Script | Purpose | Usage |
+| Script | Purpose | Usage (Linux / Windows) |
 |---|---|---|
-| `ensure-cbm-daemon.ps1` | Standalone socket checker & daemon launcher | `.\scripts\ensure-cbm-daemon.ps1` |
-| `index-project.ps1` | Auto-daemon check + index repository AST | `.\scripts\index-project.ps1 -RepoPath "." -Mode full` |
-| `cbm-hook.ps1` | Antigravity IDE JSON-compliant hook | Called automatically by IDE via `hooks.json` |
-| `sync.ps1` | Global sync master → `~/.gemini/` + true sync MCP | `.\sync.ps1` |
+| `ensure-cbm-daemon.sh` / `.ps1` | Standalone socket checker & daemon launcher | `./scripts/ensure-cbm-daemon.sh` / `.\scripts\ensure-cbm-daemon.ps1` |
+| `index-project.sh` / `.ps1` | Auto-daemon check + index repository AST | `./scripts/index-project.sh "." full` / `.\scripts\index-project.ps1 -RepoPath "." -Mode full` |
+| `cbm-hook.sh` / `.ps1` | Antigravity IDE JSON-compliant hook | Called automatically by IDE via `hooks.json` |
+| `sync.sh` / `sync.ps1` | Global sync master → `~/.gemini/` + true sync MCP | `./sync.sh` / `.\sync.ps1` |
 
 ### Session Init Flow
 ```

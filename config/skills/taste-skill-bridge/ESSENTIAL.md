@@ -98,7 +98,7 @@ Setelah Design Read, set 3 dials. Semua keputusan layout, motion, density mengac
 
 ## 🔴 HARD BLOCKS (100% Compliance)
 
-Semua visual task wajib mematuhi 16 larangan Anti-AI-SLOP yang tercantum dalam single source of truth: [visual-rules.md](../visual-rules.md) (atau `%USERPROFILE%\.gemini\config\skills\visual-rules.md`).
+Semua visual task wajib mematuhi 16 larangan Anti-AI-SLOP yang tercantum dalam single source of truth: [visual-rules.md](../visual-rules.md) (atau `$HOME/.gemini/config/skills/visual-rules.md` / Windows: `%USERPROFILE%\.gemini\config\skills\visual-rules.md`).
 
 > **Detail lengkap:** Baca `taste-skill-bridge/DETAILED.md` (STEP 2-6)
 > **Checklist:** Baca `taste-skill-bridge/REFERENCE.md` (Pre-Flight Checklist)

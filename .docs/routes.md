@@ -29,8 +29,8 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 | `cek komponen` | Component & OWASP compliance check | `security-patterns/data/`, `app-context.md` | ✅ Active |
 | `pentest*` | DAST via Strix AI | `security-patterns/data/`, `pentest-strix/` | ✅ Active |
 | `redesign` | Visual overhaul & layout intelligence | `taste-skill router`, `UUPM Direct-Read`, `gemini-execution.md §4K`, `design-system.md §7B` | ✅ Active |
-| `index project` | AST graph index + daemon ensure | `scripts/index-project.ps1` | ✅ Active |
-| `auto-sync` | Setiap 5 task / manual sync | `sync.ps1` (Step 1-10) | ✅ Active |
+| `index project` | AST graph index + daemon ensure | `scripts/index-project` (.sh/.ps1) | ✅ Active |
+| `auto-sync` | Setiap 5 task / manual sync | `sync.sh` / `sync.ps1` (Step 1-10) | ✅ Active |
 | `auto-docs` | Setiap 5 task selesai | `/.docs/` files update | ✅ Active |
 
 ## Middleware Chain

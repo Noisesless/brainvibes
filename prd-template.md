@@ -90,8 +90,9 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
 *(AI Dilarang keras menggunakan nilai atau gaya di luar aturan konsistensi visual ini. Seluruh token warna REQUIRED diimplementasikan menggunakan variabel CSS root, FORBIDDEN keras melakukan hardcode nilai Hex murni langsung pada komponen UI)*
 
 > **[UUPM AUTO-FILL]** Sebelum wawancara palet dimulai, AI REQUIRED menjalankan secara diam-diam:
-> ```cmd
-> python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi proyek]" --design-system
+> ```bash
+> python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[deskripsi proyek]" --design-system
+> # Windows: python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi proyek]" --design-system
 > ```
 > Hasil rekomendasi palet, gaya, dan font digunakan sebagai **basis draf awal** di §3 ini.
 > User tinggal memverifikasi dan menyetujui — bukan mengisi dari nol.

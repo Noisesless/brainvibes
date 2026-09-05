@@ -24,8 +24,9 @@ python --version
 ```
 
 **Jika Python TERSEDIA** → jalankan UUPM search:
-```cmd
-python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system
+```bash
+python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system
+# Windows: python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system
 ```
 
 Ekstrak dari output:
@@ -35,7 +36,7 @@ Ekstrak dari output:
 - **`Implementation Checklist`** → jadi pre-delivery checklist
 
 **Jika Python TIDAK TERSEDIA (Terhambat/Gagal/Izin Ditolak)** → lakukan **Direct-Read Fallback**:
-1. Jangan biarkan desain di-skip. Gunakan tool `view_file` atau `grep_search` secara langsung untuk mengurai file database UUPM di folder `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data/`:
+1. Jangan biarkan desain di-skip. Gunakan tool `view_file` atau `grep_search` secara langsung untuk mengurai file database UUPM di folder `$HOME/.gemini/config/skills/ui-ux-pro-max/data/` (Windows: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\`):
    - `colors.csv` -> Cari baris kategori industri/vibe terkait untuk mendapatkan Primary/Accent hex.
    - `styles.csv` -> Cari baris gaya visual terkait untuk mendapatkan variabel layout.
    - `typography.csv` -> Dapatkan font pairing yang sesuai.
@@ -47,8 +48,8 @@ Ekstrak dari output:
 3. Catat di prd.md §3: `Sumber Palet: UUPM Direct-Read CSV (Python tidak aktif)`
 
 Jika stack terdeteksi (React/Next.js/Laravel), jalankan tambahan:
-```cmd
-python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[komponen]" --stack [nextjs|react|laravel|vue|astro]
+```bash
+python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[komponen]" --stack [nextjs|react|laravel|vue|astro]
 ```
 
 ---

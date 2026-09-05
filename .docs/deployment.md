@@ -329,9 +329,36 @@ curl -o /dev/null -s -w "Time: %{time_total}s\n" https://[DOMAIN]
 | Downtime darurat | `pm2 stop [SLUG]` → aktifkan maintenance page di Nginx |
 | Restore database | `mysql -u [DB_USER] -p [DB_NAME] < backup_[DATE].sql` |
 
+## Brainvibes Global IDE Deployment (Dual-Platform)
+
+Panduan deployment dan sinkronisasi sistem konfigurasi Brainvibes ke folder global AI (`~/.gemini/`):
+
+### 1. Windows (PowerShell)
+```powershell
+# Jalankan di terminal PowerShell (Run as Admin jika perlu CBM daemon setup)
+cd D:\xampp\htdocs\brainvibes
+.\sync.ps1
+```
+
+### 2. Linux / macOS (Bash)
+```bash
+# Prasyarat Linux: bash, jq, rsync, codebase-memory-mcp-bin (AUR/npm)
+cd /run/media/gbc/8EE4D697E4D680BF/xampp/htdocs/brainvibes
+chmod +x sync.sh scripts/*.sh
+./sync.sh
+```
+
+### 3. Komponen yang Disinkronkan
+- **Core Rules:** `gemini.md`, `gemini-execution.md`, `gemini-templates.md`, `prd-template.md`, `design-system.md`, `AGENTS.md`, `user-prefs.md` → `~/.gemini/`
+- **Skills System:** 12 folder skill → `~/.gemini/config/skills/`
+- **Knowledge Bases:** 3 knowledge folders → `~/.gemini/antigravity-ide/knowledge/`
+- **Lifecycle Hooks:** `config/hooks.json` → `~/.gemini/config/hooks.json`
+- **MCP Servers:** `mcp_config.json` → merged ke `~/.gemini/settings.json`
+
 ## Related Files
 
 - `deployment-checklist` skill: `config/skills/deployment-checklist/`
+- `sync.sh` (Linux) & `sync.ps1` (Windows): Root directory
 - Environment template: `.env.example`
 - Build config: `package.json` / `composer.json`
 

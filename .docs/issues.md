@@ -10,6 +10,7 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-026 | Dual-Platform Linux Support & Shell Automation | Implementasi `sync.sh` (Bash port sync.ps1), porting seluruh skrip otomasi (`cbm-hook.sh`, `ensure-cbm-daemon.sh`, `index-project.sh`), adaptasi path dinamis Linux di `hooks.json`, `mcp_config.json`, `user-prefs.md`, serta verifikasi instalasi paket Arch/AUR `codebase-memory-mcp-bin` | 2026-09-04 |
 | RES-025 | Dynamic Local PC Paths & Settings Cleanup | Mengganti hardcoded user path (GBC_PC) dengan dynamic `$env:LOCALAPPDATA` / `ClasNet` pada semua script helper (`sync.ps1`, `ensure-cbm-daemon.ps1`, `cbm-hook.ps1`, `index-project.ps1`) dan MCP config, serta auto-clean blok legacy `mcpServers` di settings.json | 2026-09-02 |
 | RES-024 | Overhaul Visual Pipeline & Component Tokens | Pemecahan `taste-skill-bridge/SKILL.md` 824 baris ke router 61 baris, pembuatan `CHEATSHEET.md` & `MODEL_HINTS.md` (anti-slop Gemini Flash), penambahan saklar `redesign` di `gemini.md`, implementasi §4K & §4I di `gemini-execution.md`, integrasi `ui-reasoning.csv` di UUPM, serta penetapan single source of truth komponen di `design-system.md §7B` | 2026-09-02 |
 | RES-023 | Otomatisasi Daemon & UI `codebase-memory-mcp` (Port 9749) | Menambahkan Antigravity IDE lifecycle hook (`hooks.json` + `cbm-hook.ps1`), standalone helper (`ensure-cbm-daemon.ps1`), index automation (`index-project.ps1`), dan auto-start step 10 pada `sync.ps1` | 2026-08-16 |

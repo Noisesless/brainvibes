@@ -1,6 +1,6 @@
 <!-- WORKSPACE COPY — jika file ini sudah di-load sebagai global rule, AI gunakan cached copy -->
 # AGENTS.md — Global AI Behavior Rules (Antigravity IDE)
-# Path: %USERPROFILE%\.gemini\AGENTS.md
+# Path: $HOME/.gemini/AGENTS.md (Windows: %USERPROFILE%\.gemini\AGENTS.md)
 # Berlaku untuk: Gemini CLI | Antigravity IDE | Cursor | Copilot (semua sesi, semua proyek)
 # Rules ini MENAMBAH, bukan menggantikan, gemini.md
 
@@ -21,9 +21,16 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 
 ---
 
-## BROWSER TOOL GATE & RULE PRIORITY (Cross-Reference)
-- **Browser Tool Gate:** Spesifikasi lengkap Browser Tool Gate dan Proteksi Absolut Scratchpad DOM diatur sepenuhnya di [gemini-execution.md §4.H](file:///c:/xampp/htdocs/brainvibes/gemini-execution.md) (anchor:4H). AI wajib menulis log `[Browser Gate] Alasan: ...` sebelum memanggil `browser_subagent`.
-- **Rule Priority System:** Aturan kepatuhan (Critical, Important, Nice-to-have) diatur sepenuhnya di [gemini-execution.md §4M.H](file:///c:/xampp/htdocs/brainvibes/gemini-execution.md) (anchor:4M.H).
+## §BROWSER TOOL GATE (ABSOLUTE ENFORCEMENT — INLINE)
+⛔ **FORBIDDEN** memanggil `browser_subagent` ke `localhost`, `127.0.0.1`, atau port dev lokal untuk tujuan apapun:
+- Verifikasi build, cek tampilan, render check, lihat DOM, screenshot lokal, scratchpad debug.
+- **Alternatif WAJIB:** `read_url_content` ke localhost URL.
+- **Exception tunggal:** User mengetik permintaan eksplisit di turn tersebut (contoh: "buka browser ke localhost:3100").
+- **Sebelum SETIAP `browser_subagent` call:** Wajib cetak `[Browser Gate] Alasan: [justifikasi]`. Tanpa log = VIOLATION.
+- **Pelanggaran** = cetak `[SCRATCHPAD BLOCKED]`, batalkan call, STOP, tunggu instruksi user.
+- Supplementary detail: `gemini-execution.md §4.H`
+
+**Rule Priority:** Critical > Important > Nice-to-have. Detail: `gemini-execution.md §4M.H`
 
 ---
 
@@ -44,10 +51,10 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 | `quick-scaffold` | `config/skills/quick-scaffold/` | buat komponen, buat model, buat controller, buat form, scaffold, generate file | Baca SKILL.md deskripsi → data/ jika perlu scaffold |
 
 
-*Mekanisme Smart Skill Integration (SSI) diatur sepenuhnya di [gemini-execution.md §4N](file:///c:/xampp/htdocs/brainvibes/gemini-execution.md) (anchor:4N).*
+*Mekanisme Smart Skill Integration (SSI) diatur di `gemini-execution.md §4N`.*
 
 ---
 
 ## SECURITY-AWARE CODING & WEB SEARCH (Cross-Reference)
-- **Security-Aware Coding:** Ketika menulis kode auth/db/input/upload/API, AI wajib secara SILENT membaca `security-patterns` data. Detail di [gemini.md §1 STANDARD #5](file:///c:/xampp/htdocs/brainvibes/gemini.md) dan [gemini-execution.md §3.C](file:///c:/xampp/htdocs/brainvibes/gemini-execution.md) (anchor:3C).
-- **Web Search Protocol:** Protokol pencarian informasi web diatur di [gemini.md §1 HARD BLOCK #9](file:///c:/xampp/htdocs/brainvibes/gemini.md).
+- **Security-Aware Coding:** Ketika menulis kode auth/db/input/upload/API, AI wajib secara SILENT membaca `security-patterns` data. Detail di `gemini.md §1 STANDARD #5` dan `gemini-execution.md §3.C`.
+- **Web Search Protocol:** Protokol pencarian informasi web diatur di `gemini.md §1 HARD BLOCK #9`.

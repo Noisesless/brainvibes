@@ -10,7 +10,7 @@ Brainvibes sendiri bukan aplikasi dengan database, tapi sistem konfigurasi yang 
 |---|---|
 | `db_engine` | MySQL |
 | `local_server` | XAMPP Apache |
-| `local_base_path` | `C:\xampp\htdocs\` |
+| `local_base_path` | Linux: `/run/media/gbc/8EE4D697E4D680BF/xampp/htdocs/` (Windows: `C:\xampp\htdocs\`) |
 
 ## Schema Template (Generik untuk Semua Proyek)
 
