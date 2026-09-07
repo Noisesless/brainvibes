@@ -31,6 +31,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 ### 🔴 Critical (Harus sebelum deploy)
 - [ ] `.env.example` ada dan lengkap (tanpa secret values)
 - [ ] `.env` tidak masuk Git (cek `.gitignore`)
+- [ ] `.gitattributes` ada dan memastikan normalisasi line-endings (LF untuk Unix, CRLF untuk Windows)
 - [ ] `APP_DEBUG = false` di production
 - [ ] API keys/secrets tidak hardcode di source code
 - [ ] Database migration sudah dijalankan

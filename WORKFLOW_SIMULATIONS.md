@@ -1,4 +1,4 @@
-# Brainvibes v4.0.0 — Workflow Simulations
+# Brainvibes v4.2.0 — Workflow Simulations
 
 ## Simulasi 1: `awal baru` (Proyek Baru dari Nol)
 

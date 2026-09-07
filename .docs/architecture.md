@@ -16,6 +16,7 @@
     ├── user-prefs.md      → User preferences (highest priority)
     ├── design-system.md   → CSS tokens & design DNA
     ├── prd-template.md    → PRD blueprint
+    ├── .gitattributes     → Cross-platform line endings normalization (LF/CRLF)
     └── scripts/           → ensure-cbm-daemon (.ps1/.sh), index-project (.ps1/.sh), cbm-hook (.ps1/.sh)
     ↓
 [MCP Layer — 2 servers]
@@ -73,6 +74,12 @@ User Input → Presentation → Logic → Data → Response
 ### Layer 3: Skills & Knowledge
 - `config/skills/` → 12 skills (ui-ux-pro-max dengan Direct-Read & 14 dataset, taste-skill-bridge router v2.0, security-patterns, dll)
 - `knowledge/` → 3 knowledge bases (error-solutions, retrospectives, stack-patterns)
+
+### Layer 4: Cross-Platform Parity Engine
+- `sync.ps1` (PowerShell/Windows) & `sync.sh` (Bash/Linux) → Dual-platform sync ke `~/.gemini/`
+- `.gitattributes` → Normalisasi CRLF/LF otomatis
+- Unix File Mode `100755` → Hak eksekusi native di Linux/macOS
+- Dynamic PATH Resolution → `Get-Command` (Windows) & `command -v` (Linux) untuk binary CBM
 
 ## File Loading Protocol
 

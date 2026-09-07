@@ -33,6 +33,7 @@
 | `config/projects/*.json` | Project registry (UUID-based) |
 | `LICENSE` | MIT License |
 | `.gitignore` | Git ignore rules |
+| `.gitattributes` | Cross-platform line ending normalization (LF/CRLF) |
 | `README.md` | Project documentation |
 
 ### Skills (Leaf — isolated)

@@ -45,6 +45,7 @@
 | [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **MCP Server** — 2 servers: codebase-memory (code intelligence graph), context7 (library docs RAG) |
 | [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Auto-Sync Engine (Dual-Platform)** — Sinkronisasi master ke `~/.gemini/` (Windows via PowerShell, Linux/macOS via Bash), true-sync MCP settings, auto-clean archive, CBM daemon health check (Step 10) |
 | [`scripts/`](scripts/) | ~6KB | **Automation Scripts (Dual-Platform)** — `ensure-cbm-daemon.ps1/.sh`, `index-project.ps1/.sh` (auto-index + UI assurance), `cbm-hook.ps1/.sh` (IDE PreInvocation hook) |
+| [`.gitattributes`](.gitattributes) | ~0.3KB | **Git Attributes** — Normalisasi format baris lintas platform (LF untuk `.sh`, `.md`, `.json` dan CRLF untuk `.ps1`) |
 | [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Terminal coding agent subsistem alternatif untuk membaca/menulis file proyek secara otomatis |
 | `LICENSE` | ~36KB | MIT License |
 | `WORKFLOW_SIMULATIONS.md` | ~15KB | **Workflow Simulation** — Simulasi eksekusi macro commands untuk testing dan debugging |
@@ -532,7 +533,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 ```
 /[nama-proyek]/
-├── /.docs/                 ← Pusat dokumentasi teknis inti (wajib ada)
+├── /.docs/                 ← Pusat dokumentasi teknis inti (wajib 9 berkas)
 │   ├── architecture.md     ← Aliran data makro (Presentation → Logic → DB)
 │   ├── api-spec.md         ← Spesifikasi endpoint & server actions
 │   ├── database.md         ← Schema DDL SQL / Local JSON State blueprint
@@ -540,7 +541,8 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 │   ├── deployment.md       ← Target deploy, env mapping, checklist, rollback
 │   ├── routes.md           ← Peta routes aktif (Frontend & API)
 │   ├── dependency-graph.md ← Analisis import, critical files, circular deps
-│   └── issues.md           ← Bug tracker FIFO (max 10 resolved, OPEN wajib dipertahankan)
+│   ├── issues.md           ← Bug tracker FIFO (max 10 resolved, OPEN wajib dipertahankan)
+│   └── design-system.md    ← 1 Source of Truth visual design, CSS tokens, geometri, & token komponen (§7B)
 ├── /.scratchpad/            ← Zona debug terisolasi (Git-Ignored otomatis)
 ├── /src/ atau /app/         ← Source code aplikasi utama
 ├── /public/ atau /assets/   ← Aset statis + fallback image WebP
@@ -559,7 +561,7 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.2.0` | [Current] | **Dual-Platform Linux Support & Native Shell Automation**: Implementasi sinkronisasi Bash native (`sync.sh`), porting seluruh skrip otomasi ke Linux (`cbm-hook.sh`, `ensure-cbm-daemon.sh`, `index-project.sh`), adaptasi path dinamis Linux di `hooks.json`, `mcp_config.json`, dan `user-prefs.md`, serta verifikasi instalasi paket Arch/AUR `codebase-memory-mcp-bin` di Linux (CachyOS/Arch). |
+| `v4.2.0` | [`9b289f8`](https://github.com/Noisesless/brainvibes/commit/9b289f8) | **L1 Global Dispatcher, Dual-Mode Handover Engine & Dual-Platform Parity**: Master In-Memory L1 Switch Dispatch Table di `AGENTS.md` (fast-path ad-hoc resume, 0 tool call recognition), Dual-Mode Handover Engine (§3.B.7 `change_counter` & proactive drift detection via `git status`), sinkronisasi Bash native (`sync.sh`), normalisasi baris silang platform (`.gitattributes`), executable mode `100755` pada skrip shell Unix di Git, penanganan aman alias `GEMINI.md` (Windows NTFS case-insensitive crash fix di `sync.ps1`), parity cleanup legacy `mcpServers` di `sync.sh`, dan dynamic PATH resolution (`Get-Command`) di seluruh skrip helper Windows. |
 | `v4.1.0` | [`a2f10bc`](https://github.com/Noisesless/brainvibes/commit/a2f10bc) | **Code Intelligence Graph, Daemon Automation & Security Hardening**: Integrasi native `codebase-memory-mcp` (AST knowledge graph, 15 tools, 3D Web UI di port 9749) dengan otomatisasi daemon pada siklus Antigravity IDE (`hooks.json` + `cbm-hook.ps1`), skrip indexing terintegrasi (`index-project.ps1`), sinkronisasi true sync MCP (`sync.ps1` Step 10), pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025. |
 | `v4.0.1` | [`7ec8b8c`](https://github.com/Noisesless/brainvibes/commit/7ec8b8c) | **Framework Cleanup & MCP Fix**: Perbaikan tautan cross-reference antar file framework, sentralisasi 16 larangan Anti-AI-SLOP ke `visual-rules.md`, pembersihan duplikasi simulasi, serta penghapusan server MCP `web_search` yang rusak agar terhindar dari hang loop. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture, Efficiency Intelligence & SSI**: Pemecahan monolith 146KB ke 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md). Mengimplementasikan 10 gap fixes efisiensi (UUPM cache, handover truncation 500 lines, parallel loading, app-context compression, context caching). Mengintegrasikan Smart Skill Integration (SSI), sinkronisasi 7 berkas `.docs/`, mitigasi shell non-aktif, drift port server, pre-flight check MCP, 3 HARD BLOCK visual baru, Rhythm Score System (`§0.I`), dan Asymmetric Card Geometry (`§0.J-4`). |
