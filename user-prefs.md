@@ -59,7 +59,7 @@ context7_blacklist = bootstrap, jquery, wordpress
 
 [SESSION_PROTOCOL]
 read_app_context_first = true                     # Selalu baca app-context.md sebelum prd.md
-handover_trigger       = 5                        # Update handover setiap N sub-task selesai
+handover_trigger       = 5                        # Update handover setiap N code-changes atau sub-task selesai (dual-mode §3.B.7)
 
 [BROWSER_TOOL]
 browser_gate       = STRICT                       # STRICT | PERMISSIVE — STRICT: wajib justifikasi
@@ -84,10 +84,6 @@ ask_before_assume  = true                         # AI wajib tanya jika ragu, ja
 technical_debate   = true                         # AI boleh sanggah user dengan data faktual
 web_search_enabled = true                         # Aktifkan web search via MCP saat answer tidak tersedia
 fabrication_guard  = true                         # FORBIDDEN mengarang solusi/fakta/referensi yang tidak pasti
-
-
-
-
 
 
 [META]

@@ -12,7 +12,7 @@
     ├── gemini.md          → Core instructions (≤22KB)
     ├── gemini-execution.md → Execution rules (view_file on-demand)
     ├── gemini-templates.md → Macro commands (view_file on-demand)
-    ├── AGENTS.md          → Additional behavior rules
+    ├── AGENTS.md          → Master L1 Global Dispatcher (In-memory switch routing & fast-path resume)
     ├── user-prefs.md      → User preferences (highest priority)
     ├── design-system.md   → CSS tokens & design DNA
     ├── prd-template.md    → PRD blueprint
@@ -26,8 +26,8 @@
     ├── /src/              → Source code
     ├── /.docs/            → Documentation (9 files)
     ├── /.legacy/          → Legacy code (konversi mode)
-    ├── app-context.md     → AI snapshot (≤100 baris)
-    ├── handover.md        → Human-readable log (100 baris)
+    ├── app-context.md     → AI snapshot (≤100 baris, dual-mode auto-update)
+    ├── handover.md        → Human-readable log (100-500 baris, FIFO archive)
     ├── prd.md             → Project requirements
     └── todo.md            → Task checklist
 ```

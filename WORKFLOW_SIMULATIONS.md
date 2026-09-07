@@ -8,7 +8,6 @@ awal baru
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached from .gemini)
@@ -64,54 +63,48 @@ awal lanjut
 ```
 
 ### AI Execution Flow:
-
 ```
-[SESSION START]
+[SESSION START — L1 In-Memory Recognition]
+✅ AGENTS.md loaded globally (system prompt) → Saklar "awal lanjut" RECOGNIZED instantly (0 tool calls)
 ✅ Load user-prefs.md (cached, mtime unchanged → SKIP re-read)
-✅ Load app-context.md (cached, mtime unchanged → SKIP re-read)
-✅ Load prd.md (cached, mtime unchanged → SKIP re-read)
-✅ Load todo.md (cached, mtime unchanged → SKIP re-read)
-✅ Load gemini.md (cached, mtime unchanged → SKIP re-read)
-✅ Load gemini-execution.md (cached, mtime changed → RE-READ)
+✅ Load app-context.md (1 tool call snapshot read)
 
-[STEP 1] Context Recovery
-→ Read app-context.md [STATE] → last task: "build dashboard"
-→ Read todo.md → find [/] task: "build dashboard"
-→ Resume dari task aktif
+[STEP 1] Proactive Drift Detection (0.01 detik)
+→ Run: git status --short
+→ If clean → 0 drift detected
+→ If drift found (M/??) → log uncommitted changes to context snapshot
 
-[STEP 2] Parallel File Loading
-→ Group A: user-prefs.md, app-context.md → LOAD PARALLEL
-→ Group B: prd.md, todo.md → LOAD after A
-→ Group C: gemini-execution.md §4K → LOAD after B
+[STEP 2] Dual-Mode State Recovery
+→ Check Mode:
+  - Mode A (Todo Aktif): jika ada task [/] atau [ ] di todo.md → resume task aktif
+  - Mode B (Ad-Hoc / Fase Selesai): jika todo.md 100% selesai → baca log terakhir handover.md §10
+→ Print brief status (max 3-5 baris) dalam Bahasa Indonesia → siap terima instruksi ad-hoc
 
-[STEP 3] Resume Task
-→ Read prd.md §3 (dashboard spec)
-→ Read todo.md (dashboard task)
-→ Execute: build dashboard page
+[STEP 3] Execution (Ad-Hoc or Batch)
+→ Mode A: Lanjutkan eksekusi task dari todo.md
+→ Mode B: Eksekusi perubahan ad-hoc yang diminta user
+→ Update internal change_counter (+1 per code-change)
 
-[STEP 4] UUPM Search (redesign)
-→ Check cache: $HOME/.gemini/.cache/uupm-results.json
-→ Cache HIT (24h) → SKIP Python execution
-→ Use cached result: {"palette": "...", "fonts": "..."}
+[STEP 4] Handover Update (Dual-Mode §3.B.7)
+→ Trigger: setiap handover_trigger (5) task [x] ATAU 5 code-changes ad-hoc
+→ Overwrite: app-context.md (updated timestamp & state)
+→ Append: handover.md §10 ([AD-HOC] log entry)
+→ Reset change_counter = 0
 
-[STEP 5] Handover Update (setiap 5-6 task)
-→ Handover.md: 400 baris terbaru
-→ Archive: 100 baris terlama → .archive/
-→ app-context.md: compressed format
-
-[SESSION END]
-✅ Context cached (mtime check)
-✅ Security patterns cached (per-session)
-✅ Git commit optimized
+[SESSION END / FAILSAFE]
+→ If change_counter > 0 → force auto-update app-context.md before close
+✅ Context cached
+✅ Handover archived jika > 500 baris
 ```
 
 ### Efficiency Impact:
-| Metric | Before (v3.x) | After (v4.0.0) |
+| Metric | Before (v3.x) | After (v4.2.0) |
 |---|---|---|
-| Context re-read | 100% (every session) | 20% (mtime check) |
-| UUPM search | 3-8 detik (Python) | 0.5 detik (cache) |
-| Handover size | 10K lines | 500 lines |
-| Context poisoning | 🔴 HIGH | 🟢 LOW |
+| Switch Recognition | 13 tool calls (grep/view loop) | **0 tool calls** (L1 In-Memory) |
+| Session Resume Latency | 3-5 detik | **< 1 detik** (Fast-Path) |
+| Drift Detection | Manual / None | **0.01s** (`git status --short`) |
+| Ad-Hoc Handover | Dead Mechanism | **Active Auto-Update** (change_counter) |
+| Context Poisoning Risk | 🔴 HIGH | 🟢 LOW |
 
 ---
 
@@ -123,7 +116,6 @@ awal lanjut
 ```
 
 ### AI Execution Flow:
-
 ```
 [ERROR DETECTED]
 → Parse error message
@@ -178,7 +170,6 @@ tambah fitur
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -238,7 +229,6 @@ tambah fitur
 ```
 
 ### AI Execution Flow:
-
 ```
 [ERROR DETECTED — MULTIPLE]
 → Parse all error messages
@@ -298,7 +288,6 @@ awal konversi
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -359,7 +348,6 @@ status proyek
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -376,6 +364,8 @@ status proyek
 
 [STEP 2] Output Report
 ```
+
+```
 Status Proyek:
 - Phase: 3/6 (50%)
 - Done: 15/30 tasks
@@ -385,7 +375,12 @@ Status Proyek:
 - URL: http://localhost:5173
 ```
 
-[STEP 3] STOP (no further action)
+[STEP 3] Handover Update (setiap 5-6 task)
+→ Handover.md: 400 baris terbaru
+→ Archive: 100 baris terlama → .archive/
+→ app-context.md: compressed format
+
+[STEP 4] STOP (no further action)
 
 [SESSION END]
 ✅ Context cached
@@ -409,7 +404,6 @@ cek komponen
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -431,6 +425,8 @@ cek komponen
 [STEP 2] Generate Security Audit Checklist
 → Write /.docs/security-audit.md (OWASP formatted)
 → Report compliance status & missing components
+```
+
 ```
 Status 6 Lapisan Scan:
   L1 Linter         : PASSED
@@ -468,7 +464,6 @@ pentest
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -487,6 +482,8 @@ pentest
 [STEP 3] Output Pentest Report
 → Write to /.docs/security-audit.md
 → Format:
+```
+
 ```
 Pentest Results:
 - XSS: 0 found
@@ -522,7 +519,6 @@ lanjut dari sini
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -576,7 +572,6 @@ index this project
 ```
 
 ### AI Execution Flow:
-
 ```
 [INVOCATION START]
 ✅ Antigravity Lifecycle Hook (PreInvocation) executes cbm-hook.ps1
@@ -595,6 +590,11 @@ index this project
 [STEP 3] State Update
 → Update app-context.md [STATE]
 → Output concise graph statistics to user
+
+[STEP 4] Handover Update (setiap 5-6 task)
+→ Handover.md: 400 baris terbaru
+→ Archive: 100 baris terlama → .archive/
+→ app-context.md: compressed format
 
 [INVOCATION END]
 ```

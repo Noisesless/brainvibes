@@ -44,6 +44,12 @@ for file in "${CORE_FILES[@]}"; do
     fi
 done
 
+# Pastikan GEMINI.md (UPPERCASE) tersedia untuk Linux case-sensitivity
+if [[ -f "$GEMINI_TARGET_DIR/gemini.md" ]]; then
+    cp -f "$GEMINI_TARGET_DIR/gemini.md" "$GEMINI_TARGET_DIR/GEMINI.md"
+    echo -e "${GRAY}[OK] Sinkronisasi alias GEMINI.md (UPPERCASE)${NC}"
+fi
+
 # 2. Salin folder config secara rekursif ke .gemini/config
 SRC_CONFIG="$SOURCE_DIR/config"
 DST_CONFIG="$GEMINI_TARGET_DIR/config"

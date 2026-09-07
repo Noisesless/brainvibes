@@ -41,6 +41,14 @@ foreach ($File in $CoreFiles) {
     }
 }
 
+# Pastikan GEMINI.md (UPPERCASE) tersedia
+$DstGeminiUpper = Join-Path $GeminiTargetDir "GEMINI.md"
+$DstGeminiLower = Join-Path $GeminiTargetDir "gemini.md"
+if (Test-Path $DstGeminiLower) {
+    Copy-Item -Path $DstGeminiLower -Destination $DstGeminiUpper -Force
+    Write-Host "[OK] Sinkronisasi alias GEMINI.md" -ForegroundColor Gray
+}
+
 # 2. Salin folder config secara rekursif ke .gemini
 $SrcConfig = Join-Path $SourceDir "config"
 $DstConfig = Join-Path $GeminiTargetDir "config"

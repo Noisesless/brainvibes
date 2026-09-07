@@ -84,10 +84,48 @@ Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pe
     - [ ] File yang diminta sudah dibuat/modified?
     - [ ] Tidak ada href="#" atau link mati?
     - [ ] CSS tokens dipakai (var(--vibe-*)), bukan hex hardcode?
-    - [ ] app-context.md sudah diupdate (jika task ke-5/6)?
+    - [ ] Handover check: change_counter=[N]/[threshold] (§3.B.7)?
     - [ ] Self-check visual rules (jika task visual)?
     ```
     Jika ada item yang belum dicentang `[ ]`, perbaiki SEBELUM menyatakan selesai.
+
+### §3.B.7 Handover Auto-Update Enforcement Protocol (Dual-Mode) <!-- anchor:3B7 -->
+
+AI REQUIRED mengelola internal counter `change_counter` per session.
+
+**Definisi "1 Code-Change":**
+- Setiap kali AI berhasil menulis atau menyunting file source code aplikasi (misal: `.php`, `.js`, `.ts`, `.tsx`, `.vue`, `.html`, `.css`, `.py`, `.sql`, dll.).
+- Multiple edits pada 1 file dalam 1 turn = 1 code-change.
+- Pembuatan file kode baru = 1 code-change.
+- Edit file dokumentasi/metadata saja (`app-context.md`, `prd.md`, `handover.md`, `todo.md`, `.docs/`) = **BUKAN** code-change (tidak menambah counter).
+
+**Dual-Mode Trigger Logic:**
+```
+MODE A — Todo-Active (Proyek baru/fase berjalan dengan todo.md aktif):
+  → Gunakan todo counter: setiap `handover_trigger` task [x] di todo.md → trigger handover
+
+MODE B — Ad-Hoc (Proyek selesai fase / request incremental tanpa todo.md):
+  → Gunakan change counter: setiap `handover_trigger` code-changes tercapai → trigger handover
+```
+
+**Prosedur Saat Trigger Tercapai:**
+1. Overwrite `app-context.md` (update state snapshot terbaru dan perbarui timestamp `<!-- Last: ... -->`).
+2. Append log entry ringkas ke `handover.md §10`:
+   `[YYYY-MM-DD HH:MM] [AD-HOC] Deskripsi ringkas perubahan kode terakhir`
+3. Cek panjang baris `handover.md` → jika > 500 baris, jalankan pemotongan arsip ke `.archive/`.
+4. Cetak log konfirmasi: `[HANDOVER UPDATE] Triggered (Mode: [Todo/Ad-Hoc]) → app-context.md & handover.md updated.`
+5. Reset `change_counter` = 0.
+
+**Session-End Handover (Failsafe):**
+- Jika sesi akan berakhir atau user berganti topik/mengakhiri sesi dan `change_counter > 0` (ada perubahan kode yang belum di-handover):
+  → AI WAJIB melakukan force update ke `app-context.md` + append `handover.md §10` sebelum sesi ditutup.
+  → Cetak: `[SESSION-END HANDOVER] [N] uncommitted changes saved to app-context.md`
+
+**Proactive Drift Detection saat `awal lanjut` / `lanjut dari sini`:**
+1. Jalankan `git status --short` (0.01 detik).
+2. Jika ditemukan file kode berstatus `M` (modified) atau `??` (untracked) di luar snapshot `app-context.md`:
+   → Cetak: `[HANDOVER DRIFT] Terdeteksi [N] file kode berubah di luar snapshot. Auto-updating app-context.md...`
+   → Perbarui `app-context.md` dengan daftar file terkini sebelum menyajikan status.
 
 ### §3.C Definisi 6 Lapisan Scan Kelayakan Keamanan (Security Gate Protocol) <!-- anchor:3C -->
 AI REQUIRED mengeksekusi keenam lapisan berikut secara berurutan. Lapisan tidak boleh dilewati. Jika satu lapisan gagal, proses dihentikan.
@@ -753,7 +791,7 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 - AI recommend: update existing skills, implement new skills, remove redundant skills, optimize high-cost skills, auto-update .docs
 
 ### §4N.G Auto-Update .docs Protocol <!-- anchor:4N.G -->
-**Trigger:** Setiap 5-6 task selesai → AI auto-scan `.docs/`
+**Trigger:** Setiap handover terpicu (setiap 5 task selesai ATAU `change_counter` ad-hoc tercapai §3.B.7) → AI auto-scan `.docs/`
 
 **Checklist:**
 ```
@@ -770,8 +808,8 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 
 **Implementation:**
 ```
-1. AI scan task completion di todo.md
-2. Jika task count mod 5 == 0 → trigger auto-update .docs
+1. AI cek trigger: task count mod 5 == 0 (Mode Todo) ATAU change_counter tercapai (Mode Ad-Hoc §3.B.7)
+2. Jika terpicu → jalankan auto-update .docs bersamaan dengan handover update
 3. AI scan .docs/ files → compare dengan codebase aktual
 4. Jika ada perubahan → update file
 5. Jika tidak ada perubahan → skip
