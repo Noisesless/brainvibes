@@ -83,15 +83,15 @@ if [[ -f "$MCP_CONFIG_SRC" ]]; then
     if command -v jq &> /dev/null; then
         # Cek apakah format baru (mcp) atau lama (mcpServers)
         if jq -e '.mcp' "$MCP_CONFIG_SRC" &>/dev/null; then
-            # Format baru — merge key "mcp"
+            # Format baru — merge key "mcp" dan bersihkan legacy mcpServers
             MCP_SERVERS=$(jq '.mcp' "$MCP_CONFIG_SRC")
-            UPDATED=$(jq --argjson mcp "$MCP_SERVERS" '.mcp = (.mcp // {}) * $mcp' "$SETTINGS_FILE")
+            UPDATED=$(jq --argjson mcp "$MCP_SERVERS" '.mcp = ((.mcp // {}) * $mcp) | del(.mcpServers)' "$SETTINGS_FILE")
             echo "$UPDATED" > "$SETTINGS_FILE"
             echo -e "${GREEN}[OK] MCP servers (format baru) berhasil di-sync ke settings.json${NC}"
         elif jq -e '.mcpServers' "$MCP_CONFIG_SRC" &>/dev/null; then
             # Format lama — merge key "mcpServers"
             MCP_SERVERS=$(jq '.mcpServers' "$MCP_CONFIG_SRC")
-            UPDATED=$(jq --argjson mcp "$MCP_SERVERS" '.mcpServers = (.mcpServers // {}) * $mcp' "$SETTINGS_FILE")
+            UPDATED=$(jq --argjson mcp "$MCP_SERVERS" '.mcpServers = ((.mcpServers // {}) * $mcp)' "$SETTINGS_FILE")
             echo "$UPDATED" > "$SETTINGS_FILE"
             echo -e "${GREEN}[OK] MCP servers (format lama) berhasil di-merge ke settings.json${NC}"
         fi

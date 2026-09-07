@@ -1,7 +1,8 @@
 # cbm-hook.ps1 — Antigravity IDE Lifecycle Hook for codebase-memory daemon
 # Ensures port 9749 is alive, returns valid JSON to stdout
 
-$cbmExe = "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+$cbmCmd = Get-Command "codebase-memory-mcp" -ErrorAction SilentlyContinue
+$cbmExe = if ($cbmCmd) { $cbmCmd.Source } else { "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe" }
 $port = 9749
 
 $isConnected = $false

@@ -2,8 +2,13 @@
 param(
     [string]$RepoPath = (Get-Location).Path,
     [string]$Mode = "full",
-    [string]$CbmExe = "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    [string]$CbmExe = ""
 )
+
+if (-not $CbmExe) {
+    $cbmCmd = Get-Command "codebase-memory-mcp" -ErrorAction SilentlyContinue
+    $CbmExe = if ($cbmCmd) { $cbmCmd.Source } else { "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe" }
+}
 
 $ErrorActionPreference = "Stop"
 

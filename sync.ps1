@@ -45,7 +45,11 @@ foreach ($File in $CoreFiles) {
 $DstGeminiUpper = Join-Path $GeminiTargetDir "GEMINI.md"
 $DstGeminiLower = Join-Path $GeminiTargetDir "gemini.md"
 if (Test-Path $DstGeminiLower) {
-    Copy-Item -Path $DstGeminiLower -Destination $DstGeminiUpper -Force
+    try {
+        Copy-Item -Path $DstGeminiLower -Destination $DstGeminiUpper -Force -ErrorAction Stop
+    } catch {
+        # File system case-insensitive (Windows NTFS) menganggap kedua file sama
+    }
     Write-Host "[OK] Sinkronisasi alias GEMINI.md" -ForegroundColor Gray
 }
 
@@ -131,7 +135,8 @@ $ensureScript = Join-Path $SourceDir "scripts\ensure-cbm-daemon.ps1"
 if (Test-Path $ensureScript) {
     & $ensureScript
 } else {
-    $cbmExe = "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    $cbmCmd = Get-Command "codebase-memory-mcp" -ErrorAction SilentlyContinue
+    $cbmExe = if ($cbmCmd) { $cbmCmd.Source } else { "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe" }
     if (Test-Path $cbmExe) {
         Start-Process -FilePath $cbmExe -ArgumentList "daemon","start" -WindowStyle Hidden
         Write-Host "[+] codebase-memory-mcp daemon started on port 9749" -ForegroundColor Green

@@ -6,7 +6,7 @@
 [IDENTITY]
 user_language      = id-ID                        # Bahasa interaksi ke user
 fallback_lang      = en-US                        # Fallback untuk istilah teknis
-user_name          = ClasNet                      # Username mesin lokal
+user_name          = gbc                          # Username mesin lokal (Linux default)
 
 [DEVELOPMENT]
 default_port_vite  = 5173                         # Default Vite/React dev server

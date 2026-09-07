@@ -121,6 +121,7 @@
 2. **Version Tracking** — Changelog tersinkronisasi di v4.2.0-stable
 3. **Testing** — Belum ada automated test suite untuk validasi dynamic prompt instructions
 4. **Visual Optimization** — `taste-skill-bridge/SKILL.md` telah dioptimasi ke router 61 baris + CHEATSHEET + MODEL_HINTS ✅
+5. **Dual-Platform Parity** — `.gitattributes` (LF/CRLF), executable mode `100755` pada skrip Unix, paritas `sync.sh` & `sync.ps1`, serta dynamic PATH binary detection ✅
 
 ## Self-Check Result
 ```
