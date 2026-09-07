@@ -6,7 +6,7 @@
 
 **Satu ekosistem lengkap. Nol kompromi.**
 
-[![Version](https://img.shields.io/badge/version-4.1.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.2.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -35,12 +35,12 @@
 
 | File / Direktori | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| [`gemini.md`](gemini.md) | ~28KB | **Core Otak** — Global system instructions, §VISUAL_GATE (18 larangan + 5 enforcement positif), §SESSION_PROTOCOL, Unified Dispatch Table (11 saklar termasuk `redesign`), Context Budget Tracker, Technical Debate, Concise Response |
-| [`gemini-execution.md`](gemini-execution.md) | ~52KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, §4K Visual Design Pipeline, §4I Visual Self-Check, Modern CSS, A11Y, 6 Lapisan Scan, Ask-Before-Assume Gate |
+| [`gemini.md`](gemini.md) | ~29KB | **Core Otak** — Global system instructions, §VISUAL_GATE (18 larangan + 5 enforcement positif), §SESSION_PROTOCOL, Unified Dispatch Table, §GATE #4 Dual-Mode Handover Trigger, Context Budget Tracker, Technical Debate, Concise Response |
+| [`gemini-execution.md`](gemini-execution.md) | ~56KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, §3.B.7 Dual-Mode Handover Engine (change_counter & session-end failsafe), §4K Visual Design Pipeline, Modern CSS, A11Y, 6 Lapisan Scan |
 | [`gemini-templates.md`](gemini-templates.md) | ~26KB | **Templates & Commands** — Detail 11 makro command (§2A-§2K), YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
 | [`prd-template.md`](prd-template.md) | ~29KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
 | [`design-system.md`](design-system.md) | ~44KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, §7B Component Token Registry (Button, Icon, Modal, Toast, Form, Card, Spacing) |
-| [`AGENTS.md`](AGENTS.md) | ~6KB | **Skills & Pointer Hub** — Session init pointer, skills registry, security auto-trigger, Web Search Protocol |
+| [`AGENTS.md`](AGENTS.md) | ~8KB | **Master Global L1 Dispatcher** — In-Memory Switch Dispatch Table (11 saklar + alias), Fast-Path Ad-Hoc Resume, Proactive Drift Detection via `git status`, Dynamic Path Fallback Resolver, skills registry, Browser Tool Gate |
 | [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist, response_style, technical_debate, web_search |
 | [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **MCP Server** — 2 servers: codebase-memory (code intelligence graph), context7 (library docs RAG) |
 | [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Auto-Sync Engine (Dual-Platform)** — Sinkronisasi master ke `~/.gemini/` (Windows via PowerShell, Linux/macOS via Bash), true-sync MCP settings, auto-clean archive, CBM daemon health check (Step 10) |
@@ -140,12 +140,12 @@ Brainvibes v4.0.0 mengimplementasikan **Unified Dispatch Table** di `gemini.md �
 | Saklar | Aksi | WAJIB Load | SKIP Load | Detail |
 |---|---|---|---|---|
 | `awal baru` | Wizard 10 poin → prd.md → todo.md | gemini-templates.md §2A, prd-template.md | execution.md, design-system.md | §2A |
-| `awal lanjut` | Resume proyek aktif | app-context.md, gemini-templates.md §2B | prd-template.md, design-system.md | §2B |
+| `awal lanjut` | Fast resume sesi aktif (Dual-Mode: Todo vs Ad-Hoc) | app-context.md (Fast-Path L1) | prd-template.md, design-system.md | AGENTS.md §2A |
 | `awal konversi` | Legacy Audit → migrasi 9 fase | gemini-templates.md §2C, prd-template.md | design-system.md | §2C |
 | `tambah fitur` | Incremental feature add | app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md | §2D |
 | `baca error` | YOLO Debug → issues.md → minta izin | gemini-templates.md §5, issues.md | prd-template.md, design-system.md | §2E |
-| `lanjut dari sini` | Mid-session context recovery | app-context.md, todo.md (grep) | prd-template.md | §2F |
-| `status proyek` | Quick brief 10 baris | app-context.md | gemini-templates.md, prd-template.md | §2G |
+| `lanjut dari sini` | Mid-session context recovery (Fast-Path) | app-context.md (Fast-Path L1) | prd-template.md | AGENTS.md §2A |
+| `status proyek` | Quick brief 10 baris (Fast-Path) | app-context.md (Fast-Path L1) | gemini-templates.md, prd-template.md | AGENTS.md §2B |
 | `analisa kualitas` | Code quality audit → quality_review.md | app-context.md, .docs/ | design-system.md, prd-template.md | §2H |
 | `cek komponen` | Verifikasi kelengkapan komponen kode (OWASP + SP registry) → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | §2I |
 | `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | §2J |
@@ -167,26 +167,31 @@ context_budget_stop    = 28000  # STOP dan tanya user saat used tokens melebihi 
 [CONTEXT BUDGET] gemini.md: 4.6K | app-context.md: 1.2K | gemini-templates.md §2B: 4.2K
 ```
 
-### Handover.md FIFO Buffer
+### Dual-Mode Handover Engine & FIFO Buffer (§3.B.7)
 
-**Problem:** Handover.md tumbuh tanpa batas → 25K+ tokens
+**Problem:** Handover konvensional hanya mengandalkan centang `[x]` di `todo.md`. Pada workflow ad-hoc/incremental, mekanisme handover mati (*dead mechanism*) sehingga `app-context.md` menjadi *stale* (usang).
 
-**Solution:** Max 500 baris → auto-archive ke `.archive/handover-YYYY-MM-DD-HHMM.md`
+**Solution (Dual-Mode Trigger):**
+- **Mode A (Todo-Active):** Trigger setiap `handover_trigger` (default: 5) task `[x]` selesai di `todo.md`.
+- **Mode B (Ad-Hoc):** Trigger setiap `handover_trigger` (default: 5) perubahan kode (`change_counter` pada source code).
+- **Session-End Failsafe:** Jika sesi berakhir dan ada perubahan uncommitted (`change_counter > 0`), paksa update `app-context.md`.
+- **Proactive Drift Detection:** Deteksi drift otomatis saat `awal lanjut` via `git status --short` (0.01 detik).
+- **FIFO Buffer:** Max 500 baris → auto-archive ke `.archive/handover-YYYY-MM-DD-HHMM.md`.
 
 **Benefits:**
 - Constant token cost: ~1.5K tokens (bukan unbounded)
 - Auto-cleanup archives > 30 hari via sync.sh / sync.ps1
 - Keep 100 baris terbaru di handover.md aktif
 
-### Smart Saklar Loading
+### Smart Saklar Loading & L1 Dispatcher
 
-**Simple commands** → inline template (0 tokens overhead)
-- `status proyek` → 10-baris inline template
-- `sync` → inline sync instructions
+**L1 In-Memory Dispatcher (`AGENTS.md`)** → Otomatis diinjeksi ke memori awal AI
+- `awal lanjut`, `lanjut dari sini`, `status proyek` → Fast-Path instan via `app-context.md` (1 tool call, 0 template overhead)
 
-**Complex commands** → read file section (1-3K tokens)
+**Complex commands** → Dynamic fallback on-demand load
 - `awal baru` → read gemini-templates.md §2A
 - `baca error` → read gemini-templates.md §5
+- `redesign` → read taste-skill-bridge/ESSENTIAL.md
 
 ---
 
