@@ -38,7 +38,7 @@
 1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-templates.md §6A`
 2. **Mandor Approval Gate:** Pada `baca error`, STOP dan minta izin user sebelum ubah kode setelah `issues.md` ditulis.
 3. **Legacy Purge Gate:** Penghapusan `/.legacy/` butuh dry-run log & persetujuan tertulis.
-4. **Handover Trigger:** Update `handover.md` + **overwrite** `app-context.md` setiap 5-6 sub-task selesai.
+4. **Handover Trigger:** Update `handover.md` + **overwrite** `app-context.md` setiap `handover_trigger` code-changes ATAU sub-task selesai (mana yang lebih dulu). Detail: `gemini-execution.md §3.B.7`
 5. **Session Learning Reminder (Pasif):** Jika pola koreksi terdeteksi, cetak 1 blok ringkas. FORBIDDEN auto-write ke skill.
 6. **Security Milestone Reminder (Pasif):** Cetak 1 baris `🔒 Milestone selesai` per fase selesai.
 
@@ -332,7 +332,7 @@ Otomatisasi: Setelah Fase 6, jika komponen dokumentasi absen → AI REQUIRED gen
 | Trigger | Aksi |
 |---|---|
 | Akhir Fase 1 | AI **generate** `app-context.md` pertama kali |
-| Setiap 5-6 task selesai | AI **overwrite** `app-context.md` bersamaan handover.md |
+| Setiap N code-changes / task selesai | AI **overwrite** `app-context.md` + append handover.md (§3.B.7) |
 | `awal lanjut` / `lanjut dari sini` | AI **baca** `app-context.md` PERTAMA |
 
 ### Template (Zero Deviation):
@@ -416,6 +416,7 @@ admin=[email]=[password]
 | Compliance Check (`cek komponen`) detail | `gemini-execution.md §3.C.1` | Saat `cek komponen` aktif | §3.C.1 (anchor:3C1) | 2K |
 | Factual Scan Enforcement Protocol (FSEP) | `gemini-execution.md §3.C.2` | Saat mode audit aktif | §3.C.2 (anchor:3C2) | 1K |
 | Smart Skill Integration (SSI) | `gemini-execution.md §4N` | Saat integrasi skill baru | §4N (anchor:4N) | 2K |
+| Handover auto-update enforcement (Dual-Mode) | `gemini-execution.md §3.B.7` | Setiap code-change tercapai / task selesai | §3.B.7 (anchor:3B7) | 0.5K |
 | Auto-Update .docs checklist & rules | `gemini-execution.md §4N.G` | Setiap 5 task selesai | §4N.G (anchor:4N.G) | 1K |
 | SEO protocol & 20-item checklist | `gemini-execution.md §4L` | Fase 8 / deploy prep | §4L (anchor:4L) | 1K |
 | Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar | 0.5-2K |

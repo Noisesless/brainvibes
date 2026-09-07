@@ -8,7 +8,6 @@ awal baru
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached from .gemini)
@@ -64,7 +63,6 @@ awal lanjut
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached, mtime unchanged → SKIP re-read)
@@ -123,7 +121,6 @@ awal lanjut
 ```
 
 ### AI Execution Flow:
-
 ```
 [ERROR DETECTED]
 → Parse error message
@@ -178,7 +175,6 @@ tambah fitur
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -238,7 +234,6 @@ tambah fitur
 ```
 
 ### AI Execution Flow:
-
 ```
 [ERROR DETECTED — MULTIPLE]
 → Parse all error messages
@@ -298,7 +293,6 @@ awal konversi
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -359,7 +353,6 @@ status proyek
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -376,6 +369,8 @@ status proyek
 
 [STEP 2] Output Report
 ```
+
+```
 Status Proyek:
 - Phase: 3/6 (50%)
 - Done: 15/30 tasks
@@ -385,7 +380,12 @@ Status Proyek:
 - URL: http://localhost:5173
 ```
 
-[STEP 3] STOP (no further action)
+[STEP 3] Handover Update (setiap 5-6 task)
+→ Handover.md: 400 baris terbaru
+→ Archive: 100 baris terlama → .archive/
+→ app-context.md: compressed format
+
+[STEP 4] STOP (no further action)
 
 [SESSION END]
 ✅ Context cached
@@ -409,7 +409,6 @@ cek komponen
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -431,6 +430,8 @@ cek komponen
 [STEP 2] Generate Security Audit Checklist
 → Write /.docs/security-audit.md (OWASP formatted)
 → Report compliance status & missing components
+```
+
 ```
 Status 6 Lapisan Scan:
   L1 Linter         : PASSED
@@ -468,7 +469,6 @@ pentest
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -487,6 +487,8 @@ pentest
 [STEP 3] Output Pentest Report
 → Write to /.docs/security-audit.md
 → Format:
+```
+
 ```
 Pentest Results:
 - XSS: 0 found
@@ -522,7 +524,6 @@ lanjut dari sini
 ```
 
 ### AI Execution Flow:
-
 ```
 [SESSION START]
 ✅ Load user-prefs.md (cached)
@@ -576,7 +577,6 @@ index this project
 ```
 
 ### AI Execution Flow:
-
 ```
 [INVOCATION START]
 ✅ Antigravity Lifecycle Hook (PreInvocation) executes cbm-hook.ps1
@@ -595,6 +595,11 @@ index this project
 [STEP 3] State Update
 → Update app-context.md [STATE]
 → Output concise graph statistics to user
+
+[STEP 4] Handover Update (setiap 5-6 task)
+→ Handover.md: 400 baris terbaru
+→ Archive: 100 baris terlama → .archive/
+→ app-context.md: compressed format
 
 [INVOCATION END]
 ```
