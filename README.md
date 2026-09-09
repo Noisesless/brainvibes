@@ -4,9 +4,9 @@
 
 ### _Global AI Coding Configuration System_
 
-**Satu ekosistem lengkap. Nol kompromi.**
+**Sistem Konfigurasi & Standarisasi Alur Kerja AI Coding Agent**
 
-[![Version](https://img.shields.io/badge/version-4.2.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.3.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -14,8 +14,8 @@
 
 ---
 
-*Sistem instruksi global berbasis Markdown untuk menstandarisasi, mengamankan,*
-*dan mengotomasi seluruh siklus hidup proyek kode yang dibangun bersama AI.*
+*Sistem instruksi global berbasis Markdown untuk menstandarisasi tata kelola arsitektur,*
+*keamanan aplikasi, konsistensi antarmuka visual, dan pengelolaan konteks pada AI coding agent.*
 
 </div>
 
@@ -23,9 +23,7 @@
 
 ## Apa Itu Brainvibes?
 
-**Brainvibes** adalah ekosistem konfigurasi lengkap yang bertindak sebagai **"DNA Otak"** dari setiap sesi coding berbasis AI. Dengan menempatkan seluruh berkas ini di direktori konfigurasi terminal AI Anda, agen AI (seperti Gemini CLI atau Antigravity IDE) akan secara otomatis membaca dan mematuhi seluruh aturan interaksi, keamanan, estetika visual, dan alur kerja yang telah Anda tetapkan — **di setiap sesi kerja baru, tanpa perlu konfigurasi ulang**.
-
-> Dirancang khusus untuk developer yang ingin AI-nya **bekerja seperti senior engineer berpengalaman** — bukan seperti autocomplete yang asal jalan.
+**Brainvibes** adalah konfigurasi sistem berbasis Markdown untuk AI coding agent (seperti Google Gemini CLI, Antigravity IDE, Cursor, dan GitHub Copilot). Sistem ini mendefinisikan aturan interaksi, arsitektur proyek, standar keamanan aplikasi, konsistensi visual berbasis token, dan alur kerja terstruktur yang dimuat secara otomatis di setiap sesi kerja tanpa perlu konfigurasi ulang manual.
 
 ---
 
@@ -35,71 +33,68 @@
 
 | File / Direktori | Ukuran | Fungsi |
 | :--- | :--- | :--- |
-| [`gemini.md`](gemini.md) | ~29KB | **Core Otak** — Global system instructions, §VISUAL_GATE (18 larangan + 5 enforcement positif), §SESSION_PROTOCOL, Unified Dispatch Table, §GATE #4 Dual-Mode Handover Trigger, Context Budget Tracker, Technical Debate, Concise Response |
-| [`gemini-execution.md`](gemini-execution.md) | ~56KB | **Kecerdasan Eksekusi** — Aturan coding, arsitektur modular, upload pipeline, §3.B.7 Dual-Mode Handover Engine (change_counter & session-end failsafe), §4K Visual Design Pipeline, Modern CSS, A11Y, 6 Lapisan Scan |
-| [`gemini-templates.md`](gemini-templates.md) | ~26KB | **Templates & Commands** — Detail 11 makro command (§2A-§2K), YOLO debug mode, 5 tahap Git Commit, Handover FIFO Buffer, Smart Saklar Loading |
-| [`prd-template.md`](prd-template.md) | ~29KB | **Blueprint** — Template PRD 11-bab, CORE IDENTITY LOCK, Visual DNA System |
-| [`design-system.md`](design-system.md) | ~44KB | **Design DNA** — CSS token system (oklch), @layer architecture, typography, §7B Component Token Registry (Button, Icon, Modal, Toast, Form, Card, Spacing) |
-| [`AGENTS.md`](AGENTS.md) | ~8KB | **Master Global L1 Dispatcher** — In-Memory Switch Dispatch Table (11 saklar + alias), Fast-Path Ad-Hoc Resume, Proactive Drift Detection via `git status`, Dynamic Path Fallback Resolver, skills registry, Browser Tool Gate |
-| [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi** — Port defaults, design defaults, AI behavior toggles, context7 whitelist, response_style, technical_debate, web_search |
-| [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **MCP Server** — 2 servers: codebase-memory (code intelligence graph), context7 (library docs RAG) |
-| [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Auto-Sync Engine (Dual-Platform)** — Sinkronisasi master ke `~/.gemini/` (Windows via PowerShell, Linux/macOS via Bash), true-sync MCP settings, auto-clean archive, CBM daemon health check (Step 10) |
-| [`scripts/`](scripts/) | ~6KB | **Automation Scripts (Dual-Platform)** — `ensure-cbm-daemon.ps1/.sh`, `index-project.ps1/.sh` (auto-index + UI assurance), `cbm-hook.ps1/.sh` (IDE PreInvocation hook) |
-| [`.gitattributes`](.gitattributes) | ~0.3KB | **Git Attributes** — Normalisasi format baris lintas platform (LF untuk `.sh`, `.md`, `.json` dan CRLF untuk `.ps1`) |
-| [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Terminal coding agent subsistem alternatif untuk membaca/menulis file proyek secara otomatis |
-| `LICENSE` | ~36KB | MIT License |
-| `WORKFLOW_SIMULATIONS.md` | ~15KB | **Workflow Simulation** — Simulasi eksekusi macro commands untuk testing dan debugging |
+| [`gemini.md`](gemini.md) | ~29KB | **Instruksi Sistem Inti** — Aturan global agent, protokol sesi, saklar utama, gate visual & keamanan, manajemen context budget, dan format respon. |
+| [`gemini-execution.md`](gemini-execution.md) | ~56KB | **Panduan Eksekusi Teknis** — Standarisasi penulisan kode, arsitektur modular, upload pipeline, §3.B.7 Dual-Mode Handover Engine, §4K Visual Design Pipeline, dan verifikasi kelayakan kode. |
+| [`gemini-templates.md`](gemini-templates.md) | ~26KB | **Template & Perintah Makro** — Prosedur 11 makro command (§2A-§2K), template debug issues.md, alur sanitasi 5 tahap Git Commit, dan format handover. |
+| [`prd-template.md`](prd-template.md) | ~29KB | **Template PRD** — Standar dokumen spesifikasi produk 11-bab, batasan identitas inti aplikasi, dan spesifikasi arsitektur. |
+| [`design-system.md`](design-system.md) | ~44KB | **Design System** — Spesifikasi token CSS (oklch), arsitektur layer, tipografi, dan registri token komponen UI (§7B). |
+| [`AGENTS.md`](AGENTS.md) | ~8KB | **L1 Switch Dispatcher** — Tabel routing cepat in-memory (11 saklar), deteksi drift Git status, fallback path dinamis, dan registri skills. |
+| [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi Pengguna** — Default port, tema visual, toggle perilaku agent, whitelist context7, style respon, dan pencarian web. |
+| [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **Konfigurasi MCP** — Konfigurasi server MCP lokal (codebase-memory) dan remote (context7). |
+| [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Skrip Sinkronisasi (Dual-Platform)** — Otomatisasi sinkronisasi ke direktori `~/.gemini/` (Windows PowerShell & Unix Bash), konfigurasi MCP, dan verifikasi daemon CBM. |
+| [`scripts/`](scripts/) | ~6KB | **Skrip Otomasi** — Skrip pendukung daemon CBM (`ensure-cbm-daemon`), pengindeksan repositori (`index-project`), dan hook IDE (`cbm-hook`). |
+| [`.gitattributes`](.gitattributes) | ~0.3KB | **Git Attributes** — Normalisasi format line ending lintas platform (LF untuk shell/markdown/json, CRLF untuk powershell). |
+| [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Subsistem terminal asisten koding alternatif untuk membaca dan menulis berkas secara otomatis. |
+| `LICENSE` | ~36KB | Lisensi MIT |
+| `WORKFLOW_SIMULATIONS.md` | ~15KB | **Simulasi Alur Kerja** — Panduan dan log pengujian skenario eksekusi makro command. |
 
 ### Skills System (12 Skill Folders)
 
 | Skill | Trigger Keywords | Fungsi |
 | :--- | :--- | :--- |
-| `ui-ux-pro-max` | awal baru, redesign | **UUPM v2.13.0** — Design intelligence dengan 18 data files (192 palet, 79 styles, 74 fonts, 193 reasoning rules, 119 UX guidelines, 17 GSAP presets, 22 stacks), native Three Dials CLI (`--variance`/`--motion`/`--density`), `reasoning_contract.py`, Direct-Read CSV fallback |
-| `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Anti-slop frontend bridge, Three Dials, router v2.0 (61 baris), `MODEL_HINTS.md` (Gemini Flash anti-slop), `CHEATSHEET.md` |
-| `security-patterns` | cek komponen, cek kelengkapan, verifikasi kode | Vulnerability database + secure coding patterns per stack (27 SPs, OWASP Top 10:2025 100% coverage) |
-| `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |
-| `database-patterns` | desain database, migration | Schema design, query optimization, ORM patterns |
-| `lessons-learned` | baca error, jangan ulangi | Anti-patterns + fast solutions dari proyek nyata |
-| `pentest-strix` | pentest, pentest cepat, dast | DAST — Dynamic pentest via Strix AI Agent (Docker-based validation) |
-| `accessibility-audit` | audit a11y, WCAG | Checklist WCAG 2.2 AA |
-| `performance-audit` | audit performa, lighthouse | Core Web Vitals optimization |
-| `deployment-checklist` | deploy, hosting, go live | Pre-deploy checklist per platform |
-| `git-workflow` | commit, push, branch | Conventional commits, branch protection |
-| `quick-scaffold` | buat komponen, buat model, buat controller | Scaffold cepat file boilerplate per stack |
+| `ui-ux-pro-max` | awal baru, redesign | **UUPM v2.13.0** — Design intelligence dengan 18 dataset (192 palet warna, 79 style UI, 74 font pairing, 193 reasoning rules, 119 pedoman UX, 17 preset motion GSAP, 22 stack templates), CLI Three Dials (`--variance`/`--motion`/`--density`), `reasoning_contract.py`, dan validasi data. |
+| `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Bridging prinsip anti-slop frontend, Three Dials, section rhythm scoring, dan panduan mitigasi degradasi visual UI. |
+| `security-patterns` | cek komponen, cek kelengkapan, verifikasi kode | Basis data kerentanan dan pola pengkodean aman per-stack (27 Security Patterns, keselarasan OWASP Top 10). |
+| `code-snippets` | buat form, buat navbar, buat modal | Pustaka snippet komponen antarmuka dan pola autentikasi siap pakai. |
+| `database-patterns` | desain database, migration | Panduan perancangan skema database, migrasi data, dan optimasi query/ORM. |
+| `lessons-learned` | baca error, jangan ulangi | Katalog solusi dan pencegahan pola error berulang dari proyek terdahulu. |
+| `pentest-strix` | pentest, pentest cepat, dast | Dynamic Application Security Testing (DAST) menggunakan agen pengujian penetrasi Strix berbasis Docker. |
+| `accessibility-audit` | audit a11y, WCAG | Daftar periksa kepatuhan standar aksesibilitas web WCAG 2.2 AA. |
+| `performance-audit` | audit performa, lighthouse | Panduan optimasi web performance dan Core Web Vitals. |
+| `deployment-checklist` | deploy, hosting, go live | Daftar periksa persiapan rilis aplikasi ke berbagai platform hosting. |
+| `git-workflow` | commit, push, branch | Protokol manajemen version control Git, sanitasi data sensitif, dan Conventional Commits. |
+| `quick-scaffold` | buat komponen, buat model, buat controller | Generator boilerplate berkas komponen, model, dan controller per-stack. |
 
 ### Smart Skill Integration (SSI) System
 
-Brainvibes v4.1.0 menghadirkan **Smart Skill Integration (SSI)** — sistem integrasi skill yang otomatis mendeteksi, memvalidasi, dan mengintegrasikan skill baru tanpa konflik.
+Brainvibes mengimplementasikan modul **Smart Skill Integration (SSI)** untuk mendeteksi, memvalidasi dependensi, dan mengintegrasikan skill tambahan ke dalam direktori `config/skills/` secara terstruktur.
 
-**Cara Kerja:**
+**Alur Kerja Integrasi:**
 ```
-1. User: Copy skill folder ke config/skills/my-skill/
-2. AI: Auto-detect skill baru setiap sesi
-3. AI: Scan existing skills → cek gap & konflik
-4. AI: Report → Rekomendasi ambil/skip bagian tertentu
-5. User: Konfirmasi → AI integrate + update index
+1. Penambahan folder skill ke config/skills/<nama-skill>/
+2. Pemeriksaan skill terdaftar pada inisialisasi sesi
+3. Validasi potensi konflik dan dependensi (5-point checklist)
+4. Rekomendasi integrasi dan pembaruan trigger
+5. Pembaruan indeks skill di .skill-index.json
 ```
 
 **Fitur Utama:**
-- **Auto-Detect** — AI scan `config/skills/` setiap sesi
-- **Gap & Conflict Check** — 5-point checklist (triggers, data, logic, dependencies, conflicts)
-- **Smart Merge** — Combine triggers, skip duplicates
-- **Auto-Trigger** — Skill aktif otomatis saat keyword terdeteksi
-- **AI-Managed Index** — `.skill-index.json` auto-update oleh AI
-- **Quality Analysis** — "analisa kualitas brainvibes" → scan gaps & context poisoning
-- **Auto-Update .docs** — Setiap 5-6 task selesai → AI auto-update dokumentasi
+- **Deteksi Otomatis:** Memeriksa penambahan folder skill di `config/skills/`.
+- **Validasi Ketergantungan:** Memeriksa trigger, ketersediaan dataset, logika eksekusi, dan potensi konflik penamaan.
+- **Penyatuan Trigger:** Menggabungkan kata kunci pemicu ke registri `AGENTS.md`.
+- **Indeks Terpusat:** Sinkronisasi metadata otomatis pada `.skill-index.json`.
 
 > Detail: `config/skills/integration-checker.md`
 
-### Code Intelligence & 3D Knowledge Graph (`codebase-memory-mcp`)
+### Analisis Kode Sumber & Graph Dependensi (`codebase-memory-mcp`)
 
-Brainvibes mengintegrasikan **`codebase-memory-mcp`** (CBM v0.10.8) — server MCP native performa tinggi berbasis graph AST untuk analisis struktur kode, dependensi, dan semantic search:
+Brainvibes mengintegrasikan server MCP **`codebase-memory-mcp`** (CBM v0.10.8) untuk analisis struktur kode berbasis graph AST dan pencarian semantik:
 
-- **15 Graph Tools** — `index_repository`, `search_graph`, `query_graph`, `trace_path`, `get_code_snippet`, `get_architecture`, `detect_changes`, `manage_adr`, dll.
-- **3D Web UI Visualization** — Server visualisasi 3D interaktif yang berjalan di `http://localhost:9749/`.
-- **Antigravity IDE Lifecycle Automation (`hooks.json`, `cbm-hook.sh` / `cbm-hook.ps1`)** — Hook event `PreInvocation` otomatis mendeteksi status port 9749 (<100ms) dan menyalakan daemon CBM di background secara instan.
-- **Indexing Script (`scripts/index-project.sh` / `scripts/index-project.ps1`)** — Pengindeksan instan dengan jaminan port 9749 selalu aktif.
-- **True Sync Health Check (`sync.sh` / `sync.ps1` Step 10)** — Verifikasi otomatis kesiapan daemon CBM setiap kali sinkronisasi dijalankan.
+- **15 Graph Tools:** Tool analisis kode seperti `index_repository`, `search_graph`, `query_graph`, `trace_path`, `get_code_snippet`, `get_architecture`, `detect_changes`, dan `manage_adr`.
+- **Visualisasi Web 3D:** Antarmuka visualisasi graf interaktif yang dapat diakses di `http://localhost:9749/`.
+- **Otomasi Siklus Hidup IDE:** Hook `PreInvocation` (`hooks.json`, `cbm-hook.sh` / `cbm-hook.ps1`) untuk memastikan daemon CBM aktif di latar belakang saat IDE digunakan.
+- **Skrip Indexing:** Skrip pembantu (`scripts/index-project.sh` / `scripts/index-project.ps1`) untuk memindai repositori proyek secara cepat.
+- **Pemeriksaan Sinkronisasi:** Verifikasi status port dan dependensi CBM pada saat eksekusi `sync.sh` atau `sync.ps1`.
 
 
 ### Knowledge Items (3 Knowledge Bases)
@@ -130,9 +125,9 @@ Brainvibes mendefinisikan **9 file dokumentasi utama** yang wajib ada di setiap 
 
 ---
 
-## Unified Dispatch Table (Anti-Overflow & Zero-Ambiguity)
+## Unified Dispatch Table & Manajemen Konteks
 
-Brainvibes v4.0.0 mengimplementasikan **Unified Dispatch Table** di `gemini.md §2` yang menggabungkan rules eksekusi saklar makro dengan pemuatan context secara dinamis (Context-Aware Dynamic Loading). Ini menghindari duplikasi trigger dan meminimalkan mental-join overhead untuk LLM lokal:
+Brainvibes mengimplementasikan **Unified Dispatch Table** pada `gemini.md §2` dan tabel in-memory `AGENTS.md` untuk mengonsolidasikan routing perintah makro dengan protokol pemuatan berkas secara selektif (*Context-Aware Dynamic Loading*). Hal ini meminimalkan konsumsi context window dan menghindari pemuatan berkas yang tidak relevan:
 
 ### Unified Dispatch Matrix
 
@@ -170,19 +165,14 @@ context_budget_stop    = 28000  # STOP dan tanya user saat used tokens melebihi 
 
 ### Dual-Mode Handover Engine & FIFO Buffer (§3.B.7)
 
-**Problem:** Handover konvensional hanya mengandalkan centang `[x]` di `todo.md`. Pada workflow ad-hoc/incremental, mekanisme handover mati (*dead mechanism*) sehingga `app-context.md` menjadi *stale* (usang).
+**Latar Belakang Masalah:** Pelacakan status konvensional yang hanya bergantung pada checklist `todo.md` menjadi tidak efektif pada alur kerja penambahan kode secara inkremental atau ad-hoc, sehingga snapshot `app-context.md` berisiko tidak terbarukan.
 
-**Solution (Dual-Mode Trigger):**
-- **Mode A (Todo-Active):** Trigger setiap `handover_trigger` (default: 5) task `[x]` selesai di `todo.md`.
-- **Mode B (Ad-Hoc):** Trigger setiap `handover_trigger` (default: 5) perubahan kode (`change_counter` pada source code).
-- **Session-End Failsafe:** Jika sesi berakhir dan ada perubahan uncommitted (`change_counter > 0`), paksa update `app-context.md`.
-- **Proactive Drift Detection:** Deteksi drift otomatis saat `awal lanjut` via `git status --short` (0.01 detik).
-- **FIFO Buffer:** Max 500 baris → auto-archive ke `.archive/handover-YYYY-MM-DD-HHMM.md`.
-
-**Benefits:**
-- Constant token cost: ~1.5K tokens (bukan unbounded)
-- Auto-cleanup archives > 30 hari via sync.sh / sync.ps1
-- Keep 100 baris terbaru di handover.md aktif
+**Mekanisme:**
+- **Mode A (Todo-Active):** Trigger pembaruan setiap sejumlah task `[x]` (default: 5) diselesaikan pada `todo.md`.
+- **Mode B (Ad-Hoc):** Trigger pembaruan setiap sejumlah perubahan berkas kode aktif (default: 5 perubahan) tercapai.
+- **Session-End Failsafe:** Memperbarui `app-context.md` secara otomatis saat sesi berakhir jika ada perubahan kode yang belum tercatat.
+- **Deteksi Pergeseran (Drift Detection):** Memeriksa status berkas melalui `git status --short` saat inisialisasi sesi.
+- **FIFO Buffer:** Membatasi ukuran `handover.md` hingga maksimum 500 baris dengan pengarsipan otomatis ke `.archive/`.
 
 ### Smart Saklar Loading & L1 Dispatcher
 
@@ -260,7 +250,7 @@ echo @echo off > %USERPROFILE%\.local\bin\yasei.cmd
 echo powershell -NoProfile -ExecutionPolicy Bypass -File "%USERPROFILE%\.qwen\yasei.ps1" %%* >> %USERPROFILE%\.local\bin\yasei.cmd
 ```
 
-> Selesai. AI utama (IDE) akan otomatis membaca DNA brainvibes di sesi berikutnya, dan daemon CBM siap menyuplai graph intelligence!
+> Konfigurasi selesai. Agent AI akan otomatis mendeteksi aturan Brainvibes pada sesi kerja berikutnya.
 
 ---
 
@@ -394,19 +384,19 @@ graph TD
 
 ---
 
-## Kenapa Brainvibes? (Comparison Matrix)
+## Perbandingan Alur Kerja dengan Standarisasi vs Tanpa Konfigurasi
 
-| Fitur | Dengan Brainvibes | Tanpa Brainvibes |
+| Aspek | Dengan Konfigurasi Brainvibes | Tanpa Konfigurasi Standar |
 | :--- | :--- | :--- |
-| **Konsistensi Desain Visual** | Premium & konsisten. *Tonal Preservation Matrix* — Light Mode mempertahankan DNA warna asli palet. Dark Mode = Deep Tonal dari spektrum yang sama. | AI hardcode `#FFF` / `#000` hambar, teks abu-abu di atas latar abu-abu, risiko teks tak terbaca tinggi. |
-| **Keamanan Kredensial Git** | Auto-unstage `.env*`, `handover.md`, DB lokal, kredensial JSON sebelum **setiap** commit — otomatis, tanpa perlu ingat. | File rahasia sering ter-push ke GitHub publik secara tidak sengaja. |
-| **Debugging (YOLO Mode)** | Sistematis: jurnal retry `issues.md`, batas 3x percobaan, rollback `git clean`, zombie port release, mock API fallback, ITSA pasca-fix. | AI looping tanpa batas, stderr tersembunyi ke null, port bentrok dibiarkan hang. |
-| **Ingatan Antar Sesi (State)** | Nol amnesia. `handover.md` dengan FIFO rolling buffer 100 baris — AI berikutnya langsung tahu status, port aktif, dan komponen terpasang. | Saat token context penuh, AI lupa rute halaman yang sudah dibuat dan menulis ulang komponen (code bloating). |
-| **Perencanaan Proyek** | Wizard PRD linier 1-per-giliran. Kode baru ditulis **setelah** PRD disetujui. Zero-Fluff Filter aktif. | AI langsung koding tanpa rencana, asumsi arsitektur sepihak, 10 pertanyaan sekaligus dalam satu chat. |
-| **Mode Konversi Stack** | Strangler Fig Pattern: isolasi `/.legacy/`, 9-fase atomik, Git checkpoint per fase, Legacy Purge Gate dengan dry-run log. | Tidak ada pola terstruktur — migrasi ad-hoc, rawan fitur terlewat dan data hilang. |
-| **Arsitektur & Kepatuhan Kode** | Strict layer separation (Presentation → Logic → Data), ACID transaction guard, Lazy Loading ekspor, Zero-Dead-End Link Policy. | Spaghetti code, query DB langsung dari UI, link mati `href="#"`, bundle size membengkak. |
-| **Response Quality** | Concise responses (max 3-5 baris), anti-fabrication (STOP + TANYA jika ragu), technical debate (sanggah dengan data faktual). | AI mengiyakan semua, response panjang bertele-tele, mengarang solusi tanpa validasi. |
-| **Web Search Fallback** | Otomatis search internet via MCP jika jawaban di luar training data. Sumber selalu dicantumkan. | AI mengarang URL, versi, atau dokumentasi tanpa verifikasi. |
+| **Konsistensi Desain Visual** | Token CSS semantik terstruktur (`--vibe-*`), rasio kontras terverifikasi (min 4.5:1), serta keselarasan palet warna pada light dan dark mode. | Nilai warna di-hardcode tanpa variabel, potensi kontras rendah dan ketidakkonsistenan antar-komponen. |
+| **Keamanan Kredensial Git** | Pemeriksaan pra-commit otomatis untuk memisahkan file konfigurasi lokal (`.env*`, database lokal, log) dari commit repositori. | Risiko keterikatan file kredensial atau konfigurasi sensitif ke dalam repositori publik. |
+| **Penanganan Masalah (Debugging)** | Pelacakan terstruktur pada `issues.md`, batasan percobaan perbaikan maks 3x, dan verifikasi integritas sistem pasca-perbaikan. | Percobaan berulang tanpa pencatatan akar masalah dan minim penelusuran status port atau dependensi. |
+| **Kontinuitas Status Sesi** | Snapshot ringkas pada `app-context.md` dan arsip riwayat berkala pada `handover.md` untuk mempertahankan status proyek antar-sesi. | Kehilangan riwayat arsitektur dan rute yang telah dibangun saat batas konteks model terlewati. |
+| **Perencanaan Proyek** | Wawancara terstruktur dan penyusunan dokumen PRD sebelum penulisan kode dimulai. | Penulisan kode langsung tanpa penentuan arsitektur dan batasan fitur yang jelas. |
+| **Migrasi Arsitektur** | Alur migrasi bertahap berbasis Strangler Fig Pattern dengan isolasi kode lama pada direktori `/.legacy/`. | Migrasi kode tanpa pemisahan komponen lama dan baru, rawan kehilangan fungsionalitas eksisting. |
+| **Kepatuhan Struktur Kode** | Pemisahan layer yang jelas (Presentation, Logic, Data) dan pencegahan tautan mati (`href="#"`). | Penyatuan logika bisnis langsung pada komponen tampilan tanpa pola arsitektur yang terukur. |
+| **Kualitas Respons** | Format respons terfokus (3-5 baris secara default), validasi kepastian informasi, dan diskusi berbasis data teknis. | Penjelasan panjang tanpa kesimpulan teknis langsung dan potensi fabrikasi rujukan. |
+| **Rujukan Informasi Eksternal** | Penelusuran dokumentasi terkini melalui integrasi MCP dan pencarian web dengan pencantuman sumber. | Asumsi versi atau rujukan dokumentasi tanpa verifikasi sumber aktual. |
 
 ---
 
@@ -561,7 +551,8 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 | Versi | Commit | Ringkasan Perubahan |
 | :--- | :--- | :--- |
-| `v4.2.0` | [`9b289f8`](https://github.com/Noisesless/brainvibes/commit/9b289f8) | **L1 Global Dispatcher, Dual-Mode Handover Engine & Dual-Platform Parity**: Master In-Memory L1 Switch Dispatch Table di `AGENTS.md` (fast-path ad-hoc resume, 0 tool call recognition), Dual-Mode Handover Engine (§3.B.7 `change_counter` & proactive drift detection via `git status`), sinkronisasi Bash native (`sync.sh`), normalisasi baris silang platform (`.gitattributes`), executable mode `100755` pada skrip shell Unix di Git, penanganan aman alias `GEMINI.md` (Windows NTFS case-insensitive crash fix di `sync.ps1`), parity cleanup legacy `mcpServers` di `sync.sh`, dan dynamic PATH resolution (`Get-Command`) di seluruh skrip helper Windows. |
+| `v4.3.0` | [`b362288`](https://github.com/Noisesless/brainvibes/commit/b362288) | **UUPM v2.13.0 Upgrade & Visual Pipeline Harmonization**: Pembaruan 18 dataset (192 palet warna, 79 gaya UI, 74 font pairing, 193 reasoning rules, 119 pedoman UX, 17 preset motion GSAP, 22 stack templates), penambahan flag native CLI Three Dials (`--variance`, `--motion`, `--density`), integrasi domain `gsap` dan skrip validasi data `validate_data.py`, standarisasi skala Three Dials (1-10) lintas berkas framework (`gemini-execution.md`, `taste-skill-bridge`, `visual-rules.md`), serta penghapusan file usang (`design.csv`, `_sync_all.py`). |
+| `v4.2.0` | [`8fcd47b`](https://github.com/Noisesless/brainvibes/commit/8fcd47b) | **L1 Global Dispatcher, Dual-Mode Handover Engine & Dual-Platform Parity**: Master In-Memory L1 Switch Dispatch Table di `AGENTS.md` (fast-path ad-hoc resume, 0 tool call recognition), Dual-Mode Handover Engine (§3.B.7 `change_counter` & proactive drift detection via `git status`), sinkronisasi Bash native (`sync.sh`), normalisasi baris silang platform (`.gitattributes`), executable mode `100755` pada skrip shell Unix di Git, penanganan aman alias `GEMINI.md` (Windows NTFS case-insensitive crash fix di `sync.ps1`), parity cleanup legacy `mcpServers` di `sync.sh`, dan dynamic PATH resolution (`Get-Command`) di seluruh skrip helper Windows. |
 | `v4.1.0` | [`a2f10bc`](https://github.com/Noisesless/brainvibes/commit/a2f10bc) | **Code Intelligence Graph, Daemon Automation & Security Hardening**: Integrasi native `codebase-memory-mcp` (AST knowledge graph, 15 tools, 3D Web UI di port 9749) dengan otomatisasi daemon pada siklus Antigravity IDE (`hooks.json` + `cbm-hook.ps1`), skrip indexing terintegrasi (`index-project.ps1`), sinkronisasi true sync MCP (`sync.ps1` Step 10), pembersihan persona noise (`gemini.md`), parent prefix unik (`§3.A-C`, `§4.A-J`), sinkronisasi 8 berkas `/.docs/`, serta penambahan SP-019 s/d SP-022 (Error Handling, SSRF, IDOR, Open Redirect) untuk 100% coverage OWASP Top 10:2025. |
 | `v4.0.1` | [`7ec8b8c`](https://github.com/Noisesless/brainvibes/commit/7ec8b8c) | **Framework Cleanup & MCP Fix**: Perbaikan tautan cross-reference antar file framework, sentralisasi 16 larangan Anti-AI-SLOP ke `visual-rules.md`, pembersihan duplikasi simulasi, serta penghapusan server MCP `web_search` yang rusak agar terhindar dari hang loop. |
 | `v4.0.0` | [`f2a40ff`](https://github.com/Noisesless/brainvibes/commit/f2a40ff) | **Split Architecture, Efficiency Intelligence & SSI**: Pemecahan monolith 146KB ke 3 tier (gemini.md core ≤22KB, gemini-execution.md, gemini-templates.md). Mengimplementasikan 10 gap fixes efisiensi (UUPM cache, handover truncation 500 lines, parallel loading, app-context compression, context caching). Mengintegrasikan Smart Skill Integration (SSI), sinkronisasi 7 berkas `.docs/`, mitigasi shell non-aktif, drift port server, pre-flight check MCP, 3 HARD BLOCK visual baru, Rhythm Score System (`§0.I`), dan Asymmetric Card Geometry (`§0.J-4`). |
@@ -573,15 +564,34 @@ Brainvibes menyertakan sistem pemilihan palet warna bertingkat yang dikunci ke d
 
 ---
 
+## Kredit & Repositori Terkait (Acknowledgments)
+
+Brainvibes mengintegrasikan dan mengadaptasi berbagai proyek open-source, standar industri, serta pustaka dataset berikut:
+
+| Komponen / Proyek | Pengembang / Organisasi | Tautan Referensi | Peran dalam Brainvibes |
+| :--- | :--- | :--- | :--- |
+| **UI-UX Pro Max Skill** | [nextlevelbuilder](https://github.com/nextlevelbuilder) | [GitHub: ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Basis utama dataset desain (warna, gaya, tipografi, reasoning layout, pedoman UX, motion presets), script pencarian (`search.py`), dan skema validasi data. |
+| **Codebase Memory MCP** | [Decompact](https://github.com/Decompact) | [GitHub: codebase-memory-mcp](https://github.com/Decompact/codebase-memory-mcp) | Server MCP analisis arsitektur AST graph, semantic search, dependensi berkas, dan visualisasi interaktif 3D. |
+| **Strix** | [usman-s](https://github.com/usman-s) | [GitHub: strix](https://github.com/usman-s/strix) | Agen Dynamic Application Security Testing (DAST) open-source untuk validasi pengujian penetrasi berbasis container pada skill `pentest-strix`. |
+| **Taste-Skill Principles** | Komunitas Desain Frontend | Referensi prinsip desain antarmuka | Konsep Three Dials (Variance, Motion, Density), section rhythm scoring, dan prinsip perancangan antarmuka anti-slop pada `taste-skill-bridge`. |
+| **Phosphor Icons** | Phosphor Icons Team | [GitHub: phosphor-icons/core](https://github.com/phosphor-icons/core) | Pustaka ikon default yang terstandarisasi untuk antarmuka pengguna. |
+| **Tabler Icons** | Paweł Kuna / Tabler | [GitHub: tabler/tabler-icons](https://github.com/tabler/tabler-icons) | Koleksi ikon alternatif terstandarisasi pada sistem desain visual. |
+| **Lucide Icons** | Lucide Contributors | [GitHub: lucide-icons/lucide](https://github.com/lucide-icons/lucide) | Koleksi ikon terbuka yang didukung dalam registri ikon komponen. |
+| **Google Fonts** | Google Fonts Team | [Google Fonts](https://fonts.google.com/) | Dataset font pairing dan metadata lisensi font terbuka (OFL). |
+| **OWASP Top 10** | OWASP Foundation | [OWASP Top 10 Project](https://owasp.org/Top10/) | Panduan dan taksonomi standar keamanan web yang diadaptasi ke dalam security pattern registry. |
+| **Context7** | Context7 | [Context7 Platform](https://context7.com/) | Layanan server MCP remote untuk pengambilan dokumentasi pustaka dan kerangka kerja secara real-time. |
+
+---
+
 ## Kontribusi
 
-Pull request dan issue sangat disambut! Jika kamu menemukan celah instruksi, konflik logika, atau ingin menambahkan dukungan framework baru ke dalam template, silakan buka **Issue** terlebih dahulu untuk diskusi.
+Pull request dan issue terbuka untuk diskusi. Jika Anda menemukan celah instruksi, inkonsistensi aturan, atau ingin menambahkan dukungan framework baru, silakan buka **Issue** terlebih dahulu.
 
 ```
 1. Fork repositori ini
-2. Buat branch fitur: git checkout -b feat/nama-fitur-kamu
+2. Buat branch fitur: git checkout -b feat/nama-fitur-anda
 3. Commit perubahan: git commit -m "feat: deskripsi perubahan"
-4. Push ke branch: git push origin feat/nama-fitur-kamu
+4. Push ke branch: git push origin feat/nama-fitur-anda
 5. Buka Pull Request ke branch main
 ```
 
@@ -589,12 +599,10 @@ Pull request dan issue sangat disambut! Jika kamu menemukan celah instruksi, kon
 
 <div align="center">
 
-**Dibuat dengan dedikasi dan obsesi terhadap kode yang rapi.**
-
 [![GitHub Stars](https://img.shields.io/github/stars/Noisesless/brainvibes?style=social)](https://github.com/Noisesless/brainvibes)
 [![GitHub Forks](https://img.shields.io/github/forks/Noisesless/brainvibes?style=social)](https://github.com/Noisesless/brainvibes/fork)
 
-*Brainvibes — karena AI yang baik butuh instruksi yang lebih baik.*
+Brainvibes Configuration System — Lisensi MIT.
 
 </div>
 
