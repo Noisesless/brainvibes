@@ -406,7 +406,7 @@ admin=[email]=[password]
 |---|---|---|---|---|
 | Aturan penulisan kode, arsitektur, upload pipeline | `gemini-execution.md` | Saat eksekusi task koding aktif | §4.A - §4.F (anchor:4A-4F) | 1-3K |
 | UUPM + taste-skill pipeline (FULL) | `taste-skill-bridge/SKILL.md` → router ke ESSENTIAL/DETAILED | Saat `redesign` / buat halaman / visual-gate trigger | SKILL.md (router ~50 baris) | 1.5K |
-| UUPM data: warna, style, font, layout intelligence | `ui-ux-pro-max/data/` via `grep_search` | Saat UUPM Gate aktif | grep industri di colors/styles/typography/ui-reasoning.csv | 0.5-2K |
+| UUPM data: warna, style, font, motion, layout intelligence | `ui-ux-pro-max/data/` via `grep_search` | Saat UUPM Gate aktif | grep industri di colors/styles/typography/ui-reasoning/motion.csv | 0.5-2K |
 | Browser Tool Gate & Scratchpad DOM Protocol | `gemini-execution.md §4.H` | Saat akan pakai browser_subagent | §4.H (anchor:4H) | 3K |
 | Visual Self-Check & Pre-Flight | `taste-skill-bridge/REFERENCE.md` | Saat task visual selesai | REFERENCE.md (128 baris) | 1K |
 | Visual Design Pipeline (execution detail) | `gemini-execution.md §4K` | Saat redesign/buat halaman | §4K (anchor:4K) | 2K |

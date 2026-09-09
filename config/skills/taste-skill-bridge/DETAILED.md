@@ -25,21 +25,24 @@ python --version
 
 **Jika Python TERSEDIA** → jalankan UUPM search:
 ```bash
-python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system
-# Windows: python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system
+python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system --variance [V] --motion [M] --density [D]
+# Windows: python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[tipe_proyek] [industri] [vibe_keyword]" --design-system --variance [V] --motion [M] --density [D]
+# Flag --variance/--motion/--density opsional (1-10). Jika --motion > 3, otomatis lampirkan GSAP snippet dari motion.csv.
 ```
 
 Ekstrak dari output:
-- **Primary/Accent hex** → konversi ke `oklch()` → masuk ke `--raw-palette-*`
+- **16 semantic color tokens** (Primary, On Primary, Secondary, Accent/CTA, Background, Foreground, Card, Muted, Border, Destructive, Ring) → konversi ke `oklch()` → masuk ke `--raw-palette-*`
 - **Gaya visual** → jadi CSS keyword guidance untuk komponen
 - **`Design System Variables`** dari `styles.csv` → masuk ke `:root` token
 - **`Implementation Checklist`** → jadi pre-delivery checklist
+- **GSAP Snippet** (jika motion aktif) → terapkan di komponen animasi
 
 **Jika Python TIDAK TERSEDIA (Terhambat/Gagal/Izin Ditolak)** → lakukan **Direct-Read Fallback**:
 1. Jangan biarkan desain di-skip. Gunakan tool `view_file` atau `grep_search` secara langsung untuk mengurai file database UUPM di folder `$HOME/.gemini/config/skills/ui-ux-pro-max/data/` (Windows: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\`):
    - `colors.csv` -> Cari baris kategori industri/vibe terkait untuk mendapatkan Primary/Accent hex.
    - `styles.csv` -> Cari baris gaya visual terkait untuk mendapatkan variabel layout.
    - `typography.csv` -> Dapatkan font pairing yang sesuai.
+   - `motion.csv` -> Jika MOTION > 3, cari GSAP preset berdasarkan Intensity Tier.
 2. Jika pencarian manual CSV terhambat, gunakan fallback sekunder dengan memilih palet dari **15 kluster `design-system.md §1`** berdasarkan inferred vibe:
    - VARIANCE 8-10 → kluster "Cyber Industrial" / "Acid Streetwear" / "Holographic Dream"
    - VARIANCE 5-7 → kluster "Oceanic Jade" / "Nordic Earth" / "Carbon Slate"

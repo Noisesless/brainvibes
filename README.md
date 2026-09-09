@@ -54,7 +54,7 @@
 
 | Skill | Trigger Keywords | Fungsi |
 | :--- | :--- | :--- |
-| `ui-ux-pro-max` | awal baru, redesign | **UUPM** — Design intelligence dengan 14 CSV datasets (termasuk `ui-reasoning.csv` & `landing.csv`), Direct-Read CSV fallback, multi-stack support |
+| `ui-ux-pro-max` | awal baru, redesign | **UUPM v2.13.0** — Design intelligence dengan 18 data files (192 palet, 79 styles, 74 fonts, 193 reasoning rules, 119 UX guidelines, 17 GSAP presets, 22 stacks), native Three Dials CLI (`--variance`/`--motion`/`--density`), `reasoning_contract.py`, Direct-Read CSV fallback |
 | `taste-skill-bridge` | buat halaman, landing page, UI baru, ubah bentuk, ubah tampilan, ubah layout, perbaiki halaman, redesign visual, ubah visual | Anti-slop frontend bridge, Three Dials, router v2.0 (61 baris), `MODEL_HINTS.md` (Gemini Flash anti-slop), `CHEATSHEET.md` |
 | `security-patterns` | cek komponen, cek kelengkapan, verifikasi kode | Vulnerability database + secure coding patterns per stack (27 SPs, OWASP Top 10:2025 100% coverage) |
 | `code-snippets` | buat form, buat navbar, buat modal | Library snippet siap pakai (auth, form, layout, UI components) |

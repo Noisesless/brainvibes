@@ -2,6 +2,7 @@ antigravity-ide/
 brainvibes/
 tmp/
 *.json
+!config/skills/**/*.json
 *.jsonl
 *.pb
 *.log

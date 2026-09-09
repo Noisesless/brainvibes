@@ -78,5 +78,6 @@ description: |
 | Self-check protocol | `gemini-execution.md §4I` (anchor:4I) |
 | Anti-slop 23 rules (inline) | `gemini.md §VISUAL RULES` |
 | Master palette 15 kluster | `design-system.md §1` |
-| UUPM data (193 palet, 84 styles, 73 fonts) | `ui-ux-pro-max/data/` |
-| Layout decision intelligence | `ui-ux-pro-max/data/ui-reasoning.csv` |
+| UUPM data (192 palet, 79 styles, 74 fonts, 17 GSAP presets) | `ui-ux-pro-max/data/` |
+| Layout decision intelligence (193 rules) | `ui-ux-pro-max/data/ui-reasoning.csv` |
+| GSAP motion presets | `ui-ux-pro-max/data/motion.csv` |

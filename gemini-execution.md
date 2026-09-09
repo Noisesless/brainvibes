@@ -488,17 +488,20 @@ AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mapping] → Output Kode
 ```
 1. **Three Dials Assessment (Wajib Sebelum Search):** Tentukan 3 dial dari konteks proyek sebelum query UUPM:
-   - **V (Vibrance):** 1-5 — Saturasi/vibransi palet. (1=monokrom netral, 5=neon/streetwear)
-   - **M (Modernity):** 1-5 — Tingkat modernitas desain. (1=klasik/editorial, 5=ultra-futuristik)
-   - **D (Darkness):** 1-5 — Preferensi gelap/terang. (1=full light, 5=full dark/noir)
+   - **V (DESIGN_VARIANCE):** 1-10 — Geometri layout. (1=simetri/centered → 10=bold/asymmetric/chaos)
+   - **M (MOTION_INTENSITY):** 1-10 — Intensitas animasi. (1=statis/subtle → 10=sinematik/complex; melampirkan GSAP snippet dari motion.csv)
+   - **D (VISUAL_DENSITY):** 1-10 — Kepadatan informasi. (1=art gallery/spacious → 10=cockpit/dashboard data-heavy)
    Output format wajib sebelum kode: `dials: V=[n] M=[n] D=[n]`
-2. **Python Search (Prioritas):** Jalankan `python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[deskripsi]"` (Windows: `python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi]"`) secara senyap.
+2. **Python Search (Prioritas):** Jalankan `python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[deskripsi]" --design-system --variance [V] --motion [M] --density [D]` (Windows: `python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi]" --design-system --variance [V] --motion [M] --density [D]`) secara senyap.
+   - Flag `--variance`, `--motion`, `--density` bersifat opsional — jika tidak diset, UUPM menginferensikan dari query.
+   - Jika `--motion` > 3, output otomatis melampirkan GSAP animation snippet dari `motion.csv`.
 3. **Fallback Chain (jika Python gagal atau tidak terinstall):**
    - **Fallback A:** Baca `design-system.md §1` → pilih kluster warna yang paling cocok dengan Three Dials.
    - **Fallback B:** Jika `design-system.md` tidak tersedia → gunakan `user-prefs.md [DESIGN_DEFAULTS]` sebagai baseline.
-   - Catat fallback yang dipakai di baris output `[Style Rec] ... — sumber: Fallback A/B`.
+   - **Fallback C (Direct-Read motion.csv):** Jika animasi dibutuhkan → `grep_search` di `motion.csv` berdasarkan Intensity Tier.
+   - Catat fallback yang dipakai di baris output `[Style Rec] ... — sumber: Fallback A/B/C`.
 4. **oklch() Mapping:** Hex hasil rekomendasi UUPM dikonversi ke oklch() dan dipetakan ke token `--raw-palette-*`.
-5. **Component Pattern Query:** Query database stack-specific CSV (Laravel, Next.js, React) saat membuat komponen di Fase 3-5.
+5. **Component Pattern Query:** Query database stack-specific CSV (Laravel, Next.js, React, 22 stacks total) saat membuat komponen di Fase 3-5.
 
 ---
 
@@ -883,12 +886,14 @@ GATE 2 — [Three Dials]     : Set V/M/D berdasarkan tabel inferensi di ESSENTIA
                               Output: dials: V=[n] M=[n] D=[n]
 
 GATE 3 — [UUPM Search]     : Jalankan SALAH SATU:
-                              A) python search.py "[industri] [vibe]" --design-system
-                              B) Direct-Read: grep_search industri di colors.csv → styles.csv → typography.csv
-                              Output: [UUPM Source] Palet + Style + Font pair
+                              A) python search.py "[industri] [vibe]" --design-system --variance [V] --motion [M] --density [D]
+                                 (flag Three Dials opsional — jika --motion > 3, otomatis lampirkan GSAP snippet dari motion.csv)
+                              B) Direct-Read: grep_search industri di colors.csv → styles.csv → typography.csv → motion.csv
+                              Output: [UUPM Source] Palet + Style + Font pair + GSAP (jika motion aktif)
 
 GATE 4 — [Layout Intel]    : grep_search industri/tipe proyek di ui-reasoning.csv
-                              (WAJIB dijalankan mandiri via grep_search — search.py TIDAK mencari file ini!)
+                              (WAJIB dijalankan mandiri via grep_search — meski search.py v2.13.0 sudah include
+                               reasoning_contract.py, tetap HARD BLOCK grep mandiri untuk defense-in-depth)
                               Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns
                               Jika landing page → grep juga landing.csv untuk Section Order
                               Output: [Layout Intel] Pattern=[X] | Anti-Patterns=[Y]
@@ -915,19 +920,21 @@ GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5 selesai
 Lakukan pembacaan data langsung via `grep_search` dengan langkah berikut:
 
 ```
-1. SearchPath: "<UUPM_DATA>\colors.csv" | Query: "[industri/product_type]"
+1. SearchPath: "<UUPM_DATA>/colors.csv" | Query: "[industri/product_type]"
    → Ambil: Primary, Accent, Background hex → konversi ke oklch() → --vibe-*
-2. SearchPath: "<UUPM_DATA>\styles.csv" | Query: "[vibe/keyword]"
+2. SearchPath: "<UUPM_DATA>/styles.csv" | Query: "[vibe/keyword]"
    → Ambil: Design System Variables + Effects & Animations
-3. SearchPath: "<UUPM_DATA>\typography.csv" | Query: "[mood/category]"
+3. SearchPath: "<UUPM_DATA>/typography.csv" | Query: "[mood/category]"
    → Ambil: Font Pairing (Heading + Body + CSS Import Google Fonts)
-4. SearchPath: "<UUPM_DATA>\ui-reasoning.csv" | Query: "[UI_Category/industri]"
-   → Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns (Wajib — tidak di-cover oleh search.py!)
-5. Jika Landing Page: SearchPath: "<UUPM_DATA>\landing.csv" | Query: "[tipe_bisnis]"
+4. SearchPath: "<UUPM_DATA>/ui-reasoning.csv" | Query: "[UI_Category/industri]"
+   → Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns (Wajib — defense-in-depth meski search.py sudah include reasoning_contract.py)
+5. Jika Landing Page: SearchPath: "<UUPM_DATA>/landing.csv" | Query: "[tipe_bisnis]"
    → Ambil: Section Order & Primary CTA placement
+6. Jika MOTION > 3 atau animasi: SearchPath: "<UUPM_DATA>/motion.csv" | Query: "[Intensity Tier/Category]"
+   → Ambil: GSAP Snippet, Trigger, Duration, Easing, Framework Notes
 ```
 
-Catat: `[UUPM Source] Direct-Read CSV — colors.csv, styles.csv, typography.csv, ui-reasoning.csv (Path: <UUPM_DATA>)`
+Catat: `[UUPM Source] Direct-Read CSV — colors.csv, styles.csv, typography.csv, ui-reasoning.csv, motion.csv (Path: <UUPM_DATA>)`
 
 ### §4K.4 Saklar `redesign` Execution Protocol
 
