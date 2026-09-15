@@ -72,7 +72,7 @@ User Input → Presentation → Logic → Data → Response
 - `prd.md` → Project requirements & CORE IDENTITY LOCK
 
 ### Layer 3: Skills & Knowledge
-- `config/skills/` → 12 skills (ui-ux-pro-max dengan Direct-Read & 14 dataset, taste-skill-bridge router v2.0, security-patterns, dll)
+- `config/skills/` → 12 skills (ui-ux-pro-max dengan Direct-Read & 18 dataset, taste-skill-bridge router v2.0, security-patterns 30 SPs + 5 PHP SPs + 5-tier adaptive rate limiters, dll)
 - `knowledge/` → 3 knowledge bases (error-solutions, retrospectives, stack-patterns)
 
 ### Layer 4: Cross-Platform Parity Engine

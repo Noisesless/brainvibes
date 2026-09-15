@@ -53,6 +53,24 @@ if (Test-Path $DstGeminiLower) {
     Write-Host "[OK] Sinkronisasi alias GEMINI.md" -ForegroundColor Gray
 }
 
+# 1B. Salin berkas-berkas inti ke folder lokal Antigravity IDE & CLI jika ada
+$IdeTargetDirs = @(
+    (Join-Path $GeminiTargetDir "antigravity-ide"),
+    (Join-Path $GeminiTargetDir "antigravity-cli")
+)
+foreach ($IdeDir in $IdeTargetDirs) {
+    if (Test-Path $IdeDir) {
+        foreach ($File in $CoreFiles) {
+            $SrcFile = Join-Path $SourceDir $File
+            $DstFile = Join-Path $IdeDir $File
+            if (Test-Path $SrcFile) {
+                Copy-Item -Path $SrcFile -Destination $DstFile -Force
+                Write-Host "[OK] Sync IDE Local: $File -> $DstFile" -ForegroundColor Gray
+            }
+        }
+    }
+}
+
 # 2. Salin folder config secara rekursif ke .gemini
 $SrcConfig = Join-Path $SourceDir "config"
 $DstConfig = Join-Path $GeminiTargetDir "config"

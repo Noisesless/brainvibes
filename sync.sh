@@ -50,6 +50,21 @@ if [[ -f "$GEMINI_TARGET_DIR/gemini.md" ]]; then
     echo -e "${GRAY}[OK] Sinkronisasi alias GEMINI.md (UPPERCASE)${NC}"
 fi
 
+# 1B. Salin berkas-berkas inti ke folder lokal Antigravity IDE & CLI jika ada
+IDE_TARGET_DIRS=("$GEMINI_TARGET_DIR/antigravity-ide" "$GEMINI_TARGET_DIR/antigravity-cli")
+for ide_dir in "${IDE_TARGET_DIRS[@]}"; do
+    if [[ -d "$ide_dir" ]]; then
+        for file in "${CORE_FILES[@]}"; do
+            src="$SOURCE_DIR/$file"
+            dst="$ide_dir/$file"
+            if [[ -f "$src" ]]; then
+                cp -f "$src" "$dst"
+                echo -e "${GRAY}[OK] Sync IDE Local: $file -> $dst${NC}"
+            fi
+        done
+    fi
+done
+
 # 2. Salin folder config secara rekursif ke .gemini/config
 SRC_CONFIG="$SOURCE_DIR/config"
 DST_CONFIG="$GEMINI_TARGET_DIR/config"

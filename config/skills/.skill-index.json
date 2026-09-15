@@ -1,12 +1,12 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-07-17T10:00:00+07:00",
+  "version": "1.1.0",
+  "last_updated": "2026-09-15T10:10:00+07:00",
   "description": "Brainvibes Skill Index — AI-managed registry of all installed skills",
   "skills": [
     {
       "name": "ui-ux-pro-max",
       "path": "config/skills/ui-ux-pro-max/",
-      "triggers": ["awal baru", "redesign", "buat halaman"],
+      "triggers": ["awal baru", "redesign", "buat halaman", "animasi", "GSAP"],
       "version": "1.0.0",
       "auto_trigger": true,
       "dependencies": ["taste-skill-bridge"],
@@ -17,7 +17,7 @@
     {
       "name": "taste-skill-bridge",
       "path": "config/skills/taste-skill-bridge/",
-      "triggers": ["redesign", "buat halaman", "UI baru", "landing page"],
+      "triggers": ["redesign", "buat halaman", "UI baru", "landing page", "ubah bentuk", "ubah tampilan", "ubah layout", "perbaiki halaman", "redesign visual", "ubah visual"],
       "version": "1.0.0",
       "auto_trigger": true,
       "dependencies": [],
@@ -105,8 +105,8 @@
     {
       "name": "security-patterns",
       "path": "config/skills/security-patterns/",
-      "triggers": ["analisa keamanan", "scan keamanan", "cek vulnerability", "security audit", "perbaiki keamanan", "fix vulnerability"],
-      "version": "1.0.0",
+      "triggers": ["cek komponen", "cek kom", "audit security", "cek kelengkapan", "verifikasi kode", "cek regulasi", "perbaiki keamanan", "fix vulnerability", "analisa keamanan", "scan keamanan", "cek vulnerability", "security audit"],
+      "version": "1.1.0",
       "auto_trigger": true,
       "dependencies": [],
       "conflicts_with": [],

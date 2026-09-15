@@ -40,9 +40,9 @@
 
 | Skill | Dependencies | Purpose |
 |---|---|---|
-| `ui-ux-pro-max` | 14 datasets (colors, typography, styles, ui-reasoning, landing, dll) | Design intelligence (Search / Direct-Read) |
+| `ui-ux-pro-max` | 18 datasets (colors, typography, styles, ui-reasoning, landing, dll) | Design intelligence (Search / Direct-Read) |
 | `taste-skill-bridge` | ui-ux-pro-max, SKILL.md (router), ESSENTIAL, DETAILED, REFERENCE, CHEATSHEET, MODEL_HINTS | Anti-slop bridge & model overrides |
-| `security-patterns` | known-vulns.md, secure-patterns.md | Security rules |
+| `security-patterns` | known-vulns.md, secure-patterns.md (SP-001..SP-030), xampp-php-patterns.md (SP-PHP-001..SP-PHP-005), audit-template.md | Security rules (30 SPs + 5 PHP SPs + 5-tier adaptive rate limiting) |
 | `code-snippets` | auth-patterns.md, form-patterns.md | Reusable snippets |
 | `database-patterns` | - | Schema design |
 | `lessons-learned` | anti-patterns.md, fast-solutions.md | Knowledge base |

@@ -75,16 +75,172 @@ Checklist wajib:
 
 ---
 
-[SP-PHP-004] Rate Limiter Login (Session-Based, Tanpa Redis)
-Stack    : PHP Native + XAMPP
-Kategori : Auth
+[SP-PHP-004] Tiered Rate Limiter (Session-Based, Tanpa Redis)
+Stack    : PHP Native (XAMPP Windows & Linux)
+Kategori : Auth / Security
+
+Tier Table (WAJIB disesuaikan per endpoint):
+| Tier      | Limit | Window  | Key / Scope            | Contoh Endpoint                  |
+|-----------|-------|---------|------------------------|----------------------------------|
+| CRITICAL  | 5     | 15 min  | Login, Reset Password  | POST /login.php, forgot-password |
+| SENSITIVE | 10    | 15 min  | Register, Verify OTP   | POST /register.php, verify-otp   |
+| API_WRITE | 30    | 1 min   | Mutations (CUD)        | POST/PUT/DELETE /api/items.php   |
+| API_READ  | 60    | 1 min   | Data Queries           | GET /api/search.php              |
+| GENERAL   | 120   | 1 min   | Static / Public pages  | /index.php, /about.php           |
 
 Pattern Aman:
-  $_SESSION['login_attempts'] - counter percobaan
-  $_SESSION['last_attempt_time'] - timestamp percobaan terakhir
-  Batas: 5 percobaan dalam 900 detik (15 menit)
-  Reset counter jika time() - last_attempt_time > 900
-  Jika melebihi batas: http_response_code(429) + pesan error
+  ```php
+  function rateLimitCheck(string $tier = 'GENERAL'): array {
+      if (session_status() === PHP_SESSION_NONE) {
+          session_start();
+      }
+
+      $tiers = [
+          'CRITICAL'  => ['limit' => 5,   'window' => 900], // 5 req / 15 min (brute-force defense)
+          'SENSITIVE' => ['limit' => 10,  'window' => 900], // 10 req / 15 min (registration, OTP)
+          'API_WRITE' => ['limit' => 30,  'window' => 60],  // 30 req / 1 min (mutations)
+          'API_READ'  => ['limit' => 60,  'window' => 60],  // 60 req / 1 min (reads/searches)
+          'GENERAL'   => ['limit' => 120, 'window' => 60],  // 120 req / 1 min (general pages)
+      ];
+
+      $config = $tiers[$tier] ?? $tiers['GENERAL'];
+      $now = time();
+
+      if (!isset($_SESSION['rate_limits'][$tier])) {
+          $_SESSION['rate_limits'][$tier] = [
+              'count'    => 0,
+              'reset_at' => $now + $config['window']
+          ];
+      }
+
+      $record = &$_SESSION['rate_limits'][$tier];
+
+      // Reset counter jika window waktu telah kedaluwarsa
+      if ($now >= $record['reset_at']) {
+          $record['count'] = 0;
+          $record['reset_at'] = $now + $config['window'];
+      }
+
+      if ($record['count'] >= $config['limit']) {
+          $retryAfter = $record['reset_at'] - $now;
+          http_response_code(429);
+          header('Retry-After: ' . $retryAfter);
+          header('X-RateLimit-Limit: ' . $config['limit']);
+          header('X-RateLimit-Remaining: 0');
+          header('Content-Type: application/json');
+          echo json_encode([
+              'error' => 'Too many requests on ' . $tier . ' tier. Please try again later.',
+              'retry_after_seconds' => $retryAfter,
+              'tier' => $tier
+          ]);
+          exit;
+      }
+
+      $record['count']++;
+      $remaining = $config['limit'] - $record['count'];
+
+      header('X-RateLimit-Limit: ' . $config['limit']);
+      header('X-RateLimit-Remaining: ' . $remaining);
+
+      return ['success' => true, 'remaining' => $remaining];
+  }
+
+  // Contoh Penggunaan di Endpoint Login:
+  // rateLimitCheck('CRITICAL');
+  // Lanjutkan autentikasi...
+  ```
+
+---
+
+[SP-PHP-005] Tiered Rate Limiter (File/DB-Based, Multi-User / Anti-Session-Reset)
+Stack    : PHP Native (XAMPP Windows & Linux / Cachy OS)
+Kategori : Security / Anti-Brute-Force
+
+Justifikasi: Attacker dapat dengan mudah mereset cookie/session untuk melewati rate limit session-based. SP-PHP-005 melacak percobaan berdasarkan Client IP (+ identifier email pada tier CRITICAL) menggunakan atomic file lock atau database, tahan terhadap manipulasi session klien.
+
+Cross-Platform Storage Strategy:
+  - Gunakan `sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'app_rate_limits'` atau relative storage path `__DIR__ . '/../storage/rate_limits/'`.
+  - FORBIDDEN hardcode drive letter `C:\xampp\` atau root Unix `/tmp/` langsung di kode.
+  - Berikan izin direktori aman (`@chmod($storageDir, 0700)`).
+
+Pattern Aman (Atomic File-Based Rate Limiter):
+  ```php
+  function fileRateLimitCheck(string $identifier, string $tier = 'GENERAL'): array {
+      $tiers = [
+          'CRITICAL'  => ['limit' => 5,   'window' => 900], // 5 req / 15 min
+          'SENSITIVE' => ['limit' => 10,  'window' => 900], // 10 req / 15 min
+          'API_WRITE' => ['limit' => 30,  'window' => 60],  // 30 req / 1 min
+          'API_READ'  => ['limit' => 60,  'window' => 60],  // 60 req / 1 min
+          'GENERAL'   => ['limit' => 120, 'window' => 60],  // 120 req / 1 min
+      ];
+
+      $config = $tiers[$tier] ?? $tiers['GENERAL'];
+      $now = time();
+
+      // Path OS-agnostic: sys_get_temp_dir() otomatis resolve ke C:\xampp\tmp di Windows atau /tmp di Linux
+      $storageDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'app_rate_limits';
+      if (!is_dir($storageDir)) {
+          @mkdir($storageDir, 0700, true);
+      }
+
+      $key = hash('sha256', $tier . ':' . $identifier);
+      $filePath = $storageDir . DIRECTORY_SEPARATOR . $key . '.json';
+
+      $fp = fopen($filePath, 'c+');
+      if (!$fp) {
+          // Fallback anggap aman jika file storage terkunci
+          return ['success' => true, 'remaining' => $config['limit']];
+      }
+
+      // Lock eksklusif untuk mencegah race conditions
+      flock($fp, LOCK_EX);
+
+      $content = stream_get_contents($fp);
+      $data = $content ? json_decode($content, true) : null;
+
+      if (!$data || $now >= $data['reset_at']) {
+          $data = ['count' => 0, 'reset_at' => $now + $config['window']];
+      }
+
+      if ($data['count'] >= $config['limit']) {
+          $retryAfter = $data['reset_at'] - $now;
+          flock($fp, LOCK_UN);
+          fclose($fp);
+
+          http_response_code(429);
+          header('Retry-After: ' . $retryAfter);
+          header('X-RateLimit-Limit: ' . $config['limit']);
+          header('X-RateLimit-Remaining: 0');
+          header('Content-Type: application/json');
+          echo json_encode([
+              'error' => 'Rate limit exceeded on ' . $tier . '. Try again later.',
+              'retry_after' => $retryAfter
+          ]);
+          exit;
+      }
+
+      $data['count']++;
+      $remaining = $config['limit'] - $data['count'];
+
+      // Tulis kembali counter yang diperbarui
+      ftruncate($fp, 0);
+      rewind($fp);
+      fwrite($fp, json_encode($data));
+      fflush($fp);
+      flock($fp, LOCK_UN);
+      fclose($fp);
+
+      header('X-RateLimit-Limit: ' . $config['limit']);
+      header('X-RateLimit-Remaining: ' . $remaining);
+
+      return ['success' => true, 'remaining' => $remaining];
+  }
+
+  // Contoh Penggunaan:
+  // $clientIp = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+  // $targetEmail = strtolower(trim($_POST['email'] ?? ''));
+  // fileRateLimitCheck($clientIp . '|' . $targetEmail, 'CRITICAL');
+  ```
 
 ---
 

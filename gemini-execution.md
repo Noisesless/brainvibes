@@ -157,24 +157,24 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan
 
 1. **Deteksi stack proyek** dari `app-context.md §APP` (PHP Native / Laravel / Next.js).
 2. **Filter SP yang relevan** berdasarkan stack:
-   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-023, SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001
-   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-023
-   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-023
-   - Universal → SP-008, SP-009, SP-010, SP-016, SP-017, SP-018, SP-019, SP-020, SP-021, SP-022, SP-023
+   - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-030, SP-PHP-001 s/d SP-PHP-005, SP-HTACCESS-001
+   - Laravel → SP-005, SP-008 s/d SP-010, SP-013, SP-015 s/d SP-030
+   - Next.js → SP-006 s/d SP-010, SP-012, SP-014, SP-016 s/d SP-030
+   - Universal → SP-008, SP-009, SP-010, SP-016 s/d SP-030
    - **Multi-Stack Rule:** Jika proyek menggunakan >1 framework (misalnya PHP Native + Next.js), gabungkan SP set dari semua stack yang terdeteksi. Deduplikasi otomatis — setiap SP hanya diperiksa 1x.
 3. **OWASP Top 10:2025 mapping** — organisasikan temuan per kategori OWASP:
 
    | OWASP | Kategori | SP Terkait | Grep Indicators |
    |---|---|---|---|
-   | A01 | Broken Access Control | SP-006, SP-PHP-001, **SP-020**, **SP-021**, **SP-022**, L5 | `getServerSession`, `requireAuth`, `csrf_token`, `validateUrl`, `user_id` ownership, `safeRedirect` |
-   | A02 | Security Misconfiguration | SP-008, SP-011/012/013, **SP-023**, SP-HTACCESS-001 | `Content-Security-Policy`, `X-Frame-Options`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy` |
+   | A01 | Broken Access Control | SP-006, SP-PHP-001, **SP-020**, **SP-021**, **SP-022**, **SP-024**, L5 | `getServerSession`, `requireAuth`, `csrf_token`, `validateUrl`, `user_id` ownership, `safeRedirect`, `requireRole`, `is_admin`, `role_guard`, `authorize` |
+   | A02 | Security Misconfiguration | SP-008, SP-011/012/013, **SP-023**, **SP-029**, SP-HTACCESS-001 | `Content-Security-Policy`, `X-Frame-Options`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy`, `bind-address`, `GRANT SELECT`, `listen_addresses` |
    | A03 | Supply Chain Failures | **SP-016** | `package-lock.json` exists, no `*` versions, `npm ci` |
-   | A04 | Cryptographic Failures | SP-004, SP-007, SP-009 | `password_hash`, `PASSWORD_BCRYPT`, env check |
-   | A05 | Injection | SP-001, SP-002, L3 | `prepare(`, `htmlspecialchars`, no `eval(` |
-   | A06 | Insecure Design | SP-014/015, SP-PHP-004 | `rateLimit(`, `throttle:`, login attempts |
-   | A07 | Authentication Failures | SP-PHP-002, SP-004, CS-033 | `session_regenerate_id`, `cookie_httponly`, 429 |
+   | A04 | Cryptographic Failures | SP-004, SP-007, SP-009, **SP-025**, **SP-028** | `password_hash`, `PASSWORD_BCRYPT`, env check, `$hidden`, `unset($data['password'])`, `maskSecret`, `hash('sha256'`, `X-API-Key` |
+   | A05 | Injection | SP-001, SP-002, **SP-026**, **SP-030**, L3 | `prepare(`, `htmlspecialchars`, no `eval(`, `filter_var`, `htmlPurifier`, `DOMPurify`, `strip_tags`, `clamdscan`, `SVGSanitizer` |
+   | A06 | Insecure Design | **SP-014/015**, **SP-PHP-004/005** | `rateLimit(`, `throttle:`, login attempts, `rateLimitCheck`, `TIER_CRITICAL`, `rate_limits` |
+   | A07 | Authentication Failures | SP-PHP-002, SP-004, **SP-027**, CS-033 | `session_regenerate_id`, `cookie_httponly`, 429, `password_reset_tokens`, `expires_at`, `hash('sha256', $token)`, `single-use` |
    | A08 | Software Integrity | **SP-017** | `integrity=` in CDN scripts, `npm ci`, `.gitignore` check |
-   | A09 | Logging Failures | **SP-018** | `display_errors=0`, `log_errors=1`, no password in logs |
+   | A09 | Logging Failures | **SP-018** | `display_errors=0`, `log_errors=1`, no password in logs, `maskSecret` |
    | A10 | Exceptional Conditions | **SP-019** | `set_error_handler`, `error.tsx`, `Handler.php`, `APP_DEBUG=false`, no empty catch |
 
 4. **🔴 MANDATORY: Grep codebase FAKTUAL per SP** — AI WAJIB menjalankan `grep_search` untuk SETIAP SP yang relevan. Cari indikator implementasi (function name, header value, config key) di file kode aktual. FORBIDDEN menulis status komponen dari memori/asumsi tanpa grep.

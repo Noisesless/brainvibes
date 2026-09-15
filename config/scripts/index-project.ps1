@@ -19,6 +19,11 @@ Write-Host "Target Repository : $RepoPath"
 Write-Host "Index Mode        : $Mode"
 Write-Host "-----------------------------------------"
 
+if (-not (Test-Path $CbmExe)) {
+    Write-Warning "codebase-memory-mcp.exe tidak ditemukan di $CbmExe. Silakan install terlebih dahulu."
+    exit 0
+}
+
 # 1. Pastikan daemon & port 9749 aktif
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $daemonScript = Join-Path $scriptDir "ensure-cbm-daemon.ps1"

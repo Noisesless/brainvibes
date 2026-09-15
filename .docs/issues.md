@@ -10,6 +10,7 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-028 | Security Patterns & Rate Limiter Gap Closure | Penambahan 7 pattern baru (SP-024 s/d SP-030) di secure-patterns.md, SP-PHP-005 di xampp-php-patterns.md, upgrade 5-tier rate limiter bertingkat (SP-014, SP-015, SP-PHP-004), sinkronisasi OWASP Top 10:2025 di gemini-execution.md & audit-template.md, serta pembersihan file sampah & reindexing skill | 2026-09-15 |
 | RES-027 | Dual-Platform Parity & Windows NTFS Compatibility | Pembuatan `.gitattributes` (LF untuk .sh, CRLF untuk .ps1), penambahan executable bit (100755) pada seluruh script Linux di Git, penanganan aman alias `GEMINI.md` (Windows NTFS case-insensitive crash fix di `sync.ps1`), parity cleanup legacy `mcpServers` di `sync.sh`, dan dynamic PATH resolution (`Get-Command`) di seluruh skrip helper Windows | 2026-09-07 |
 | RES-026 | Dual-Platform Linux Support & Shell Automation | Implementasi `sync.sh` (Bash port sync.ps1), porting seluruh skrip otomasi (`cbm-hook.sh`, `ensure-cbm-daemon.sh`, `index-project.sh`), adaptasi path dinamis Linux di `hooks.json`, `mcp_config.json`, `user-prefs.md`, serta verifikasi instalasi paket Arch/AUR `codebase-memory-mcp-bin` | 2026-09-04 |
 | RES-025 | Dynamic Local PC Paths & Settings Cleanup | Mengganti hardcoded user path (GBC_PC) dengan dynamic `$env:LOCALAPPDATA` / `ClasNet` pada semua script helper (`sync.ps1`, `ensure-cbm-daemon.ps1`, `cbm-hook.ps1`, `index-project.ps1`) dan MCP config, serta auto-clean blok legacy `mcpServers` di settings.json | 2026-09-02 |
@@ -20,7 +21,6 @@
 | RES-020 | Pembatalan integrasi OpenCode & Cross-Memory | Menghapus opencode.jsonc, session-hook.ps1, cross-memory-implementation-plan.md, §A8/§A8B di gemini-execution.md, section [CROSS_MEMORY] di user-prefs.md, serta membersihkan mcp_config.json & sync.ps1 | 2026-08-02 |
 | RES-019 | Persona prompt noise & OpenCode sync bloat | Deleted persona sections (A9/LLM-Local) from gemini.md & user-prefs.md, cleaned up AGENTS.md duplication, and updated sync.ps1 to target .gemini exclusively | 2026-07-24 |
 | RES-018 | Dispatch table & Session Init duplication & ambiguous references | Cleaned up duplicate Session Init block, renamed Dispatch Detail column to Templates Section, and merged duplicate §4H POINTER table rows | 2026-07-24 |
-| RES-017 | `awal konversi` missing `prd-template.md` dependency | Added `prd-template.md` to WAJIB Load column for `awal konversi` in gemini.md & README.md | 2026-07-24 |
 
 ## Issue Categories
 

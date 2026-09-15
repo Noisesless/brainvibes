@@ -10,8 +10,8 @@
 | Skills | 12 folders | ✅ |
 | Knowledge Bases | 3 | ✅ |
 | MCP Servers | 2 (Lean Stack) | ✅ |
-| Version | 4.2.0 | ✅ |
-| Total Size | ~550KB | ✅ |
+| Version | 4.4.0 | ✅ |
+| Total Size | ~650KB | ✅ |
 
 ### File Size Distribution
 | Category | Files | Total Size |
@@ -69,9 +69,10 @@
 - **Load Method:** view_file on-demand
 
 ### secure-patterns.md (Security Patterns Registry)
-- **Lines:** 1098
-- **Total Patterns:** 22 SPs + 5 SP-PHP = 27 Security Patterns
-- **OWASP Coverage:** 100% OWASP Top 10:2025 (A01 Broken Access Control through A10 Exceptional Conditions)
+- **Lines:** 2036
+- **Total Patterns:** 30 SPs + 5 SP-PHP = 35 Security Patterns
+- **Adaptive Rate Limiting:** 5-Tier Rate Limiter Architecture (SP-014, SP-015, SP-PHP-004)
+- **OWASP Coverage:** 100% OWASP Top 10:2025 (A01:2025 Broken Access Control through A10:2025 Exceptional Conditions)
 - **Stack Support:** PHP Native, Next.js, Laravel, Universal
 - **Complexity:** High (comprehensive secure patterns + anti-patterns + grep indicators)
 
@@ -118,10 +119,11 @@
 
 ### Areas for Improvement
 1. **Documentation Coverage** — `.docs/` lengkap (9 files termasuk deployment.md & design-system.md) ✅
-2. **Version Tracking** — Changelog tersinkronisasi di v4.2.0-stable
+2. **Version Tracking** — Changelog tersinkronisasi di v4.4.0-stable
 3. **Testing** — Belum ada automated test suite untuk validasi dynamic prompt instructions
 4. **Visual Optimization** — `taste-skill-bridge/SKILL.md` telah dioptimasi ke router 61 baris + CHEATSHEET + MODEL_HINTS ✅
 5. **Dual-Platform Parity** — `.gitattributes` (LF/CRLF), executable mode `100755` pada skrip Unix, paritas `sync.sh` & `sync.ps1`, serta dynamic PATH binary detection ✅
+6. **Security & Limiter Parity** — SP-024 s/d SP-030 terpasang, 5-tier adaptive rate limiter aktif, dan repo bersih dari residu usang ✅
 
 ## Self-Check Result
 ```
