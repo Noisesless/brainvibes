@@ -40,7 +40,7 @@
 | [`design-system.md`](design-system.md) | ~44KB | **Design System** — Spesifikasi token CSS (oklch), arsitektur layer, tipografi, dan registri token komponen UI (§7B). |
 | [`AGENTS.md`](AGENTS.md) | ~8KB | **L1 Switch Dispatcher** — Tabel routing cepat in-memory (11 saklar), deteksi drift Git status, fallback path dinamis, dan registri skills. |
 | [`user-prefs.md`](user-prefs.md) | ~7KB | **Preferensi Pengguna** — Default port, tema visual, toggle perilaku agent, whitelist context7, style respon, dan pencarian web. |
-| [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **Konfigurasi MCP** — Konfigurasi server MCP lokal (codebase-memory) dan remote (context7). |
+| [`config/mcp_config.json`](config/mcp_config.json) | ~0.5KB | **Konfigurasi MCP** — Format Hybrid Dual-Schema (`mcpServers` Stdio untuk Antigravity IDE & `mcp` untuk Gemini CLI: codebase-memory + context7). |
 | [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Skrip Sinkronisasi (Dual-Platform)** — Otomatisasi sinkronisasi ke direktori `~/.gemini/` (Windows PowerShell & Unix Bash), konfigurasi MCP, dan verifikasi daemon CBM. |
 | [`scripts/`](scripts/) | ~6KB | **Skrip Otomasi** — Skrip pendukung daemon CBM (`ensure-cbm-daemon`), pengindeksan repositori (`index-project`), dan hook IDE (`cbm-hook`). |
 | [`.gitattributes`](.gitattributes) | ~0.3KB | **Git Attributes** — Normalisasi format line ending lintas platform (LF untuk shell/markdown/json, CRLF untuk powershell). |

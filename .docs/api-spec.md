@@ -59,28 +59,28 @@
 
 ### context7 (Library Documentation RAG)
 
-| Method | Route | Purpose | Auth |
-|---|---|---|---|
-| POST | `/mcp` | Query library documentation | API Key (X-Context7-Client-IDE) |
+**Transport:**
+- **Antigravity IDE (Stdio):** `npx -y @upstash/context7-mcp` (Zero configuration, standard MCP stdio)
+- **Gemini CLI (Remote HTTP):** `https://mcp.context7.com/mcp` (with `X-Context7-Client-IDE` header)
 
-**Request:**
+#### MCP Tools
+
+| Tool | Purpose | Parameters |
+|---|---|---|
+| `resolve-library-id` | Resolve package/library name to Context7-compatible ID | `libraryName` (string), `query` (string) |
+| `query-docs` | Retrieve & query up-to-date documentation & code snippets | `libraryId` (string), `query` (string) |
+
+#### Dual-Schema Configuration (`config/mcp_config.json`)
 ```json
 {
-  "method": "tools/call",
-  "params": {
-    "name": "resolve_library_id",
-    "arguments": { "libraryName": "next.js" }
+  "mcpServers": {
+    "codebase-memory": { "command": "codebase-memory-mcp" },
+    "context7": { "command": "npx", "args": ["-y", "@upstash/context7-mcp"] }
+  },
+  "mcp": {
+    "codebase-memory": { "type": "local", "command": ["codebase-memory-mcp"] },
+    "context7": { "type": "remote", "url": "https://mcp.context7.com/mcp" }
   }
-}
-```
-
-**Response:**
-```json
-{
-  "libraryId": "next.js",
-  "frames": [
-    { "name": "get_started", "content": "..." }
-  ]
 }
 ```
 
