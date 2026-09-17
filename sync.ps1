@@ -68,6 +68,11 @@ foreach ($IdeDir in $IdeTargetDirs) {
                 Write-Host "[OK] Sync IDE Local: $File -> $DstFile" -ForegroundColor Gray
             }
         }
+        $McpSrc = Join-Path $SourceDir "config\mcp_config.json"
+        if (Test-Path $McpSrc) {
+            Copy-Item -Path $McpSrc -Destination (Join-Path $IdeDir "mcp_config.json") -Force
+            Write-Host "[OK] Sync IDE Local: mcp_config.json -> $IdeDir\mcp_config.json" -ForegroundColor Gray
+        }
     }
 }
 

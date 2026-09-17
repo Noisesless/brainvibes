@@ -62,6 +62,10 @@ for ide_dir in "${IDE_TARGET_DIRS[@]}"; do
                 echo -e "${GRAY}[OK] Sync IDE Local: $file -> $dst${NC}"
             fi
         done
+        if [[ -f "$SOURCE_DIR/config/mcp_config.json" ]]; then
+            cp -f "$SOURCE_DIR/config/mcp_config.json" "$ide_dir/mcp_config.json"
+            echo -e "${GRAY}[OK] Sync IDE Local: mcp_config.json -> $ide_dir/mcp_config.json${NC}"
+        fi
     fi
 done
 

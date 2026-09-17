@@ -1,4 +1,13 @@
 {
+  "mcpServers": {
+    "codebase-memory": {
+      "command": "codebase-memory-mcp"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    }
+  },
   "mcp": {
     "codebase-memory": {
       "type": "local",
