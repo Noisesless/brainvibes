@@ -13,9 +13,13 @@
 | Parameter | Nilai |
 |---|---|
 | Tanggal | [YYYY-MM-DD HH:MM] |
+| Git Anchor | [commit hash dari `git log --oneline -1`] |
+| Files Since Last Audit | [output `git diff --name-only [last-audit-hash]..HEAD` atau "First audit"] |
 | Stack | [Framework + DB + Styling dari prd.md] |
 | Scan Mode | Static / Manual / Hybrid |
 | Total File Diperiksa | [N] |
+| Total grep_search Executed | [N] |
+| Anti-Stale Marker | ✅ [ANTI-STALE] printed |
 | Auditor | AI (Antigravity IDE / CLI) |
 
 ---
@@ -157,3 +161,6 @@
 6. **VULN-ID harus unik per proyek** — format: VULN-001, VULN-002, ...
 7. **VULN-ID yang sudah di-fix dan di-approve** bisa di-copy ke `security-patterns/data/known-vulns.md`
    sebagai learned vulnerability untuk proyek-proyek selanjutnya
+8. **Git Anchor WAJIB diisi** — audit tanpa commit anchor = undated, tidak bisa dibandingkan staleness
+9. **Total grep_search Executed WAJIB cocok** dengan jumlah SP yang dicek — jika SP = 15 tapi grep = 3, audit INCOMPLETE
+10. **Anti-Stale Marker WAJIB ✅** — jika marker tidak printed saat eksekusi, seluruh audit INVALID

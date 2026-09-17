@@ -155,6 +155,12 @@ Status 6 Lapisan Scan:
 
 Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan **Compliance Verification Mode**:
 
+**🔴 STEP 0 — Anti-Stale Enforcement (HARUS JALAN PERTAMA):**
+- **FORBIDDEN membaca/view `/.docs/security-audit.md`** yang sudah ada. File lama = noise, bukan context.
+- Jalankan `git log --oneline -1` → catat commit hash sebagai audit anchor.
+- Cetak: `[ANTI-STALE] Audit anchor: [hash]. Security-audit.md lama DIABAIKAN.`
+- **Tanpa marker [ANTI-STALE] di output → seluruh hasil audit INVALID.**
+
 1. **Deteksi stack proyek** dari `app-context.md §APP` (PHP Native / Laravel / Next.js).
 2. **Filter SP yang relevan** berdasarkan stack:
    - PHP Native → SP-001 s/d SP-004, SP-008 s/d SP-011, SP-016 s/d SP-030, SP-PHP-001 s/d SP-PHP-005, SP-HTACCESS-001
@@ -219,7 +225,11 @@ Saat saklar `cek komponen` (atau alias `analisa keamanan`) aktif, AI menjalankan
    ```
    Jika `SP checked` < 100% pada `cek komponen` → scan TIDAK LENGKAP, WAJIB lanjutkan.
 
-6. **No Legacy Read:** FORBIDDEN membaca file output lama (`security-audit.md`, `quality_review.md`) sebagai pengganti scan baru. Setiap eksekusi saklar audit = scan ulang penuh. Output lama di-overwrite, bukan di-append.
+6. **No Legacy Read (Absolute):** FORBIDDEN membaca file output lama (`security-audit.md`, `quality_review.md`) sebagai pengganti scan baru. FORBIDDEN menggunakan isi file lama sebagai "baseline" atau "starting point". Setiap eksekusi saklar audit = tabula rasa. AI WAJIB mencetak `[ANTI-STALE]` marker SEBELUM grep pertama. Output tanpa `[ANTI-STALE]` = INVALID.
+
+7. **Staleness Detection (Audit Anchor):** Setiap output audit WAJIB menyertakan `Git Anchor: [commit hash]` di header. Saat `cek komponen` di-trigger, jika ada `security-audit.md` lama, AI WAJIB membandingkan commit hash lama vs HEAD. Jika berbeda → file lama 100% stale. Jika sama → tetap scan ulang (karena bisa ada uncommitted changes).
+
+8. **Post-Feature Security Gate:** Setelah task koding yang menulis kode auth/db/input/upload/API selesai, AI WAJIB menjalankan mini-audit pada file yang baru dimodifikasi. Detail: `gemini-templates.md §2I-POST`. Ini mencegah celah keamanan menumpuk sampai `cek komponen` berikutnya.
 
 ---
 

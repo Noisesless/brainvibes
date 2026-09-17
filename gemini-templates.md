@@ -131,6 +131,12 @@
 > Ini BUKAN security audit/scan — ini adalah pengecekan: "Apakah komponen keamanan X sudah terpasang di kode?"
 > Tunduk pada §3.C.2 FSEP (Factual Scan Enforcement Protocol) di `gemini-execution.md`.
 
+0. **🔴 STEP 0 — Anti-Stale Gate (WAJIB SEBELUM APAPUN):**
+   - **FORBIDDEN membaca `/.docs/security-audit.md`** yang sudah ada. Jangan `view_file`, jangan `grep_search` di dalamnya.
+   - Jika file tersebut ada → akan di-**overwrite sepenuhnya** di Step 6. Kontennya IRRELEVANT untuk scan baru.
+   - Jalankan `git log --oneline -1` untuk mendapatkan commit hash terkini sebagai anchor point audit.
+   - Output: `[ANTI-STALE] File audit lama DIABAIKAN. Anchor: [commit-hash]. Scan dimulai dari nol.`
+   - **Jika AI tidak mencetak [ANTI-STALE] marker → seluruh output audit = INVALID.**
 1. **Baca SP Registry** dari `security-patterns/data/secure-patterns.md` (SP-001 s/d SP-022) dan `xampp-php-patterns.md` (SP-PHP-001 s/d SP-PHP-004, SP-HTACCESS-001).
 2. **Deteksi stack** dari `app-context.md §APP` → filter SP yang relevan.
 3. **🔴 MANDATORY: Scan codebase FAKTUAL** menggunakan `grep_search` per komponen SP — cocokkan pattern aman dengan file proyek aktual. SEMUA SP yang relevan WAJIB dicek tanpa kecuali. Organisasikan berdasarkan kategori OWASP:
@@ -158,6 +164,33 @@
 - Menulis status komponen dari memori/asumsi tanpa menjalankan `grep_search` → pelanggaran FSEP
 - Membaca `security-audit.md` lama sebagai pengganti scan baru → overwrite output lama
 - Skip SP manapun yang relevan dengan stack proyek — SEMUA harus dicek
+
+### 2I-POST. Post-Feature Security Gate (Auto-Trigger)
+> Gate otomatis yang aktif setelah `tambah fitur` atau task koding ad-hoc yang menulis kode auth/db/input/upload/API.
+
+**Trigger Condition:** Setelah sub-task/fitur selesai yang menyentuh file berisi:
+- Form handler / API endpoint / route baru
+- Auth logic (login, register, session, token)
+- Database query / ORM model baru
+- File upload handler
+- Input validation baru
+
+**Aksi (Mini-Audit — Bukan Full `cek komponen`):**
+1. Identifikasi file yang baru saja ditulis/dimodifikasi di task ini (dari git diff atau internal tracking).
+2. Jalankan `grep_search` HANYA pada file-file tersebut untuk SP kritis:
+   - SP-001 (Parameterized Query) → cek query tanpa prepared statement
+   - SP-002 (XSS) → cek output tanpa escaping
+   - SP-003 (Upload) → cek validasi file
+   - SP-006 (Auth Guard) → cek middleware/session check
+   - SP-008 (Security Headers) → cek header pada response baru
+3. Output ringkas (BUKAN file audit baru):
+   ```
+   [POST-FEATURE SECURITY] File diperiksa: [N]
+   [POST-FEATURE SECURITY] SP-001: ✅/❌ | SP-002: ✅/❌ | SP-006: ✅/❌
+   [POST-FEATURE SECURITY] Gap ditemukan: [0|N] — [deskripsi jika ada]
+   ```
+4. Jika gap ditemukan → AI WAJIB memperbaiki SEBELUM melanjutkan ke task berikutnya.
+5. **FORBIDDEN** skip gate ini. Jika tidak ada file relevan → output `[POST-FEATURE SECURITY] No security-sensitive files modified — gate skipped.`
 
 ### 2J. Saklar: `pentest` / `pentest cepat` / `pentest mendalam` / `pentest api` / `pentest auth`
 > DAST — Dynamic Application Security Testing via Strix AI Pentest Agent.

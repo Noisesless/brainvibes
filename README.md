@@ -143,9 +143,16 @@ Brainvibes mengimplementasikan **Unified Dispatch Table** pada `gemini.md §2` d
 | `lanjut dari sini` | Mid-session context recovery (Fast-Path) | app-context.md (Fast-Path L1) | prd-template.md | AGENTS.md §2A |
 | `status proyek` | Quick brief 10 baris (Fast-Path) | app-context.md (Fast-Path L1) | gemini-templates.md, prd-template.md | AGENTS.md §2B |
 | `analisa kualitas` | Code quality audit → quality_review.md | app-context.md, .docs/ | design-system.md, prd-template.md | §2H |
-| `cek komponen` | Verifikasi kelengkapan komponen kode (OWASP + SP registry) → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | §2I |
+| `cek komponen` | Verifikasi kelengkapan komponen kode (OWASP + SP registry) (Anti-Stale FSEP) → security-audit.md | security-patterns/data/, app-context.md | prd-template.md, design-system.md | §2I |
 | `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | §2J |
 | `redesign` | Visual overhaul → taste-skill pipeline → UUPM → kode anti-slop | taste-skill-bridge/ESSENTIAL.md, UUPM data/ (grep industri), app-context.md §PALETTE | prd-template.md | §2K |
+
+### Auto-Triggers (Aktif Otomatis)
+| Kondisi | Trigger | Aksi |
+|---|---|---|
+| AI menulis/edit kode visual (CSS, UI, layout, warna) | `visual-gate` | Muat `design-system.md §1`, jalankan taste-skill-bridge |
+| AI menulis kode auth/db/input/upload/API | `security-aware` | Baca senyap `security-patterns/data/` |
+| AI selesai menulis fitur yang menyentuh auth/db/input/upload/API | `post-feature-security` | Mini-audit otomatis file baru (SP-001, SP-002, SP-003, SP-006, SP-008) |
 
 ### Context Budget Tracker
 
@@ -307,12 +314,12 @@ Ketik perintah di bawah sebagai **kalimat pertama** pada sesi chat AI Anda:
 <tr>
 <td><code>cek komponen</code></td>
 <td>Component Verification</td>
-<td>Verifikasi kelengkapan komponen kode: OWASP Top 10:2025 compliance checklist + SP registry. Output di <code>security-audit.md</code>.</td>
+<td>Verifikasi kelengkapan komponen kode: OWASP Top 10:2025 compliance checklist + SP registry (Anti-Stale Gate & FSEP). Output di <code>security-audit.md</code>.</td>
 </tr>
 <tr>
 <td><code>cek kelengkapan</code></td>
 <td>Component Verification</td>
-<td>Alias untuk <code>cek komponen</code>.</td>
+<td>Alias untuk <code>cek komponen</code> (Anti-Stale FSEP).</td>
 </tr>
 <tr>
 <td><code>pentest</code></td>

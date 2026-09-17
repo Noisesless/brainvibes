@@ -16,10 +16,11 @@ description: |
 
 | Skenario | Trigger | Aksi |
 |---|---|---|
-| Saklar `cek komponen` aktif | User ketik saklar | Baca `data/secure-patterns.md` + `data/xampp-php-patterns.md` → gunakan sebagai SP compliance checklist (OWASP mapping) |
+| Saklar `cek komponen` aktif | User ketik saklar | **🔴 JANGAN baca `/.docs/security-audit.md` lama.** Baca `data/secure-patterns.md` + `data/xampp-php-patterns.md` → gunakan sebagai SP compliance checklist (OWASP mapping). Mulai scan dari nol (FSEP). |
 | Coding mode biasa (SILENT) | AI menulis kode auth/input/db/upload/api | Baca `data/known-vulns.md` → HINDARI pola yang pernah jadi vulnerability |
 | Setelah fix vulnerability | AI selesai perbaiki vuln dari audit | Tulis entry baru ke `data/known-vulns.md` (dengan approval user) |
 | Proyek baru (`awal baru`) | Knowledge Priming step | Baca `data/secure-patterns.md` → pre-populate todo.md dengan security best practices |
+| Setelah fitur baru selesai | `post-feature-security` auto-trigger | Jalankan mini-audit (SP-001,002,003,006,008) pada file yang baru ditulis → perbaiki gap sebelum lanjut |
 
 ### Hierarki File Data
 

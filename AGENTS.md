@@ -27,7 +27,7 @@ AI REQUIRED menyelesaikan path file instruksi dan templates dengan urutan:
 | `lanjut dari sini` | `recovery`, `balik lagi` | Mid-session context recovery | **Fast-Path L1** (Baca `app-context.md` + `git status --short`) |
 | `status proyek` | `status`, `ringkasan` | Quick brief status (max 10 baris) | **Fast-Path L1** (Baca `app-context.md`) |
 | `analisa kualitas` | `audit kode`, `quality` | Code review & smells check | Load `app-context.md`, `.docs/` |
-| `cek komponen` | `cek kom`, `audit security` | OWASP + Secure Patterns audit | Load `security-patterns/data/`, `app-context.md` |
+| `cek komponen` | `cek kom`, `audit security` | OWASP + Secure Patterns audit (Anti-Stale) | Load `security-patterns/data/`, `app-context.md` |
 | `pentest*` | `pentest cepat`, `dast` | Dynamic App Security Testing | Load `security-patterns/data/`, `pentest-strix/` |
 | `redesign` | `ubah desain`, `ubah tampilan` | Anti-slop visual overhaul | Load `taste-skill-bridge/ESSENTIAL.md`, UUPM data |
 
@@ -98,5 +98,5 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 ---
 
 ## §7. SECURITY-AWARE CODING & WEB SEARCH (Cross-Reference)
-- **Security-Aware Coding:** Ketika menulis kode auth/db/input/upload/API, AI wajib secara SILENT membaca `security-patterns` data. Detail di `gemini.md §1 STANDARD #5` dan `gemini-execution.md §3.C`.
+- **Security-Aware Coding:** Ketika menulis kode auth/db/input/upload/API, AI wajib secara SILENT membaca `security-patterns` data, dan setelah task selesai menjalankan mini-audit post-feature (`gemini-templates.md §2I-POST`). Detail di `gemini.md §1 STANDARD #5` dan `gemini-execution.md §3.C`.
 - **Web Search Protocol:** Protokol pencarian informasi web diatur di `gemini.md §1 HARD BLOCK #9`.

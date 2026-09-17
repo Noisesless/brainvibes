@@ -32,7 +32,7 @@
 7. **Visual Output Gate (Anti-Slop UI):** → Lihat **§VISUAL RULES** di bawah untuk detail lengkap.
 8. **Anti-Fabrication Law:** FORBIDDEN menjawab dengan keyakinan jika tidak yakin. Jika bingung atau tidak tahu → STOP dan TANYA user. FORBIDDEN mengarang solusi, fakta, atau referensi yang tidak pasti. Output wajib: `[ASK-CLARIFY] Saya kurang yakin tentang [X]. Apakah Anda maksud: A) [opsi A] / B) [opsi B]`
 9. **Web-Search Fallback Law:** Jika pertanyaan user di luar training data atau butuh info real-time → gunakan `search_web` / `read_url_content` tool bawaan IDE atau beri tahu user. FORBIDDEN mengarang URL, versi, atau dokumentasi. Output wajib: `[INFO-SOURCE] Sumber: [web_search/context7/manual]`
-10. **Anti-Fabrication Audit Law:** FORBIDDEN menulis output audit/review (`security-audit.md`, `quality_review.md`) tanpa menjalankan scan faktual (`grep_search`, `view_file`, `run_command`) terlebih dahulu. Setiap "✅ PASSED" atau "✅ TERPASANG" tanpa evidence dari tool call = FABRICATION = pelanggaran Hard Block #8. Output tanpa `[Evidence:]` marker = INVALID. → Detail: `gemini-execution.md §3.C.2 (FSEP)`
+10. **Anti-Fabrication Audit Law:** FORBIDDEN menulis output audit/review (`security-audit.md`, `quality_review.md`) tanpa menjalankan scan faktual (`grep_search`, `view_file`, `run_command`) terlebih dahulu. Setiap "✅ PASSED" atau "✅ TERPASANG" tanpa evidence dari tool call = FABRICATION = pelanggaran Hard Block #8. Output tanpa `[Evidence:]` marker = INVALID. **Tambahan:** FORBIDDEN membaca file audit/review LAMA sebagai context sebelum scan baru. Setiap `cek komponen` / `analisa kualitas` WAJIB dimulai dengan `[ANTI-STALE]` marker — output tanpa marker = INVALID. → Detail: `gemini-execution.md §3.C.2 (FSEP)`
 
 ### 🟡 GATE (Gerbang Checkpoint)
 1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-templates.md §6A`
@@ -217,6 +217,7 @@ Setiap 10 turns, AI REQUIRED mencetak:
 |---|---|---|---|
 | AI menulis/edit kode visual (CSS, UI, layout, warna) | `visual-gate` | design-system.md §1, taste-skill-bridge | prd-template.md |
 | AI menulis kode auth/db/input/upload/API | `security-aware` | security-patterns/data/, lessons-learned | design-system.md |
+| AI selesai menulis fitur yang menyentuh auth/db/input/upload/API | `post-feature-security` | security-patterns/data/ (SP kritis: SP-001,002,003,006,008) | design-system.md, prd-template.md |
 
 **Catatan:**
 - `pentest*` mencakup: `pentest`, `pentest cepat`, `pentest mendalam`, `pentest api`, `pentest auth`
