@@ -76,6 +76,24 @@ foreach ($IdeDir in $IdeTargetDirs) {
     }
 }
 
+# 1C. Salin rules (anti-bloat-code dll) ke folder global rules & .agents/rules
+$RulesTargetDir = Join-Path $GeminiTargetDir "config\rules"
+$AgentsRulesTargetDir = Join-Path $GeminiTargetDir ".agents\rules"
+if (!(Test-Path $RulesTargetDir)) { New-Item -ItemType Directory -Force -Path $RulesTargetDir | Out-Null }
+if (!(Test-Path $AgentsRulesTargetDir)) { New-Item -ItemType Directory -Force -Path $AgentsRulesTargetDir | Out-Null }
+
+$SrcRules = Join-Path $SourceDir "config\rules"
+if (Test-Path $SrcRules) {
+    Copy-Item -Path (Join-Path $SrcRules "*") -Destination $RulesTargetDir -Force -Recurse
+    Write-Host "[OK] Sync Global Rules: config\rules -> $RulesTargetDir" -ForegroundColor Gray
+}
+$SrcAgentsRules = Join-Path $SourceDir ".agents\rules"
+if (Test-Path $SrcAgentsRules) {
+    Copy-Item -Path (Join-Path $SrcAgentsRules "*") -Destination $RulesTargetDir -Force -Recurse
+    Copy-Item -Path (Join-Path $SrcAgentsRules "*") -Destination $AgentsRulesTargetDir -Force -Recurse
+    Write-Host "[OK] Sync Workspace Rules: .agents\rules -> $RulesTargetDir & $AgentsRulesTargetDir" -ForegroundColor Gray
+}
+
 # 2. Salin folder config secara rekursif ke .gemini
 $SrcConfig = Join-Path $SourceDir "config"
 $DstConfig = Join-Path $GeminiTargetDir "config"

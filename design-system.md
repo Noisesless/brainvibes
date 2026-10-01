@@ -693,13 +693,577 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 
 ---
 
-### §7B Enforcement Rule (Wajib Diikuti AI)
+### §7B.8 NAVBAR / HEADER TOKENS
 
-AI REQUIRED melakukan hal berikut saat menulis komponen UI:
-1. **Cek §7B** terlebih dahulu — apakah komponen yang ditulis sudah ada tokennya
-2. **Gunakan token** — FORBIDDEN menulis nilai mentah jika token tersedia
+```css
+:root {
+  --nav-height:          64px;
+  --nav-height-mobile:   56px;
+  --nav-bg:              var(--vibe-surface);
+  --nav-border:          1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --nav-blur:            12px;          /* backdrop-filter: blur() */
+  --nav-padding-x:       var(--container-padding);
+  --nav-item-gap:        var(--space-md);
+  --nav-item-padding:    var(--space-sm) var(--space-md);
+  --nav-item-radius:     var(--radius-md);
+  --nav-item-hover-bg:   var(--vibe-hover, oklch(0.5 0 0 / 0.08));
+  --nav-item-active-bg:  var(--vibe-accent-1);
+  --nav-item-active-text: var(--vibe-background);
+  --nav-logo-height:     32px;
+  --nav-logo-gap:        var(--space-lg);
+  --nav-z:               var(--z-nav, 100);
+}
+```
+
+### §7B.9 FOOTER TOKENS
+
+```css
+:root {
+  --footer-bg:           var(--vibe-surface);
+  --footer-text:         var(--vibe-text-sub);
+  --footer-link:         var(--vibe-text-main);
+  --footer-link-hover:   var(--vibe-accent-1);
+  --footer-padding-y:    var(--space-3xl);
+  --footer-padding-x:    var(--container-padding);
+  --footer-column-gap:   var(--space-xl);
+  --footer-row-gap:      var(--space-lg);
+  --footer-border-top:   1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --footer-font-size:    0.875rem;
+  --footer-heading-size: 1rem;
+  --footer-heading-weight: 600;
+  --footer-copyright-size: 0.8125rem;
+  --footer-copyright-color: var(--vibe-text-sub);
+  --footer-social-icon-size: 20px;
+  --footer-social-gap:   var(--space-md);
+}
+```
+
+### §7B.10 SIDEBAR TOKENS
+
+```css
+:root {
+  --sidebar-width:           260px;
+  --sidebar-collapsed-width: 72px;
+  --sidebar-bg:              var(--vibe-surface);
+  --sidebar-border:          1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --sidebar-padding:         var(--space-md);
+  --sidebar-item-height:     40px;
+  --sidebar-item-padding:    var(--space-sm) var(--space-md);
+  --sidebar-item-radius:     var(--radius-md);
+  --sidebar-item-gap:        var(--space-xs);
+  --sidebar-item-hover-bg:   var(--vibe-hover, oklch(0.5 0 0 / 0.08));
+  --sidebar-item-active-bg:  var(--vibe-accent-1);
+  --sidebar-item-active-text: var(--vibe-background);
+  --sidebar-icon-size:       20px;
+  --sidebar-icon-gap:        var(--space-sm);
+  --sidebar-section-gap:     var(--space-lg);
+  --sidebar-section-label-size: 0.6875rem;
+  --sidebar-transition:      width 0.2s ease;
+}
+```
+
+### §7B.11 TABLE TOKENS
+
+```css
+:root {
+  /* === STRUCTURE === */
+  --table-border:         1px solid var(--vibe-border, oklch(0.3 0 0 / 0.12));
+  --table-radius:         var(--radius-md);
+  --table-overflow:       hidden;    /* clip corners with border-radius */
+
+  /* === HEADER === */
+  --table-header-bg:      var(--vibe-surface);
+  --table-header-text:    var(--vibe-text-sub);
+  --table-header-font:    var(--vibe-font-main);
+  --table-header-size:    0.75rem;
+  --table-header-weight:  600;
+  --table-header-spacing: 0.05em;
+  --table-header-transform: uppercase;
+  --table-header-padding: var(--space-sm) var(--space-md);
+  --table-header-height:  40px;
+
+  /* === BODY === */
+  --table-row-height:     48px;
+  --table-cell-padding:   var(--space-sm) var(--space-md);
+  --table-cell-font-size: 0.875rem;
+  --table-cell-text:      var(--vibe-text-main);
+  --table-stripe-bg:      var(--vibe-hover, oklch(0.5 0 0 / 0.03));
+  --table-hover-bg:       var(--vibe-hover, oklch(0.5 0 0 / 0.06));
+  --table-selected-bg:    oklch(from var(--vibe-accent-1) l c h / 0.1);
+
+  /* === MOBILE === */
+  --table-mobile-card-gap: var(--space-sm);
+  --table-mobile-label-weight: 600;
+}
+```
+
+**Table Variant Rules:**
+| Variant | Border | Stripe | Kapan Pakai |
+|---|---|---|---|
+| `bordered` | Semua border | Tidak | Data padat, spreadsheet-like |
+| `striped` | Bottom only | Alternate row | Default — data list panjang |
+| `minimal` | Tidak | Tidak | Dashboard widget, data ringkas |
+
+**HARD BLOCKS:**
+- FORBIDDEN table tanpa `overflow-x: auto` wrapper di mobile
+- FORBIDDEN header font > `0.875rem` — header harus subtle
+- FORBIDDEN row tanpa `min-height: --table-row-height` (touch target)
+- REQUIRED mobile: transform tabel ke card-stack layout di `≤640px`
+
+### §7B.12 PAGINATION TOKENS
+
+```css
+:root {
+  --pag-height:          36px;
+  --pag-min-width:       36px;
+  --pag-padding:         0 var(--space-sm);
+  --pag-gap:             var(--space-xs);
+  --pag-radius:          var(--radius-md);
+  --pag-font-size:       0.875rem;
+  --pag-font-weight:     500;
+
+  --pag-bg:              transparent;
+  --pag-text:            var(--vibe-text-sub);
+  --pag-hover-bg:        var(--vibe-hover, oklch(0.5 0 0 / 0.08));
+  --pag-active-bg:       var(--vibe-accent-1);
+  --pag-active-text:     var(--vibe-background);
+  --pag-disabled-opacity: 0.4;
+
+  --pag-transition:      var(--vibe-transition);
+}
+```
+
+### §7B.13 BADGE / TAG TOKENS (General Purpose)
+
+> Melengkapi §7 Status Badge (success/warning/error) dengan badge non-status.
+
+```css
+:root {
+  --badge-height:        24px;
+  --badge-padding:       2px var(--space-sm);
+  --badge-font-size:     0.6875rem;  /* 11px */
+  --badge-font-weight:   600;
+  --badge-radius:        var(--radius-md);   /* atau 9999px untuk pill */
+  --badge-letter-spacing: 0.02em;
+
+  /* Varian semantic — selain §7 status */
+  --badge-info-bg:       oklch(from var(--vibe-accent-1) l c h / 0.15);
+  --badge-info-text:     var(--vibe-accent-1);
+  --badge-neutral-bg:    var(--vibe-hover, oklch(0.5 0 0 / 0.1));
+  --badge-neutral-text:  var(--vibe-text-sub);
+  --badge-count-bg:      var(--vibe-error);
+  --badge-count-text:    #fff;
+  --badge-count-size:    18px;       /* dot-badge untuk notifikasi */
+}
+```
+
+### §7B.14 TABS TOKENS
+
+```css
+:root {
+  --tab-height:          44px;
+  --tab-padding:         var(--space-sm) var(--space-md);
+  --tab-gap:             0;           /* flush tabs */
+  --tab-font-size:       0.875rem;
+  --tab-font-weight:     500;
+
+  --tab-text:            var(--vibe-text-sub);
+  --tab-active-text:     var(--vibe-accent-1);
+  --tab-hover-bg:        var(--vibe-hover, oklch(0.5 0 0 / 0.06));
+
+  --tab-indicator-height: 2px;
+  --tab-indicator-color:  var(--vibe-accent-1);
+  --tab-indicator-radius: 9999px;
+
+  --tab-border-bottom:   1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --tab-transition:      var(--vibe-transition);
+}
+```
+
+### §7B.15 BREADCRUMB TOKENS
+
+```css
+:root {
+  --breadcrumb-font-size:    0.8125rem;
+  --breadcrumb-gap:          var(--space-xs);
+  --breadcrumb-text:         var(--vibe-text-sub);
+  --breadcrumb-active-text:  var(--vibe-text-main);
+  --breadcrumb-link-color:   var(--vibe-accent-1);
+  --breadcrumb-separator:    "/";         /* atau "›" atau icon */
+  --breadcrumb-separator-color: var(--vibe-text-sub);
+  --breadcrumb-padding-y:    var(--space-sm);
+}
+```
+
+### §7B.16 STEPPER / WIZARD TOKENS
+
+```css
+:root {
+  --stepper-circle-size:     32px;
+  --stepper-circle-bg:       var(--vibe-surface);
+  --stepper-circle-border:   2px solid var(--vibe-border, oklch(0.3 0 0 / 0.2));
+  --stepper-done-bg:         var(--vibe-success);
+  --stepper-done-text:       #fff;
+  --stepper-active-bg:       var(--vibe-accent-1);
+  --stepper-active-text:     var(--vibe-background);
+  --stepper-line-width:      2px;
+  --stepper-line-color:      var(--vibe-border, oklch(0.3 0 0 / 0.2));
+  --stepper-line-done-color: var(--vibe-success);
+  --stepper-label-size:      0.8125rem;
+  --stepper-label-gap:       var(--space-xs);
+  --stepper-gap:             var(--space-xl);
+}
+```
+
+### §7B.17 ALERT / BANNER TOKENS
+
+```css
+:root {
+  --alert-padding:          var(--space-md);
+  --alert-radius:           var(--radius-md);
+  --alert-border-left:      4px solid;
+  --alert-icon-size:        20px;
+  --alert-icon-gap:         var(--space-sm);
+  --alert-font-size:        0.875rem;
+  --alert-title-weight:     600;
+
+  /* Per-severity — border-color + bg + text */
+  --alert-info-bg:          oklch(from var(--vibe-accent-1) l c h / 0.08);
+  --alert-info-border:      var(--vibe-accent-1);
+  --alert-info-text:        var(--vibe-text-main);
+  --alert-success-bg:       oklch(from var(--vibe-success) l c h / 0.08);
+  --alert-success-border:   var(--vibe-success);
+  --alert-warning-bg:       oklch(from var(--vibe-warning) l c h / 0.08);
+  --alert-warning-border:   var(--vibe-warning);
+  --alert-error-bg:         oklch(from var(--vibe-error) l c h / 0.08);
+  --alert-error-border:     var(--vibe-error);
+}
+```
+
+### §7B.18 PROGRESS BAR TOKENS
+
+```css
+:root {
+  --progress-height:         8px;
+  --progress-radius:         9999px;
+  --progress-track-bg:       var(--vibe-hover, oklch(0.5 0 0 / 0.1));
+  --progress-fill-bg:        var(--vibe-accent-1);
+  --progress-fill-transition: width 0.4s ease;
+
+  /* Variant */
+  --progress-success-bg:     var(--vibe-success);
+  --progress-warning-bg:     var(--vibe-warning);
+  --progress-error-bg:       var(--vibe-error);
+
+  /* Label */
+  --progress-label-size:     0.75rem;
+  --progress-label-color:    var(--vibe-text-sub);
+}
+```
+
+### §7B.19 TOOLTIP TOKENS
+
+```css
+:root {
+  --tooltip-padding:       var(--space-xs) var(--space-sm);
+  --tooltip-radius:        var(--radius-md);
+  --tooltip-bg:            var(--vibe-text-main);     /* inverted */
+  --tooltip-text:          var(--vibe-background);    /* inverted */
+  --tooltip-font-size:     0.75rem;
+  --tooltip-max-width:     240px;
+  --tooltip-arrow-size:    6px;
+  --tooltip-z:             var(--z-tooltip, 9999);
+  --tooltip-transition:    opacity 0.15s ease;
+}
+```
+
+### §7B.20 DROPDOWN / MENU TOKENS
+
+```css
+:root {
+  --dropdown-bg:            var(--vibe-surface);
+  --dropdown-border:        1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --dropdown-radius:        var(--radius-md);
+  --dropdown-shadow:        var(--shadow-dropdown, 0 4px 16px oklch(0 0 0 / 0.12));
+  --dropdown-padding:       var(--space-xs) 0;
+  --dropdown-min-width:     180px;
+  --dropdown-max-height:    320px;
+  --dropdown-z:             var(--z-dropdown, 200);
+
+  --dropdown-item-height:   36px;
+  --dropdown-item-padding:  0 var(--space-md);
+  --dropdown-item-font-size: 0.875rem;
+  --dropdown-item-hover-bg: var(--vibe-hover, oklch(0.5 0 0 / 0.06));
+  --dropdown-item-active-bg: oklch(from var(--vibe-accent-1) l c h / 0.1);
+  --dropdown-item-icon-size: 16px;
+  --dropdown-item-icon-gap: var(--space-sm);
+
+  --dropdown-separator:     1px solid var(--vibe-border, oklch(0.3 0 0 / 0.08));
+  --dropdown-separator-margin: var(--space-xs) 0;
+  --dropdown-transition:    opacity 0.15s ease, transform 0.15s ease;
+}
+```
+
+### §7B.21 ACCORDION / COLLAPSE TOKENS
+
+```css
+:root {
+  --accordion-border:       1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --accordion-radius:       var(--radius-md);
+  --accordion-header-height: 48px;
+  --accordion-header-padding: 0 var(--space-md);
+  --accordion-header-font-size: 0.9375rem;
+  --accordion-header-weight: 500;
+  --accordion-header-hover-bg: var(--vibe-hover, oklch(0.5 0 0 / 0.04));
+  --accordion-content-padding: var(--space-md);
+  --accordion-icon-size:    16px;
+  --accordion-icon-rotation: 180deg;
+  --accordion-transition:   max-height 0.3s ease, padding 0.3s ease;
+  --accordion-gap:          0;        /* flush items */
+}
+```
+
+### §7B.22 SEARCH BAR TOKENS
+
+```css
+:root {
+  --search-height:          40px;
+  --search-height-lg:       48px;
+  --search-padding:         0 var(--space-md) 0 var(--space-xl);  /* left space for icon */
+  --search-radius:          var(--radius-md);
+  --search-bg:              var(--vibe-background);
+  --search-border:          1px solid var(--vibe-border, oklch(0.3 0 0 / 0.15));
+  --search-focus-ring:      0 0 0 3px var(--vibe-focus-ring);
+  --search-font-size:       0.875rem;
+  --search-placeholder:     var(--vibe-text-sub);
+  --search-icon-size:       18px;
+  --search-icon-color:      var(--vibe-text-sub);
+  --search-icon-left:       var(--space-sm);
+  --search-clear-size:      16px;
+  --search-transition:      var(--vibe-transition);
+}
+```
+
+### §7B.23 AVATAR TOKENS
+
+```css
+:root {
+  --avatar-size-xs:        24px;
+  --avatar-size-sm:        32px;
+  --avatar-size-md:        40px;
+  --avatar-size-lg:        56px;
+  --avatar-size-xl:        80px;
+  --avatar-radius:         9999px;    /* selalu bulat */
+  --avatar-border:         2px solid var(--vibe-background);
+  --avatar-fallback-bg:    var(--vibe-accent-2);
+  --avatar-fallback-text:  var(--vibe-background);
+  --avatar-fallback-size:  0.4em;     /* relatif ke avatar size */
+  --avatar-group-overlap:  -8px;      /* negative margin untuk stack */
+  --avatar-group-max:      5;         /* max visible + "+N" indicator */
+  --avatar-status-size:    10px;
+  --avatar-status-border:  2px solid var(--vibe-background);
+}
+```
+
+### §7B.24 THUMBNAIL / IMAGE TOKENS
+
+```css
+:root {
+  --thumb-radius:          var(--radius-md);
+  --thumb-aspect:          16 / 9;     /* default — bisa override per komponen */
+  --thumb-aspect-square:   1 / 1;
+  --thumb-aspect-portrait: 3 / 4;
+  --thumb-fit:             cover;      /* object-fit */
+  --thumb-bg:              var(--vibe-surface);  /* placeholder bg */
+  --thumb-hover-scale:     1.03;
+  --thumb-hover-transition: transform 0.3s ease;
+  --thumb-overlay-bg:      oklch(0 0 0 / 0.4);
+  --thumb-overlay-text:    #fff;
+}
+```
+
+### §7B.25 DIVIDER / SEPARATOR TOKENS
+
+```css
+:root {
+  --divider-thickness:     1px;
+  --divider-color:         var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --divider-margin-y:      var(--space-lg);
+  --divider-margin-x:      0;
+  --divider-style:         solid;     /* solid | dashed | dotted */
+
+  /* Vertical divider */
+  --divider-v-height:      24px;
+  --divider-v-margin-x:    var(--space-md);
+}
+```
+
+### §7B.26 LINK TOKENS
+
+```css
+:root {
+  --link-color:            var(--vibe-accent-1);
+  --link-hover-color:      var(--vibe-accent-2);
+  --link-visited-color:    var(--vibe-accent-2);
+  --link-underline:        underline;
+  --link-underline-offset: 2px;
+  --link-hover-underline:  none;      /* atau underline — project-specific */
+  --link-font-weight:      500;
+  --link-transition:       color 0.15s ease;
+}
+```
+
+### §7B.27 CODE BLOCK TOKENS
+
+```css
+:root {
+  --code-bg:               var(--vibe-surface);
+  --code-text:             var(--vibe-accent-1);
+  --code-font:             'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --code-font-size:        0.8125rem;
+  --code-padding:          2px 6px;    /* inline code */
+  --code-radius:           4px;       /* inline code */
+
+  /* Block (pre > code) */
+  --code-block-padding:    var(--space-md);
+  --code-block-radius:     var(--radius-md);
+  --code-block-border:     1px solid var(--vibe-border, oklch(0.3 0 0 / 0.1));
+  --code-block-line-height: 1.6;
+  --code-block-max-height: 400px;
+}
+```
+
+### §7B.28 BLOCKQUOTE TOKENS
+
+```css
+:root {
+  --blockquote-border-left: 4px solid var(--vibe-accent-1);
+  --blockquote-padding:    var(--space-md) var(--space-lg);
+  --blockquote-bg:         oklch(from var(--vibe-accent-1) l c h / 0.05);
+  --blockquote-text:       var(--vibe-text-sub);
+  --blockquote-font-style: italic;
+  --blockquote-font-size:  1rem;
+  --blockquote-margin-y:   var(--space-lg);
+  --blockquote-radius:     0 var(--radius-md) var(--radius-md) 0;
+}
+```
+
+### §7B.29 LIST TOKENS (ul/ol)
+
+```css
+:root {
+  --list-indent:           var(--space-lg);
+  --list-item-gap:         var(--space-xs);
+  --list-marker-color:     var(--vibe-accent-1);
+  --list-marker-size:      0.5em;
+  --list-font-size:        inherit;
+  --list-nested-indent:    var(--space-md);  /* indent tambahan per level */
+}
+```
+
+### §7B.30 EMPTY STATE TOKENS
+
+```css
+:root {
+  --empty-icon-size:       64px;
+  --empty-icon-color:      var(--vibe-text-sub);
+  --empty-icon-opacity:    0.5;
+  --empty-heading-size:    1.125rem;
+  --empty-heading-weight:  600;
+  --empty-heading-color:   var(--vibe-text-main);
+  --empty-text-size:       0.875rem;
+  --empty-text-color:      var(--vibe-text-sub);
+  --empty-max-width:       320px;
+  --empty-gap:             var(--space-md);
+  --empty-padding:         var(--space-3xl) var(--space-md);
+}
+```
+
+### §7B.31 SKELETON / LOADING TOKENS
+
+```css
+:root {
+  --skeleton-base-bg:      var(--vibe-surface);
+  --skeleton-shimmer-bg:   oklch(from var(--vibe-surface) calc(l + 0.05) c h);
+  --skeleton-radius:       var(--radius-md);
+  --skeleton-radius-text:  4px;
+  --skeleton-radius-avatar: 9999px;
+  --skeleton-animation:    shimmer 1.5s ease infinite;
+  --skeleton-text-height:  14px;
+  --skeleton-text-gap:     var(--space-sm);
+  --skeleton-heading-height: 24px;
+}
+
+/* @keyframes shimmer — REQUIRED di CSS global */
+/*
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+*/
+```
+
+### §7B.32 HERO SECTION TOKENS
+
+```css
+:root {
+  --hero-min-height:       100dvh;     /* fallback: 100vh */
+  --hero-padding-y:        var(--space-3xl);
+  --hero-padding-x:        var(--container-padding);
+  --hero-max-width:        var(--container-max);
+  --hero-heading-size:     clamp(2rem, 5vw, 3.5rem);
+  --hero-heading-weight:   800;
+  --hero-heading-line:     1.1;
+  --hero-subtext-size:     clamp(1rem, 2vw, 1.25rem);
+  --hero-subtext-color:    var(--vibe-text-sub);
+  --hero-subtext-max-width: 560px;
+  --hero-gap:              var(--space-lg);
+  --hero-cta-gap:          var(--space-md);
+  --hero-overlay-bg:       oklch(0 0 0 / 0.4);       /* untuk hero + gambar background */
+}
+```
+
+---
+
+### §7B Enforcement Rule (Wajib Diikuti AI) <!-- anchor:7B-enforcement -->
+
+AI REQUIRED melakukan hal berikut saat menulis komponen UI **apapun**:
+
+1. **Cek §7B** terlebih dahulu — apakah komponen yang ditulis sudah ada tokennya (32 komponen terdaftar)
+2. **Gunakan token** — FORBIDDEN menulis nilai mentah (px/rem/hex/oklch hardcode) jika token tersedia
 3. **Jika token belum ada** — deklarasikan token baru di `:root` mengikuti pola penamaan `--[komponen]-[properti]`, lalu catat di `[DESIGN TOKEN] Menambah: --[nama-token]: [nilai]`
-4. **Cross-check consistency** — pastikan `--btn-radius`, `--card-radius`, `--modal-radius`, `--toast-radius` semua mengacu ke `--radius-md` (atau varian documented)
+4. **Cross-check consistency** — pastikan semua `--*-radius` mengacu ke `--radius-md` (atau varian documented)
+5. **Mobile token check** — pastikan komponen yang punya token mobile (`--nav-height-mobile`, `--table-mobile-*`) diimplementasikan di breakpoint Android 3M
+
+**32 Komponen Terdaftar:**
+Button · Icon · Modal · Toast · Form · Card · Spacing · Navbar · Footer · Sidebar · Table · Pagination · Badge/Tag · Tabs · Breadcrumb · Stepper · Alert · Progress · Tooltip · Dropdown · Accordion · Search · Avatar · Thumbnail · Divider · Link · Code Block · Blockquote · List · Empty State · Skeleton · Hero
+
+### §7B Visual Registry Sync Protocol (Auto-Update)
+
+> **Trigger:** Setiap kali AI membuat komponen yang belum ada di §7B, atau mengubah token existing.
+> **Cross-ref:** `gemini.md §1 STANDARD #8`, `gemini-execution.md §4.O`
+
+AI REQUIRED menjalankan sync berikut:
+
+1. **Saat membuat komponen baru** yang belum terdaftar di §7B:
+   - Definisikan token lengkap mengikuti pola `--[komponen]-[properti]`
+   - Catat ke `design-system.md §7B` pada subsection yang sesuai
+   - Output: `[DESIGN REGISTRY] Komponen baru: [nama] — [N] token ditambahkan ke §7B`
+
+2. **Saat mengubah nilai token existing:**
+   - Update nilai di `design-system.md §7B`
+   - Scan seluruh file CSS proyek untuk penggunaan token yang sama
+   - Output: `[DESIGN REGISTRY] Token diubah: --[nama]: [old] → [new] — [N] file terpengaruh`
+
+3. **Saat proyek mulai (Fase 1+):**
+   - AI REQUIRED generate `/.docs/design-system.md` yang berisi seluruh token §7B
+   - Token yang belum dipakai boleh di-skip tapi HARUS listed sebagai "available"
+
+**FORBIDDEN:**
+- ❌ Menulis komponen UI tanpa cek §7B terlebih dahulu
+- ❌ Hardcode nilai yang sudah ada tokennya (spacing, radius, shadow, warna)
+- ❌ Membuat token di file CSS proyek tanpa sinkronisasi ke `design-system.md`
+- ❌ Inkonsistensi antar komponen (misal card radius 8px tapi modal radius 12px tanpa alasan)
 
 ```
 
@@ -878,11 +1442,87 @@ button, a, [role="button"] {
 }
 ```
 
-### E. Mobile-First Breakpoint Strategy (Container Queries 2026)
+### E. Responsive Breakpoint Strategy (Android 3M + Laptop-First 2026)
+
+> **Prinsip:** Desain UTAMAKAN 1366×768 (laptop mayoritas) sebagai target utama,
+> lalu pastikan berfungsi di Android 3M (3 viewport Android terpopuler).
+> Container Queries untuk komponen, Viewport Queries untuk layout makro.
+
+#### E.1 Breakpoint Token System (REQUIRED)
 
 ```css
-/* REQUIRED 2026: Gunakan Container Queries untuk komponen — bukan hanya viewport */
-/* @supports guard — aman di browser lama */
+:root {
+  /* === 7-TIER BREAKPOINT SYSTEM === */
+  /* AI REQUIRED menggunakan token ini — FORBIDDEN breakpoint acak */
+
+  --bp-mobile-sm:   360px;    /* Android 3M tier-1: Samsung Galaxy A series, budget phones */
+  --bp-mobile-md:   393px;    /* Android 3M tier-2: Pixel 7/8, Samsung S23/S24 */
+  --bp-mobile-lg:   412px;    /* Android 3M tier-3: Samsung S Ultra, Pixel Pro */
+  --bp-tablet:      768px;    /* iPad Mini, tablet portrait */
+  --bp-laptop:      1366px;   /* ★ PRIMARY TARGET — laptop 768p (mayoritas laptop 2024-2026) */
+  --bp-desktop:     1440px;   /* Desktop monitor, laptop QHD */
+  --bp-wide:        1920px;   /* Full HD monitor, ultrawide */
+
+  /* === CONTAINER MAX-WIDTH — sesuai target laptop 1366 === */
+  --container-max:       1200px;   /* content max-width optimal untuk 1366px viewport */
+  --container-narrow:    720px;    /* artikel/form single-column */
+  --container-wide:      1400px;   /* dashboard/admin — hanya untuk ≥1440px */
+  --container-padding:   clamp(1rem, 4vw, 2rem);
+}
+```
+
+#### E.2 Media Query Map (REQUIRED — Copy-Paste Ready)
+
+```css
+/* === MOBILE-FIRST APPROACH === */
+/* Base CSS = mobile (360px+). Override naik ke atas. */
+
+/* --- Android 3M: Fine-tune untuk 3 viewport terpopuler --- */
+/* Default (base) = 360px — semua Android bisa render */
+
+@media (min-width: 393px) {
+  /* Pixel 7/8, Samsung S23+ — sedikit lebih lega */
+  /* Biasanya: adjust grid gap, font-size kecil, padding */
+}
+
+@media (min-width: 412px) {
+  /* Samsung Ultra, Pixel Pro — sedikit lebih besar */
+  /* Biasanya: 2-column grid bisa mulai di sini */
+}
+
+/* --- Tablet --- */
+@media (min-width: 768px) {
+  /* iPad Mini, tablet portrait */
+  /* Sidebar bisa muncul, 2-3 column grid, nav horizontal */
+}
+
+/* --- ★ LAPTOP (PRIMARY TARGET) --- */
+@media (min-width: 1024px) {
+  /* Laptop kecil / tablet landscape — transisi ke desktop layout */
+  /* Sidebar persistent, full nav, container mulai terbatas */
+}
+
+@media (min-width: 1366px) {
+  /* ★ SWEET SPOT — mayoritas laptop. DESAIN UTAMA DI SINI. */
+  /* container-max: 1200px, sidebar + content optimal */
+  /* Semua komponen harus terlihat ideal di resolusi ini */
+}
+
+/* --- Desktop & Wide --- */
+@media (min-width: 1440px) {
+  /* Desktop QHD — container bisa melebar ke --container-wide */
+}
+
+@media (min-width: 1920px) {
+  /* Full HD — max content width, hindari text terlalu lebar */
+  /* max-width: 1400px + auto margin centering */
+}
+```
+
+#### E.3 Container Queries (Komponen-Level Responsiveness)
+
+```css
+/* REQUIRED 2026: Container Queries untuk komponen — bukan hanya viewport */
 @supports (container-type: inline-size) {
   .card-grid {
     container-type: inline-size;
@@ -897,14 +1537,57 @@ button, a, [role="button"] {
     .card { /* layout untuk container sempit */ }
   }
 }
+```
 
-/* Viewport breakpoint — tetap dipakai untuk layout makro */
-@media (max-width: 768px)  { /* mobile  */ }
-@media (min-width: 769px) and (max-width: 1023px) { /* tablet */ }
-@media (min-width: 1024px) { /* desktop */ }
+#### E.4 Responsive Adaptation Rules per Komponen
+
+| Komponen | ≤412px (Android 3M) | 768px (Tablet) | ★ 1366px (Laptop) | 1920px (Wide) |
+|---|---|---|---|---|
+| **Navbar** | Hamburger + drawer, height `--nav-height-mobile` | Horizontal nav, no hamburger | Full nav + search bar | Sama |
+| **Sidebar** | Hidden / overlay drawer | Collapsed (icon-only) | Expanded `--sidebar-width` | Sama |
+| **Table** | Card-stack layout | Horizontal scroll wrapper | Full table, semua kolom | Sama |
+| **Footer** | Single column, stacked | 2-column grid | 3-4 column grid | Sama, centered |
+| **Hero** | Stacked, full-width image | Split 50/50 atau stacked | Split layout optimal | Max-width constraint |
+| **Card Grid** | 1 column | 2 column | 3 column | 3-4 column |
+| **Modal** | Fullscreen / bottom sheet | Centered, max-width 560px | Centered, max-width 560px | Sama |
+| **Form** | Single column, full-width | 2-column field layout | 2-column, max-width 720px | Sama |
+| **Tabs** | Horizontal scroll | Full visible | Full visible | Sama |
+| **Pagination** | Prev/Next only (no numbers) | Numbers visible | Numbers visible | Sama |
+| **Avatar** | `--avatar-size-sm` | `--avatar-size-md` | `--avatar-size-md` | Sama |
+| **Search** | Full-width, `--search-height` | Inline, auto-width | Inline, max 320px | Sama |
+| **Breadcrumb** | Hidden atau truncated | Full visible | Full visible | Sama |
+
+#### E.5 Laptop-First Enforcement (HARD RULES)
+
+**REQUIRED:**
+- ✅ Semua halaman WAJIB di-test visual di **1366×768** sebagai baseline utama
+- ✅ `container-max: 1200px` sebagai default — konten tidak boleh lebih lebar di laptop
+- ✅ Sidebar + Content harus pas di 1366px tanpa horizontal scroll
+- ✅ Font size, spacing, dan padding harus readable di 768p (jangan terlalu kecil)
+- ✅ Touch target ≥44px di mobile, ≥36px di desktop
+
+**FORBIDDEN:**
+- ❌ Breakpoint tanpa menggunakan token `--bp-*` (hardcode 600px, 900px, dll)
+- ❌ Desain yang hanya bagus di 1920px tapi rusak di 1366px
+- ❌ Table horizontal scroll di 1366px — kolom harus muat
+- ❌ Sidebar > 280px di 1366px — makan ruang konten
+- ❌ Hero image full-bleed tanpa max-width constraint di wide screen
+- ❌ Skip mobile testing — SETIAP halaman WAJIB responsive di Android 3M (360px)
+
+#### E.6 Quick Responsive Self-Check
+
+Sebelum declare halaman selesai, AI REQUIRED memeriksa:
+```
+[RESPONSIVE CHECK]
+- 360px (Android SM):  [✅|❌] — single column, no overflow, touch targets ≥44px
+- 393px (Android MD):  [✅|❌] — layout adjustment verified
+- 768px (Tablet):      [✅|❌] — 2-column grid, nav horizontal
+- 1366px (★ Laptop):   [✅|❌] — PRIMARY layout optimal, container ≤1200px
+- 1920px (Wide):       [✅|❌] — max-width constraint, no text stretching
 ```
 
 ---
+
 
 ## §11. COLOR SWITCHER SYSTEM (APPEARANCE PANEL)
 

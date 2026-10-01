@@ -30,6 +30,8 @@ mkdir -p "$GEMINI_TARGET_DIR"
 mkdir -p "$KNOWLEDGE_TARGET_DIR"
 mkdir -p "$GEMINI_TARGET_DIR/config/skills"
 mkdir -p "$GEMINI_TARGET_DIR/config/scripts"
+mkdir -p "$GEMINI_TARGET_DIR/config/rules"
+mkdir -p "$GEMINI_TARGET_DIR/.agents/rules"
 
 # 1. Salin berkas-berkas inti di root ke .gemini
 CORE_FILES=("gemini.md" "gemini-execution.md" "gemini-templates.md" "prd-template.md" "design-system.md" "AGENTS.md" "user-prefs.md")
@@ -62,12 +64,27 @@ for ide_dir in "${IDE_TARGET_DIRS[@]}"; do
                 echo -e "${GRAY}[OK] Sync IDE Local: $file -> $dst${NC}"
             fi
         done
+        if [[ -f "$ide_dir/gemini.md" ]]; then
+            cp -f "$ide_dir/gemini.md" "$ide_dir/GEMINI.md"
+            echo -e "${GRAY}[OK] Sync IDE Local alias GEMINI.md${NC}"
+        fi
         if [[ -f "$SOURCE_DIR/config/mcp_config.json" ]]; then
             cp -f "$SOURCE_DIR/config/mcp_config.json" "$ide_dir/mcp_config.json"
             echo -e "${GRAY}[OK] Sync IDE Local: mcp_config.json -> $ide_dir/mcp_config.json${NC}"
         fi
     fi
 done
+
+# 1C. Salin rules (anti-bloat-code dll) ke folder global rules & .agents/rules
+if [[ -d "$SOURCE_DIR/config/rules" ]]; then
+    cp -rf "$SOURCE_DIR/config/rules/"* "$GEMINI_TARGET_DIR/config/rules/" 2>/dev/null || true
+    echo -e "${GRAY}[OK] Sync Global Rules: config/rules -> $GEMINI_TARGET_DIR/config/rules${NC}"
+fi
+if [[ -d "$SOURCE_DIR/.agents/rules" ]]; then
+    cp -rf "$SOURCE_DIR/.agents/rules/"* "$GEMINI_TARGET_DIR/config/rules/" 2>/dev/null || true
+    cp -rf "$SOURCE_DIR/.agents/rules/"* "$GEMINI_TARGET_DIR/.agents/rules/" 2>/dev/null || true
+    echo -e "${GRAY}[OK] Sync Workspace Rules: .agents/rules -> $GEMINI_TARGET_DIR/config/rules & .agents/rules${NC}"
+fi
 
 # 2. Salin folder config secara rekursif ke .gemini/config
 SRC_CONFIG="$SOURCE_DIR/config"

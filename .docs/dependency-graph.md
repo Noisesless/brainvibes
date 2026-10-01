@@ -7,7 +7,8 @@
 | `gemini.md` | 4+ (AGENTS.md, .gemini, execution, templates) | Core instructions |
 | `user-prefs.md` | 5+ (Semua sesi, execution, templates) | User preferences |
 | `AGENTS.md` | 2+ (.gemini, execution) | Behavior rules |
-| `design-system.md` | 3+ (UI components, visual gate) | Design tokens |
+| `design-system.md` | 3+ (UI components, visual gate, responsive strategy) | Design tokens & 32-component registry |
+| `anti-bloat-code.md` | 3+ (gemini.md §0#7/§1#11, gemini-execution.md §4.O, AGENTS.md §8) | Behavior & Pragmatic Code Rules |
 | `config/mcp_config.json` | 2 (codebase-memory, context7) | MCP servers |
 | `config/hooks.json` / `.agents/hooks.json` | 1+ (Antigravity IDE lifecycle) | Lifecycle hooks config |
 

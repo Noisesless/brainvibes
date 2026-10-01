@@ -55,6 +55,8 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 | `pre-flight check (§3.B)` | Sebelum build | Linter + type-check + incremental verification |
 | `security-aware (§3.C)` | Auth/db/input/upload/API | Silent read security & lessons-learned patterns |
 | `visual gate (§4K, §4I)` | CSS/style/layout changes | 6-gate pipeline, UUPM direct-read, ui-reasoning, §7B tokens, pre-flight |
+| `pragmatic output (§4.O)` | Seluruh dialog & UI text | Anti-buzzword, anti-literal-copy prompt→UI, metrik batas teks, YAGNI |
+| `visual registry sync (§7B, §10.E)` | Rendering komponen UI | Token registry 32-komponen, responsive Laptop 1366 & Android 3M |
 | `ask-before-assume (§3.A)` | Ambiguous instructions | Clarify before acting |
 | `technical debate (§0.5)` | User proposal | Challenge with factual data if needed |
 

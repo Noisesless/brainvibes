@@ -53,61 +53,92 @@
 
 ---
 
-## 2. Component Token Registry (§7B Integration)
+---
 
-### Button System
-- **Heights:** SM: `32px` | MD: `40px` | LG: `48px` | XL: `56px`
-- **Paddings:** SM: `8px 16px` | MD: `10px 24px` | LG: `14px 32px`
-- **Radius:** `var(--radius-md, 8px)`
-- **Variants:**
-  - `primary`: bg `var(--vibe-accent-1)`, text `var(--vibe-background)`, hover lift `translateY(-1px)`
-  - `secondary`: bg `transparent`, border `1.5px solid var(--vibe-accent-1)`, text `var(--vibe-accent-1)`
-  - `ghost`: bg `transparent`, text `var(--vibe-text-sub)`, hover bg `var(--vibe-hover)`
-  - `danger`: bg `var(--vibe-error)`, text `#ffffff`
+## 2. Component Token Registry (§7B Integration — 32 Komponen)
 
-### Icon System
-- **Library:** Lucide Icons / Phosphor Icons (ONE family per project)
-- **Scale:** XS: `14px` | SM: `16px` | MD: `20px` (default) | LG: `24px` | XL: `32px` | Hero: `48px`
-- **Rule:** Dilarang hand-roll raw SVG. Ikon dekoratif wajib `aria-hidden="true"`.
+> **Aturan Wajib:** Seluruh komponen visual WAJIB menggunakan token dari registri ini. Dilarang hardcoding nilai mentah.
 
-### Modal & Dialog
-- **Widths:** SM: `400px` | MD: `560px` | LG: `720px` | Full: `calc(100vw - 48px)`
-- **Padding:** `var(--space-lg, 24px)`
-- **Overlay:** `var(--vibe-overlay)` dengan backdrop-blur `4px`
-- **Radius:** `calc(var(--radius-md) * 1.5)` (12px)
+### 2.1 Page Structure (4 Komponen)
+- **Navbar:** Height `var(--nav-height, 64px)`, mobile `var(--nav-height-mobile, 56px)`, sticky top `z-index: 100`, blur `backdrop-filter: blur(12px)`.
+- **Footer:** Padding atas/bawah `var(--footer-padding-y, 48px)`, border top `1px solid var(--vibe-border)`.
+- **Sidebar:** Width `var(--sidebar-width, 260px)`, collapsed `var(--sidebar-collapsed, 68px)`, overlay mobile `z-index: 200`.
+- **Hero:** Height minimum `min-h-[100dvh]`, max-width `var(--hero-max-width, 1200px)` (Laptop 1366 target), padding vertikal `clamp(48px, 8vw, 96px)`.
 
-### Toast & Notification
-- **Width:** `360px` (Max mobile: `calc(100vw - 32px)`)
-- **Position:** Fixed bottom-right `16px`
-- **Auto-dismiss:** `4000ms`
-- **Stack limit:** Maksimal 3 toast visible bersamaan
+### 2.2 Data Display (5 Komponen)
+- **Table:** Default, Striped, dan Borderless varian. Cell padding `12px 16px`, header padding `14px 16px`, sticky header `z-index: 10`.
+- **Pagination:** Item size `36px` (`var(--radius-md)`), active page bg `var(--vibe-accent-1)`, gap `6px`.
+- **Badge / Tag:** Solid, Outline, dan Soft variants. Height `22px-28px`, padding `2px 8px`, border-radius `var(--radius-md)`.
+- **Empty State:** Max-width `420px`, icon size `56px`, gap vertikal `16px`.
+- **Skeleton / Shimmer:** Shimmer animation `1.5s infinite`, bg `var(--vibe-surface-sub)`.
 
-### Form Elements
-- **Input Height:** `40px` | Padding: `10px 14px` | Font Size: `14px` minimum
-- **Input BG:** `var(--vibe-input-bg)` | Border: `1.5px solid var(--vibe-border)`
-- **Focus Ring:** `0 0 0 3px rgba(56, 189, 248, 0.25)`
-- **Labels:** Size `13px`, weight `500`, color `var(--vibe-text-sub)`
+### 2.3 Navigation (3 Komponen)
+- **Tabs:** Underline & Pill variants. Tab item padding `10px 18px`, active underline `2px solid var(--vibe-accent-1)`.
+- **Breadcrumb:** Separator `/` atau chevron, font-size `13px`, current page color `var(--vibe-text-main)`.
+- **Stepper:** Step indicator `32px`, connector line `2px solid var(--vibe-border)`, active step `var(--vibe-accent-1)`.
 
-### Card System
-- **Padding:** Default `24px` (`--space-lg`), Compact `16px` (`--space-md`)
-- **Background:** `var(--vibe-surface)`
-- **Border:** `1px solid var(--vibe-border)`
-- **Hover Lift:** `translateY(-2px)` dengan transisi `all 0.2s ease-in-out`
+### 2.4 Feedback (4 Komponen)
+- **Alert / Banner:** Info, Success, Warning, Error variants. Padding `14px 16px`, border-left `4px solid [status-color]`.
+- **Progress Bar:** Height `6px-12px`, track bg `var(--vibe-surface-sub)`, fill `var(--vibe-accent-1)` (transition `width 0.3s ease`).
+- **Tooltip:** Max-width `260px`, padding `6px 10px`, font-size `12px`, z-index `300`.
+- **Toast:** Max-width `360px`, fixed bottom-right `16px`, auto-dismiss `4000ms`, max 3 stacked.
 
-### Spacing Semantic Map (8-Point Grid)
-| Token | Value | Peruntukan |
-|---|---|---|
-| `--space-xs` | `4px` | Gap ikon ke teks, micro-spacing |
-| `--space-sm` | `8px` | Gap elemen dalam card, badge padding |
-| `--space-md` | `16px` | Gap form field, compact padding |
-| `--space-lg` | `24px` | Card padding, modal padding |
-| `--space-xl` | `32px` | Section grid gap, container margin |
-| `--space-2xl` | `48px` | Section gap vertikal kecil |
-| `--space-3xl` | `64px` | Section padding atas/bawah utama |
+### 2.5 Interactive (7 Komponen)
+- **Button:** SM (`32px`), MD (`40px`), LG (`48px`), XL (`56px`). Variants: Primary, Secondary, Ghost, Danger.
+- **Form / Input:** Height `40px`, padding `10px 14px`, focus-ring `0 0 0 3px rgba(56, 189, 248, 0.25)`.
+- **Card:** Padding default `24px` (`--space-lg`), compact `16px` (`--space-md`), hover lift `translateY(-2px)`.
+- **Modal / Dialog:** Width SM (`400px`), MD (`560px`), LG (`720px`), full mobile `calc(100vw - 32px)`, backdrop-blur `4px`.
+- **Dropdown / Menu:** Min-width `180px`, item height `36px`, item padding `8px 12px`, elevation `var(--shadow-lg)`.
+- **Accordion:** Header height `48px`, expand icon rotasi `180deg`, content padding `16px`.
+- **Search Bar:** Input with icon prefix, height `40px-44px`, clear button suffix.
+
+### 2.6 Media (3 Komponen)
+- **Avatar:** XS (`24px`), SM (`32px`), MD (`40px`), LG (`48px`), XL (`64px`). Radius circle / `var(--radius-md)`.
+- **Thumbnail / Image:** Aspect ratio `16:9`, `4:3`, `1:1`, object-fit `cover`, fallback background skeleton.
+- **Icon:** Library: Phosphor / Lucide (ONE family). Scales: XS (`14px`), SM (`16px`), MD (`20px`), LG (`24px`), XL (`32px`).
+
+### 2.7 Structural (6 Komponen)
+- **Divider:** 1px `var(--vibe-divider)`, margin vertikal `16px-32px`.
+- **Link:** Hover underline / color transition, external link indicator icon.
+- **Code Block:** Background `#0b1120`, font-family `monospace`, padding `16px`, copy button top-right.
+- **Blockquote:** Border-left `3px solid var(--vibe-accent-1)`, padding-left `16px`, font-style italic.
+- **List:** Disc / decimal / checkmark custom bullets, item gap `8px`.
+- **Spacing Semantic Map (8-Point Grid):** `--space-xs` (4px), `--space-sm` (8px), `--space-md` (16px), `--space-lg` (24px), `--space-xl` (32px), `--space-2xl` (48px), `--space-3xl` (64px).
 
 ---
 
-## 3. Section Rhythm & Layout Constraints
+## 3. Responsive Breakpoint Strategy (Android 3M + Laptop-First 1366×768)
+
+> **Prinsip Utama:** Desain selalu mengutamakan resolusi **1366×768** (standar mayoritas laptop pasar global) sebagai target primary, lalu pastikan responsif sempurna di **Android 3M** (3 viewport mobile terpopuler).
+
+```css
+:root {
+  /* 7-Tier Responsive Breakpoints */
+  --bp-android-sm:    360px;   /* Android SM: Samsung Galaxy A-series, Xiaomi Redmi entry */
+  --bp-android-md:    393px;   /* Android MD: Google Pixel 7/8, Samsung Galaxy S23/S24 */
+  --bp-android-lg:    412px;   /* Android LG: Samsung Galaxy S24 Ultra, Pixel Pro */
+  --bp-tablet:        768px;   /* Tablet: iPad Mini, Tablet portrait */
+  --bp-laptop:        1366px;  /* ★ PRIMARY TARGET: 1366×768 laptop standard */
+  --bp-desktop:       1440px;  /* Desktop: 1440p standard display */
+  --bp-wide:          1920px;  /* Wide: Full HD 1080p desktop monitor */
+
+  /* Container Max Widths */
+  --container-mobile: 100%;
+  --container-tablet: 720px;
+  --container-laptop: 1200px;  /* ★ Content container utama pada layar 1366 */
+  --container-desktop: 1320px;
+  --container-wide:   1600px;
+}
+```
+
+### Adaptation Rules:
+1. **Laptop 1366×768 (PRIMARY TARGET):** Container max-width `1200px` dengan padding horizontal `24px` atau `32px`. Tampilan utama aplikasi didesain proporsional tanpa zoom out/in.
+2. **Android 3M (360/393/412px):** Single-column stack, font heading `clamp()`, touch target minimum `44×44px`, horizontal scroll terisolasi pada tabel (`overflow-x: auto`), modal full-bleed margin `16px`.
+3. **Container Queries:** Gunakan `@supports (container-type: inline-size)` untuk adaptasi lokal komponen independen dari viewport window.
+
+---
+
+## 4. Section Rhythm & Layout Constraints
 
 ### 5 Section Treatments (Anti-Monotoni)
 - `[A] AIRY`: Latar `--vibe-background`, banyak whitespace, max-width `65ch` / `72rem`
@@ -119,3 +150,5 @@
 **Aturan Rhythm:**
 - Dilarang 3 section berturut-turut dengan treatment sama.
 - Selalu variasikan lebar container dan intensitas visual dari atas ke bawah.
+- Bentuk card: Utamakan Bento Matrix, Staggered Step Grid, atau Split Offset (larangan default 3-kolom simetris identik).
+

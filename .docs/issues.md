@@ -10,6 +10,8 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-030 | Visual Registry 32-Component Expansion & 7-Tier Responsive Breakpoints | Perluasan `design-system.md §7B` dari 7 ke 32 token komponen UI (Page Structure, Data Display, Navigation, Feedback, Interactive, Media, Structural), integrasi STANDARD #8 & #9 di `gemini.md`, penambahan 7-tier responsive strategy mengutamakan laptop 1366×768 (PRIMARY TARGET) dan Android 3M (360/393/412px) di §10.E, serta audit cross-reference bebas konflik. | 2026-10-02 |
+| RES-029 | Pragmatic Output & Anti-Bloat Code Enforcement | Implementasi Universal Law anti-verbositas/buzzword (`gemini.md §0 #7`, `§1 #11`), anti-literal-copy teks prompt ke UI (`§VISUAL #24`), panduan arsitektur YAGNI/dev+prod dynamic (`gemini-execution.md §4.O`), dan pembuatan aturan universal `anti-bloat-code.md` di `.agents/rules/` & `config/rules/` untuk PC global. | 2026-10-02 |
 | RES-028 | Security Patterns & Rate Limiter Gap Closure | Penambahan 7 pattern baru (SP-024 s/d SP-030) di secure-patterns.md, SP-PHP-005 di xampp-php-patterns.md, upgrade 5-tier rate limiter bertingkat (SP-014, SP-015, SP-PHP-004), sinkronisasi OWASP Top 10:2025 di gemini-execution.md & audit-template.md, serta pembersihan file sampah & reindexing skill | 2026-09-15 |
 | RES-027 | Dual-Platform Parity & Windows NTFS Compatibility | Pembuatan `.gitattributes` (LF untuk .sh, CRLF untuk .ps1), penambahan executable bit (100755) pada seluruh script Linux di Git, penanganan aman alias `GEMINI.md` (Windows NTFS case-insensitive crash fix di `sync.ps1`), parity cleanup legacy `mcpServers` di `sync.sh`, dan dynamic PATH resolution (`Get-Command`) di seluruh skrip helper Windows | 2026-09-07 |
 | RES-026 | Dual-Platform Linux Support & Shell Automation | Implementasi `sync.sh` (Bash port sync.ps1), porting seluruh skrip otomasi (`cbm-hook.sh`, `ensure-cbm-daemon.sh`, `index-project.sh`), adaptasi path dinamis Linux di `hooks.json`, `mcp_config.json`, `user-prefs.md`, serta verifikasi instalasi paket Arch/AUR `codebase-memory-mcp-bin` | 2026-09-04 |
@@ -18,9 +20,6 @@
 | RES-023 | Otomatisasi Daemon & UI `codebase-memory-mcp` (Port 9749) | Menambahkan Antigravity IDE lifecycle hook (`hooks.json` + `cbm-hook.ps1`), standalone helper (`ensure-cbm-daemon.ps1`), index automation (`index-project.ps1`), dan auto-start step 10 pada `sync.ps1` | 2026-08-16 |
 | RES-022 | Integrasi `codebase-memory-mcp` & Lean MCP Stack (6→2) | Mengintegrasikan binary CBM v0.10.5 (AST graph intelligence, 15 tools, 3D UI), mengeliminasi 5 MCP server redundan (filesystem, memory, sequential-thinking, time, fetch), memperbarui seluruh .docs/ dan sync.ps1 true sync | 2026-08-16 |
 | RES-021 | Phase 5 Security Gap Fix — Saklar `cek komponen` | Penambahan SP-019 (Error Handling), SP-020 (SSRF), SP-021 (IDOR), SP-022 (Open Redirect), multi-stack rule, npm/composer audit, Compliance Score (OWASP Top 10:2025 100% coverage) | 2026-08-14 |
-| RES-020 | Pembatalan integrasi OpenCode & Cross-Memory | Menghapus opencode.jsonc, session-hook.ps1, cross-memory-implementation-plan.md, §A8/§A8B di gemini-execution.md, section [CROSS_MEMORY] di user-prefs.md, serta membersihkan mcp_config.json & sync.ps1 | 2026-08-02 |
-| RES-019 | Persona prompt noise & OpenCode sync bloat | Deleted persona sections (A9/LLM-Local) from gemini.md & user-prefs.md, cleaned up AGENTS.md duplication, and updated sync.ps1 to target .gemini exclusively | 2026-07-24 |
-| RES-018 | Dispatch table & Session Init duplication & ambiguous references | Cleaned up duplicate Session Init block, renamed Dispatch Detail column to Templates Section, and merged duplicate §4H POINTER table rows | 2026-07-24 |
 
 ## Issue Categories
 

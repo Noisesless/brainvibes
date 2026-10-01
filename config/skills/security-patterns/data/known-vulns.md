@@ -405,3 +405,49 @@ Pelajaran:
   WAJIB pisahkan CSP development vs production (jangan bawa localhost ke production).
   WAJIB sertakan COOP (`same-origin`) dan CORP (`same-origin`) untuk isolasi proses browser.
 
+---
+
+[VULN-012] Sensitive Configuration Exposure via Missing Root .htaccess
+Severity   : CRITICAL
+OWASP      : A02 Security Misconfiguration
+Stack      : Laravel / Apache / XAMPP
+Proyek Asal: Banjarnegara Underground Community (BUC)
+Tanggal    : 2026-09-05
+
+Lokasi:
+  File     : .htaccess (Root)
+  Baris    : 1-17
+  Fungsi   : Web Server Directory Routing
+  Konteks  : Proteksi direktori saat proyek diakses dari webroot parent (htdocs/proyek)
+
+Kode Rentan (SEBELUM fix):
+  ```text
+  File .htaccess hanya ada di public/.htaccess.
+  Ketika project berada di Apache webroot (misal: /htdocs/buc/),
+  request ke http://localhost/buc/.env langsung mengembalikan file .env.
+  ```
+
+Vektor Serangan:
+  Attacker mengakses langsung http://localhost/buc/.env atau /buc/.git/HEAD via browser,
+  mengekstrak database password, APP_KEY, dan mail credentials tanpa autentikasi.
+
+Kode Aman (SETELAH fix):
+  ```apache
+  <IfModule mod_rewrite.c>
+      RewriteEngine On
+      RewriteRule ^(\.env|\.git|composer\.(json|lock)|package(-lock)?\.json|artisan) - [F,L,NC]
+      RewriteRule ^(\.scratchpad|\.docs|storage/logs) - [F,L,NC]
+      RewriteRule ^$ public/ [L]
+      RewriteCond %{REQUEST_URI} !^/public/
+      RewriteRule ^(.*)$ public/$1 [L]
+  </IfModule>
+  Options -Indexes
+  ```
+
+Pelajaran:
+  WAJIB sediakan .htaccess di ROOT proyek framework (bukan hanya di public/) untuk memblokir .env dan me-redirect traffic jika deploy di Apache webroot subfolder.
+
+Dampak ke File Lain:
+  - Tidak ada
+
+

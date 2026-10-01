@@ -9,13 +9,14 @@
     ├── Lifecycle Hooks (hooks.json) → cbm-hook.ps1 / cbm-hook.sh (PreInvocation auto-start daemon)
     ↓
 [Brainvibes System]
-    ├── gemini.md          → Core instructions (≤22KB)
-    ├── gemini-execution.md → Execution rules (view_file on-demand)
-    ├── gemini-templates.md → Macro commands (view_file on-demand)
+    ├── gemini.md          → Core instructions (≤32KB)
+    ├── gemini-execution.md → Execution rules (view_file on-demand, ~64KB)
+    ├── gemini-templates.md → Macro commands (view_file on-demand, ~32KB)
     ├── AGENTS.md          → Master L1 Global Dispatcher (In-memory switch routing & fast-path resume)
     ├── user-prefs.md      → User preferences (highest priority)
-    ├── design-system.md   → CSS tokens & design DNA
+    ├── design-system.md   → CSS tokens, 32-component registry (§7B), & 7-tier responsive strategy (~70KB)
     ├── prd-template.md    → PRD blueprint
+    ├── anti-bloat-code.md → Global & Workspace Rules Engine (.agents/rules & config/rules)
     ├── .gitattributes     → Cross-platform line endings normalization (LF/CRLF)
     └── scripts/           → ensure-cbm-daemon (.ps1/.sh), index-project (.ps1/.sh), cbm-hook (.ps1/.sh)
     ↓
@@ -65,6 +66,7 @@ User Input → Presentation → Logic → Data → Response
 
 ### Layer 1: Global Config
 - `~/.gemini/` → Runtime files untuk Gemini CLI/Antigravity
+- `~/.gemini/config/rules/` → Universal Global Rules Engine (`anti-bloat-code.md`)
 
 ### Layer 2: Project Context
 - `app-context.md` → AI-optimized snapshot (≤100 baris)
@@ -89,9 +91,10 @@ User Input → Presentation → Logic → Data → Response
 | `app-context.md` | Setiap sesi (silent) | Full read | ≤100 baris |
 | `prd.md §1-§3` | Jika app-context tidak ada | Range read | Baris 1-100 |
 | `todo.md` | Ambil task aktif | Grep `[/]` | Partial |
-| `gemini-execution.md` | Saat koding aktif / visual pipeline | View_file (§3.A-C, §4.A-J, §4K, §4I, etc.) | ~52KB (930 lines) |
-| `gemini-templates.md` | Saat saklar aktif | View_file (section) | ~26KB (418 lines) |
-| `design-system.md` | Saat setup CSS / render komponen | Section specific (§1-§13, §7B) | ~44KB (1160 lines) |
+| `gemini-execution.md` | Saat koding aktif / visual pipeline / §4.O | View_file (§3.A-C, §4.A-J, §4K, §4I, §4.O) | ~64KB (1080 lines) |
+| `gemini-templates.md` | Saat saklar aktif | View_file (section) | ~32KB (430 lines) |
+| `design-system.md` | Saat setup CSS / render 32 komponen / breakpoints | Section specific (§1-§13, §7B, §10.E) | ~70KB (1480 lines) |
+| `anti-bloat-code.md` | Inline di §0 #7, §1 #11, first session | Full read | ~2.5KB (85 lines) |
 | `taste-skill-bridge/SKILL.md` | Saat redesign / buat halaman | Full read (router) → ESSENTIAL/DETAILED | ~2.5KB (61 lines) |
 
 ## Token Efficiency Strategy
@@ -104,3 +107,4 @@ User Input → Presentation → Logic → Data → Response
 6. **Graph-First Query** — `codebase-memory-mcp` structural query (~3.4K tokens) menggantikan file-grep (~412K tokens) untuk analisis arsitektur, call chain, dan routes
 7. **Lean MCP Stack** — 2 server (dari 6) mengurangi startup overhead dan tool definition tokens
 8. **Daemon Persistence & Hook Auto-Start** — Background daemon CBM pada port 9749 dijaga selalu warm via `PreInvocation` hook (`cbm-hook.sh` / `cbm-hook.ps1`), mengeliminasi startup cold-boot per perintah CLI/tool.
+9. **Pragmatic Output & Anti-Bloat Law** — Pencegahan dialog verbose/buzzword, eliminasi instruksi prompt mentah ke teks UI aplikasi, dan arsitektur kode lugas/YAGNI tanpa wrapper kosong/abstraksi tanpa konsumen kedua.

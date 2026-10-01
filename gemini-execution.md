@@ -1004,9 +1004,10 @@ Rhythm: [✅|❌] | Copy-slop: [✅|❌] | UUPM-sourced: [✅|❌]
 
 Sebelum declare done, AI REQUIRED scan semua visible text di output dan:
 1. Cek tidak ada kata dari Copy Blocklist (`gemini.md §VISUAL RULES #23`)
-2. Cek tidak ada eyebrow/capsule di halaman auth
-3. Cek headline ≤ 8 kata, subtext ≤ 25 kata
-4. Cek tidak ada fake-precise numbers tanpa real data
+2. Cek tidak ada literal-copy instruksi user sebagai teks UI (`gemini.md §VISUAL RULES #24`)
+3. Cek tidak ada eyebrow/capsule di halaman auth
+4. Cek heading ≤ 5 kata, subtitle ≤ 15 kata, subtext ≤ 25 kata, toast ≤ 10 kata
+5. Cek tidak ada fake-precise numbers tanpa real data
 
 Jika ada pelanggaran → FIX sebelum declare done. FORBIDDEN declare done dengan ❌ di pre-flight.
 
@@ -1018,6 +1019,85 @@ Jika terdeteksi model Gemini Flash (atau model dengan tendency AI slop):
 - Prioritaskan Bento/Staggered/Split layout daripada centered
 
 
+---
+
+## §4.O Anti-Over-Engineering & Pragmatic Code Protocol <!-- anchor:4O -->
+
+> **Kapan di-load:** Saat menulis kode, review arsitektur, atau membuat teks UI.
+> **Sumber:** `gemini.md §0 #7`, `gemini.md §1 HARD BLOCK #11`, `.agents/rules/anti-bloat-code.md`
+> **Severity:** HARD BLOCK — pelanggaran = revisi wajib sebelum submit.
+
+### §4.O.1 Anti-Verbosity dalam Dialog AI (Bahasa Interaksi)
+
+AI FORBIDDEN menggunakan kata/frasa berikut dalam dialog ke user:
+
+**Blocklist Dialog (Bahasa Inggris):**
+"powerful", "robust", "enterprise-grade", "state-of-the-art", "cutting-edge",
+"blazingly fast", "lightning fast", "incredibly", "amazingly", "stunning",
+"game-changing", "revolutionary", "world-class", "next-gen", "best-in-class",
+"seamless", "effortless", "magical", "delightful", "beautiful",
+"leverage", "utilize", "ecosystem", "paradigm", "synergy",
+"unlock the full potential", "take it to the next level"
+
+**Blocklist Dialog (Bahasa Indonesia):**
+"luar biasa sekali", "sangat powerful", "super canggih", "revolusioner",
+"mengagumkan", "spektakuler", "fenomenal", "next level"
+
+**Gaya yang REQUIRED:**
+- Lugas, langsung ke poin. Seperti senior dev bicara ke rekan kerja.
+- Fakta dan angka lebih baik dari adjektiva.
+- "Selesai", "sudah jalan", "oke" > "luar biasa!", "sempurna!", "amazing!"
+
+### §4.O.2 Anti-Literal Copy dalam Teks Aplikasi
+
+AI FORBIDDEN menyalin instruksi/prompt user mentah sebagai teks UI:
+
+| Elemen UI | Max Kata | Contoh Benar |
+|---|---|---|
+| Heading (h1-h3) | 3-5 kata | "Transaksi Harian" |
+| Subtitle | 10-15 kata | "Ringkasan performa bulan ini" |
+| Card description | Max 25 kata | Deskripsi ringkas fitur |
+| Placeholder input | Max 5 kata | "Cari nama produk..." |
+| Toast/notification | Max 10 kata | "Data berhasil disimpan" |
+| Tooltip | Max 8 kata | "Klik untuk unduh laporan" |
+| Button label | Max 3 kata | "Simpan", "Kirim", "Hapus" |
+
+**Self-Check Wajib:**
+- Sebelum submit kode UI, scan semua visible text.
+- Jika heading berbunyi mirip prompt user → ringkaskan.
+- Jika deskripsi berbunyi seperti requirements doc → tulis ulang sebagai bahasa end-user.
+
+### §4.O.3 Anti-Over-Engineering (YAGNI-First Architecture)
+
+**Aturan Arsitektur Pragmatis:**
+
+1. **Single Consumer Rule:** FORBIDDEN membuat base class, interface, abstract, atau generic type jika hanya ada 1 implementasi. Buat konkret dulu, extract saat ada konsumen kedua.
+2. **Wrapper Ban:** FORBIDDEN membuat function/method yang hanya memanggil 1 function lain tanpa logic tambahan.
+3. **Pattern Justification:** Design pattern (Factory, Strategy, Observer, dll) HANYA boleh digunakan jika ada kebutuhan nyata yang bisa diartikulasikan dalam 1 kalimat. "Biar scalable nanti" bukan justifikasi.
+4. **Flat Structure Rule:** Folder depth max sesuai ukuran proyek (lihat `.agents/rules/anti-bloat-code.md §3`). FORBIDDEN folder kosong atau berisi 1 file.
+5. **Inline Preference:** Logika < 5 baris yang hanya dipakai 1 tempat → inline. FORBIDDEN extract ke utility/helper/hook.
+6. **Comment Discipline:** FORBIDDEN comment yang menjelaskan hal yang sudah jelas dari nama fungsi/variabel (e.g., `// increment counter` di atas `counter++`). Comment hanya untuk: WHY (alasan keputusan), WARNING (gotcha), atau TODO.
+
+### §4.O.4 Dynamic Dev/Prod Protocol
+
+**Environment Variable Discipline:**
+- Env var HANYA untuk: DB credentials, API keys, base URL, debug mode, log level, port.
+- FORBIDDEN env var untuk magic number/string yang sama di semua environment.
+- Default value yang masuk akal: dev = permissive, prod = restrictive.
+- `if (NODE_ENV === 'development')` conditional: max 3 tempat per proyek (logger, error display, CORS).
+
+### §4.O.5 Enforcement Output
+
+Jika AI mendeteksi pelanggaran saat self-check:
+```
+[Pragmatic Check] Fixed: [jenis pelanggaran] → [apa yang diperbaiki]
+```
+
+Jika AI mendeteksi instruksi user yang mengarah ke over-engineering:
+```
+[TECH-DEBATE] Instruksi ini akan menghasilkan [over-abstraction/verbose UI/dll].
+Rekomendasi: [pendekatan pragmatis] — Alasan: [YAGNI/readability/simplicity]
+```
 
 
 

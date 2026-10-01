@@ -16,6 +16,7 @@
     *   **RAG Lokal:** Maksimalkan MCP `context7` untuk dokumentasi library.
 5.  **Technical Debate Principle:** AI tidak wajib mengiyakan user. Jika AI memiliki data teknis yang lebih faktual, AI WAJIB menantang dengan argumen berbasis data, bukan opini. Debate harus konstruktif, bukan konfrontatif. Output wajib: `[TECH-DEBATE] Argumen saya: [alasan faktual] — Rekomendasi: [solusi lebih baik]`
 6.  **Concise Response Protocol:** Patuhi `user-prefs.md [AI_BEHAVIOR].response_style`. Jika `CONCISE` → maks 3-5 baris per respons, tanpa penjelasan berlebihan. Jika `COMPACT` → ringkas tapi lengkap. Jika `VERBOSE` → jelaskan detail. Default: `CONCISE`.
+7.  **Pragmatic Output Law (Anti-Bloat):** AI FORBIDDEN menggunakan bahasa lebay, buzzword, hiperbola dalam dialog. FORBIDDEN menyalin mentah instruksi user menjadi teks UI di aplikasi. FORBIDDEN over-engineering kode (abstraksi tanpa konsumen kedua, wrapper 1 lapis, pattern tanpa kebutuhan). Kode harus lugas, YAGNI, dan jalan di dev+prod tanpa ubah source. → Detail: `.agents/rules/anti-bloat-code.md`, `gemini-execution.md §4.O`
 
 ---
 
@@ -33,6 +34,7 @@
 8. **Anti-Fabrication Law:** FORBIDDEN menjawab dengan keyakinan jika tidak yakin. Jika bingung atau tidak tahu → STOP dan TANYA user. FORBIDDEN mengarang solusi, fakta, atau referensi yang tidak pasti. Output wajib: `[ASK-CLARIFY] Saya kurang yakin tentang [X]. Apakah Anda maksud: A) [opsi A] / B) [opsi B]`
 9. **Web-Search Fallback Law:** Jika pertanyaan user di luar training data atau butuh info real-time → gunakan `search_web` / `read_url_content` tool bawaan IDE atau beri tahu user. FORBIDDEN mengarang URL, versi, atau dokumentasi. Output wajib: `[INFO-SOURCE] Sumber: [web_search/context7/manual]`
 10. **Anti-Fabrication Audit Law:** FORBIDDEN menulis output audit/review (`security-audit.md`, `quality_review.md`) tanpa menjalankan scan faktual (`grep_search`, `view_file`, `run_command`) terlebih dahulu. Setiap "✅ PASSED" atau "✅ TERPASANG" tanpa evidence dari tool call = FABRICATION = pelanggaran Hard Block #8. Output tanpa `[Evidence:]` marker = INVALID. **Tambahan:** FORBIDDEN membaca file audit/review LAMA sebagai context sebelum scan baru. Setiap `cek komponen` / `analisa kualitas` WAJIB dimulai dengan `[ANTI-STALE]` marker — output tanpa marker = INVALID. → Detail: `gemini-execution.md §3.C.2 (FSEP)`
+11. **Pragmatic Output & Anti-Over-Engineering Law:** FORBIDDEN bahasa lebay/buzzword/hiperbola dalam dialog ("powerful", "robust", "stunning", "game-changing", dll). FORBIDDEN menyalin instruksi user mentah-mentah sebagai heading/label/deskripsi di aplikasi — teks UI harus ringkas dan natural seperti produk nyata. FORBIDDEN abstraksi tanpa konsumen kedua (YAGNI), wrapper kosong, design pattern tanpa kebutuhan. Kode harus lugas dan dinamis di dev+prod. → Detail lengkap: `.agents/rules/anti-bloat-code.md`, `gemini-execution.md §4.O`
 
 ### 🟡 GATE (Gerbang Checkpoint)
 1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-templates.md §6A`
@@ -50,6 +52,8 @@
 5. **Security-Aware & Lessons-Aware Coding:** Saat tulis kode auth/input/query/upload/API → baca `security-patterns` dan `lessons-learned` data SILENT → terapkan pattern aman dan hindari anti-patterns yang pernah gagal.
 6. **Browser Tool Gate:** FORBIDDEN `browser_subagent` ke localhost/port lokal. FORBIDDEN tanpa log `[Browser Gate]`. Cek DOM/build → `read_url_content`. → Enforcement: `AGENTS.md §BROWSER TOOL GATE`
 7. **Token Guard per Turn:** Patuhi `user-prefs.md [AI_BEHAVIOR]`: max 5 file per turn, max 200 baris per `view_file`. FORBIDDEN baca file >100 baris tanpa `StartLine`/`EndLine`. FORBIDDEN auto-recording browser. **Pengecualian:** Saat mode audit aktif (`cek komponen`, `analisa kualitas`) dan `audit_mode_override=true` → batas file/baris DITANGGUHKAN. → Detail: `gemini-execution.md §3.C.2 (FSEP) #4`
+8. **Visual Registry Sync:** Setiap komponen UI yang ditulis WAJIB menggunakan token dari `design-system.md §7B` (32 komponen terdaftar). Jika token belum ada → buat token baru + catat ke §7B. FORBIDDEN hardcode nilai visual tanpa token. → Detail: `design-system.md §7B Enforcement Rule`
+9. **Responsive Laptop-First + Android 3M:** Semua halaman WAJIB optimal di **1366×768** (laptop primary target) dan responsive di **Android 3M** (360/393/412px). FORBIDDEN breakpoint acak — gunakan token `--bp-*`. Output `[RESPONSIVE CHECK]` wajib sebelum declare done. → Detail: `design-system.md §10.E`
 
 
 ---
@@ -84,6 +88,7 @@
 21. ✅ **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
 22. ✅ **Capsule/Eyebrow Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. Eyebrow = salah satu tanda AI slop paling umum.
 23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN headline words: "Unlock", "Empower", "Revolutionize", "Seamless", "Cutting-edge", "Next-gen", "World-class", "Game-changing", "Elevate", "Transform", "Unleash". Gunakan bahasa spesifik industri dari `prd.md`. FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
+24. ✅ **Anti-Literal Copy Gate:** FORBIDDEN menyalin instruksi/prompt user mentah menjadi teks UI (heading/label/subtitle/placeholder/tooltip). Heading max 3-5 kata. Subtitle max 10-15 kata. Deskripsi card max 25 kata. Toast max 10 kata. Teks UI = bahasa end-user, bukan bahasa requirement. → Detail: `.agents/rules/anti-bloat-code.md §2`
 
 ### Protokol Output Wajib:
 
@@ -241,7 +246,7 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **9 file**:
 | 6 | `dependency-graph.md` | **Critical files, high-impact files, import chains** | **Fase 6+ atau `analisa kualitas`** |
 | 7 | `deployment.md` | **Target deploy, env mapping, checklist, rollback plan** | **Fase 7+ atau `awal lanjut`** |
 | 8 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | `baca error` |
-| 9 | `design-system.md` | **1 Source of Truth Visual Design: Palet, tipografi, geometri, token komponen (§7B)** | **Fase 1+ (setelah DNA disepakati) atau `redesign`** |
+| 9 | `design-system.md` | **1 Source of Truth Visual Design: Palet, tipografi, geometri, 32 token komponen (§7B), 7-tier breakpoint (Android 3M + Laptop 1366)** | **Fase 1+ (setelah DNA disepakati) atau `redesign`** |
 
 ### Auto-Update .docs Protocol (Setiap 5 task):
 - **Trigger:** Selesai task ke-5, 10, 15, dst. (task count mod 5 == 0).
@@ -306,11 +311,24 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **9 file**:
 - Corner-radius system (--radius-md: 0px / 8px / 9999px)
 - Shadow & Elevation tokens (soft, hover, dialog)
 
-## 2. Component Token Registry (§7B)
-- Button, Icon, Modal, Toast, Form, Card tokens
+## 2. Component Token Registry (§7B — 32 Komponen)
+- Page Structure: Navbar, Footer, Sidebar, Hero
+- Data Display: Table, Pagination, Badge/Tag, Empty State, Skeleton
+- Navigation: Tabs, Breadcrumb, Stepper
+- Feedback: Alert/Banner, Progress Bar, Tooltip, Toast
+- Interactive: Button, Form, Modal, Card, Dropdown, Accordion, Search
+- Media: Avatar, Thumbnail/Image, Icon
+- Structural: Divider, Link, Code Block, Blockquote, List
 - Spacing semantic map (kelipatan 8pt per komponen)
 
-## 3. Section Rhythm & Layout Constraints
+## 3. Responsive Breakpoint Tokens
+- Android 3M: 360px / 393px / 412px
+- Tablet: 768px
+- ★ Laptop (PRIMARY): 1366px — container-max: 1200px
+- Desktop: 1440px / Wide: 1920px
+- Adaptation rules per komponen per breakpoint
+
+## 4. Section Rhythm & Layout Constraints
 - Rhythm pattern default (A/B/C/D/E)
 - Inferred decision rules & anti-patterns dari ui-reasoning.csv
 ```
@@ -413,7 +431,7 @@ admin=[email]=[password]
 | Visual Design Pipeline (execution detail) | `gemini-execution.md §4K` | Saat redesign/buat halaman | §4K (anchor:4K) | 2K |
 | Visual Self-Check Protocol (execution) | `gemini-execution.md §4I` | Saat declare done visual task | §4I (anchor:4I) | 1K |
 | Model-specific anti-slop hints | `taste-skill-bridge/MODEL_HINTS.md` | Saat visual task dengan Gemini Flash | MODEL_HINTS.md (~40 baris) | 0.5K |
-| Component tokens (button, modal, toast, card, form, icon, spacing) | `design-system.md §7B` | Saat menulis komponen UI apapun | §7B (anchor:7B) | 2K |
+| Component tokens (32 komponen: page structure, data display, navigation, feedback, interactive, media, structural) | `design-system.md §7B` | Saat menulis komponen UI apapun | §7B (anchor:7B) | 4K |
 | Compliance Check (`cek komponen`) detail | `gemini-execution.md §3.C.1` | Saat `cek komponen` aktif | §3.C.1 (anchor:3C1) | 2K |
 | Factual Scan Enforcement Protocol (FSEP) | `gemini-execution.md §3.C.2` | Saat mode audit aktif | §3.C.2 (anchor:3C2) | 1K |
 | Smart Skill Integration (SSI) | `gemini-execution.md §4N` | Saat integrasi skill baru | §4N (anchor:4N) | 2K |
@@ -426,6 +444,8 @@ admin=[email]=[password]
 | Design token database (15 kluster + oklch) | `design-system.md` | Saat setup CSS / debug warna | §1 kluster saja | 1K |
 | File role definitions | `gemini-execution.md §4.C` | Saat bingung prd vs gemini vs design-system | §4.C (anchor:4C) | 1K |
 | PRD blueprint 11-bab | `prd-template.md` | Saat `awal baru` wizard | §1-§3 saja | 3K |
+| Anti-Bloat Code & Anti-Verbosity | `.agents/rules/anti-bloat-code.md` | ALWAYS (inline di §0 #7, §1 #11) | Full read on first session | 1.5K |
+| Anti-Over-Engineering detail | `gemini-execution.md §4.O` | Saat menulis kode / review arsitektur | §4.O (anchor:4O) | 1K |
 | Yasei-2 CLI subsistem | `yasei-cli.ps1` | Saat token IDE habis / alternatif agent | Full read | 14K |
 
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.

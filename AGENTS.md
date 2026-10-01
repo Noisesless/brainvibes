@@ -100,3 +100,11 @@ AI REQUIRED mematuhi load protocol berikut untuk menghemat token dan context win
 ## §7. SECURITY-AWARE CODING & WEB SEARCH (Cross-Reference)
 - **Security-Aware Coding:** Ketika menulis kode auth/db/input/upload/API, AI wajib secara SILENT membaca `security-patterns` data, dan setelah task selesai menjalankan mini-audit post-feature (`gemini-templates.md §2I-POST`). Detail di `gemini.md §1 STANDARD #5` dan `gemini-execution.md §3.C`.
 - **Web Search Protocol:** Protokol pencarian informasi web diatur di `gemini.md §1 HARD BLOCK #9`.
+
+---
+
+## §8. PRAGMATIC OUTPUT & ANTI-OVER-ENGINEERING (Cross-Reference)
+- **Anti-Verbosity:** FORBIDDEN buzzword/hiperbola dalam dialog AI. Detail di `gemini.md §0 #7`, `gemini.md §1 HARD BLOCK #11`.
+- **Anti-Literal Copy:** FORBIDDEN salin instruksi user mentah sebagai teks UI. Detail di `gemini.md §VISUAL RULES #24`.
+- **Anti-Over-Engineering:** FORBIDDEN abstraksi tanpa konsumen kedua, wrapper kosong, pattern tanpa kebutuhan. Detail di `gemini-execution.md §4.O`.
+- **Full Rule:** `.agents/rules/anti-bloat-code.md` (blocklist, contoh, metric pragmatis, dev/prod protocol).

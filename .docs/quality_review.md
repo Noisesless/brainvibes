@@ -45,28 +45,34 @@
 ## Complexity Analysis
 
 ### gemini.md (Core Instructions)
-- **Lines:** 473
-- **Sections:** 9 (§0, §1, §VISUAL RULES [18 ban + 5 enforcement], §SESSION PROTOCOL, §2 [11 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
-- **Hard Blocks:** 10
+- **Lines:** 515
+- **Sections:** 9 (§0, §1, §VISUAL RULES [18 ban + 6 enforcement], §SESSION PROTOCOL, §2 [11 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
+- **Hard Blocks:** 11 (termasuk #11: Pragmatic Output & Anti-Over-Engineering Law)
 - **Gates:** 6
-- **Standards:** 7
-- **Complexity:** Medium (technical focus, anti-AI-slop visual gate, unified dispatch table)
+- **Standards:** 9 (termasuk #8: Visual Registry Sync & #9: Responsive Laptop-First + Android 3M)
+- **Complexity:** Medium (technical focus, anti-AI-slop visual gate, unified dispatch table, pragmatic output gate)
 
 ### gemini-execution.md (Execution Details)
-- **Lines:** 930
-- **Sections:** Main section groups (§3.A-C, §4.A-J, §4K Visual Pipeline, §4I Self-Check, §4L SEO, §4M Cache/Priority, §4N SSI)
+- **Lines:** 1080
+- **Sections:** Main section groups (§3.A-C, §4.A-J, §4K Visual Pipeline, §4I Self-Check, §4L SEO, §4M Cache/Priority, §4N SSI, §4.O Pragmatic Output & Anti-Over-Engineering)
 - **Subheadings:** Parent ID prefixed (§3.A-C, §4.A-J, etc.) — 0 collisions
 - **Security Protocols:** Multi-stack SP combination rule, OWASP Top 10:2025 100% coverage (A01-A10 mapped)
-- **Visual Protocols:** §4K 6-gate mandatory pipeline, Direct-Read CSV fallback, redesign execution protocol, §4I pre-flight self-check
-- **Complexity:** High (comprehensive execution, security & efficiency protocols)
+- **Visual Protocols:** §4K 6-gate mandatory pipeline, Direct-Read CSV fallback, redesign execution protocol, §4I pre-flight self-check (termasuk limit heading ≤5 kata, subtitle ≤15 kata)
+- **Complexity:** High (comprehensive execution, security, visual, & efficiency protocols)
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
-- **Lines:** 418
+- **Lines:** 430
 - **Sections:** Macro commands §2A-§2K, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading
 - **Security Features:** Auto dependency audit (`npm audit` / `composer audit`), Compliance Score generator
 - **Complexity:** Medium (structured templates & macro dispatches)
 - **Load Method:** view_file on-demand
+
+### anti-bloat-code.md (Universal Rules Engine)
+- **Lines:** 85
+- **Scope:** Global (`~/.gemini/config/rules/`) & Workspace (`.agents/rules/`)
+- **Key Modules:** Blocklist kata hiperbola/buzzword, anti-literal-copy teks prompt ke UI, batasan teks terukur (heading ≤5, subtitle ≤15, card ≤25, toast ≤10 kata), anti-over-engineering (YAGNI, flat structure, zero empty wrapper), dev/prod dynamic protocol.
+- **Load Method:** Full read on first session / system rules discovery
 
 ### secure-patterns.md (Security Patterns Registry)
 - **Lines:** 2036
@@ -76,11 +82,12 @@
 - **Stack Support:** PHP Native, Next.js, Laravel, Universal
 - **Complexity:** High (comprehensive secure patterns + anti-patterns + grep indicators)
 
-### design-system.md (Design DNA)
-- **Lines:** 1160
-- **Sections:** 14 (§1-§13, §7B Component Token Registry)
-- **Component Tokens:** Button, Icon, Modal, Toast, Form, Card, Spacing semantic map (Single Source of Truth)
-- **Complexity:** High (comprehensive CSS tokens, oklch integration & component registry)
+### design-system.md (Design DNA & Component Registry)
+- **Lines:** 1480
+- **Sections:** 14 (§1-§13, §7B 32-Component Token Registry, §10.E 7-tier responsive strategy)
+- **Component Tokens:** 32 Komponen lengkap (Page Structure, Data Display, Navigation, Feedback, Interactive, Media, Structural) sebagai Single Source of Truth
+- **Responsive Strategy:** 7-Tier Breakpoints (Android 3M 360/393/412px, Tablet 768px, Laptop 1366px PRIMARY TARGET container 1200px, Desktop 1440px, Wide 1920px)
+- **Complexity:** High (comprehensive CSS tokens, oklch integration, 32-component registry & container queries)
 - **Load Method:** Section-specific read
 
 ## Duplication Check
@@ -111,11 +118,13 @@
 ## Recommendations
 
 ### Strengths
-1. **Split Architecture** — Core ≤22KB, detail on-demand
+1. **Split Architecture** — Core ≤32KB, detail on-demand
 2. **Selective Loading** — Tidak semua file auto-load
 3. **Consistent Format** — Semua file menggunakan format yang sama
 4. **Comprehensive Skills** — 12 skills coverage
 5. **Knowledge Base** — 3 bases untuk error, retro, patterns
+6. **Pragmatic Output & Anti-Bloat Engine** — Mencegah dialog buzzword/hiperbola, anti-literal-copy prompt ke UI, dan anti-over-engineering
+7. **Single Source of Truth Visual Registry** — 32 token komponen lengkap (§7B) & 7-tier responsive breakpoints (Android 3M + Laptop-First 1366)
 
 ### Areas for Improvement
 1. **Documentation Coverage** — `.docs/` lengkap (9 files termasuk deployment.md & design-system.md) ✅
@@ -124,6 +133,7 @@
 4. **Visual Optimization** — `taste-skill-bridge/SKILL.md` telah dioptimasi ke router 61 baris + CHEATSHEET + MODEL_HINTS ✅
 5. **Dual-Platform Parity** — `.gitattributes` (LF/CRLF), executable mode `100755` pada skrip Unix, paritas `sync.sh` & `sync.ps1`, serta dynamic PATH binary detection ✅
 6. **Security & Limiter Parity** — SP-024 s/d SP-030 terpasang, 5-tier adaptive rate limiter aktif, dan repo bersih dari residu usang ✅
+7. **Visual & Responsive Standards** — §7B diperluas dari 7 ke 32 komponen UI dan breakpoint strategy 7-tier memprioritaskan laptop 1366×768 serta Android 3M ✅
 
 ## Self-Check Result
 ```
