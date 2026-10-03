@@ -210,11 +210,12 @@ pre, code {
 5. Logo wall → gunakan SVG nyata dari `cdn.simpleicons.org/{slug}/currentColor`
 
 ### §4.9 Content Rules
-- Headline: max 8 kata
-- Subtext: max 25 kata per section
+> Batas kata, blocklist, dan Copy Gate: **`COPY_RULES.md` (SSOT)**. Angka di bagian ini mengikuti file tersebut.
+- Headline hero: max 8 kata; heading halaman/section: max 5 kata
+- Subtext: max 20 kata (hero) / 25 kata (section)
 - Quote/testimonial: max 3 lines
 - Attribution: name + role + company (FORBIDDEN: name only)
-- **COPY SELF-AUDIT:** Re-read semua visible string sebelum declare done
+- **COPY GATE:** cetak `[COPY TABLE]` sebelum menulis teks UI; sebelum declare done jalankan lint `COPY_RULES.md §7`
 - **FORBIDDEN:** fake-precise numbers (92%, 4.1×) tanpa real data
 
 ### §4.10 Article & Editorial Layout Rules (Wajib untuk Tipe Post/Berita/Artikel/Blog)

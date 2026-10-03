@@ -96,6 +96,7 @@ User Input → Presentation → Logic → Data → Response
 | `design-system.md` | Saat setup CSS / render 32 komponen / breakpoints | Section specific (§1-§13, §7B, §10.E) | ~70KB (1480 lines) |
 | `anti-bloat-code.md` | Inline di §0 #7, §1 #11, first session | Full read | ~2.5KB (85 lines) |
 | `taste-skill-bridge/SKILL.md` | Saat redesign / buat halaman | Full read (router) → ESSENTIAL/DETAILED | ~2.5KB (61 lines) |
+| `taste-skill-bridge/COPY_RULES.md` | Saat menulis teks UI / heading / tombol / toast | Range read / Full read | ~7KB (140 lines) |
 
 ## Token Efficiency Strategy
 

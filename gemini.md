@@ -87,8 +87,8 @@
 20. ✅ **Design Read Gate:** REQUIRED output `[Design Read]` + `[RHYTHM SCORE]` sebelum menulis HTML/JSX halaman baru atau redesign. Kode tanpa Design Read = INVALID.
 21. ✅ **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
 22. ✅ **Capsule/Eyebrow Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. Eyebrow = salah satu tanda AI slop paling umum.
-23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN headline words: "Unlock", "Empower", "Revolutionize", "Seamless", "Cutting-edge", "Next-gen", "World-class", "Game-changing", "Elevate", "Transform", "Unleash". Gunakan bahasa spesifik industri dari `prd.md`. FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
-24. ✅ **Anti-Literal Copy Gate:** FORBIDDEN menyalin instruksi/prompt user mentah menjadi teks UI (heading/label/subtitle/placeholder/tooltip). Heading max 3-5 kata. Subtitle max 10-15 kata. Deskripsi card max 25 kata. Toast max 10 kata. Teks UI = bahasa end-user, bukan bahasa requirement. → Detail: `.agents/rules/anti-bloat-code.md §2`
+23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN kata promosi EN+ID ("Unlock", "Seamless", "Solusi terbaik", "Terdepan", dll — daftar lengkap `taste-skill-bridge/COPY_RULES.md §4`) dan kalimat meta ("Halaman ini...", "Selamat datang di..."). FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
+24. ✅ **Anti-Literal Copy & Tech-Leak Gate:** FORBIDDEN menyalin instruksi/prompt user mentah atau membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type) menjadi teks UI. REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada 3+ kata berurutan sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (termasuk TechLeak check).
 
 ### Protokol Output Wajib:
 
@@ -108,6 +108,7 @@
 [UUPM Source] Palet: [nama] dari [colors.csv baris N] | Style: [nama] dari [styles.csv] | Font: [pair] dari [typography.csv]
 [Layout Intel] ui-reasoning.csv: Pattern=[X] | Anti-Patterns=[Y] | Decision=[Z]
 [RHYTHM SCORE] Nav:[X] Hero:[X] S2:[X] S3:[X] ... Footer:[X]
+[COPY TABLE] Slot | Dari instruksi | Teks UI (jumlah kata)  → detail: taste-skill-bridge/COPY_RULES.md
 ```
 6. Tulis kode — semua CSS token via `var(--vibe-*)`, semua warna dari UUPM output
 
@@ -431,6 +432,7 @@ admin=[email]=[password]
 | Visual Design Pipeline (execution detail) | `gemini-execution.md §4K` | Saat redesign/buat halaman | §4K (anchor:4K) | 2K |
 | Visual Self-Check Protocol (execution) | `gemini-execution.md §4I` | Saat declare done visual task | §4I (anchor:4I) | 1K |
 | Model-specific anti-slop hints | `taste-skill-bridge/MODEL_HINTS.md` | Saat visual task dengan Gemini Flash | MODEL_HINTS.md (~40 baris) | 0.5K |
+| Teks UI: Copy Gate, blocklist EN+ID, batas kata, lint | `taste-skill-bridge/COPY_RULES.md` + `design-system.md §7C` | Saat menulis heading/label/tombol/toast/placeholder | COPY_RULES.md (~130 baris) | 1.8K |
 | Component tokens (32 komponen: page structure, data display, navigation, feedback, interactive, media, structural) | `design-system.md §7B` | Saat menulis komponen UI apapun | §7B (anchor:7B) | 4K |
 | Compliance Check (`cek komponen`) detail | `gemini-execution.md §3.C.1` | Saat `cek komponen` aktif | §3.C.1 (anchor:3C1) | 2K |
 | Factual Scan Enforcement Protocol (FSEP) | `gemini-execution.md §3.C.2` | Saat mode audit aktif | §3.C.2 (anchor:3C2) | 1K |

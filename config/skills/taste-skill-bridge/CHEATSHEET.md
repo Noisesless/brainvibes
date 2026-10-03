@@ -44,6 +44,16 @@ DNA: ✅ | File: ✅ | Typography: ✅ | Hero: ✅
 Center-bias: ✅ | Eyebrow: ✅ | CTA: ✅ | Contrast: ✅
 Shape: ✅ | Tokens: ✅ | Images: ✅ | Mobile: ✅
 Rhythm: ✅ | Copy-slop: ✅ | UUPM-sourced: ✅
+[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)
+```
+
+## Format: Copy Table (Gate 5B — sebelum kode)
+```
+[COPY TABLE] Bahasa: [Indonesia] | Entitas: [transaksi] | Aksi: [ekspor, filter]
+Slot       | Dari instruksi                      | Teks UI (jumlah kata)
+h1         | "menampilkan data transaksi harian" | Transaksi Harian (2)
+btn utama  | "ekspor"                            | Ekspor CSV (2)
+empty      | -                                   | Belum ada transaksi (3)
 ```
 
 ## Section Treatment Types
@@ -55,6 +65,5 @@ Rhythm: ✅ | Copy-slop: ✅ | UUPM-sourced: ✅
 [E] MEDIA-HEAVY → Gambar/video dominan, teks minimal
 ```
 
-## Copy Blocklist (FORBIDDEN di headline)
-"Unlock", "Empower", "Revolutionize", "Seamless", "Cutting-edge",
-"Next-gen", "World-class", "Game-changing", "Elevate", "Transform", "Unleash"
+## Copy Blocklist
+Daftar lengkap EN+ID, batas kata, dan regex lint: `COPY_RULES.md` (§4, §3, §7).

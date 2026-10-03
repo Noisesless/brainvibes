@@ -912,13 +912,18 @@ GATE 5 — [Rhythm Score]    : Susun section order dengan treatment visual A/B/C
                               Validasi: tidak ada 3 treatment berturut sama
                               Output: [RHYTHM SCORE] per section
 
-GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5 selesai
+GATE 5B — [Copy Table]     : Baca taste-skill-bridge/COPY_RULES.md
+                              Ambil entitas + aksi dari instruksi user, buang kata instruksi
+                              Output: [COPY TABLE] Slot | Dari instruksi | Teks UI (jumlah kata)
+
+GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5B selesai
                               Semua warna via var(--vibe-*), semua dari UUPM output
 ```
 
 **HARD BLOCK:** FORBIDDEN menulis `:root { --vibe-*` tanpa output [UUPM Source] terlebih dahulu.
 **HARD BLOCK:** Gate 4 `ui-reasoning.csv` WAJIB dieksekusi via `grep_search` — dilarang berasumsi sudah tercakup di `search.py`.
 **HARD BLOCK:** FORBIDDEN menulis `<section>` atau layout HTML tanpa output [RHYTHM SCORE] terlebih dahulu.
+**HARD BLOCK:** FORBIDDEN menulis heading/label/tombol/toast/placeholder tanpa output [COPY TABLE] terlebih dahulu.
 
 ### §4K.3 Direct-Read CSV Protocol (Jika Python Tidak Tersedia / Eksekusi Mandiri)
 
@@ -1002,12 +1007,13 @@ Rhythm: [✅|❌] | Copy-slop: [✅|❌] | UUPM-sourced: [✅|❌]
 
 ### §4I.2 Copy Anti-Slop Verification
 
-Sebelum declare done, AI REQUIRED scan semua visible text di output dan:
-1. Cek tidak ada kata dari Copy Blocklist (`gemini.md §VISUAL RULES #23`)
-2. Cek tidak ada literal-copy instruksi user sebagai teks UI (`gemini.md §VISUAL RULES #24`)
-3. Cek tidak ada eyebrow/capsule di halaman auth
-4. Cek heading ≤ 5 kata, subtitle ≤ 15 kata, subtext ≤ 25 kata, toast ≤ 10 kata
+Sebelum declare done, AI REQUIRED:
+1. Jalankan lint regex `taste-skill-bridge/COPY_RULES.md §7` via `grep_search` pada file UI yang diubah (hit = fix)
+2. Cocokkan teks UI dengan `[COPY TABLE]` (Echo Test: tidak ada 3+ kata berurutan sama dengan instruksi user)
+3. Cek tidak ada parameter teknis/timezone bocor (mis. `(WIB)`, timezone, sorting rule, hash) di teks UI
+4. Cek batas kata (`COPY_RULES.md §3`) dan tidak ada eyebrow/capsule di halaman auth
 5. Cek tidak ada fake-precise numbers tanpa real data
+6. Cetak `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)`
 
 Jika ada pelanggaran → FIX sebelum declare done. FORBIDDEN declare done dengan ❌ di pre-flight.
 
@@ -1050,22 +1056,26 @@ AI FORBIDDEN menggunakan kata/frasa berikut dalam dialog ke user:
 
 ### §4.O.2 Anti-Literal Copy dalam Teks Aplikasi
 
+> **SSOT:** `config/skills/taste-skill-bridge/COPY_RULES.md` — Copy Gate (`[COPY TABLE]`), batas kata, blocklist EN+ID, pola terlarang, lint regex. Jika angka di bawah berbeda, COPY_RULES.md menang.
+
 AI FORBIDDEN menyalin instruksi/prompt user mentah sebagai teks UI:
 
 | Elemen UI | Max Kata | Contoh Benar |
 |---|---|---|
-| Heading (h1-h3) | 3-5 kata | "Transaksi Harian" |
-| Subtitle | 10-15 kata | "Ringkasan performa bulan ini" |
+| Heading (h1-h3) | 5 (hero headline 8) | "Transaksi Harian" |
+| Subtitle | 15 | "Rekap per hari, terbaru di atas" |
 | Card description | Max 25 kata | Deskripsi ringkas fitur |
-| Placeholder input | Max 5 kata | "Cari nama produk..." |
-| Toast/notification | Max 10 kata | "Data berhasil disimpan" |
-| Tooltip | Max 8 kata | "Klik untuk unduh laporan" |
+| Placeholder input | Max 5 kata | "Cari nama produk" |
+| Toast/notification | Max 10 kata | "Data tersimpan" |
+| Tooltip | Max 8 kata | "Unduh laporan bulan ini" |
 | Button label | Max 3 kata | "Simpan", "Kirim", "Hapus" |
 
-**Self-Check Wajib:**
-- Sebelum submit kode UI, scan semua visible text.
-- Jika heading berbunyi mirip prompt user → ringkaskan.
-- Jika deskripsi berbunyi seperti requirements doc → tulis ulang sebagai bahasa end-user.
+**Anti-Kebocoran Teknis & Timezone:**
+- Instruksi teknis seperti timezone ("local time jakarta"), sorting ("urutkan terbaru"), atau enkripsi ("bcrypt") adalah konfigurasi logika KODE, BUKAN teks layar.
+- FORBIDDEN memunculkan `(WIB)`, `(WITA)`, `(WIT)`, `WIB`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, dsb di tabel/layar UI.
+
+**Prosedur wajib:** ekstrak entitas + aksi dari instruksi → cetak `[COPY TABLE]` → tulis teks UI dari tabel itu.
+**Self-Check Wajib:** lint regex `COPY_RULES.md §7` + `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak) sebelum declare done.
 
 ### §4.O.3 Anti-Over-Engineering (YAGNI-First Architecture)
 

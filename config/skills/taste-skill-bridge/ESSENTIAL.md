@@ -96,9 +96,25 @@ Setelah Design Read, set 3 dials. Semua keputusan layout, motion, density mengac
 
 ---
 
+## STEP 5B — COPY GATE (Wajib Sebelum Tulis Kode)
+
+Teks UI TIDAK BOLEH diambil dari kata-kata prompt user atau dari kosakata promosi.
+Baca `COPY_RULES.md`, lalu cetak sebelum Gate 6:
+
+```
+[COPY TABLE] Bahasa: [..] | Entitas: [..] | Aksi: [..]
+Slot | Dari instruksi | Teks UI (jumlah kata)
+```
+
+Inti: ambil **entitas + aksi** dari instruksi, buang kata instruksi (buat, tampilkan, halaman, fitur, untuk...),
+tulis heading sebagai nomina dan tombol sebagai verba pendek. Batas kata, blocklist EN+ID, dan regex lint ada di `COPY_RULES.md`.
+
+---
+
 ## 🔴 HARD BLOCKS (100% Compliance)
 
-Semua visual task wajib mematuhi 16 larangan Anti-AI-SLOP yang tercantum dalam single source of truth: [visual-rules.md](../visual-rules.md) (atau `$HOME/.gemini/config/skills/visual-rules.md` / Windows: `%USERPROFILE%\.gemini\config\skills\visual-rules.md`).
+Semua visual task wajib mematuhi larangan Anti-AI-SLOP (visual + copy) yang tercantum dalam single source of truth: [visual-rules.md](../visual-rules.md) (atau `$HOME/.gemini/config/skills/visual-rules.md` / Windows: `%USERPROFILE%\.gemini\config\skills\visual-rules.md`).
 
 > **Detail lengkap:** Baca `taste-skill-bridge/DETAILED.md` (STEP 2-6)
+> **Teks UI:** Baca `taste-skill-bridge/COPY_RULES.md`
 > **Checklist:** Baca `taste-skill-bridge/REFERENCE.md` (Pre-Flight Checklist)

@@ -238,19 +238,20 @@
    - Lakukan `grep_search` industri proyek pada `ui-reasoning.csv` untuk mendapatkan `Recommended_Pattern`, `Decision_Rules`, dan `Anti_Patterns`.
    - Ekstrak palet & font dari `colors.csv`, `styles.csv`, dan `typography.csv` (via `search.py` atau Direct-Read CSV).
 4. **Keluarkan Mandatory Output Pre-Code:**
-   AI WAJIB mencetak 4 blok ini ke terminal SEBELUM menulis sebaris kode pun:
+   AI WAJIB mencetak 5 blok ini ke terminal SEBELUM menulis sebaris kode pun:
    ```
    [Design Read] Reading this as: [tipe] untuk [audience], vibe [keyword], dials: V=[n] M=[n] D=[n]
    [UUPM Source] Palet: [nama] dari [colors.csv] | Style: [nama] dari [styles.csv] | Font: [pair] dari [typography.csv]
    [Layout Intel] ui-reasoning.csv: Pattern=[X] | Anti-Patterns=[Y] | Decision=[Z]
    [RHYTHM SCORE] Nav:[X] Hero:[X] S2:[X] S3:[X] ... Footer:[X]
+    [COPY TABLE] Slot | Dari instruksi | Teks UI (jumlah kata)  → baca taste-skill-bridge/COPY_RULES.md
    ```
 5. **Eksekusi Kode Anti-Slop:**
    - Terapkan seluruh token ke file CSS/komponen melalui `var(--vibe-*)`.
    - Patuhi komponen token dari `design-system.md §7B` (Button, Modal, Toast, Card, Spacing).
    - ❌ FORBIDDEN hand-rolled raw SVG path (wajib icon library).
    - ❌ FORBIDDEN eyebrow badge di halaman auth.
-   - ❌ FORBIDDEN copy slop ("Unlock", "Empower", "Revolutionize", dll).
+   - ❌ FORBIDDEN copy slop EN+ID dan instruksi user disalin jadi teks UI → ikuti `COPY_RULES.md` (Copy Table + lint regex §7).
 6. **Pre-Flight Checklist (§4I) & Docs Sync:**
    - Jalankan pre-flight check dan cetak `[TASTE-SKILL PRE-FLIGHT]`.
    - Sinkronkan hasil perubahan ke `app-context.md §PALETTE` dan `/.docs/design-system.md`.

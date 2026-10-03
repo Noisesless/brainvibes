@@ -48,13 +48,18 @@ description: |
 | Border/outline/shadow pada logo | → FORBIDDEN. Logo as-is tanpa dekorasi |
 
 ### Copy Slop (HARD OVERRIDE)
-FORBIDDEN headline words (Gemini Flash sangat suka pakai ini):
-```
-"Unlock", "Empower", "Revolutionize", "Seamless", "Cutting-edge",
-"Next-gen", "World-class", "Game-changing", "Elevate", "Transform",
-"Unleash", "Supercharge", "Turbocharge", "Harness the power of"
-```
-→ Gunakan bahasa spesifik industri dari `prd.md §1 Target User` dan `§3 Karakter Visual`.
+Dua kebiasaan yang sering muncul, di SEMUA model:
+
+| Tendency | Override |
+|---|---|
+| Prompt user disalin jadi heading/subtitle ("Halaman untuk menampilkan data...") | → Cetak `[COPY TABLE]`: ambil entitas + aksi, buang kata instruksi. Heading = nomina |
+| Slot kosong diisi kata promosi ("Unlock", "Seamless", "Solusi terbaik", "Terdepan") | → Blocklist EN+ID di `COPY_RULES.md §4`. Tanpa fakta = hapus |
+| Kalimat pembuka meta ("Halaman ini...", "Selamat datang di...", "Berikut adalah...") | → Hapus, langsung isi |
+| Istilah brief desain bocor ke UI ("Hero Section", "Bento Grid", "Dark Mode") | → Pakai nama user-facing |
+| Instruksi teknis / timezone bocor ke UI ("(WIB)", "Asia/Jakarta", "Data realtime terbaru", "bcrypt") | → Instruksi waktu/sorting/security adalah logika KODE. FORBIDDEN tempel (WIB), timezone, atau istilah teknis di label/tabel UI |
+| Toast/error verbose + tanda seru + emoji | → Max 10 kata, tanpa "!" dan emoji dekorasi |
+
+→ Gunakan bahasa spesifik domain dari `prd.md §1 Target User`. Jalankan lint regex `COPY_RULES.md §7` sebelum declare done.
 
 ---
 
@@ -74,4 +79,4 @@ FORBIDDEN headline words (Gemini Flash sangat suka pakai ini):
 1. **UUPM Gate TIDAK BISA DI-SKIP** — model apapun wajib menjalankan Gate 1-5 sebelum menulis kode
 2. **Rhythm Score WAJIB** — output `[RHYTHM SCORE]` sebelum HTML
 3. **Pre-Flight WAJIB** — output `[TASTE-SKILL PRE-FLIGHT]` sebelum declare done
-4. **Copy Blocklist berlaku universal** — bukan hanya untuk Gemini
+4. **Copy Gate berlaku universal** — `[COPY TABLE]` sebelum kode, `[COPY CHECK]` sebelum declare done (`COPY_RULES.md`)

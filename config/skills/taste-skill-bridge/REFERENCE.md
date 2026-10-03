@@ -28,6 +28,10 @@ AI REQUIRED menjalankan checklist ini sebelum menyatakan task UI selesai:
 - [ ] **Eyebrow count:** ≤ ceil(sectionCount / 3)
 - [ ] **Zigzag:** Tidak ada 3+ consecutive image+text split layout
 - [ ] **CTA:** Semua labels fit 1 line, tidak ada duplicate intent
+- [ ] **Copy Table:** `[COPY TABLE]` sudah dicetak sebelum kode; tidak ada teks UI yang menyalin 3+ kata berurutan dari instruksi user
+- [ ] **TechLeak:** Tidak ada kebocoran instruksi teknis (seperti `(WIB)`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, `responsive`) di teks UI/tabel
+- [ ] **Copy Lint:** Regex `COPY_RULES.md §7` dijalankan pada file UI yang diubah, 0 hit (atau hit sudah dijelaskan)
+- [ ] **Copy Limit:** Heading ≤ 5 kata, button ≤ 3, toast ≤ 10, tanpa "!" dan emoji dekorasi
 - [ ] **Button contrast:** Semua tombol pass WCAG AA 4.5:1
 - [ ] **Shape consistency:** Menggunakan 1 corner-radius system yang konsisten untuk semua komponen. Jika menggunakan geometri kustom (asimetris/blob/oval/arch), pastikan sudah diterapkan secara seragam dan tidak dicampur tanpa aturan tertulis.
 - [ ] **Geometry Check:** FORBIDDEN hanya menggunakan persegi panjang rounded standar di seluruh halaman. Minimal ada 1 tipe elemen visual/kartu yang menggunakan bentuk geometri kustom (asimetris, oval, blob, arch, atau intersecting circle badges) untuk memecah monotoni.
@@ -45,6 +49,7 @@ AI REQUIRED menjalankan checklist ini sebelum menyatakan task UI selesai:
 DNA: ✅ | File: ✅ | Typography: ✅ | Hero: ✅ | Center-bias: ✅ | Eyebrow: ✅
 CTA: ✅ | Contrast: ✅ | Shape: ✅ (Asymmetric/Blob/Oval/Arch) | Tokens: ✅ | Images: ✅ | Mobile: ✅ | Article: ✅
 Rhythm: ✅ [A→C→B→D→A] — WOW moment: ✅ | Full-bleed: ✅ | BG variety: ✅
+[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)
 ```
 Jika ada ❌ → perbaiki SEBELUM declare done.
 

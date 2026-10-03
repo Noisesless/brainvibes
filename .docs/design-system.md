@@ -152,3 +152,19 @@
 - Selalu variasikan lebar container dan intensitas visual dari atas ke bawah.
 - Bentuk card: Utamakan Bento Matrix, Staggered Step Grid, atau Split Offset (larangan default 3-kolom simetris identik).
 
+---
+
+## 5. Microcopy & Anti-Tech-Leak Standards (§7C Integration)
+
+> **SSOT Teks UI:** `config/skills/taste-skill-bridge/COPY_RULES.md` & `design-system.md §7C`.
+> Seluruh teks yang tampil pada antarmuka pengguna wajib berupa nomina entitas atau verba imperatif pendek yang diturunkan dari `[COPY TABLE]`.
+
+### Prinsip Utama Teks Antarmuka:
+1. **Anti-Kebocoran Teknis (Anti-Tech-Leak):** Instruksi teknis backend/JS (seperti waktu lokal Jakarta, urutan query, algoritma hashing) adalah logika kode, BUKAN teks tampilan layar.
+   - ❌ **Dilarang:** `<th>Waktu (WIB)</th>`, `<td>17:02 (WIB)</td>`, `<span>Zona waktu Asia/Jakarta</span>`, `<p>Data realtime diurutkan terbaru</p>`, `<small>Password dienkripsi bcrypt</small>`.
+   - ✅ **Wajib:** `<th>Waktu</th>`, `<td>17:02</td>`, `<td>03 Okt 2026, 17:02</td>`. Format waktu diatur di backend/JS tanpa label zona waktu mentah.
+2. **Anti-Literal-Copy & Echo Test:** Dilarang menyalin teks instruksi user mentah menjadi teks antarmuka. Minimal ada transformasi menjadi frasa produk nyata.
+3. **Batas Kata:** Heading halaman max 5 kata (hero headline max 8), subtitle max 15 kata, tombol max 3 kata, toast max 10 kata, placeholder max 5 kata.
+4. **Verifikasi Pre-Flight:** Wajib menjalankan filter regex `COPY_RULES.md §7` dan mencetak marker `[COPY CHECK]` sebelum menyatakan task UI selesai.
+
+

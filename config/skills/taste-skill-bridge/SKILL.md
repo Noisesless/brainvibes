@@ -25,10 +25,11 @@ description: |
 > AI WAJIB memanggil `view_file` untuk membaca `ESSENTIAL.md` (105 baris) sebelum Gate 2.
 > Jika menggunakan Gemini 3.7 Flash atau terindikasi slop → WAJIB membaca juga `MODEL_HINTS.md`.
 > Nilai Three Dials (V/M/D) pada output `[Design Read]` WAJIB mengacu pada tabel inferensi `ESSENTIAL.md §1`.
+> Jika task menulis teks UI (heading/label/tombol/toast/placeholder) → WAJIB baca `COPY_RULES.md` dan cetak `[COPY TABLE]` sebelum Gate 6.
 
 ---
 
-## PIPELINE OVERVIEW (6 Gate — Urutan Wajib)
+## PIPELINE OVERVIEW (6 Gate + Gate 5B Copy — Urutan Wajib)
 
 | Gate | Aksi | Output Wajib |
 |---|---|---|
@@ -37,9 +38,10 @@ description: |
 | 3. UUPM Search | Jalankan search.py ATAU Direct-Read CSV | `[UUPM Source] Palet + Style + Font` |
 | 4. Layout Intel | grep `ui-reasoning.csv` + `landing.csv` per industri | `[Layout Intel] Pattern + Anti-Patterns` |
 | 5. Rhythm Score | Susun section order A/B/C/D/E | `[RHYTHM SCORE] per section` |
+| 5B. Copy Table | Ubah instruksi user → teks UI ringkas (baca `COPY_RULES.md`) | `[COPY TABLE]` |
 | 6. Write Code | Tulis kode — semua dari UUPM output | CSS tokens via `var(--vibe-*)` |
 
-**HARD BLOCK:** Kode tanpa Gate 1-5 output = INVALID.
+**HARD BLOCK:** Kode tanpa Gate 1-5B output = INVALID. Heading/label/tombol/toast ditulis sebelum `[COPY TABLE]` = INVALID.
 
 ---
 
@@ -49,6 +51,7 @@ description: |
 |---|---|---|
 | **Standar** (tweak, edit section, tambah komponen) | `ESSENTIAL.md` (105 baris) | ~1.5K |
 | **Complex** (halaman baru, redesign penuh, landing page) | `ESSENTIAL.md` + `DETAILED.md` (611 baris) | ~8.5K |
+| **Copy** (SETIAP visual task yang menulis teks UI) | `COPY_RULES.md` (~130 baris) | ~1.8K |
 | **Pre-Flight** (sebelum declare done) | `REFERENCE.md` (128 baris) | ~1K |
 | **Quick Reference** (copy-paste output format) | `CHEATSHEET.md` (~30 baris) | ~0.5K |
 | **Model Override** (Gemini Flash / model slop-prone) | `MODEL_HINTS.md` (~50 baris) | ~0.5K |
@@ -63,7 +66,7 @@ description: |
 4. ❌ Halaman tanpa gambar kontekstual → generate_image atau Unsplash spesifik
 5. ❌ 3 section treatment sama berturut → alternasi Rhythm Score wajib
 6. ❌ Eyebrow/capsule di auth pages → FORBIDDEN
-7. ❌ Copy slop: "Unlock", "Empower", "Revolutionize" dll → bahasa industri spesifik
+7. ❌ Copy slop (buzzword EN+ID) atau instruksi user disalin jadi teks UI → `COPY_RULES.md` (Copy Table + lint)
 8. ❌ Font tunggal (Inter saja) → 2-font pair dari typography.csv
 9. ❌ Ikon SVG mentah → icon library proyek
 10. ❌ Hex hardcode → var(--vibe-*) tokens

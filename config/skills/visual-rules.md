@@ -29,6 +29,11 @@
 14. **FORBIDDEN** `background: white` atau `color: black` hardcode — gunakan `--vibe-background` & `--vibe-text-main`
 15. **FORBIDDEN** memilih palet tanpa memeriksa `colors.csv` UUPM terlebih dahulu
 16. **FORBIDDEN** menghasilkan output visual tanpa memeriksa kepatuhan visual gate ini
+17. **FORBIDDEN** menulis heading/label/tombol/toast/placeholder sebelum `[COPY TABLE]` tercetak (`taste-skill-bridge/COPY_RULES.md`)
+18. **FORBIDDEN** teks UI yang memuat 3+ kata berurutan dari instruksi user (Echo Test)
+19. **FORBIDDEN** kata dari blocklist EN+ID (`COPY_RULES.md §4`) dan kalimat meta ("Halaman ini...", "Selamat datang di...")
+20. **FORBIDDEN** membocorkan instruksi teknis/timezone (seperti `(WIB)`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, `responsive`) ke teks UI/tabel
+21. **FORBIDDEN** declare done tanpa lint copy 0 hit dan `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak)
 
 ---
 
@@ -102,11 +107,18 @@
 [Style Rec] Rekomendasi: [style sesuai Visual DNA] — sumber: [UUPM/design-system.md/prd.md]
 ```
 
+### Untuk Copy Gate (Gate 5B — sebelum kode):
+```
+[COPY TABLE] Bahasa: [..] | Entitas: [..] | Aksi: [..]
+Slot | Dari instruksi | Teks UI (jumlah kata)
+```
+
 ### Untuk Visual Self-Check:
 ```
 [VISUAL SELF-CHECK]
 Design Read: ✅ | Three Dials: ✅ | 8pt Grid: ✅ | Font Pairing: ✅
 CSS Tokens: ✅ | DNA Valid: ✅ | UUPM: ✅ | DNA Extract: ✅ | DNA Validate: ✅
+[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)
 ```
 
 ### Untuk Taste-Skill Pre-Flight:

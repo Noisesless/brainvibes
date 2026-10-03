@@ -22,6 +22,9 @@ Berlaku untuk 3 domain: **bahasa dialog**, **teks dalam aplikasi**, dan **arsite
 - ❌ "ecosystem", "paradigm", "synergy" (kecuali konteks teknis presisi)
 - ❌ "unlock the full potential", "take it to the next level"
 - ❌ Emoji berlebihan (max 1-2 per respons, bukan hiasan setiap kalimat)
+- ❌ Bahasa Indonesia: "luar biasa", "sempurna", "spektakuler", "fenomenal", "revolusioner", "super canggih", "next level"
+
+> Blocklist untuk **teks di UI aplikasi** (lebih panjang, EN+ID) ada di `taste-skill-bridge/COPY_RULES.md §4`.
 
 ### REQUIRED Gaya Bicara:
 - ✅ Lugas, langsung ke poin. Seperti senior dev bicara ke rekan kerja.
@@ -46,6 +49,14 @@ Berlaku untuk 3 domain: **bahasa dialog**, **teks dalam aplikasi**, dan **arsite
 
 ### Masalah:
 AI menelan mentah-mentah instruksi user lalu menjadikannya teks UI di aplikasi.
+
+> **SSOT:** `taste-skill-bridge/COPY_RULES.md` — Copy Gate (`[COPY TABLE]`), batas kata, blocklist, lint regex.
+> Bagian ini ringkasan; jika ada beda angka, COPY_RULES.md menang.
+
+### Prosedur (bukan hanya larangan):
+1. Ambil **entitas + aksi** dari instruksi user.
+2. Buang kata instruksi (buat, tampilkan, halaman, fitur, untuk, lengkap...).
+3. Tulis teks UI dari entitas/aksi itu di `[COPY TABLE]` sebelum menulis kode.
 
 ### FORBIDDEN:
 - ❌ Copy-paste instruksi user sebagai heading/label/placeholder/tooltip di app.
@@ -72,6 +83,19 @@ User: "buat dashboard yang menampilkan statistik lengkap penjualan bulanan"
 ✅ <h1>Penjualan Bulanan</h1>
    <p>Ringkasan performa bulan ini</p>
 ```
+
+### §2.A Anti-Kebocoran Instruksi Teknis & Timezone (Technical Leak)
+Instruksi teknis adalah arahan eksekusi logika kode/backend, BUKAN teks tampilan layar end-user:
+- **Timezone:** User minta "buat log aktivitas dengan local time jakarta":
+  - ❌ `<th>Waktu (WIB)</th>` atau `<td>17:02 (WIB)</td>` atau `<span>Zona waktu Asia/Jakarta</span>`
+  - ✅ `<th>Waktu</th>` dan `<td>17:02</td>`. Format waktu diatur di backend/JS, FORBIDDEN menempelkan `(WIB)`.
+- **Sorting/Urutan:** User minta "urutkan data dari yang paling baru":
+  - ❌ `<p>Data realtime diurutkan terbaru</p>`
+  - ✅ Cukup render tabel/list yang sudah terurut via query backend / sorting JS.
+- **Keamanan/Enkripsi:** User minta "enkripsi password pakai bcrypt":
+  - ❌ `<small>Password aman dienkripsi bcrypt</small>`
+  - ✅ Cukup `<label>Kata Sandi</label>`.
+- **Fitur Teknis Lainnya:** FORBIDDEN memajang "Responsive layout", "Mobile friendly", "REST API", "Lucide icons", atau "OWASP compliant" sebagai teks di antarmuka aplikasi.
 
 ---
 
@@ -127,7 +151,7 @@ User: "buat dashboard yang menampilkan statistik lengkap penjualan bulanan"
 
 Sebelum submit kode/respons, AI WAJIB self-check:
 1. **Dialog:** Apakah ada buzzword dari §1 blocklist? → Hapus, ganti kata lugas.
-2. **Teks UI:** Apakah ada heading/label > 5 kata yang copy-paste dari instruksi user? → Ringkaskan.
+2. **Teks UI:** Apakah `[COPY TABLE]` sudah dicetak? Apakah ada 3+ kata berurutan yang sama dengan instruksi user, atau kata dari blocklist? → Ringkaskan, jalankan lint `COPY_RULES.md §7`.
 3. **Arsitektur:** Apakah ada abstraksi tanpa konsumen kedua? → Inline/hapus.
 4. **Environment:** Apakah ada conditional dev/prod yang bisa diganti env variable? → Refactor.
 

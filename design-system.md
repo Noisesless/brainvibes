@@ -1234,6 +1234,7 @@ AI REQUIRED melakukan hal berikut saat menulis komponen UI **apapun**:
 3. **Jika token belum ada** — deklarasikan token baru di `:root` mengikuti pola penamaan `--[komponen]-[properti]`, lalu catat di `[DESIGN TOKEN] Menambah: --[nama-token]: [nilai]`
 4. **Cross-check consistency** — pastikan semua `--*-radius` mengacu ke `--radius-md` (atau varian documented)
 5. **Mobile token check** — pastikan komponen yang punya token mobile (`--nav-height-mobile`, `--table-mobile-*`) diimplementasikan di breakpoint Android 3M
+6. **Copy check** — teks di dalam komponen mengikuti pola `§7C` (batas kata + contoh), diturunkan dari `[COPY TABLE]`, bukan dari kalimat instruksi user
 
 **32 Komponen Terdaftar:**
 Button · Icon · Modal · Toast · Form · Card · Spacing · Navbar · Footer · Sidebar · Table · Pagination · Badge/Tag · Tabs · Breadcrumb · Stepper · Alert · Progress · Tooltip · Dropdown · Accordion · Search · Avatar · Thumbnail · Divider · Link · Code Block · Blockquote · List · Empty State · Skeleton · Hero
@@ -1266,6 +1267,50 @@ AI REQUIRED menjalankan sync berikut:
 - ❌ Inkonsistensi antar komponen (misal card radius 8px tapi modal radius 12px tanpa alasan)
 
 ```
+
+## §7C. MICROCOPY REGISTRY (Pasangan Teks untuk §7B) <!-- anchor:7C -->
+
+> **SSOT teks UI:** `config/skills/taste-skill-bridge/COPY_RULES.md` (Copy Gate, blocklist, lint).
+> Tabel ini = pola teks per komponen §7B. Saat memakai token komponen, pakai juga pola teksnya.
+> Teks UI diturunkan dari entitas + aksi di `[COPY TABLE]`, BUKAN dari kalimat instruksi user.
+
+| Komponen | Isi teks | Max kata | Contoh | Dilarang |
+|---|---|---|---|---|
+| Navbar / Sidebar | Nomina menu | 2 | "Pasien", "Laporan" | Kalimat, verba panjang, tagline |
+| Footer | Nama app, tahun, link halaman | — | "© 2026 Klinik Sehat" | Slogan promosi, "All rights reserved" ganda |
+| Hero | Headline + 1 subtext + CTA | 8 / 20 / 3 | "Stok gudang, selalu akurat" | "Unlock...", "Solusi terbaik..." |
+| Button | Verba (+ objek jika ambigu) | 3 | "Simpan", "Ekspor CSV" | "Klik di sini", "Submit", kalimat lengkap |
+| Form label | Nomina field | 3 | "Nama Pasien" | "Masukkan nama pasien Anda" |
+| Form placeholder | Contoh data nyata | 5 | "mis. Budi Santoso" | Instruksi ("Silakan isi..."), pengganti label |
+| Form error | Masalah + (opsional) solusi | 12 | "Email belum diisi" | "Oops!", "Terjadi kesalahan" |
+| Modal | Judul pertanyaan/aksi + isi singkat | 5 / 30 | "Hapus pasien?" | "Apakah Anda yakin ingin..." |
+| Toast | Hasil aksi, lampau | 10 | "Data tersimpan" | "berhasil ... dengan sukses!", emoji |
+| Alert / Banner | Fakta + langkah | 20 | "Stok tinggal 3. Pesan ulang." | Peringatan umum tanpa isi |
+| Empty State | Judul + 1 kalimat arah | 5 / 15 | "Belum ada pesanan" / "Pesanan baru muncul di sini" | "Data tidak ditemukan saat ini" |
+| Table header | Nomina | 2 | "Waktu", "Tanggal", "Total" | "Waktu (WIB)", "Tanggal Transaksi Harian Lengkap", kalimat |
+| Timestamp / Log Waktu | Tanggal & jam format bersih | 2-4 | "03 Okt 2026, 17:02" | Keterangan zona waktu seperti "(WIB)", "(WITA)", "WIB", "Asia/Jakarta" |
+| Badge / Tag | Status 1 kata | 1-2 | "Lunas", "Tertunda" | "Sedang Dalam Proses Verifikasi" |
+| Tabs / Breadcrumb / Stepper | Nomina | 2 | "Riwayat", "Data Diri" | Verba kalimat |
+| Pagination | Angka + "Berikutnya/Sebelumnya" | 1 | "Berikutnya" | "Klik untuk halaman selanjutnya" |
+| Tooltip | Penjelas aksi | 8 | "Unduh laporan bulan ini" | Mengulang label tombol |
+| Dropdown / Menu | Verba atau nomina | 3 | "Edit", "Arsipkan" | Kalimat |
+| Accordion | Judul = pertanyaan nyata user | 10 | "Bagaimana cara refund?" | Judul marketing |
+| Search | Placeholder objek | 3 | "Cari produk" | "Cari apa saja yang Anda butuhkan..." |
+| Card | Judul nomina + deskripsi | 5 / 25 | "Stok Menipis" | Deskripsi meta ("Card ini menampilkan...") |
+| Link | Tujuan, bukan "klik di sini" | 3 | "Lihat laporan" | "Selengkapnya" berulang tanpa konteks |
+| Progress | Nilai / langkah | 3 | "3 dari 5" | "Hampir selesai, sedikit lagi!" |
+| Avatar / Skeleton / Divider / Icon | Tanpa teks dekoratif | 0 | Inisial / `aria-label` | Teks pengisi |
+| Halaman 404 / error | Fakta + tautan keluar | 5 / 10 | "Halaman tidak ada" / "Kembali ke beranda" | "Oops! Sepertinya Anda tersesat" |
+
+**Aturan lintas komponen:**
+1. Satu intent = satu label di seluruh app ("Simpan" tidak jadi "Submit" di halaman lain).
+2. Satu bahasa dan satu gaya sapaan per proyek (catat di `prd.md`).
+3. Tanpa tanda seru, tanpa emoji dekorasi, tanpa kata promosi (`COPY_RULES.md §4`).
+4. Data contoh (seed/mock) = nama dan angka domain yang realistis, bukan "John Doe" / "Lorem ipsum".
+5. Teks yang tidak punya baris di tabel ini → tambah baris baru mengikuti pola, catat `[DESIGN TOKEN] Menambah copy: [komponen]`.
+6. **Anti-Kebocoran Teknis:** Instruksi waktu/timezone/sorting/enkripsi adalah konfigurasi KODE backend/JS, BUKAN teks tampilan layar. FORBIDDEN memunculkan `(WIB)`, `(WITA)`, `(WIT)`, `WIB`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, atau embel-embel teknis lainnya pada header tabel maupun data cell.
+
+---
 
 ## §8. LAYOUT RULES
 
