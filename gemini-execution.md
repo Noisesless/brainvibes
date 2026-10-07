@@ -1,4 +1,4 @@
-# AI CODING AGENT — DETAILED EXECUTION INSTRUCTIONS (VIBES CODING WORKFLOW V4.0.0)
+# AI CODING AGENT — DETAILED EXECUTION INSTRUCTIONS (VIBES CODING WORKFLOW V4.6.0)
 *[Split Architecture: gemini-execution.md — dimuat AI via view_file saat eksekusi koding aktif]*
 
 ---

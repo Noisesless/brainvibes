@@ -6,7 +6,7 @@
 
 **Sistem Konfigurasi & Standarisasi Alur Kerja AI Coding Agent**
 
-[![Version](https://img.shields.io/badge/version-4.5.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
+[![Version](https://img.shields.io/badge/version-4.6.0--stable-0ea5e9?style=for-the-badge&logo=gitbook&logoColor=white)](https://github.com/Noisesless/brainvibes)
 [![Gemini CLI](https://img.shields.io/badge/Gemini_CLI-Compatible-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google-gemini/gemini-cli)
 [![Antigravity IDE](https://img.shields.io/badge/Antigravity_IDE-Compatible-8b5cf6?style=for-the-badge&logo=visualstudiocode&logoColor=white)](#)
 [![Platform](https://img.shields.io/badge/Platform-Windows_%7C_Unix-0ea5e9?style=for-the-badge&logo=windows&logoColor=white)](#)
@@ -46,7 +46,6 @@
 | [`sync.ps1`](sync.ps1) & [`sync.sh`](sync.sh) | ~7KB | **Skrip Sinkronisasi (Dual-Platform)** — Otomatisasi sinkronisasi ke direktori `~/.gemini/` (Windows PowerShell & Unix Bash), konfigurasi MCP, rules global, dan verifikasi daemon CBM. |
 | [`scripts/`](scripts/) | ~6KB | **Skrip Otomasi** — Skrip pendukung daemon CBM (`ensure-cbm-daemon`), pengindeksan repositori (`index-project`), dan hook IDE (`cbm-hook`). |
 | [`.gitattributes`](.gitattributes) | ~0.3KB | **Git Attributes** — Normalisasi format line ending lintas platform (LF untuk shell/markdown/json, CRLF untuk powershell). |
-| [`yasei-cli.ps1`](yasei-cli.ps1) | ~25KB | **Yasei-2 CLI** — Subsistem terminal asisten koding alternatif untuk membaca dan menulis berkas secara otomatis. |
 | `LICENSE` | ~36KB | Lisensi MIT |
 | `WORKFLOW_SIMULATIONS.md` | ~15KB | **Simulasi Alur Kerja** — Panduan dan log pengujian skenario eksekusi makro command. |
 
@@ -250,13 +249,6 @@ copy brainvibes\AGENTS.md                %USERPROFILE%\.gemini\AGENTS.md
 copy brainvibes\user-prefs.md            %USERPROFILE%\.gemini\user-prefs.md
 xcopy brainvibes\config                  %USERPROFILE%\.gemini\config /E /I /Y
 xcopy brainvibes\knowledge               %USERPROFILE%\.gemini\antigravity-ide\knowledge /E /I /Y
-
-# 3. Setup Yasei-2 Agentic CLI Subsistem (Windows):
-mkdir %USERPROFILE%\.qwen
-copy brainvibes\yasei-cli.ps1            %USERPROFILE%\.qwen\yasei.ps1
-mkdir %USERPROFILE%\.local\bin
-echo @echo off > %USERPROFILE%\.local\bin\yasei.cmd
-echo powershell -NoProfile -ExecutionPolicy Bypass -File "%USERPROFILE%\.qwen\yasei.ps1" %%* >> %USERPROFILE%\.local\bin\yasei.cmd
 ```
 
 > Konfigurasi selesai. Agent AI akan otomatis mendeteksi aturan Brainvibes pada sesi kerja berikutnya.

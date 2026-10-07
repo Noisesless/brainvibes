@@ -1,3 +1,4 @@
+# Brainvibes Framework Meta-Repository .gitignore
 antigravity-ide/
 brainvibes/
 tmp/
@@ -13,3 +14,6 @@ __pycache__/
 .migrated
 app-context.md
 
+# Catatan: Pada proyek konsumen (downstream), file handover.md, prd.md, dan todo.md
+# WAJIB di-ignore sesuai gemini-templates.md §6A. Pada repositori framework ini,
+# todo.md tetap di-track untuk riwayat maintenance fitur framework.

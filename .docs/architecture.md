@@ -14,7 +14,7 @@
     ├── gemini-templates.md → Macro commands (view_file on-demand, ~32KB)
     ├── AGENTS.md          → Master L1 Global Dispatcher (In-memory switch routing & fast-path resume)
     ├── user-prefs.md      → User preferences (highest priority)
-    ├── design-system.md   → CSS tokens, 32-component registry (§7B), & 7-tier responsive strategy (~70KB)
+    ├── design-system.md   → Framework Master Reference: CSS tokens, 32-component registry (§7B), & 7-tier responsive strategy (~70KB)
     ├── prd-template.md    → PRD blueprint
     ├── anti-bloat-code.md → Global & Workspace Rules Engine (.agents/rules & config/rules)
     ├── .gitattributes     → Cross-platform line endings normalization (LF/CRLF)
@@ -93,7 +93,8 @@ User Input → Presentation → Logic → Data → Response
 | `todo.md` | Ambil task aktif | Grep `[/]` | Partial |
 | `gemini-execution.md` | Saat koding aktif / visual pipeline / §4.O | View_file (§3.A-C, §4.A-J, §4K, §4I, §4.O) | ~64KB (1080 lines) |
 | `gemini-templates.md` | Saat saklar aktif | View_file (section) | ~32KB (430 lines) |
-| `design-system.md` | Saat setup CSS / render 32 komponen / breakpoints | Section specific (§1-§13, §7B, §10.E) | ~70KB (1480 lines) |
+| `design-system.md` (root) | Saat setup CSS / render 32 komponen / breakpoints (Framework Reference) | Section specific (§1-§13, §7B, §10.E) | ~70KB (1480 lines) |
+| `.docs/design-system.md` | Saat merujuk Visual DNA proyek aktif (Project Instance) | Full read | ~10KB (170 lines) |
 | `anti-bloat-code.md` | Inline di §0 #7, §1 #11, first session | Full read | ~2.5KB (85 lines) |
 | `taste-skill-bridge/SKILL.md` | Saat redesign / buat halaman | Full read (router) → ESSENTIAL/DETAILED | ~2.5KB (61 lines) |
 | `taste-skill-bridge/COPY_RULES.md` | Saat menulis teks UI / heading / tombol / toast | Range read / Full read | ~7KB (140 lines) |

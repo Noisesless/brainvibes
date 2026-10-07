@@ -1,6 +1,8 @@
 # DESIGN SYSTEM REFERENCE
 *File ini dibaca AI on-demand — HANYA saat: (1) wizard palet aktif, (2) Visual DNA Refresh di konversi, (3) debugging visual/CSS. TIDAK dimuat di setiap sesi.*
 
+> **Distingsi Berkas:** Berkas ini (`/design-system.md`) adalah **Master Reference Framework** global untuk semua proyek (katalog 15 palet 2026, registri 32 komponen §7B, strategi responsif laptop-first 1366px §10.E). Berkas di `/.docs/design-system.md` adalah **Project Visual DNA Instance** untuk proyek aktif.
+
 ---
 
 ## §1. MASTER PALETTE — 15 TREN 2026

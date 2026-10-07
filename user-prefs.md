@@ -87,7 +87,7 @@ fabrication_guard  = true                         # FORBIDDEN mengarang solusi/f
 
 
 [META]
-brainvibes_version = 4.1.0
+brainvibes_version = 4.6.0
 installed_at       = 2026-07-13
-last_updated       = 2026-07-17
-changelog          = v4.0.0 — Efficiency Intelligence (10 gap fixed), Smart Skill Integration (SSI), auto .docs update
+last_updated       = 2026-10-08
+changelog          = v4.6.0 — Copy Gate, UI Microcopy SSOT, Anti-Tech Leak, 32-Component Registry, Laptop-First 1366px, Pragmatic Output Law

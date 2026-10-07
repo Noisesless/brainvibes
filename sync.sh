@@ -81,6 +81,8 @@ if [[ -d "$SOURCE_DIR/config/rules" ]]; then
     echo -e "${GRAY}[OK] Sync Global Rules: config/rules -> $GEMINI_TARGET_DIR/config/rules${NC}"
 fi
 if [[ -d "$SOURCE_DIR/.agents/rules" ]]; then
+    # Mirror ke config/rules lokal repo untuk mencegah drift
+    cp -rf "$SOURCE_DIR/.agents/rules/"* "$SOURCE_DIR/config/rules/" 2>/dev/null || true
     cp -rf "$SOURCE_DIR/.agents/rules/"* "$GEMINI_TARGET_DIR/config/rules/" 2>/dev/null || true
     cp -rf "$SOURCE_DIR/.agents/rules/"* "$GEMINI_TARGET_DIR/.agents/rules/" 2>/dev/null || true
     echo -e "${GRAY}[OK] Sync Workspace Rules: .agents/rules -> $GEMINI_TARGET_DIR/config/rules & .agents/rules${NC}"
@@ -138,6 +140,23 @@ elif [[ ! -f "$MCP_CONFIG_SRC" ]]; then
     echo -e "${YELLOW}[WARN] mcp_config.json tidak ditemukan di sumber: $MCP_CONFIG_SRC${NC}"
 fi
 
+# 9. Handover.md Archive Cleanup (Auto-cleanup > 30 days)
+echo ""
+echo -e "${YELLOW}[STEP 9] Handover.md Archive Cleanup${NC}"
+ARCHIVE_DIR="$SOURCE_DIR/.archive"
+if [[ -d "$ARCHIVE_DIR" ]]; then
+    OLD_COUNT=$(find "$ARCHIVE_DIR" -name "handover-*.md" -mtime +30 2>/dev/null | wc -l)
+    if [[ "$OLD_COUNT" -gt 0 ]]; then
+        echo "  Found $OLD_COUNT archives > 30 days"
+        find "$ARCHIVE_DIR" -name "handover-*.md" -mtime +30 -delete 2>/dev/null
+        echo -e "${GREEN}  [OK] Old archives cleaned${NC}"
+    else
+        echo -e "${GRAY}  [OK] No old archives to clean${NC}"
+    fi
+else
+    echo -e "${GRAY}  [INFO] No .archive folder found (skip)${NC}"
+fi
+
 # 10. Codebase Memory Daemon & UI Auto-Start (Port 9749)
 echo ""
 echo -e "${YELLOW}[STEP 10] codebase-memory-mcp Daemon & UI Server${NC}"
@@ -158,19 +177,3 @@ echo "-----------------------------------------"
 echo -e "${GREEN}[SUKSES] Sinkronisasi master Brainvibes selesai!${NC}"
 echo -e "${CYAN}=========================================${NC}"
 
-# 9. Handover.md Archive Cleanup (Auto-cleanup > 30 days)
-echo ""
-echo -e "${YELLOW}[STEP 9] Handover.md Archive Cleanup${NC}"
-ARCHIVE_DIR="$SOURCE_DIR/.archive"
-if [[ -d "$ARCHIVE_DIR" ]]; then
-    OLD_COUNT=$(find "$ARCHIVE_DIR" -name "handover-*.md" -mtime +30 2>/dev/null | wc -l)
-    if [[ "$OLD_COUNT" -gt 0 ]]; then
-        echo "  Found $OLD_COUNT archives > 30 days"
-        find "$ARCHIVE_DIR" -name "handover-*.md" -mtime +30 -delete 2>/dev/null
-        echo -e "${GREEN}  [OK] Old archives cleaned${NC}"
-    else
-        echo -e "${GRAY}  [OK] No old archives to clean${NC}"
-    fi
-else
-    echo -e "${GRAY}  [INFO] No .archive folder found (skip)${NC}"
-fi

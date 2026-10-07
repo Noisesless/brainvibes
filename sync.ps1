@@ -89,6 +89,7 @@ if (Test-Path $SrcRules) {
 }
 $SrcAgentsRules = Join-Path $SourceDir ".agents\rules"
 if (Test-Path $SrcAgentsRules) {
+    Copy-Item -Path (Join-Path $SrcAgentsRules "*") -Destination $SrcRules -Force -Recurse
     Copy-Item -Path (Join-Path $SrcAgentsRules "*") -Destination $RulesTargetDir -Force -Recurse
     Copy-Item -Path (Join-Path $SrcAgentsRules "*") -Destination $AgentsRulesTargetDir -Force -Recurse
     Write-Host "[OK] Sync Workspace Rules: .agents\rules -> $RulesTargetDir & $AgentsRulesTargetDir" -ForegroundColor Gray
@@ -169,26 +170,6 @@ if ((Test-Path $McpConfigSrc) -and (Test-Path $SettingsFile)) {
     Write-Warning "settings.json tidak ditemukan di target: $SettingsFile"
 }
 
-# 10. Codebase Memory Daemon & UI Auto-Start (Port 9749)
-Write-Host ""
-Write-Host "[STEP 10] codebase-memory-mcp Daemon & UI Server" -ForegroundColor Yellow
-$ensureScript = Join-Path $SourceDir "scripts\ensure-cbm-daemon.ps1"
-if (Test-Path $ensureScript) {
-    & $ensureScript
-} else {
-    $cbmCmd = Get-Command "codebase-memory-mcp" -ErrorAction SilentlyContinue
-    $cbmExe = if ($cbmCmd) { $cbmCmd.Source } else { "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe" }
-    if (Test-Path $cbmExe) {
-        Start-Process -FilePath $cbmExe -ArgumentList "daemon","start" -WindowStyle Hidden
-        Write-Host "[+] codebase-memory-mcp daemon started on port 9749" -ForegroundColor Green
-    }
-}
-
-Write-Host "-----------------------------------------"
-Write-Host "[SUKSES] Sinkronisasi master Brainvibes selesai!" -ForegroundColor Green
-Write-Host "=========================================" -ForegroundColor Cyan
-
-
 # 9. Handover.md Archive Cleanup (Auto-cleanup > 30 days)
 Write-Host ""
 Write-Host "[STEP 9] Handover.md Archive Cleanup" -ForegroundColor Yellow
@@ -208,6 +189,25 @@ if (Test-Path $archiveDir) {
 } else {
     Write-Host "  [INFO] No .archive folder found (skip)" -ForegroundColor Gray
 }
+
+# 10. Codebase Memory Daemon & UI Auto-Start (Port 9749)
+Write-Host ""
+Write-Host "[STEP 10] codebase-memory-mcp Daemon & UI Server" -ForegroundColor Yellow
+$ensureScript = Join-Path $SourceDir "scripts\ensure-cbm-daemon.ps1"
+if (Test-Path $ensureScript) {
+    & $ensureScript
+} else {
+    $cbmCmd = Get-Command "codebase-memory-mcp" -ErrorAction SilentlyContinue
+    $cbmExe = if ($cbmCmd) { $cbmCmd.Source } else { "$env:LOCALAPPDATA\Programs\codebase-memory-mcp\codebase-memory-mcp.exe" }
+    if (Test-Path $cbmExe) {
+        Start-Process -FilePath $cbmExe -ArgumentList "daemon","start" -WindowStyle Hidden
+        Write-Host "[+] codebase-memory-mcp daemon started on port 9749" -ForegroundColor Green
+    }
+}
+
+Write-Host "-----------------------------------------"
+Write-Host "[SUKSES] Sinkronisasi master Brainvibes selesai!" -ForegroundColor Green
+Write-Host "=========================================" -ForegroundColor Cyan
 
 
 

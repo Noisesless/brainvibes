@@ -1,6 +1,6 @@
-# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.0.0)
+# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.6.0)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
-*[Split Architecture: gemini.md (core ≤22KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
+*[Split Architecture: gemini.md (core ≤35KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
 
 ## §0. PRINSIP UTAMA (CORE PRINCIPLES)
 
@@ -168,13 +168,13 @@ Batch 3 (Verification — 0.2 detik):
 Setiap 10 turns, AI REQUIRED mencetak:
 ```
 [TOKEN BUDGET] Session: [trigger] | Used: [N]K tokens | Remaining: [N]K tokens
-[TOKEN BUDGET] gemini.md: 5.0K | AGENTS.md: 0.9K | [file]: [N]K
+[TOKEN BUDGET] gemini.md: 8.2K | AGENTS.md: 0.9K | [file]: [N]K
 → Jika Used > warn threshold (dari user-prefs.md): Cetak [CONTEXT WARN]
 → Jika Used > stop threshold (dari user-prefs.md): STOP dan tanya user
 ```
 
 ### File Load Rules (Berlaku Global):
-- **gemini.md** → ALWAYS loaded (system prompt, ~4.6K tokens)
+- **gemini.md** → ALWAYS loaded (system prompt, ~8.2K tokens)
 - **app-context.md** → ALWAYS load jika ada (~1.2K tokens)
 - FORBIDDEN load file FULL — selalu load **section spesifik** via range-limited `view_file`
 - Strategi Model Kecil (7B-13B): OPSIONAL Load = SKIP, max 50 baris/turn, cache agresif
@@ -448,7 +448,6 @@ admin=[email]=[password]
 | PRD blueprint 11-bab | `prd-template.md` | Saat `awal baru` wizard | §1-§3 saja | 3K |
 | Anti-Bloat Code & Anti-Verbosity | `.agents/rules/anti-bloat-code.md` | ALWAYS (inline di §0 #7, §1 #11) | Full read on first session | 1.5K |
 | Anti-Over-Engineering detail | `gemini-execution.md §4.O` | Saat menulis kode / review arsitektur | §4.O (anchor:4O) | 1K |
-| Yasei-2 CLI subsistem | `yasei-cli.ps1` | Saat token IDE habis / alternatif agent | Full read | 14K |
 
 **Aturan Load:** AI REQUIRED baca file detail via `view_file` saat membutuhkan section spesifik. FORBIDDEN membaca semua file sekaligus — load on-demand saja.
 
@@ -456,7 +455,6 @@ admin=[email]=[password]
 - Low priority (0.5 - 1K tokens): MODEL_HINTS.md, §3.C.2, §4.C, §4N.G, §4L, §6A, §1 design-system, UUPM grep
 - Medium priority (1-2K tokens): SKILL.md router, ESSENTIAL.md, REFERENCE.md, §4K, §4I, §3.C.1, §4N, §5
 - High priority (3K tokens): §4.H (Browser Tool Gate), §1-§3 prd-template, DETAILED.md (complex task only)
-- Extra large (14K tokens): yasei-cli.ps1 (load only when needed)
 
 
 ---
@@ -510,6 +508,12 @@ admin=[email]=[password]
 
 <!--
   VERSION LOG
+  v4.6.0 (2026-10-08) — Copy Gate, UI Microcopy SSOT, Anti-Technical/Timezone Leak, Gate 5B [COPY TABLE], regex lint engine & [COPY CHECK] marker.
+  v4.5.0 (2026-09-xx) — Pragmatic Output Law, Anti-Bloat Code Engine, 32-component visual registry (§7B), responsive laptop-first 1366px (§10.E).
+  v4.4.0 (2026-08-xx) — Security Patterns gap closure (SP-024 s/d SP-030), 5-tier adaptive rate limiting, 100% OWASP Top 10:2025.
+  v4.3.0 (2026-08-xx) — UUPM v2.13.0 upgrade (18 datasets), CLI Three Dials (--variance, --motion, --density).
+  v4.2.0 (2026-07-xx) — L1 Global Dispatcher in AGENTS.md, Dual-Mode Handover Engine (§3.B.7), native Bash sync.sh.
+  v4.1.0 (2026-07-24) — Codebase Memory AST graph MCP, daemon automation (hooks.json + cbm-hook), SP-019 s/d SP-022.
   v4.0.1 (2026-07-18) — Section numbering fix (gemini-execution.md), Astro §14 removed from design-system.md, prd-template.md references corrected
   v4.0.0 (2026-07-16) — Split Architecture, Logic Mitigations & Refinements: Pemecahan monolith 146KB ke 3 tier. Mitigasi shell non-interactive, batas port drifting 3x, linter AST, auto-ignore /.legacy/, visual rules inline, §DOCS BLUEPRINT 7 file, §APP-CONTEXT v2.0 machine-optimized, dan full scratchpad_dom block enforcement.
   v3.1.0 (2026-07-07) — MCP v3.1.0, Context7, app-context.md system
