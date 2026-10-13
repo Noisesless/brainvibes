@@ -95,7 +95,32 @@ Instruksi teknis adalah arahan eksekusi logika kode/backend, BUKAN teks tampilan
 - **Keamanan/Enkripsi:** User minta "enkripsi password pakai bcrypt":
   - ❌ `<small>Password aman dienkripsi bcrypt</small>`
   - ✅ Cukup `<label>Kata Sandi</label>`.
-- **Fitur Teknis Lainnya:** FORBIDDEN memajang "Responsive layout", "Mobile friendly", "REST API", "Lucide icons", atau "OWASP compliant" sebagai teks di antarmuka aplikasi.
+### §2.B Aturan Khusus View/Frontend Generator (Anti-Over-Engineered & Anti-Lebay UI)
+Aturan ini WAJIB dipatuhi saat menghasilkan markup/template/view antarmuka (HTML, Blade, JSX, Vue):
+
+1. **Card & Section Descriptions (Anti-Paragraf):**
+   - ❌ Deskripsi card 2-3 paragraf panjang atau berisi retorika promosi.
+   - ✅ Cukup 1 kalimat ringkas (maks 10-15 kata). Jika judul sudah jelas, deskripsi opsional atau ditiadakan.
+
+2. **Dummy & Marketing Fluff Ban (Anti-Buzzwords):**
+   - ❌ Mengisi view/mockup dengan teks promosi klise ("Solusi masa depan", "Pengalaman revolusioner", "Didukung teknologi mutakhir", "Pertumbuhan eksponensial").
+   - ✅ Gunakan data domain nyata dan konkret (misal: "Stok: 12 unit", "Terakhir diperbarui 2 jam lalu").
+
+3. **Tombol, Form, & Modal Over-Explaining Ban (Anti-Bertele-tele):**
+   - ❌ Tombol: "Klik di sini untuk melanjutkan proses pendaftaran akun Anda" → ✅ Cukup: "Daftar"
+   - ❌ Tombol: "Simpan semua data perubahan yang telah Anda masukkan" → ✅ Cukup: "Simpan" atau "Simpan Perubahan"
+   - ❌ Label: "Silakan masukkan alamat email aktif yang Anda gunakan" → ✅ Cukup: "Email"
+   - ❌ Modal: "Apakah Anda benar-benar yakin ingin menghapus data item ini dari sistem secara permanen?" → ✅ Cukup: "Hapus item ini?"
+
+4. **Empty-State Simplicity (Anti-Puitis):**
+   - ❌ Empty state puitis ("Wah, sepertinya belum ada data di sini, mari mulai petualangan baru Anda!").
+   - ✅ Cukup: 1 icon + 1 baris teks ("Belum ada pesanan") + 1 tombol aksi ("Buat Pesanan").
+
+5. **Pragmatic Word Shortening (Kata Pendek > Frasa Berat):**
+   - ❌ "Mengoptimalkan efisiensi alur kerja operasional harian" → ✅ "Pantau pekerjaan harian"
+   - ❌ "Memfasilitasi kolaborasi terintegrasi antar anggota tim" → ✅ "Kerja sama tim"
+   - ❌ "Menganalisis metrik data performa secara komprehensif" → ✅ "Lihat statistik"
+   - ❌ "Konfigurasikan preferensi pengaturan profil pengguna Anda" → ✅ "Pengaturan profil"
 
 ---
 
@@ -159,3 +184,11 @@ Output wajib jika ada perbaikan:
 ```
 [Pragmatic Check] Removed: [buzzword/over-abstraction/literal-copy] → Replaced: [versi lugas]
 ```
+
+### §5.B Model Profile Hints (Spesifik Karakter AI)
+- **Gemini 3.8 Flash:**
+  - *Tendensi:* Menghasilkan layout generic/centered dan teks promosi/fluff lebay jika tidak dikontrol ketat.
+  - *Mitigasi Wajib:* Pangkas 50% panjang teks default, larang hero centered jika variasi > 4, dan gunakan nominatif padat pada heading/label/button.
+- **Claude Opus 4.6:**
+  - *Tendensi:* Over-engineering arsitektur kode (wrapper class 1 lapis, generic typing berlebihan, abstraction layer tanpa konsumen kedua).
+  - *Mitigasi Wajib:* Terapkan prinsip YAGNI mutlak. Panggil langsung fungsi/API tanpa lapisan wrapper perantara jika belum ada konsumen kedua.

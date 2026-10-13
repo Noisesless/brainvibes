@@ -34,7 +34,7 @@ mkdir -p "$GEMINI_TARGET_DIR/config/rules"
 mkdir -p "$GEMINI_TARGET_DIR/.agents/rules"
 
 # 1. Salin berkas-berkas inti di root ke .gemini
-CORE_FILES=("gemini.md" "gemini-execution.md" "gemini-templates.md" "prd-template.md" "design-system.md" "AGENTS.md" "user-prefs.md")
+CORE_FILES=("gemini.md" "gemini-execution.md" "gemini-templates.md" "prd-template.md" "design-system.md" "user-prefs.md")
 for file in "${CORE_FILES[@]}"; do
     src="$SOURCE_DIR/$file"
     dst="$GEMINI_TARGET_DIR/$file"
@@ -45,6 +45,12 @@ for file in "${CORE_FILES[@]}"; do
         echo -e "${YELLOW}[WARN] File tidak ditemukan di sumber: $src${NC}"
     fi
 done
+
+# 1A. Salin master AGENTS.global.md ke target global AGENTS.md
+if [[ -f "$SOURCE_DIR/AGENTS.global.md" ]]; then
+    cp -f "$SOURCE_DIR/AGENTS.global.md" "$GEMINI_TARGET_DIR/AGENTS.md"
+    echo -e "${GRAY}[OK] Menyalin AGENTS.global.md -> $GEMINI_TARGET_DIR/AGENTS.md${NC}"
+fi
 
 # Pastikan GEMINI.md (UPPERCASE) tersedia untuk Linux case-sensitivity
 if [[ -f "$GEMINI_TARGET_DIR/gemini.md" ]]; then
@@ -64,6 +70,10 @@ for ide_dir in "${IDE_TARGET_DIRS[@]}"; do
                 echo -e "${GRAY}[OK] Sync IDE Local: $file -> $dst${NC}"
             fi
         done
+        if [[ -f "$SOURCE_DIR/AGENTS.global.md" ]]; then
+            cp -f "$SOURCE_DIR/AGENTS.global.md" "$ide_dir/AGENTS.md"
+            echo -e "${GRAY}[OK] Sync IDE Local: AGENTS.global.md -> $ide_dir/AGENTS.md${NC}"
+        fi
         if [[ -f "$ide_dir/gemini.md" ]]; then
             cp -f "$ide_dir/gemini.md" "$ide_dir/GEMINI.md"
             echo -e "${GRAY}[OK] Sync IDE Local alias GEMINI.md${NC}"

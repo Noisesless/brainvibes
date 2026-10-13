@@ -1,4 +1,4 @@
-# AI CODING AGENT — DETAILED EXECUTION INSTRUCTIONS (VIBES CODING WORKFLOW V4.6.0)
+# AI CODING AGENT — DETAILED EXECUTION INSTRUCTIONS (VIBES CODING WORKFLOW V4.7.0)
 *[Split Architecture: gemini-execution.md — dimuat AI via view_file saat eksekusi koding aktif]*
 
 ---
@@ -91,21 +91,19 @@ Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pe
 
 ### §3.B.7 Handover Auto-Update Enforcement Protocol (Dual-Mode) <!-- anchor:3B7 -->
 
-AI REQUIRED mengelola internal counter `change_counter` per session.
+AI REQUIRED memperbarui handover secara event-driven saat terjadi perubahan state nyata.
 
-**Definisi "1 Code-Change":**
-- Setiap kali AI berhasil menulis atau menyunting file source code aplikasi (misal: `.php`, `.js`, `.ts`, `.tsx`, `.vue`, `.html`, `.css`, `.py`, `.sql`, dll.).
-- Multiple edits pada 1 file dalam 1 turn = 1 code-change.
-- Pembuatan file kode baru = 1 code-change.
-- Edit file dokumentasi/metadata saja (`app-context.md`, `prd.md`, `handover.md`, `todo.md`, `.docs/`) = **BUKAN** code-change (tidak menambah counter).
+**Definisi Perubahan Kode (Code Change):**
+- Penulisan, penyuntingan, atau pembuatan file kode aplikasi (`.php`, `.js`, `.ts`, `.tsx`, `.vue`, `.html`, `.css`, `.py`, `.sql`).
+- Perubahan file dokumentasi/metadata saja (`app-context.md`, `prd.md`, `handover.md`, `todo.md`, `.docs/`) tidak memicu handover ad-hoc baru.
 
-**Dual-Mode Trigger Logic:**
+**Dual-Mode Event Triggers:**
 ```
-MODE A — Todo-Active (Proyek baru/fase berjalan dengan todo.md aktif):
-  → Gunakan todo counter: setiap `handover_trigger` task [x] di todo.md → trigger handover
+MODE A — Todo-Active (Fase berjalan dengan todo.md aktif):
+  → Dipicu setiap kali sub-task [x] di todo.md selesai diimplementasikan.
 
-MODE B — Ad-Hoc (Proyek selesai fase / request incremental tanpa todo.md):
-  → Gunakan change counter: setiap `handover_trigger` code-changes tercapai → trigger handover
+MODE B — Ad-Hoc (Proyek tanpa todo.md aktif / fitur baru):
+  → Dipicu setiap kali implementasi fitur ad-hoc selesai atau sebelum melakukan git commit.
 ```
 
 **Prosedur Saat Trigger Tercapai:**
@@ -114,12 +112,11 @@ MODE B — Ad-Hoc (Proyek selesai fase / request incremental tanpa todo.md):
    `[YYYY-MM-DD HH:MM] [AD-HOC] Deskripsi ringkas perubahan kode terakhir`
 3. Cek panjang baris `handover.md` → jika > 500 baris, jalankan pemotongan arsip ke `.archive/`.
 4. Cetak log konfirmasi: `[HANDOVER UPDATE] Triggered (Mode: [Todo/Ad-Hoc]) → app-context.md & handover.md updated.`
-5. Reset `change_counter` = 0.
 
 **Session-End Handover (Failsafe):**
-- Jika sesi akan berakhir atau user berganti topik/mengakhiri sesi dan `change_counter > 0` (ada perubahan kode yang belum di-handover):
-  → AI WAJIB melakukan force update ke `app-context.md` + append `handover.md §10` sebelum sesi ditutup.
-  → Cetak: `[SESSION-END HANDOVER] [N] uncommitted changes saved to app-context.md`
+- Jika sesi akan berakhir atau user berganti topik/mengakhiri sesi dan ada perubahan kode yang belum di-handover:
+  → AI WAJIB melakukan update ke `app-context.md` + append `handover.md §10` sebelum sesi ditutup.
+  → Cetak: `[SESSION-END HANDOVER] Uncommitted changes saved to app-context.md`
 
 **Proactive Drift Detection saat `awal lanjut` / `lanjut dari sini`:**
 1. Jalankan `git status --short` (0.01 detik).
@@ -433,47 +430,38 @@ Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
 Jika scratchpad_dom = FORBIDDEN dan target adalah localhost → [SCRATCHPAD BLOCKED] STOP.
 ```
 
-### §4.I Visual Self-Check & Pre-Flight (Gap 5, 9 Fix) <!-- anchor:4I -->
+### §4.I Visual Self-Check & Pre-Flight Protocol <!-- anchor:4I -->
 
-#### Visual Self-Check (WAJIB untuk perubahan visual)
-AI REQUIRED jalankan self-check ini sebelum menyatakan task UI selesai:
+> **Kapan di-load:** Setelah task visual selesai, sebelum menyatakan pekerjaan rampung (declare done).
+> **Sumber:** `taste-skill-bridge/REFERENCE.md` & `taste-skill-bridge/COPY_RULES.md`
 
-**Self-Check Checklist:**
-```
-- [ ] Design Read output?
-- [ ] Three Dials diset?
-- [ ] 8pt grid dipakai?
-- [ ] Font pairing (2 font)?
-- [ ] CSS tokens (var(--vibe-*))?
-- [ ] Visual DNA valid?
-- [ ] UUPM pipeline dijalankan?
-- [ ] DNA extraction dilakukan?
-- [ ] DNA validation dilakukan?
+#### §4.I.1 Mandatory Pre-Flight Checklist
+AI REQUIRED memvalidasi checklist berikut sebelum menyatakan task visual selesai:
 
-Jika ada ❌ → perbaiki SEBELUM declare done
-```
-
-**Output Format:**
-```
-[VISUAL SELF-CHECK]
-Design Read: ✅ | Three Dials: ✅ | 8pt Grid: ✅ | Font Pairing: ✅
-CSS Tokens: ✅ | DNA Valid: ✅ | UUPM: ✅ | DNA Extract: ✅ | DNA Validate: ✅
-```
-
-#### Pre-Flight Checklist (Sebelum Declare Selesai)
-AI REQUIRED jalankan taste-skill pre-flight checklist sebelum menyatakan task UI selesai:
-
-**Output Format:**
 ```
 [TASTE-SKILL PRE-FLIGHT]
-DNA: ✅ | File: ✅ | Typography: ✅ | Hero: ✅ | Center-bias: ✅ | Eyebrow: ✅
-CTA: ✅ | Contrast: ✅ | Shape: ✅ (Asymmetric/Blob/Oval/Arch) | Tokens: ✅ | Images: ✅ | Mobile: ✅ | Article: ✅
-Rhythm: ✅ [A→C→B→D→A] — WOW moment: ✅ | Full-bleed: ✅ | BG variety: ✅
+DNA: [✅|❌] | File: [✅|❌] | Typography: [✅|❌] | Hero: [✅|❌]
+Center-bias: [✅|❌] | Eyebrow: [✅|❌] | CTA: [✅|❌] | Contrast: [✅|❌]
+Shape: [✅|❌] | Tokens: [✅|❌] | Images: [✅|❌] | Mobile: [✅|❌]
+Rhythm: [✅|❌] | Copy-slop: [✅|❌] | UUPM-sourced: [✅|❌]
 ```
 
-Jika ada ❌ → perbaiki SEBELUM declare done.
+#### §4.I.2 Copy Anti-Slop Verification
+Sebelum declare done, AI REQUIRED:
+1. Jalankan lint regex `taste-skill-bridge/COPY_RULES.md §7` pada file UI yang diubah.
+2. Cocokkan teks UI dengan `[COPY TABLE]` (Echo Test: tidak ada 3+ kata berurutan sama dengan instruksi user).
+3. Cek tidak ada parameter teknis/timezone bocor (mis. `(WIB)`, timezone, sorting rule, hash) di teks UI.
+4. Cek batas kata (`COPY_RULES.md §3`) dan tidak ada eyebrow/capsule di halaman auth.
+5. Cek tidak ada fake-precise numbers tanpa real data.
+6. Cetak marker: `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)`
 
-> Detail checklist lengkap: `taste-skill-bridge/REFERENCE.md` (STEP 5)
+Jika ada pelanggaran → perbaiki SEBELUM declare done. FORBIDDEN declare done dengan ❌ di checklist.
+
+#### §4.I.3 Model-Specific Override
+- **Gemini 3.8 Flash:** Terapkan mitigasi Anti-Bloat View (§2.B), pangkas 50% panjang teks default, prioritaskan Bento/Staggered/Split grid daripada centered layout.
+- **Claude Opus 4.6:** Terapkan prinsip YAGNI mutlak. Jangan buat abstraksi atau wrapper baru tanpa konsumen kedua.
+
+---
 
 ### §4.J Modern CSS Enforcement Gate (CSS 2026) <!-- anchor:4J -->
 AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
@@ -487,35 +475,83 @@ AI REQUIRED menggunakan fitur CSS modern berikut dengan fallback yang sesuai:
 
 ---
 
-<!-- §4H = Browser Tool Gate (defined in gemini-execution.md §4.H <!-- anchor:4H -->) -->
-<!-- §4I, §4J = Reserved for future use -->
+### §4.K Visual Design Pipeline (UUPM + Taste-Skill Enforcement) <!-- anchor:4K -->
 
-## §4K. UI UX PRO MAX INTEGRATION PROTOCOL (SUMMARY) <!-- anchor:4K -->
-*Detail implementasi lengkap dapat dibaca di folder skill: `skills/ui-ux-pro-max/SKILL.md` dan `taste-skill-bridge/SKILL.md`.*
+> **Kapan di-load:** Saat saklar `redesign` aktif, saat `visual-gate` auto-trigger, atau saat buat komponen/halaman baru.
+> **Sumber:** `gemini.md §VISUAL RULES` → section ini → `taste-skill-bridge/` → `ui-ux-pro-max/data/`
 
-### §4K.A UUPM Pipeline Eksekusi
+#### §4.K.1 Tiered Visual Gate Protocol (Gradasi Output Berbasis Kompleksitas)
+Untuk mencegah overhead token pada perubahan kecil, AI membagi eksekusi menjadi 3 Tier:
+
+- **Tier 1 (Tweak Kecil — 1-2 properti CSS / warna / margin / spacing):**
+  - **Aksi:** Terapkan token CSS langsung. SKIP Gate 1 s/d 5B.
+  - **Output Wajib (1 Baris):**
+    ```
+    [Visual Gate] Tweak: [deskripsi singkat] — token: [CSS token] — sesuai DNA: ✅
+    ```
+
+- **Tier 2 (Komponen Baru — tambah card / modal / form / button / banner baru):**
+  - **Aksi:** Cek palet di `design-system.md §1` atau UUPM, terapkan token komponen `§7B`. SKIP Rhythm Score.
+  - **Output Wajib (2 Baris):**
+    ```
+    [Visual Gate] Komponen: [nama komponen] — token: [CSS token] — sesuai DNA: ✅
+    [Style Rec] Rekomendasi: [style visual] — sumber: [design-system.md/UUPM]
+    ```
+
+- **Tier 3 (Halaman Baru / Redesign Penuh — route baru / overhaul visual halaman):**
+  - **Aksi:** WAJIB jalankan 6 Gate secara berurutan tanpa melewati tahap apapun:
+
 ```
-Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mapping] → Output Kode
+GATE 1 — [Design Read]     : Baca taste-skill-bridge/SKILL.md → ESSENTIAL.md
+                              Output: [Design Read] + Three Dials (V=[n] M=[n] D=[n])
+
+GATE 2 — [UUPM Source]     : Jalankan SALAH SATU:
+                              A) python search.py "[industri] [vibe]" --design-system --variance [V] --motion [M] --density [D]
+                              B) Direct-Read CSV: grep_search di colors.csv, styles.csv, typography.csv, motion.csv
+                              Output: [UUPM Source] Palet + Style + Font pair + GSAP snippet
+
+GATE 3 — [Layout Intel]    : grep_search industri di ui-reasoning.csv (dan landing.csv jika landing page)
+                              Output: [Layout Intel] Pattern=[X] | Anti-Patterns=[Y] | Decision=[Z]
+
+GATE 4 — [Rhythm Score]    : Susun section order treatment A/B/C/D/E (tidak boleh 3 berturut sama)
+                              Output: [RHYTHM SCORE] per section
+
+GATE 5 — [Copy Table]      : Baca taste-skill-bridge/COPY_RULES.md, ekstrak entitas + aksi
+                              Output: [COPY TABLE] Slot | Dari instruksi | Teks UI (jumlah kata)
+
+GATE 6 — [Write Code]      : Tulis kode. Semua warna via var(--vibe-*), patuhi Anti-Bloat View (§2.B)
 ```
-1. **Three Dials Assessment (Wajib Sebelum Search):** Tentukan 3 dial dari konteks proyek sebelum query UUPM:
-   - **V (DESIGN_VARIANCE):** 1-10 — Geometri layout. (1=simetri/centered → 10=bold/asymmetric/chaos)
-   - **M (MOTION_INTENSITY):** 1-10 — Intensitas animasi. (1=statis/subtle → 10=sinematik/complex; melampirkan GSAP snippet dari motion.csv)
-   - **D (VISUAL_DENSITY):** 1-10 — Kepadatan informasi. (1=art gallery/spacious → 10=cockpit/dashboard data-heavy)
-   Output format wajib sebelum kode: `dials: V=[n] M=[n] D=[n]`
-2. **Python Search (Prioritas):** Jalankan `python "$HOME/.gemini/config/skills/ui-ux-pro-max/scripts/search.py" "[deskripsi]" --design-system --variance [V] --motion [M] --density [D]` (Windows: `python "%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\scripts\search.py" "[deskripsi]" --design-system --variance [V] --motion [M] --density [D]`) secara senyap.
-   - Flag `--variance`, `--motion`, `--density` bersifat opsional — jika tidak diset, UUPM menginferensikan dari query.
-   - Jika `--motion` > 3, output otomatis melampirkan GSAP animation snippet dari `motion.csv`.
-3. **Fallback Chain (jika Python gagal atau tidak terinstall):**
-   - **Fallback A:** Baca `design-system.md §1` → pilih kluster warna yang paling cocok dengan Three Dials.
-   - **Fallback B:** Jika `design-system.md` tidak tersedia → gunakan `user-prefs.md [DESIGN_DEFAULTS]` sebagai baseline.
-   - **Fallback C (Direct-Read motion.csv):** Jika animasi dibutuhkan → `grep_search` di `motion.csv` berdasarkan Intensity Tier.
-   - Catat fallback yang dipakai di baris output `[Style Rec] ... — sumber: Fallback A/B/C`.
-4. **oklch() Mapping:** Hex hasil rekomendasi UUPM dikonversi ke oklch() dan dipetakan ke token `--raw-palette-*`.
-5. **Component Pattern Query:** Query database stack-specific CSV (Laravel, Next.js, React, 22 stacks total) saat membuat komponen di Fase 3-5.
+
+#### §4.K.2 Direct-Read CSV Protocol (Fallback / Tanpa Python)
+Gunakan `grep_search` dengan `SearchPath` absolut dataset UUPM:
+- **Global Path:** `$HOME/.gemini/config/skills/ui-ux-pro-max/data/` (Windows: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\`)
+- **Local Path:** `./config/skills/ui-ux-pro-max/data/` (di repo Brainvibes)
+1. `colors.csv` → Primary, Accent, Background hex → konversi oklch() → `--vibe-*`
+2. `styles.csv` → Design system variables, effects, radius
+3. `typography.csv` → Font pairing (Heading + Body)
+4. `ui-reasoning.csv` → Recommended pattern & anti-patterns
+5. `landing.csv` → Section order & CTA placement (khusus landing page)
+6. `motion.csv` → GSAP snippet & animation easing (jika Motion > 3)
+
+#### §4.K.3 Saklar `redesign` Execution Protocol
+Saat saklar `redesign` di-trigger:
+1. Baca `app-context.md §PALETTE` → catat DNA saat ini.
+2. Jalankan Existing Page Audit (`taste-skill-bridge/DETAILED.md §0.D`).
+3. Jalankan Anti-Cosmetic-Redesign check → wajib ubah minimal 2 dari 4 dimensi (layout, geometri, ritme, warna).
+4. Jika redesign ke-2+ → STOP, tampilkan 3 opsi layout berbeda, tunggu user memilih.
+5. Jalankan Tier 3 (Gate 1-6) di atas.
+6. Setelah kode selesai → jalankan §4.I Visual Self-Check & Pre-Flight.
+
+#### §4.K.4 Visual DNA Reverse-Engineering Protocol (Proyek Eksisting)
+Saat `awal lanjut`, `awal konversi`, atau saat `/.docs/design-system.md` belum ada:
+1. Identifikasi Anchor Halaman Utama: `index.*`, `landing.*`, `home.*`, `page.tsx` (Tier 1 Public Anchor).
+2. Ekstraksi Token Dominan: Warna (:root/tailwind), Tipografi (Google Fonts/CSS), Geometri border-radius, Spacing grid.
+3. Sinkronisasi `/.docs/design-system.md` dan perbarui snapshot `app-context.md §PALETTE`.
+4. Semua sub-halaman wajib mewarisi token dari master anchor tersebut tanpa membuat token liar baru.
 
 ---
 
-## §4L. SEO PRODUCTION PROTOCOL (SUMMARY) <!-- anchor:4L -->
+### §4.L SEO Production Protocol <!-- anchor:4L -->
 *Checklist SEO 20-item tersedia inline di bawah. Jalankan penuh di Fase 8 / deploy prep.*
 
 ### §4L.A 7 Lapisan SEO Wajib
@@ -559,7 +595,7 @@ Input User → [Three Dials] → [UUPM Search] → [design-system.md Token Mappi
 
 ---
 
-## §4M. EFFICIENCY & SPEED INTELLIGENCE PROTOCOL (V4.0.0) <!-- anchor:4M -->
+### §4.M Efficiency & Speed Intelligence Protocol <!-- anchor:4M -->
 
 ### §4M.A UUPM Cache Mechanism (Fix Gap 4)
 UUPM Python search result CACHE 24 jam di `$HOME/.gemini/.cache/uupm-results.json` (Windows: `%USERPROFILE%\.gemini\.cache\uupm-results.json`).
@@ -608,28 +644,7 @@ Handover.md **MAX 500 baris**. Jika melebihi → auto-truncate oldest entries + 
 
 ---
 
-### §4M.C Parallel File Loading Protocol (Fix Gap 6)
-AI **REQUIRED** load multiple files PARALLEL saat context assembly.
-
-**Parallel Loading Rules:**
-```
-1. Group files by dependency:
-   - Group A (no dependency): user-prefs.md, app-context.md → LOAD PARALLEL
-   - Group B (depends on A): prd.md, todo.md → LOAD after A
-   - Group C (depends on B): gemini-execution.md sections → LOAD after B
-
-2. Max parallel: 5 files per batch
-3. Timeout per file: 10 seconds
-4. Fallback: jika 1 file timeout → skip + log [PARALLEL TIMEOUT: file]
-```
-
-**Sequential (Before):** 4-8 detik  
-**Parallel (After):** 2-4 detik  
-**Impact:** Reduced context fragmentation, faster AI response
-
----
-
-### §4M.D app-context.md Priority Compression (Fix Gap 7)
+### §4M.C app-context.md Priority Compression
 app-context.md **MAX 100 baris**. Priority compression untuk project besar.
 
 **Compression Rules:**
@@ -652,84 +667,20 @@ app-context.md **MAX 100 baris**. Priority compression untuk project besar.
 /settings=Settings=admin=STABLE
 ```
 
-**Token Savings:** ~15K tokens/session (30-50% reduction for large projects)
-
 ---
 
-### §4M.E Context Caching Mechanism (Fix Gap 8) <!-- anchor:4M.E -->
-AI **REQUIRED** cache context files in memory per session. Re-read only if mtime changed.
+### §4M.D Optimized Git Commit Commands
+Gunakan single-line command untuk commit terverifikasi:
 
-**Cache Logic:**
-```
-1. Session start → load mtime checksum for all context files
-2. File checksum → compare dengan cached checksum
-3. Jika mtime unchanged → SKIP re-read, use cached content
-4. Jika mtime changed → re-read file, update cache
-5. Cache invalidation: manual `reset cache` command
-```
-
-**Files to Cache:**
-- `gemini.md` (~14K tokens)
-- `gemini-execution.md` (~20K tokens)
-- `gemini-templates.md` (~14K tokens)
-- `AGENTS.md` (~9K tokens)
-- `user-prefs.md` (~4K tokens)
-
-**Total Cached:** ~61K tokens (no re-read waste)  
-**Token Savings:** ~20K tokens/session (no duplicate reads)
-
----
-
-### §4M.F Security Patterns Cache (Fix Gap 9)
-Security patterns (security-patterns data) **CACHE per session**. No full file read per code write.
-
-**Cache Logic:**
-```
-1. Session start → load security-patterns into memory cache
-2. Pattern lookup → instant (no file read)
-3. Cache scope: per session (auto-clear on session end)
-4. Fallback: jika cache corrupt → re-read file
-```
-
-**Files Cached:**
-- `gemini.md §1 Security-Aware Coding` (~8K tokens)
-- `gemini-execution.md §3C 6 Lapisan Scan` (~4K tokens)
-
-**Token Savings:** ~8K tokens/session (50 writes = 400K/project)
-
----
-
-### §4M.G Optimized Git Commit Commands (Fix Gap 10)
-Git commit **OPTIMIZED single command**, faster execution.
-
-**Before (2 commands, 2-4 detik):**
 ```bash
-git add -A
-git commit -m "feat: add login page"
+git add -A && git commit -m "[type]: [scope] - [description]"
 ```
-
-**After (1 command, 0.5 detik):**
-```bash
-git add -A && git commit -m "feat: add login page"
-```
-
-**Optimized Commit Protocol:**
-```
-1. git add -A && git commit -m "[type]: [message]"
-2. Type: feat|fix|docs|style|refactor|perf|test|chore
-3. Message format: [type]: [scope] - [description]
-   Example: feat(auth): add JWT refresh token
-4. Git sanitation (FORBIDDEN commit tanpa check):
-   - git status → check .env* not staged
-   - git diff --cached → verify changes
-   - git log --oneline -1 → verify last commit
-```
-
-**Token Savings:** ~0.1K tokens (minimal impact, faster execution)
+**Tipe:** `feat|fix|docs|style|refactor|perf|test|chore`  
+**Git Sanitation:** Pastikan file `.env*` atau file credential tidak ikut ter-stage.
 
 ---
 
-### §4M.H Rule Priority System (Gap 10 Fix) <!-- anchor:4M.H -->
+### §4M.E Rule Priority System <!-- anchor:4M.H -->
 
 | Priority | Level | Compliance | Examples |
 |---|---|---|---|
@@ -741,29 +692,19 @@ git add -A && git commit -m "feat: add login page"
 
 ---
 
-### §4M.I Efficiency Summary (All 10 Gaps Fixed)
+### §4M.F Efficiency & Token Economy Summary
 
-| Fix | Tokens Saved/Session | Context Impact |
+| Strategi | Implementasi | Dampak Token |
 |---|---|---|
-| 1. Duplicate §4G-ter | 6K | ✅ Moderate |
-| 2. Duplicate §4K | 1K | ✅ Low |
-| 3. Section numbering | 0.5K | ✅ Low |
-| 4. UUPM cache | 2K | ✅ Moderate |
-| 5. Handover truncation | 47.5K | ✅✅✅ CRITICAL |
-| 6. Parallel loading | 0K | ✅ Indirect |
-| 7. app-context compression | 15K | ✅✅ High |
-| 8. Context caching | 20K | ✅✅✅ CRITICAL |
-| 9. Security patterns cache | 8K | ✅✅ High |
-| 10. Git optimization | 0.1K | ✅ Minimal |
-| **TOTAL** | **~99.6K** | |
-
-**Context Utilization:** 125% → 47% (within 128K window)  
-**Context Quality:** 50% noise → 90% signal  
-**Context Poisoning Risk:** HIGH → LOW
+| 1. Snapshot First | Baca `app-context.md` alih-alih file riwayat panjang | ✅ Efisiensi tinggi |
+| 2. Range-Limited Read | Batasi `StartLine`/`EndLine` pada file besar | ✅ Hemat token per turn |
+| 3. Handover Truncation | Batasi `handover.md` maks 500 baris | ✅ Bebas konteks membengkak |
+| 4. Selective Load | Muat section sesuai saklar aktif | ✅ Konteks fokus |
+| 5. Git Optimization | 1 command commit terverifikasi | ✅ Cepat & bersih |
 
 ---
 
-## §4N. SMART SKILL INTEGRATION (SSI) PROTOCOL <!-- anchor:4N -->
+### §4.N Smart Skill Integration (SSI) Protocol <!-- anchor:4N -->
 
 ### §4N.A Auto-Detect Skill Baru
 AI REQUIRED scan `config/skills/` setiap sesi baru:
@@ -804,7 +745,7 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 - AI recommend: update existing skills, implement new skills, remove redundant skills, optimize high-cost skills, auto-update .docs
 
 ### §4N.G Auto-Update .docs Protocol <!-- anchor:4N.G -->
-**Trigger:** Setiap handover terpicu (setiap 5 task selesai ATAU `change_counter` ad-hoc tercapai §3.B.7) → AI auto-scan `.docs/`
+**Trigger:** Dipicu saat sub-fase selesai, penambahan route/fitur baru, atau saat menjalankan `analisa kualitas` / Git commit milestone.
 
 **Checklist:**
 ```
@@ -821,8 +762,8 @@ AI REQUIRED scan `config/skills/` setiap sesi baru:
 
 **Implementation:**
 ```
-1. AI cek trigger: task count mod 5 == 0 (Mode Todo) ATAU change_counter tercapai (Mode Ad-Hoc §3.B.7)
-2. Jika terpicu → jalankan auto-update .docs bersamaan dengan handover update
+1. AI cek trigger: milestone selesai, fitur baru ditambahkan, atau saklar status/kualitas dipanggil
+2. Jika terpicu → jalankan sinkronisasi .docs bersamaan dengan handover update
 3. AI scan .docs/ files → compare dengan codebase aktual
 4. Jika ada perubahan → update file
 5. Jika tidak ada perubahan → skip
@@ -868,166 +809,9 @@ Index Out of Sync:
 
 > Detail lengkap: `config/skills/integration-checker.md`
 
-
 ---
 
-## §4K. Visual Design Pipeline (UUPM + Taste-Skill Enforcement) <!-- anchor:4K -->
-
-> **Kapan di-load:** Saat saklar `redesign` aktif, saat `visual-gate` auto-trigger, atau saat buat halaman baru.
-> **Sumber:** `gemini.md §VISUAL RULES` → section ini → `taste-skill-bridge/` → `ui-ux-pro-max/data/`
-
-### §4K.1 Visual Task Detection (Kapan Pipeline Ini Aktif)
-
-AI SEDANG mengerjakan visual task jika SALAH SATU kondisi terpenuhi:
-1. Menulis/mengedit file CSS, SCSS, atau style block dalam komponen
-2. Menulis HTML/JSX/Blade/PHP dengan class/style yang mengatur layout, warna, font, spacing
-3. Membuat halaman baru atau memodifikasi struktur section halaman existing
-4. User memakai saklar `redesign` atau alias-nya
-
-**Jika terdeteksi → WAJIB jalankan pipeline berikut secara URUT:**
-
-### §4K.2 Mandatory Pipeline (6 Gate — Tidak Boleh Skip)
-
-```
-GATE 1 — [Design Read]     : Baca taste-skill-bridge/SKILL.md (router) → ESSENTIAL.md
-                              Output: [Design Read] + [DNA Source]
-
-GATE 2 — [Three Dials]     : Set V/M/D berdasarkan tabel inferensi di ESSENTIAL.md §1
-                              Output: dials: V=[n] M=[n] D=[n]
-
-GATE 3 — [UUPM Search]     : Jalankan SALAH SATU:
-                              A) python search.py "[industri] [vibe]" --design-system --variance [V] --motion [M] --density [D]
-                                 (flag Three Dials opsional — jika --motion > 3, otomatis lampirkan GSAP snippet dari motion.csv)
-                              B) Direct-Read: grep_search industri di colors.csv → styles.csv → typography.csv → motion.csv
-                              Output: [UUPM Source] Palet + Style + Font pair + GSAP (jika motion aktif)
-
-GATE 4 — [Layout Intel]    : grep_search industri/tipe proyek di ui-reasoning.csv
-                              (WAJIB dijalankan mandiri via grep_search — meski search.py v2.13.0 sudah include
-                               reasoning_contract.py, tetap HARD BLOCK grep mandiri untuk defense-in-depth)
-                              Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns
-                              Jika landing page → grep juga landing.csv untuk Section Order
-                              Output: [Layout Intel] Pattern=[X] | Anti-Patterns=[Y]
-
-GATE 5 — [Rhythm Score]    : Susun section order dengan treatment visual A/B/C/D/E
-                              Validasi: tidak ada 3 treatment berturut sama
-                              Output: [RHYTHM SCORE] per section
-
-GATE 5B — [Copy Table]     : Baca taste-skill-bridge/COPY_RULES.md
-                              Ambil entitas + aksi dari instruksi user, buang kata instruksi
-                              Output: [COPY TABLE] Slot | Dari instruksi | Teks UI (jumlah kata)
-
-GATE 6 — [Write Code]      : BARU BOLEH menulis kode setelah Gate 1-5B selesai
-                              Semua warna via var(--vibe-*), semua dari UUPM output
-```
-
-**HARD BLOCK:** FORBIDDEN menulis `:root { --vibe-*` tanpa output [UUPM Source] terlebih dahulu.
-**HARD BLOCK:** Gate 4 `ui-reasoning.csv` WAJIB dieksekusi via `grep_search` — dilarang berasumsi sudah tercakup di `search.py`.
-**HARD BLOCK:** FORBIDDEN menulis `<section>` atau layout HTML tanpa output [RHYTHM SCORE] terlebih dahulu.
-**HARD BLOCK:** FORBIDDEN menulis heading/label/tombol/toast/placeholder tanpa output [COPY TABLE] terlebih dahulu.
-
-### §4K.3 Direct-Read CSV Protocol (Jika Python Tidak Tersedia / Eksekusi Mandiri)
-
-> ⚠️ **PATH RESOLUTION (SearchPath Wajib Absolute):**
-> Tool `grep_search` mewajibkan `SearchPath` absolut. Gunakan direktori dataset UUPM:
-> - **Global Path (Default di semua proyek):** `$HOME/.gemini/config/skills/ui-ux-pro-max/data/` (Windows: `%USERPROFILE%\.gemini\config\skills\ui-ux-pro-max\data\`)
-> - **Local Path (Khusus repo Brainvibes):** `<workspace-root>/config/skills/ui-ux-pro-max/data/`
-
-Lakukan pembacaan data langsung via `grep_search` dengan langkah berikut:
-
-```
-1. SearchPath: "<UUPM_DATA>/colors.csv" | Query: "[industri/product_type]"
-   → Ambil: Primary, Accent, Background hex → konversi ke oklch() → --vibe-*
-2. SearchPath: "<UUPM_DATA>/styles.csv" | Query: "[vibe/keyword]"
-   → Ambil: Design System Variables + Effects & Animations
-3. SearchPath: "<UUPM_DATA>/typography.csv" | Query: "[mood/category]"
-   → Ambil: Font Pairing (Heading + Body + CSS Import Google Fonts)
-4. SearchPath: "<UUPM_DATA>/ui-reasoning.csv" | Query: "[UI_Category/industri]"
-   → Ambil: Recommended_Pattern, Decision_Rules, Anti_Patterns (Wajib — defense-in-depth meski search.py sudah include reasoning_contract.py)
-5. Jika Landing Page: SearchPath: "<UUPM_DATA>/landing.csv" | Query: "[tipe_bisnis]"
-   → Ambil: Section Order & Primary CTA placement
-6. Jika MOTION > 3 atau animasi: SearchPath: "<UUPM_DATA>/motion.csv" | Query: "[Intensity Tier/Category]"
-   → Ambil: GSAP Snippet, Trigger, Duration, Easing, Framework Notes
-```
-
-Catat: `[UUPM Source] Direct-Read CSV — colors.csv, styles.csv, typography.csv, ui-reasoning.csv, motion.csv (Path: <UUPM_DATA>)`
-
-### §4K.4 Saklar `redesign` Execution Protocol
-
-Saat saklar `redesign` di-trigger:
-1. Baca `app-context.md §PALETTE` → catat DNA saat ini
-2. Jalankan Existing Page Audit (taste-skill-bridge/DETAILED.md §0.D)
-3. Jalankan Anti-Cosmetic-Redesign check (§0.G) → WAJIB ubah minimal 2 dari 4 dimensi
-4. Jika redesign ke-2+ → STOP, tampilkan 3 opsi layout berbeda, tunggu user pilih
-5. Jalankan Gate 1-6 di atas
-6. Setelah kode selesai → jalankan §4I Visual Self-Check
-
-### §4K.5 Visual DNA Reverse-Engineering Protocol (Proyek Lanjutan / Sedang Berjalan)
-
-> **Kapan Digunakan:** Saat `awal lanjut`, `awal konversi`, atau saat `/.docs/design-system.md` belum ada pada proyek eksisting.
-> **Prinsip Utama (Anchor Immutability):** Halaman Utama (Landing Page / Homepage) adalah **Master Anchor**. Semua sub-halaman WAJIB tunduk dan mewarisi DNA halaman utama.
-
-**Langkah Ekstraksi Visual DNA (5 Tahap):**
-1. **Identifikasi Berkas Halaman Utama (Anchor Priority Hierarchy):**
-   - *Tier 1 (Public Anchor):* `index.*`, `landing.*`, `home.*`, `page.tsx` (root)
-   - *Tier 2 (App/Dashboard Anchor):* `layout.*`, `app.*`, `dashboard.*`, `main.*`
-   - *Tier 3 (Auth/Entry Anchor):* `login.*`, `auth.*` (fallback terakhir)
-2. **Identifikasi Berkas Styling Global:**
-   - Cari berkas CSS/SCSS global (misal `styles.css`, `global.css`, `app.css`).
-   - Cari deklarasi `:root` variables, `@theme`, atau konfigurasi Tailwind (`tailwind.config.js`).
-3. **Ekstraksi Token Dominan:**
-   - *Warna:* Background dominan, Surface (card), Teks utama, Accent 1 (CTA button), Accent 2.
-   - *Tipografi:* Heading font vs Body font (dari `@import`, tag `<link>` Google Fonts, atau CSS font-family).
-   - *Geometri:* `border-radius` dominan pada tombol dan kartu (`0px` / `8px` / `9999px`).
-   - *Spacing:* Nilai grid margin dan padding section utama.
-4. **Generate / Sinkronisasi `/.docs/design-system.md`:**
-   - Tulis seluruh hasil ekstraksi ke `/.docs/design-system.md` sesuai format baku.
-   - Perbarui snapshot `app-context.md §PALETTE`.
-5. **Enforcement Sub-Halaman (Anti-Drift):**
-   - Setiap kali AI membuat atau mengedit sub-halaman (detail, auth, checkout, blog, dashboard), AI **FORBIDDEN** menciptakan palet atau font baru.
-   - AI **WAJIB** membaca `/.docs/design-system.md` dan menggunakan token yang telah di-anchor dari halaman utama.
-
----
-
-## §4I. Visual Self-Check Protocol <!-- anchor:4I -->
-
-> **Kapan di-load:** Setelah task visual selesai, sebelum declare done.
-> **Sumber:** `taste-skill-bridge/REFERENCE.md` (pre-flight checklist)
-
-### §4I.1 Mandatory Self-Check (Sebelum Declare Done)
-
-AI REQUIRED menjalankan checklist berikut dan mencetak hasilnya:
-
-```
-[TASTE-SKILL PRE-FLIGHT]
-DNA: [✅|❌] | File: [✅|❌] | Typography: [✅|❌] | Hero: [✅|❌]
-Center-bias: [✅|❌] | Eyebrow: [✅|❌] | CTA: [✅|❌] | Contrast: [✅|❌]
-Shape: [✅|❌] | Tokens: [✅|❌] | Images: [✅|❌] | Mobile: [✅|❌]
-Rhythm: [✅|❌] | Copy-slop: [✅|❌] | UUPM-sourced: [✅|❌]
-```
-
-### §4I.2 Copy Anti-Slop Verification
-
-Sebelum declare done, AI REQUIRED:
-1. Jalankan lint regex `taste-skill-bridge/COPY_RULES.md §7` via `grep_search` pada file UI yang diubah (hit = fix)
-2. Cocokkan teks UI dengan `[COPY TABLE]` (Echo Test: tidak ada 3+ kata berurutan sama dengan instruksi user)
-3. Cek tidak ada parameter teknis/timezone bocor (mis. `(WIB)`, timezone, sorting rule, hash) di teks UI
-4. Cek batas kata (`COPY_RULES.md §3`) dan tidak ada eyebrow/capsule di halaman auth
-5. Cek tidak ada fake-precise numbers tanpa real data
-6. Cetak `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)`
-
-Jika ada pelanggaran → FIX sebelum declare done. FORBIDDEN declare done dengan ❌ di pre-flight.
-
-### §4I.3 Model-Specific Override
-
-Jika terdeteksi model Gemini Flash (atau model dengan tendency AI slop):
-- Baca `taste-skill-bridge/MODEL_HINTS.md` (1x per sesi, ~40 baris)
-- Apply override tambahan yang spesifik model
-- Prioritaskan Bento/Staggered/Split layout daripada centered
-
-
----
-
-## §4.O Anti-Over-Engineering & Pragmatic Code Protocol <!-- anchor:4O -->
+### §4.O Anti-Over-Engineering & Pragmatic Code Protocol <!-- anchor:4O -->
 
 > **Kapan di-load:** Saat menulis kode, review arsitektur, atau membuat teks UI.
 > **Sumber:** `gemini.md §0 #7`, `gemini.md §1 HARD BLOCK #11`, `.agents/rules/anti-bloat-code.md`

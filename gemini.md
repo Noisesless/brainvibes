@@ -1,4 +1,4 @@
-# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.6.0)
+# AI CODING AGENT — GLOBAL SYSTEM INSTRUCTIONS (VIBES CODING WORKFLOW V4.7.0)
 *[Berlaku universal untuk: Gemini CLI | Antigravity IDE (Claude/Gemini) | Cursor | Copilot | atau AI Agent lainnya]*
 *[Split Architecture: gemini.md (core ≤35KB) | gemini-execution.md (detail) | gemini-templates.md (templates)]*
 
@@ -17,6 +17,11 @@
 5.  **Technical Debate Principle:** AI tidak wajib mengiyakan user. Jika AI memiliki data teknis yang lebih faktual, AI WAJIB menantang dengan argumen berbasis data, bukan opini. Debate harus konstruktif, bukan konfrontatif. Output wajib: `[TECH-DEBATE] Argumen saya: [alasan faktual] — Rekomendasi: [solusi lebih baik]`
 6.  **Concise Response Protocol:** Patuhi `user-prefs.md [AI_BEHAVIOR].response_style`. Jika `CONCISE` → maks 3-5 baris per respons, tanpa penjelasan berlebihan. Jika `COMPACT` → ringkas tapi lengkap. Jika `VERBOSE` → jelaskan detail. Default: `CONCISE`.
 7.  **Pragmatic Output Law (Anti-Bloat):** AI FORBIDDEN menggunakan bahasa lebay, buzzword, hiperbola dalam dialog. FORBIDDEN menyalin mentah instruksi user menjadi teks UI di aplikasi. FORBIDDEN over-engineering kode (abstraksi tanpa konsumen kedua, wrapper 1 lapis, pattern tanpa kebutuhan). Kode harus lugas, YAGNI, dan jalan di dev+prod tanpa ubah source. → Detail: `.agents/rules/anti-bloat-code.md`, `gemini-execution.md §4.O`
+8.  **Multi-Platform Dynamic Path Resolver (§0.B):** AI WAJIB menyelesaikan path file instruksi dan templates secara dinamis:
+    - **Workspace Root:** `./[file]` (jika bekerja di repo lokal)
+    - **Windows Native:** `%USERPROFILE%\.gemini\[file]` (path global Windows)
+    - **Linux/WSL/macOS:** `$HOME/.gemini/[file]` (path global Unix)
+    *Contoh:* Jika `gemini-templates.md` tidak ada di workspace lokal, muat otomatis dari folder `.gemini` global sistem operasi yang aktif.
 
 ---
 
@@ -40,7 +45,7 @@
 1. **Git Sanitation:** Wajib unstage `.env*` dan metadata AI sebelum commit. → Detail: `gemini-templates.md §6A`
 2. **Mandor Approval Gate:** Pada `baca error`, STOP dan minta izin user sebelum ubah kode setelah `issues.md` ditulis.
 3. **Legacy Purge Gate:** Penghapusan `/.legacy/` butuh dry-run log & persetujuan tertulis.
-4. **Handover Trigger:** Update `handover.md` + **overwrite** `app-context.md` setiap `handover_trigger` code-changes ATAU sub-task selesai (mana yang lebih dulu). Detail: `gemini-execution.md §3.B.7`
+4. **Handover Trigger:** Update `handover.md` + **overwrite** `app-context.md` setiap sub-task selesai, fitur ad-hoc tuntas, atau sebelum Git commit. Detail: `gemini-execution.md §3.B.7`
 5. **Session Learning Reminder (Pasif):** Jika pola koreksi terdeteksi, cetak 1 blok ringkas. FORBIDDEN auto-write ke skill.
 6. **Security Milestone Reminder (Pasif):** Cetak 1 baris `🔒 Milestone selesai` per fase selesai.
 
@@ -164,32 +169,11 @@ Batch 3 (Verification — 0.2 detik):
 | Visual rules | `app-context.md [VISUAL_GATE]` | Baca `gemini.md` penuh |
 | Feature flows | `app-context.md [FLOWS]` | Trace kode manual |
 
-### Token Budget Tracker (Real-Time):
-Setiap 10 turns, AI REQUIRED mencetak:
-```
-[TOKEN BUDGET] Session: [trigger] | Used: [N]K tokens | Remaining: [N]K tokens
-[TOKEN BUDGET] gemini.md: 8.2K | AGENTS.md: 0.9K | [file]: [N]K
-→ Jika Used > warn threshold (dari user-prefs.md): Cetak [CONTEXT WARN]
-→ Jika Used > stop threshold (dari user-prefs.md): STOP dan tanya user
-```
-
-### File Load Rules (Berlaku Global):
-- **gemini.md** → ALWAYS loaded (system prompt, ~8.2K tokens)
-- **app-context.md** → ALWAYS load jika ada (~1.2K tokens)
-- FORBIDDEN load file FULL — selalu load **section spesifik** via range-limited `view_file`
-- Strategi Model Kecil (7B-13B): OPSIONAL Load = SKIP, max 50 baris/turn, cache agresif
-
-### Context Cache Mechanism (Per Session — STRICT ENFORCEMENT):
-- Session start → load mtime checksum untuk `gemini.md`, `AGENTS.md`, dan `user-prefs.md`.
-- File checksum → compare dengan cached checksum.
-- Jika mtime unchanged → **HARUS SKIP re-read**, gunakan cached content dari memori/session.
-- Jika mtime changed → re-read file, update cached content dan checksum.
-- **FORBIDDEN re-read file yang sudah di-cache jika mtime unchanged** — pelanggaran = token waste violation.
-- → Detail arsitektur & token cache: `gemini-execution.md §4M.E` (anchor:4M.E).
-
-### Session Init Speed Enforcement:
-- **Batasan Strict:** FORBIDDEN membaca file >100 baris atau >3 file di Batch 1.
-- **Target:** Total durasi init <1 detik. Jika >2 detik → cetak `[SLOW INIT] Detected: [N]s — check parallel loading`.
+### Token Economy Guidelines:
+- **Prinsip Utama:** AI tidak memuat file secara penuh jika hanya membutuhkan bagian spesifik.
+- Gunakan range-limited `view_file` (`StartLine`/`EndLine`) untuk file >100 baris.
+- Batasi jumlah file per turn (maks 5 file per turn).
+- Gunakan `app-context.md` sebagai snapshot utama alih-alih membaca file riwayat panjang.
 
 ### Auto Workspace Verification (Silent):
 - `app-context.md` ADA → gunakan sebagai primary context
@@ -249,11 +233,11 @@ AI REQUIRED memastikan folder `/.docs/` di root proyek berisi **9 file**:
 | 8 | `issues.md` | Bug tracker — FIFO max 10 RESOLVED + semua OPEN | `baca error` |
 | 9 | `design-system.md` | **1 Source of Truth Visual Design: Palet, tipografi, geometri, 32 token komponen (§7B), 7-tier breakpoint (Android 3M + Laptop 1366)** | **Fase 1+ (setelah DNA disepakati) atau `redesign`** |
 
-### Auto-Update .docs Protocol (Setiap 5 task):
-- **Trigger:** Selesai task ke-5, 10, 15, dst. (task count mod 5 == 0).
+### Auto-Update .docs Protocol (Event-Based):
+- **Trigger:** Dipicu saat sub-fase selesai, penambahan route/fitur baru, atau saat menjalankan `analisa kualitas` / commit milestone.
 - **Aksi:** AI scan berkas `/.docs/` vs codebase aktual → update jika ada perubahan → skip jika identik.
 - **Output:** `[DOCS UPDATE] X files updated, Y files skipped`
-- → Detail checklist 9 file & optimasi token: `gemini-execution.md §4N.G` (anchor:4N.G).
+- → Detail checklist 9 file: `gemini-execution.md §4N.G` (anchor:4N.G).
 
 ### Format `routes.md` (STANDAR — Semua Proyek):
 ```markdown
@@ -437,8 +421,8 @@ admin=[email]=[password]
 | Compliance Check (`cek komponen`) detail | `gemini-execution.md §3.C.1` | Saat `cek komponen` aktif | §3.C.1 (anchor:3C1) | 2K |
 | Factual Scan Enforcement Protocol (FSEP) | `gemini-execution.md §3.C.2` | Saat mode audit aktif | §3.C.2 (anchor:3C2) | 1K |
 | Smart Skill Integration (SSI) | `gemini-execution.md §4N` | Saat integrasi skill baru | §4N (anchor:4N) | 2K |
-| Handover auto-update enforcement (Dual-Mode) | `gemini-execution.md §3.B.7` | Setiap code-change tercapai / task selesai | §3.B.7 (anchor:3B7) | 0.5K |
-| Auto-Update .docs checklist & rules | `gemini-execution.md §4N.G` | Setiap 5 task selesai | §4N.G (anchor:4N.G) | 1K |
+| Handover auto-update enforcement (Dual-Mode) | `gemini-execution.md §3.B.7` | Setiap sub-task / fitur ad-hoc selesai / commit | §3.B.7 (anchor:3B7) | 0.5K |
+| Auto-Update .docs checklist & rules | `gemini-execution.md §4N.G` | Saat milestone selesai / analisa kualitas | §4.N.G (anchor:4N.G) | 1K |
 | SEO protocol & 20-item checklist | `gemini-execution.md §4L` | Fase 8 / deploy prep | §4L (anchor:4L) | 1K |
 | Template handover.md, todo.md, legacy audit | `gemini-templates.md` | Saat saklar diaktifkan | Ambil section saklar | 0.5-2K |
 | Debugging pipeline (YOLO) detail | `gemini-templates.md §5` | Saat `baca error` | §5 only | 2K |
@@ -477,30 +461,10 @@ admin=[email]=[password]
      ```
   5. Jika terdeteksi discrepancy → AI auto-fix (mencocokkan snapshot) atau minta konfirmasi user.
 
-### Context Health Check (Per Session — Silent)
-**Trigger:** Setiap session start
-**Action:**
-```
-1. Check current context usage vs budget
-2. If used > warn threshold: print [CONTEXT WARN] Used: N tokens
-3. If used > stop threshold: STOP and ask user
-4. Output: [CONTEXT HEALTH] Status: OK/WARN/CRITICAL | Used: N tokens
-```
-
-### Performance Metrics (Periodic — Setiap 10 task)
-**Trigger:** `analisa kualitas` atau auto-trigger setiap 10 task
-**Action:**
-```
-1. Measure tokens/session average
-2. Measure session duration
-3. Measure file reads per task
-4. Output: [PERFORMANCE] Avg tokens: N/session, Avg duration: N min, Efficiency: X%
-```
-
-**FORBIDDEN:**
-- ❌ Run health check > 3 times per session (waste tokens)
-- ❌ Print full metrics unless user requests
-- ❌ Auto-fix without user confirmation
+### Code Quality & Maintenance Review
+- **Trigger:** Dipicu saat saklar `analisa kualitas` dipanggil atau saat milestone/fase besar selesai.
+- **Aksi:** Review codebase terhadap standar arsitektur, security patterns, dan sinkronisasi dokumentasi di `/.docs/`.
+- **Anti-Noise:** Tidak mencetak metrik hipotetis/estimasi waktu yang tidak dapat diukur secara andal.
 
 
 ---
@@ -508,6 +472,7 @@ admin=[email]=[password]
 
 <!--
   VERSION LOG
+  v4.7.0 (2026-10-13) — Antigravity & Stateless Optimization: Workspace pointer AGENTS.md (anti double-load), clean L1 dispatcher, Tiered Visual Gate (§4.K.1), Anti-Bloat View Rules (§2.B), Model Profile Hints (Gemini 3.8 & Claude Opus), event-driven handover & .docs sync, dynamic multi-platform paths (§0.B).
   v4.6.0 (2026-10-08) — Copy Gate, UI Microcopy SSOT, Anti-Technical/Timezone Leak, Gate 5B [COPY TABLE], regex lint engine & [COPY CHECK] marker.
   v4.5.0 (2026-09-xx) — Pragmatic Output Law, Anti-Bloat Code Engine, 32-component visual registry (§7B), responsive laptop-first 1366px (§10.E).
   v4.4.0 (2026-08-xx) — Security Patterns gap closure (SP-024 s/d SP-030), 5-tier adaptive rate limiting, 100% OWASP Top 10:2025.

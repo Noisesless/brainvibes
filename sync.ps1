@@ -29,7 +29,7 @@ if (!(Test-Path $KnowledgeTargetDir)) {
 
 
 # 1. Salin berkas-berkas inti di root ke .gemini
-$CoreFiles = @("gemini.md", "gemini-execution.md", "gemini-templates.md", "prd-template.md", "design-system.md", "AGENTS.md", "user-prefs.md")
+$CoreFiles = @("gemini.md", "gemini-execution.md", "gemini-templates.md", "prd-template.md", "design-system.md", "user-prefs.md")
 foreach ($File in $CoreFiles) {
     $SrcFile = Join-Path $SourceDir $File
     $DstFile = Join-Path $GeminiTargetDir $File
@@ -39,6 +39,13 @@ foreach ($File in $CoreFiles) {
     } else {
         Write-Warning "File tidak ditemukan di sumber: $SrcFile"
     }
+}
+
+# 1A. Salin master AGENTS.global.md ke target global AGENTS.md
+$SrcAgentsGlobal = Join-Path $SourceDir "AGENTS.global.md"
+if (Test-Path $SrcAgentsGlobal) {
+    Copy-Item -Path $SrcAgentsGlobal -Destination (Join-Path $GeminiTargetDir "AGENTS.md") -Force
+    Write-Host "[OK] Menyalin AGENTS.global.md -> $GeminiTargetDir\AGENTS.md" -ForegroundColor Gray
 }
 
 # Pastikan GEMINI.md (UPPERCASE) tersedia
@@ -67,6 +74,10 @@ foreach ($IdeDir in $IdeTargetDirs) {
                 Copy-Item -Path $SrcFile -Destination $DstFile -Force
                 Write-Host "[OK] Sync IDE Local: $File -> $DstFile" -ForegroundColor Gray
             }
+        }
+        if (Test-Path $SrcAgentsGlobal) {
+            Copy-Item -Path $SrcAgentsGlobal -Destination (Join-Path $IdeDir "AGENTS.md") -Force
+            Write-Host "[OK] Sync IDE Local: AGENTS.global.md -> $IdeDir\AGENTS.md" -ForegroundColor Gray
         }
         $McpSrc = Join-Path $SourceDir "config\mcp_config.json"
         if (Test-Path $McpSrc) {

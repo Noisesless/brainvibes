@@ -69,11 +69,17 @@ Tweak 1-2 string → boleh versi satu baris: `[Copy] "<lama>" → "<baru>" (n ka
 **EN:** unlock, empower, revolutionize/revolutionary, seamless, effortless, cutting-edge, state-of-the-art,
 next-gen, next level, world-class, best-in-class, game-changing, elevate, transform your, unleash,
 supercharge, streamline, leverage, harness, powerful, robust, stunning, beautiful, magical, delightful,
-intuitive, innovative, comprehensive, all-in-one, one-stop, ultimate, journey, ecosystem, "smart" / "AI-powered" (kecuali fitur AI nyata).
+intuitive, innovative, comprehensive, all-in-one, one-stop, ultimate, journey, ecosystem, exponential growth,
+paradigm shift, synergistic, unrivaled, frictionless, end-to-end, holistic, mission-critical, hyper-scalable,
+future-ready, reimagine, turnkey, robust ecosystem, bespoke, "smart" / "AI-powered" (kecuali fitur AI nyata).
 
-**ID:** solusi terbaik / lengkap / cerdas, terdepan, terbaik, inovatif, revolusioner, canggih, komprehensif,
-luar biasa, sempurna, maksimal, optimal, tanpa ribet, tanpa batas, mudah dan cepat, nikmati kemudahan,
-pengalaman terbaik, andalan, satu pintu, lebih dari sekadar, wujudkan, raih, tingkatkan [X] Anda,
+**ID:** solusi terbaik / lengkap / cerdas / masa depan, terdepan, terbaik, inovatif, revolusioner, canggih,
+komprehensif, luar biasa, sempurna, maksimal, optimal, tanpa ribet, tanpa batas, mudah dan cepat,
+nikmati kemudahan, pengalaman terbaik / revolusioner, andalan, satu pintu, lebih dari sekadar, wujudkan, raih,
+tingkatkan [X] Anda, teknologi mutakhir, pertumbuhan eksponensial, meningkatkan efisiensi operasional,
+andal dan terpercaya, kelas dunia, terintegrasi penuh, tanpa kompromi, transformasi digital terdepan,
+akurasi sempurna, ekosistem terpadu, klik di sini untuk, silakan masukkan, apakah Anda yakin ingin,
+mengoptimalkan alur kerja, memfasilitasi kolaborasi, menganalisis secara komprehensif,
 terpercaya / profesional / modern (sebagai klaim tanpa bukti).
 
 **Pengecualian:** kata boleh muncul jika bagian dari nama fitur/produk nyata dari user atau didukung data
