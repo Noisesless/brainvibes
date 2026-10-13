@@ -9,14 +9,15 @@
     ├── Lifecycle Hooks (hooks.json) → cbm-hook.ps1 / cbm-hook.sh (PreInvocation auto-start daemon)
     ↓
 [Brainvibes System]
-    ├── gemini.md          → Core instructions (≤32KB)
-    ├── gemini-execution.md → Execution rules (view_file on-demand, ~64KB)
+    ├── gemini.md          → Core instructions (≤33KB, v4.7.0)
+    ├── gemini-execution.md → Execution rules (view_file on-demand, ~55KB, §4.A-§4.O sekuensial)
     ├── gemini-templates.md → Macro commands (view_file on-demand, ~32KB)
-    ├── AGENTS.md          → Master L1 Global Dispatcher (In-memory switch routing & fast-path resume)
-    ├── user-prefs.md      → User preferences (highest priority)
+    ├── AGENTS.md          → Workspace Pointer minimal 3 baris (anti double-load di IDE)
+    ├── AGENTS.global.md   → Master L1 Global Dispatcher (In-memory switch routing & fast-path resume, ~4KB)
+    ├── user-prefs.md      → User preferences (highest priority, Windows native & XAMPP paths)
     ├── design-system.md   → Framework Master Reference: CSS tokens, 32-component registry (§7B), & 7-tier responsive strategy (~70KB)
     ├── prd-template.md    → PRD blueprint
-    ├── anti-bloat-code.md → Global & Workspace Rules Engine (.agents/rules & config/rules)
+    ├── anti-bloat-code.md → Global & Workspace Rules Engine (.agents/rules & config/rules: §2.B View Anti-Bloat + Model Hints)
     ├── .gitattributes     → Cross-platform line endings normalization (LF/CRLF)
     └── scripts/           → ensure-cbm-daemon (.ps1/.sh), index-project (.ps1/.sh), cbm-hook (.ps1/.sh)
     ↓

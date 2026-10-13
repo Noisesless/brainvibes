@@ -4,11 +4,12 @@
 
 | File | Imported By (count) | Tipe |
 |---|---|---|
-| `gemini.md` | 4+ (AGENTS.md, .gemini, execution, templates) | Core instructions |
+| `gemini.md` | 4+ (AGENTS.global.md, .gemini, execution, templates) | Core instructions (v4.7.0) |
 | `user-prefs.md` | 5+ (Semua sesi, execution, templates) | User preferences |
-| `AGENTS.md` | 2+ (.gemini, execution) | Behavior rules |
+| `AGENTS.global.md` | 2+ (.gemini global, execution) | L1 Global Dispatcher master |
+| `AGENTS.md` | 1 (Antigravity IDE workspace) | Workspace Pointer minimal |
 | `design-system.md` | 3+ (UI components, visual gate, responsive strategy) | Design tokens & 32-component registry |
-| `anti-bloat-code.md` | 3+ (gemini.md §0#7/§1#11, gemini-execution.md §4.O, AGENTS.md §8) | Behavior & Pragmatic Code Rules |
+| `anti-bloat-code.md` | 4+ (gemini.md §0#7/§1#11, gemini-execution.md §4.O, §2.B View Anti-Bloat) | Behavior & Pragmatic Code Rules |
 | `config/mcp_config.json` | 2 (codebase-memory, context7) | MCP servers |
 | `config/hooks.json` / `.agents/hooks.json` | 1+ (Antigravity IDE lifecycle) | Lifecycle hooks config |
 

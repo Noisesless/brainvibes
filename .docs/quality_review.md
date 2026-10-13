@@ -10,13 +10,13 @@
 | Skills | 12 folders | ✅ |
 | Knowledge Bases | 3 | ✅ |
 | MCP Servers | 2 (Lean Stack) | ✅ |
-| Version | 4.4.0 | ✅ |
-| Total Size | ~650KB | ✅ |
+| Version | 4.7.0 | ✅ |
+| Total Size | ~630KB | ✅ |
 
 ### File Size Distribution
 | Category | Files | Total Size |
 |---|---|---|
-| Core instructions | 5 | ~110KB |
+| Core instructions | 6 | ~120KB |
 | Skills SKILL.md | 12 | ~100KB |
 | Skills data | ~40 | ~350KB |
 | Knowledge artifacts | ~10 | ~50KB |
@@ -45,20 +45,18 @@
 ## Complexity Analysis
 
 ### gemini.md (Core Instructions)
-- **Lines:** 515
-- **Sections:** 9 (§0, §1, §VISUAL RULES [18 ban + 6 enforcement], §SESSION PROTOCOL, §2 [11 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
+- **Lines:** 485
+- **Sections:** 9 (§0 [termasuk §0.B Dynamic Path], §1, §VISUAL RULES [18 ban + 6 enforcement], §SESSION PROTOCOL, §2 [11 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
 - **Hard Blocks:** 11 (termasuk #11: Pragmatic Output & Anti-Over-Engineering Law)
 - **Gates:** 6
 - **Standards:** 9 (termasuk #8: Visual Registry Sync & #9: Responsive Laptop-First + Android 3M)
 - **Complexity:** Medium (technical focus, anti-AI-slop visual gate, unified dispatch table, pragmatic output gate)
 
 ### gemini-execution.md (Execution Details)
-- **Lines:** 1080
-- **Sections:** Main section groups (§3.A-C, §4.A-J, §4K Visual Pipeline, §4I Self-Check, §4L SEO, §4M Cache/Priority, §4N SSI, §4.O Pragmatic Output & Anti-Over-Engineering)
-- **Subheadings:** Parent ID prefixed (§3.A-C, §4.A-J, etc.) — 0 collisions
-- **Security Protocols:** Multi-stack SP combination rule, OWASP Top 10:2025 100% coverage (A01-A10 mapped)
-- **Visual Protocols:** §4K 6-gate mandatory pipeline, Direct-Read CSV fallback, redesign execution protocol, §4I pre-flight self-check (termasuk limit heading ≤5 kata, subtitle ≤15 kata)
-- **Complexity:** High (comprehensive execution, security, visual, & efficiency protocols)
+- **Lines:** 899
+- **Sections:** Main section groups (§3.A-C, §4.A-O sekuensial konsisten — 0 duplikasi, 0 tabrakan anchor)
+- **Visual Protocols:** §4.K Tiered Visual Gate (Tier 1 tweak 1 baris, Tier 2 komponen 2 baris, Tier 3 full 6-gate pipeline), Direct-Read CSV fallback, redesign execution protocol, §4.I pre-flight self-check & Copy Anti-Slop verification
+- **Complexity:** High (comprehensive execution, security, tiered visual gate, & efficiency protocols)
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
