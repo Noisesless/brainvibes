@@ -1,4 +1,4 @@
-# AI CODING AGENT — MACRO COMMANDS & TEMPLATES (VIBES CODING WORKFLOW V4.6.0)
+# AI CODING AGENT — MACRO COMMANDS & TEMPLATES (VIBES CODING WORKFLOW V4.7.0)
 *[Split Architecture: gemini-templates.md — dimuat AI via view_file hanya saat saklar aktif / butuh template]*
 
 ---
@@ -27,7 +27,7 @@
    - Checksum CORE IDENTITY LOCK: Bandingkan stack di `prd.md` dengan file manifest dependensi (`package.json`, `composer.json`, dll.).
    - Visual DNA Checksum (Auto-Sync): Bandingkan `app-context.md §PALETTE` dengan CORE IDENTITY LOCK di `prd.md`. Jika drift, update `app-context.md §PALETTE` sesuai `prd.md` lalu overwrite `app-context.md`.
 3. **Deployment Docs Check:** Cek `/.docs/deployment.md` — jika belum ada, generate dari template `gemini.md §DOCS BLUEPRINT`. Jika ada, verifikasi stack/target masih sesuai dengan `prd.md` dan update jika berubah.
-3b. **Design System Docs Check (Auto-Extraction):** Cek `/.docs/design-system.md` — jika belum ada pada proyek eksisting: jalankan **Visual DNA Reverse-Engineering Protocol** (`gemini-execution.md §4K.5`) pada Halaman Utama untuk mengekstrak token dan generate `/.docs/design-system.md` secara otomatis.
+3b. **Design System Docs Check (Auto-Extraction):** Cek `/.docs/design-system.md` — jika belum ada pada proyek eksisting: jalankan **Visual DNA Reverse-Engineering Protocol** (`gemini-execution.md §4.K.4`) pada Halaman Utama untuk mengekstrak token dan generate `/.docs/design-system.md` secara otomatis.
 4. Tampilkan ringkasan status dalam Bahasa Indonesia dan tunggu instruksi.
 
 ### 2C. Saklar: `awal konversi`

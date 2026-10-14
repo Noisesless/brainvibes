@@ -304,6 +304,31 @@ Selesai: 2026-09-04T21:08+07:00
 ---
 
 **Total Tasks Phase 8:** 8 items — ✅ SEMUA SELESAI
-**Selesai:** 2026-10-13T10:00+07:00
+Selesai: 2026-10-13T10:00+07:00
 
+---
 
+## 🟢 PHASE 9: SYSTEM REFINEMENTS & SSOT CONSOLIDATION (V4.7.0)
+
+### Tier 1 — Metadata & Priority Foundation
+- [x] Task 9.1: Fix version mismatch & stale metadata (`user-prefs.md` ClasNet→gbc, path Linux, version 4.7.0, `gemini-templates.md` v4.7.0 & pointer `§4.K.4`)
+- [x] Task 9.2: Output Quality Rubric ditambahkan ke `gemini.md` (Target positif first-attempt clean, token compliance, copy quality, context sync, security)
+- [x] Task 9.3: Conflict Resolution Hierarchy eksplisit di `gemini.md` (Urutan prioritas jika terjadi bentrok antar-file)
+
+### Tier 2 — Execution Intelligence & Scoping
+- [x] Task 9.4: Task Scoping Gate di `gemini-execution.md §3.B` (Complexity budget, max 8 file/subtask)
+- [x] Task 9.5: AI Self-Recovery Protocol di `gemini-execution.md §3.B` (Fallback tool 2x failure, context trim, edit conflict recovery)
+- [x] Task 9.6: Update `tambah fitur` di `gemini.md §2` Dispatch Table (Conditional load visual gate jika sentuh UI)
+- [x] Task 9.7: Tambah `## [ISSUES]` section pada template `app-context.md` di `gemini.md`
+
+### Tier 3 — SSOT Consolidation & Token Trimming
+- [x] Task 9.8: Konsolidasi Dialog Blocklist SSOT (`gemini-execution.md §4.O.1` → `.agents/rules/anti-bloat-code.md §1`)
+- [x] Task 9.9: Konsolidasi Browser Gate SSOT (`gemini-execution.md §4.H` → `AGENTS.md §3` & `gemini.md §1 Standard #6`)
+- [x] Task 9.10: Pindahkan 20-Item SEO Checklist ke `deployment-checklist/SKILL.md §4` dan ringkas `gemini-execution.md §4.L`
+- [x] Task 9.11: Update `app-context.md` snapshot dengan `[ISSUES]` dan ADR-015
+- [x] Task 9.12: Jalankan `./sync.sh` untuk menyinkronkan file master ke `$HOME/.gemini/`
+
+---
+
+**Total Tasks Phase 9:** 12 items — ✅ SEMUA SELESAI
+**Selesai:** 2026-10-14T21:07+07:00

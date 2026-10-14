@@ -6,15 +6,15 @@
 [IDENTITY]
 user_language      = id-ID                        # Bahasa interaksi ke user
 fallback_lang      = en-US                        # Fallback untuk istilah teknis
-user_name          = ClasNet                      # Username mesin lokal
+user_name          = gbc                          # Username mesin lokal
 
 [DEVELOPMENT]
 default_port_vite  = 5173                         # Default Vite/React dev server
 default_port_next  = 3100                         # Default Next.js dev server
 default_port_php   = 8080                         # Default PHP/Laravel dev server
 package_manager    = npm                          # npm | pnpm | yarn | bun
-local_server       = XAMPP Apache                 # Server lokal yang digunakan
-local_base_path    = c:\XAMPP\htdocs\             # Base path XAMPP
+local_server       = Linux / Local Dev            # Server lokal yang digunakan
+local_base_path    = /home/gbc/Projects/          # Base path proyek
 db_engine          = MySQL                        # Database engine default
 
 [DESIGN_DEFAULTS]
@@ -87,7 +87,7 @@ fabrication_guard  = true                         # FORBIDDEN mengarang solusi/f
 
 
 [META]
-brainvibes_version = 4.6.0
+brainvibes_version = 4.7.0
 installed_at       = 2026-07-13
-last_updated       = 2026-10-08
-changelog          = v4.6.0 — Copy Gate, UI Microcopy SSOT, Anti-Tech Leak, 32-Component Registry, Laptop-First 1366px, Pragmatic Output Law
+last_updated       = 2026-10-14
+changelog          = v4.7.0 — Output Quality Rubric, Task Scoping Gate, Unified SSOT Consolidations, Architecture Refinements

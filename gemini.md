@@ -63,6 +63,31 @@
 
 ---
 
+## §OUTPUT QUALITY RUBRIC (Target Positif Kualitas AI)
+
+Setiap output tugas (task) koding AI WAJIB memenuhi target kualitas positif berikut:
+1. **Kode Bersih (First-Attempt Clean):** Compile, lint, dan type-check lolos tanpa error fatal pada percobaan pertama. Minimalis, YAGNI, tanpa boilerplate mati.
+2. **Kepatuhan Visual Token (Zero Hardcode):** 100% nilai warna, spacing, radius, dan tipografi menggunakan CSS variables `var(--vibe-*)` dari `design-system.md §7B`. Responsif laptop 1366px + Android 3M tervalidasi.
+3. **Kualitas Microcopy (Anti-Slop Copy):** Batas kata terpenuhi 100% merujuk `COPY_RULES.md`, nol kata terlarang, tidak ada parameter teknis backend bocor ke UI.
+4. **Sinkronisasi Konteks (Zero Drift):** Snapshot `app-context.md` ter-overwrite akurat dan `handover.md` ter-update setiap sub-task selesai.
+5. **Keamanan Proaktif (Zero Known Gap):** Pola aman diterapkan senyap (silent read `security-patterns`), sanitasi input, parameterized query, dan autentikasi kuat.
+
+
+---
+
+## §CONFLICT RESOLUTION HIERARCHY
+
+Jika ditemukan perbedaan aturan, batas angka, atau instruksi antar-berkas sistem, urutan prioritas mengikat (tinggi → rendah):
+1. **`user-prefs.md`** — User preference override eksplisit.
+2. **`taste-skill-bridge/COPY_RULES.md`** — SSOT teks UI, label, tombol, heading, dan batas kata microcopy.
+3. **`design-system.md §7B / §7C`** — SSOT visual design tokens, geometri, komponen, dan breakpoint.
+4. **`gemini.md §1 HARD BLOCK`** — Hukum mutlak integritas arsitektur, keamanan, dan eksekusi.
+5. **`gemini-execution.md`** — Detail prosedur teknis, protokol run/build, dan gate eksekusi.
+6. **`.agents/rules/anti-bloat-code.md`** — Pedoman pragmatisme kode, anti-over-engineering, dan format respons.
+
+
+---
+
 ## §VISUAL RULES (ANTI-AI-SLOP — INLINE — SELALU AKTIF)
 
 > ⛔ **HARD BLOCK #7 DETAIL:** Aturan ini BERLAKU OTOMATIS setiap kali AI menulis/mengedit kode visual (CSS, style, class, komponen UI, ikon, warna, font, spacing, layout, animasi).
@@ -191,7 +216,7 @@ Batch 3 (Verification — 0.2 detik):
 | `awal baru` | Wizard 10 poin → prd.md → todo.md | gemini-templates.md §2A, prd-template.md | execution.md, design-system.md | templates §2A |
 | `awal lanjut` | Resume proyek aktif | app-context.md, gemini-templates.md §2B | prd-template.md, design-system.md | templates §2B |
 | `awal konversi` | Legacy Audit → migrasi 9 fase | gemini-templates.md §2C, prd-template.md | design-system.md | templates §2C |
-| `tambah fitur` | Incremental feature add | app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md | templates §2D |
+| `tambah fitur` | Incremental feature add | app-context.md §NEXT, prd.md §2 | prd-template.md, design-system.md (KECUALI fitur melibatkan UI baru → auto-trigger visual-gate) | templates §2D |
 | `baca error` | YOLO Debug → issues.md → minta izin | gemini-templates.md §5, issues.md | prd-template.md, design-system.md | templates §2E |
 | `lanjut dari sini` | Mid-session context recovery | app-context.md, todo.md (grep) | prd-template.md | templates §2F |
 | `status proyek` | Quick brief 10 baris | app-context.md | gemini-templates.md, prd-template.md | templates §2G |
@@ -355,6 +380,10 @@ font_head=[Font] font_body=[Font] radius=[Npx] nav=[model] theme=[mode]
 ## [STATE]
 phase=[X] done=[N]/[total] last=[task terakhir]
 build=[OK|ERROR:msg] issues=[0|N:msg]
+
+## [ISSUES]
+<!-- Max 3 open issues aktif — 1 baris per issue -->
+[OPEN-001] [deskripsi 1 baris] → [file terkait]
 
 ## [VISUAL_GATE]
 icon_lib=[phosphor|heroicons|lucide|tabler]

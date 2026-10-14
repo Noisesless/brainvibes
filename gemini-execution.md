@@ -64,6 +64,14 @@ Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pe
 
 ### §3.B Protokol Eksekusi & Uji Coba (Fail-Fast Workflow) <!-- anchor:3B -->
 1.  **Verifikasi Pre-Task:** Sebelum mengerjakan tugas di `todo.md`, baca ulang spesifikasi relevan di `prd.md`.
+1a. **Task Scoping Gate (Complexity Budget):**
+    Sebelum mulai menulis kode, AI WAJIB memperkirakan cakupan file yang akan disentuh:
+    ```
+    [TASK SCOPE] Files to touch: [N] | Complexity: [S (1-2) | M (3-5) | L (6-8)]
+    ```
+    - **Batas Keras (Hard Limit):** Maksimal **8 file** per sub-task atom.
+    - Jika estimasi cakupan > 8 file atau mencakup beberapa domain yang tidak saling berhubungan (misal: backend API + migrasi DB + redesign frontend sekaligus), AI **WAJIB** memecah tugas menjadi sub-task berurutan di `todo.md` dan mengerjakannya satu per satu.
+    - Tujuannya: menjaga ketajaman working memory AI, mencegah degradasi kualitas kode, dan memudahkan rollback jika terjadi error.
 2.  **Pre-flight Check:** Sebelum menjalankan proses `build` penuh yang lambat, AI WAJIB menjalankan perintah cepat:
     *   **Linter & Formatter Check** (`eslint`, `prettier --check`, `pint`, dll.)
     *   **Type Checker** (`tsc --noEmit`, dll.)
@@ -77,6 +85,11 @@ Format output (jika terdeteksi): `[LESSONS LEARNED] Pattern [Nama] terdeteksi pe
     *Pengecualian:* Build penuh wajib dijalankan di akhir Fase (milestone), setelah perubahan >5 file, atau perubahan arsitektur core (routing, DB, auth).
 4.  **Build Penuh & 6 Lapisan Scan:** Hanya jika *pre-flight check* & incremental build lolos, AI menjalankan `build` penuh dan 6 lapisan scan keamanan.
 5.  **Gerbang Kelulusan Taktis (Fail-Fast):** Jika ada error di tahap manapun, proses dihentikan, checkbox `todo.md` tidak dicentang, dan AI langsung masuk mode perbaikan.
+5a. **AI Self-Recovery Protocol (Penanganan Hambatan Mandiri):**
+    Jika AI mengalami kegagalan teknis saat eksekusi:
+    - **Tool Failure (2x Berturut):** Jika tool call (edit/command) gagal 2x berturut-turut pada file/perintah yang sama, FORBIDDEN mengulang cara yang persis sama. AI WAJIB cetak `[FALLBACK RECOVERY] Metode [X] gagal 2x → beralih ke strategi alternatif [Y]`.
+    - **Context Approaching Limit:** Jika working tokens mendekati batas peringatan (`context_budget_warn`), lakukan pemangkasan context internal: jangan baca file historis panjang, fokus hanya pada snapshot `app-context.md` dan file target saat ini. Cetak `[CONTEXT TRIM] Memangkas pembacaan non-esensial`.
+    - **File Edit Conflict (Mismatch TargetContent):** Jika `replace_file_content` gagal karena konten tidak cocok, AI WAJIB membaca ulang rentang baris spesifik file target (`view_file` dengan StartLine/EndLine) untuk melihat state aktual terkini sebelum mencoba apply edit baru.
 6.  **Self-Reflection Gate (Sebelum Serah ke User):**
     Sebelum menyatakan task selesai, AI REQUIRED melakukan self-check cepat dan mencetak checklist format berikut:
     ```
@@ -413,22 +426,11 @@ AI WAJIB per giliran:
 - DEFAULT recording = OFF kecuali user eksplisit minta
 ```
 
-#### ⛔ Scratchpad DOM — Proteksi Absolut (Binding user-prefs.md):
-Jika `[BROWSER_TOOL].scratchpad_dom = FORBIDDEN`:
-- FORBIDDEN `browser_subagent` ke `localhost`, `127.0.0.1`, port dev lokal MANAPUN
-- FORBIDDEN untuk tujuan: "verifikasi build", "cek tampilan", "render check", "lihat DOM"
-- Satu-satunya exception: user mengetik permintaan eksplisit di turn tersebut
-- Alternatif wajib: gunakan `read_url_content` ke localhost URL (bukan browser)
-Pelanggaran = FATAL VIOLATION → cetak `[SCRATCHPAD BLOCKED]`, STOP, tunggu instruksi user.
-
-#### Pelanggaran & Konsekuensi:
-
-```
-Jika AI ingin pakai browser_subagent → wajib justifikasi 1 baris:
-[Browser Gate] Alasan: [salah satu dari 4 kondisi — scratchpad_dom check lulus] → Proceed ✅
-Jika tidak ada alasan valid → fallback ke read_url_content WAJIB.
-Jika scratchpad_dom = FORBIDDEN dan target adalah localhost → [SCRATCHPAD BLOCKED] STOP.
-```
+#### ⛔ Aturan Penegakan Browser Gate (SSOT Pointer):
+> **SSOT:** `AGENTS.md §3 (§BROWSER TOOL GATE)` & `gemini.md §1 Standard #6`.
+- AI WAJIB mencetak `[Browser Gate] Alasan: [justifikasi]` sebelum SETIAP panggilan `browser_subagent`.
+- Akses ke `localhost`, `127.0.0.1`, atau port dev lokal MANAPUN via browser MUTLAK DILARANG kecuali diminta eksplisit oleh user di turn tersebut.
+- Alternatif WAJIB cek DOM/build/render lokal: gunakan `read_url_content`. Pelanggaran = `[SCRATCHPAD BLOCKED]` STOP.
 
 ### §4.I Visual Self-Check & Pre-Flight Protocol <!-- anchor:4I -->
 
@@ -563,35 +565,8 @@ Saat `awal lanjut`, `awal konversi`, atau saat `/.docs/design-system.md` belum a
 - **L6 (sitemap.xml):** Static/dynamic sitemap.
 - **L7 (Core Web Vitals):** LCP ≤ 2.5s, CLS ≤ 0.1, INP ≤ 200ms.
 
-### §4L.B Checklist 20-Item (Jalankan Per Halaman di Fase 8)
-
-**Tier 1 — Meta & Discovery (1-6):**
-- [ ] 1. `<title>` unik, 50-60 karakter, mengandung keyword utama halaman
-- [ ] 2. `<meta name="description">` unik, 150-160 karakter, mengandung CTA/keyword
-- [ ] 3. `<link rel="canonical">` ada di setiap halaman (self-referencing)
-- [ ] 4. `<meta name="robots" content="index, follow">` untuk semua halaman publik
-- [ ] 5. `<html lang="[kode-bahasa]">` terset (`id` / `en` sesuai proyek)
-- [ ] 6. URL bersih: lowercase, hyphens, tanpa special chars, tanpa trailing slash kecuali root
-
-**Tier 2 — Social & Rich Preview (7-11):**
-- [ ] 7. `og:title`, `og:description`, `og:url`, `og:type` ada di semua halaman publik
-- [ ] 8. `og:image` berukuran 1200×630px, format WebP, ≤1MB, ada logo + tagline
-- [ ] 9. `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` ada
-- [ ] 10. JSON-LD `Organization` schema ada di root layout (nama, url, logo, sameAs)
-- [ ] 11. JSON-LD `BreadcrumbList` di halaman non-root; `Article` di setiap post/berita
-
-**Tier 3 — Indexing & Structure (12-16):**
-- [ ] 12. `robots.txt` memblokir `/admin/`, `/api/`, `/dashboard/`, `/auth/`
-- [ ] 13. `sitemap.xml` dinamis — mencakup semua URL publik, di-update otomatis
-- [ ] 14. Hanya ada 1 `<h1>` per halaman, urutan heading tidak loncat (h1→h2→h3)
-- [ ] 15. Setiap `<img>` punya `alt` deskriptif — bukan `alt="image"` atau kosong
-- [ ] 16. Tidak ada orphan page — semua halaman bisa dicapai via navigasi atau sitemap
-
-**Tier 4 — Performance & Technical (17-20):**
-- [ ] 17. LCP ≤ 2.5s — gambar hero di-preload (`<link rel="preload" as="image">`)
-- [ ] 18. CLS ≤ 0.1 — semua `<img>` dan `<video>` punya `width` + `height` eksplisit
-- [ ] 19. INP ≤ 200ms — tidak ada blocking JS di main thread saat interaksi pertama
-- [ ] 20. Font heading di-preload: `<link rel="preload" as="font" type="font/woff2" crossorigin>`
+### §4L.B Checklist 20-Item (Fase 8 / Deploy Prep)
+> **SSOT Detail:** Lihat `deployment-checklist/SKILL.md §4` untuk checklist 20-item lengkap (Tier 1 Meta & Discovery, Tier 2 Social & Rich Preview, Tier 3 Indexing & Structure, Tier 4 Performance & Technical).
 
 ---
 
@@ -819,24 +794,12 @@ Index Out of Sync:
 
 ### §4.O.1 Anti-Verbosity dalam Dialog AI (Bahasa Interaksi)
 
-AI FORBIDDEN menggunakan kata/frasa berikut dalam dialog ke user:
+> **SSOT:** `.agents/rules/anti-bloat-code.md §1` (Blocklist lengkap EN & ID).
 
-**Blocklist Dialog (Bahasa Inggris):**
-"powerful", "robust", "enterprise-grade", "state-of-the-art", "cutting-edge",
-"blazingly fast", "lightning fast", "incredibly", "amazingly", "stunning",
-"game-changing", "revolutionary", "world-class", "next-gen", "best-in-class",
-"seamless", "effortless", "magical", "delightful", "beautiful",
-"leverage", "utilize", "ecosystem", "paradigm", "synergy",
-"unlock the full potential", "take it to the next level"
-
-**Blocklist Dialog (Bahasa Indonesia):**
-"luar biasa sekali", "sangat powerful", "super canggih", "revolusioner",
-"mengagumkan", "spektakuler", "fenomenal", "next level"
-
-**Gaya yang REQUIRED:**
-- Lugas, langsung ke poin. Seperti senior dev bicara ke rekan kerja.
-- Fakta dan angka lebih baik dari adjektiva.
-- "Selesai", "sudah jalan", "oke" > "luar biasa!", "sempurna!", "amazing!"
+AI FORBIDDEN menggunakan bahasa lebay, buzzword, atau pujian hiperbolis dalam dialog ke user ("powerful", "robust", "game-changing", "seamless", "cutting-edge", "super canggih", dsb).
+- **Gaya REQUIRED:** Lugas, langsung ke poin, fakta > opini, angka > adjektiva. Seperti senior dev bicara ke rekan kerja.
+- "Selesai", "sudah jalan", "oke" > "luar biasa!", "sempurna!", "amazing!".
+- Lihat blocklist lengkap kata terlarang di `.agents/rules/anti-bloat-code.md §1`.
 
 ### §4.O.2 Anti-Literal Copy dalam Teks Aplikasi
 
