@@ -69,13 +69,13 @@
 ```
 user-prefs.md (highest priority — silent read)
     ↓
-gemini.md (core instructions, §VISUAL RULES [18 ban + 5 enforcement], §SESSION PROTOCOL, Dispatch Table [11 saklar])
+gemini.md (core instructions, §VISUAL RULES [18 ban + 5 enforcement], §SESSION PROTOCOL, Dispatch Table [12 saklar])
     ↓
 AGENTS.md (extends gemini.md — deep links to gemini-execution.md #L92, #L261, #L608, #L642)
     ↓
 gemini-execution.md (loaded on-demand — §3.A-C, §4.A-J, §4K visual pipeline, §4I self-check, §4L-§4N)
     ↓
-gemini-templates.md (loaded on-demand — macro commands §2A-§2K, §5 YOLO, §6A git)
+gemini-templates.md (loaded on-demand — macro commands §2A-§2L, §5 YOLO, §6A git)
     ↓
 design-system.md (loaded on-demand — §1-§13 design DNA, §7B Component Token Registry)
 ```

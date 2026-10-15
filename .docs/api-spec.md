@@ -128,6 +128,7 @@
 | `cek komponen` | Component verification & compliance | `/.docs/security-audit.md` |
 | `pentest` | DAST validation | `/.docs/security-audit.md` |
 | `redesign` | Visual overhaul & layout intelligence | Source code, `app-context.md` |
+| `update docs` | Full bootstrap & sync `.docs/` dari scan codebase | 9 file `/.docs/*`, `app-context.md §SCHEMA` |
 
 ## Data Flow: AI → Project
 

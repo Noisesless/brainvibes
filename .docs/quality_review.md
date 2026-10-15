@@ -46,7 +46,7 @@
 
 ### gemini.md (Core Instructions)
 - **Lines:** 485
-- **Sections:** 9 (§0 [termasuk §0.B Dynamic Path], §1, §VISUAL RULES [18 ban + 6 enforcement], §SESSION PROTOCOL, §2 [11 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
+- **Sections:** 9 (§0 [termasuk §0.B Dynamic Path], §1, §VISUAL RULES [18 ban + 6 enforcement], §SESSION PROTOCOL, §2 [12 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
 - **Hard Blocks:** 11 (termasuk #11: Pragmatic Output & Anti-Over-Engineering Law)
 - **Gates:** 6
 - **Standards:** 9 (termasuk #8: Visual Registry Sync & #9: Responsive Laptop-First + Android 3M)
@@ -60,8 +60,8 @@
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
-- **Lines:** 430
-- **Sections:** Macro commands §2A-§2K, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading
+- **Lines:** 466
+- **Sections:** Macro commands §2A-§2L, §5 YOLO, §6 Workflow, §7 Todo structure, §8 Smart Saklar Loading
 - **Security Features:** Auto dependency audit (`npm audit` / `composer audit`), Compliance Score generator
 - **Complexity:** Medium (structured templates & macro dispatches)
 - **Load Method:** view_file on-demand

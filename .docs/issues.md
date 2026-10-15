@@ -10,6 +10,7 @@
 
 | ID | Issue | Fix | Resolved |
 |---|---|---|---|
+| RES-032 | Penambahan Saklar `update docs` & SSOT Docs Sync | Penambahan saklar mandiri `update docs` (6 alias populer) di AGENTS.global.md, gemini.md §2, dan gemini-templates.md §2L untuk full bootstrap/sync 9 file .docs/ dari scan codebase, sinkronisasi SSOT 20-item SEO checklist ke deployment-checklist/SKILL.md, serta pembaruan rute dan dependensi sistem | 2026-10-15 |
 | RES-031 | Antigravity IDE Stateless Optimization & Tiered Visual Gate | Eliminasi double-load AGENTS.md (workspace pointer 3 baris), pembersihan instruksi memory cache/timer stateless di gemini.md & gemini-execution.md, Tiered Visual Gate di §4.K.1, anti-bloat view generator di anti-bloat-code.md §2.B & COPY_RULES.md §4, model hints, dan sekuensial §4.A-§4.O tanpa duplikasi section | 2026-10-13 |
 | RES-030 | Visual Registry 32-Component Expansion & 7-Tier Responsive Breakpoints | Perluasan `design-system.md §7B` dari 7 ke 32 token komponen UI (Page Structure, Data Display, Navigation, Feedback, Interactive, Media, Structural), integrasi STANDARD #8 & #9 di `gemini.md`, penambahan 7-tier responsive strategy mengutamakan laptop 1366×768 (PRIMARY TARGET) dan Android 3M (360/393/412px) di §10.E, serta audit cross-reference bebas konflik. | 2026-10-02 |
 | RES-029 | Pragmatic Output & Anti-Bloat Code Enforcement | Implementasi Universal Law anti-verbositas/buzzword (`gemini.md §0 #7`, `§1 #11`), anti-literal-copy teks prompt ke UI (`§VISUAL #24`), panduan arsitektur YAGNI/dev+prod dynamic (`gemini-execution.md §4.O`), dan pembuatan aturan universal `anti-bloat-code.md` di `.agents/rules/` & `config/rules/` untuk PC global. | 2026-10-02 |
@@ -19,7 +20,6 @@
 | RES-025 | Dynamic Local PC Paths & Settings Cleanup | Mengganti hardcoded user path (GBC_PC) dengan dynamic `$env:LOCALAPPDATA` / `ClasNet` pada semua script helper (`sync.ps1`, `ensure-cbm-daemon.ps1`, `cbm-hook.ps1`, `index-project.ps1`) dan MCP config, serta auto-clean blok legacy `mcpServers` di settings.json | 2026-09-02 |
 | RES-024 | Overhaul Visual Pipeline & Component Tokens | Pemecahan `taste-skill-bridge/SKILL.md` 824 baris ke router 61 baris, pembuatan `CHEATSHEET.md` & `MODEL_HINTS.md` (anti-slop Gemini Flash), penambahan saklar `redesign` di `gemini.md`, implementasi §4K & §4I di `gemini-execution.md`, integrasi `ui-reasoning.csv` di UUPM, serta penetapan single source of truth komponen di `design-system.md §7B` | 2026-09-02 |
 | RES-023 | Otomatisasi Daemon & UI `codebase-memory-mcp` (Port 9749) | Menambahkan Antigravity IDE lifecycle hook (`hooks.json` + `cbm-hook.ps1`), standalone helper (`ensure-cbm-daemon.ps1`), index automation (`index-project.ps1`), dan auto-start step 10 pada `sync.ps1` | 2026-08-16 |
-| RES-022 | Integrasi `codebase-memory-mcp` & Lean MCP Stack (6→2) | Mengintegrasikan binary CBM v0.10.5 (AST graph intelligence, 15 tools, 3D UI), mengeliminasi 5 MCP server redundan (filesystem, memory, sequential-thinking, time, fetch), memperbarui seluruh .docs/ dan sync.ps1 true sync | 2026-08-16 |
 
 ## Issue Categories
 

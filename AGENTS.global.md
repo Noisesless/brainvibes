@@ -28,6 +28,7 @@ Urutan resolusi path berkas instruksi dan template:
 | `cek komponen` | `cek kom`, `audit security` | OWASP + Secure Patterns audit | Load `security-patterns/data/`, `app-context.md` |
 | `pentest*` | `pentest cepat`, `dast` | Dynamic App Security Testing | Load `security-patterns/data/`, `pentest-strix/` |
 | `redesign` | `ubah desain`, `ubah tampilan` | Anti-slop visual overhaul | Load `taste-skill-bridge/ESSENTIAL.md`, UUPM data |
+| `update docs` | `buat docs`, `generate docs`, `dokumentasi`, `buat dokumentasi`, `update dokumentasi` | Buat/update semua 9 file `.docs/` dari scan codebase | Load `app-context.md`, `gemini-execution.md §4N.G` |
 
 ---
 

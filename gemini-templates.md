@@ -256,6 +256,42 @@
    - Jalankan pre-flight check dan cetak `[TASTE-SKILL PRE-FLIGHT]`.
    - Sinkronkan hasil perubahan ke `app-context.md §PALETTE` dan `/.docs/design-system.md`.
 
+
+### 2L. Saklar: `update docs` (alias: `buat docs`, `generate docs`, `dokumentasi`, `buat dokumentasi`, `update dokumentasi`)
+> **Full Bootstrap & Sync Dokumentasi `.docs/`** — Buat atau update semua 9 file dokumentasi utama dari scan codebase aktual. Bisa dipanggil kapan saja, di proyek baru maupun lama.
+> Merujuk checklist `gemini-execution.md §4N.G` dan format standar `gemini.md §DOCS BLUEPRINT`.
+
+**Prosedur Eksekusi (5 Langkah Wajib):**
+
+1. **Baca Konteks Proyek:**
+   - Muat `app-context.md` (jika ada) ATAU `prd.md §1-§3` sebagai fallback.
+   - Identifikasi stack, fase, dan scope proyek.
+2. **Cek & Bootstrap Folder `.docs/`:**
+   - Jika folder `/.docs/` belum ada → buat folder.
+   - Jika sudah ada → identifikasi file mana yang sudah ada dan mana yang missing.
+3. **Scan Codebase → Generate/Update 9 File:**
+   Untuk setiap file, scan codebase aktual menggunakan `grep_search`, `view_file`, `list_dir`:
+   ```
+   1. architecture.md    → Scan struktur folder, entry points, aliran data
+   2. api-spec.md        → Scan routes/endpoints/controllers → list method+auth+response
+   3. database.md        → Scan migrations/schema/models → DDL/relasi/index
+   4. quality_review.md  → Run linter/grep code smells → metrics
+   5. routes.md          → Scan frontend routes + API routes → format tabel standar
+   6. dependency-graph.md → Scan imports → critical/high-impact/leaf files
+   7. deployment.md      → Scan .env, config, stack → target deploy + checklist
+   8. issues.md          → Scan existing issues atau buat fresh (FIFO max 10 resolved)
+   9. design-system.md   → Scan CSS tokens/prd.md §3 → Visual DNA + §7B component registry
+   ```
+   - File yang sudah ada dan IDENTIK dengan codebase → **skip** (jangan overwrite).
+   - File yang sudah ada tapi OUTDATED → **update** bagian yang berubah saja.
+   - File yang MISSING → **generate** baru dari template standar di `gemini.md §DOCS BLUEPRINT`.
+4. **Output Ringkasan:**
+   ```
+   [DOCS UPDATE] X files created, Y files updated, Z files skipped (identical)
+   ```
+5. **Sinkronisasi Konteks:**
+   - Update `app-context.md §SCHEMA` jika ada file baru.
+   - Update `handover.md` dengan log aktivitas docs sync.
 ---
 
 ## §5. YOLO DEBUGGING PIPELINE (`baca error` mode)

@@ -226,6 +226,8 @@ Batch 3 (Verification — 0.2 detik):
 | `pentest*` | DAST via Strix → security-audit.md §DAST | security-patterns/data/, pentest-strix/ | prd-template.md | templates §2J |
 | `redesign` | Visual overhaul → taste-skill pipeline → UUPM → kode anti-slop | taste-skill-bridge/ESSENTIAL.md, UUPM data/ (grep industri), app-context.md §PALETTE | prd-template.md | templates §2K |
 <!-- Alias: `ubah desain`, `ubah tampilan`, `redesign visual`, `ubah layout`, `perbaiki halaman`, `ubah visual` -->
+| `update docs` | Buat/update semua 9 file `.docs/` dari scan codebase | app-context.md, gemini-execution.md §4N.G | prd-template.md, design-system.md | templates §2L |
+<!-- Alias: `buat docs`, `generate docs`, `dokumentasi`, `buat dokumentasi`, `update dokumentasi` -->
 
 ### Auto-Triggers (Bukan Saklar Manual — Aktif Otomatis)
 | Kondisi | Trigger | WAJIB Load | SKIP Load |

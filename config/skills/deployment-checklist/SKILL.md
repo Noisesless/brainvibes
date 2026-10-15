@@ -40,11 +40,34 @@ Skill ini aktif otomatis pada skenario:
 - [ ] Security headers terpasang: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy (rujuk `gemini-execution.md §3C L6`)
 - [ ] HSTS max-age minimal 31536000 (1 tahun) dengan includeSubDomains
 
-### 4. SEO (sesuai gemini.md §4L)
-- [ ] 20-item Pre-Deploy SEO Checklist sudah PASSED semua
-- [ ] `robots.txt` ada di root — path admin/api di-Disallow
-- [ ] `sitemap.xml` ada — semua halaman public terdaftar
-- [ ] OG Image 1200×630px sudah di-upload
+### 4. SEO (20-Item Production Checklist — SSOT)
+**Tier 1 — Meta & Discovery (1-6):**
+- [ ] 1. `<title>` unik, 50-60 karakter, mengandung keyword utama halaman
+- [ ] 2. `<meta name="description">` unik, 150-160 karakter, mengandung CTA/keyword
+- [ ] 3. `<link rel="canonical">` ada di setiap halaman (self-referencing)
+- [ ] 4. `<meta name="robots" content="index, follow">` untuk semua halaman publik
+- [ ] 5. `<html lang="[kode-bahasa]">` terset (`id` / `en` sesuai proyek)
+- [ ] 6. URL bersih: lowercase, hyphens, tanpa special chars, tanpa trailing slash kecuali root
+
+**Tier 2 — Social & Rich Preview (7-11):**
+- [ ] 7. `og:title`, `og:description`, `og:url`, `og:type` ada di semua halaman publik
+- [ ] 8. `og:image` berukuran 1200×630px, format WebP, ≤1MB, ada logo + tagline
+- [ ] 9. `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` ada
+- [ ] 10. JSON-LD `Organization` schema ada di root layout (nama, url, logo, sameAs)
+- [ ] 11. JSON-LD `BreadcrumbList` di halaman non-root; `Article` di setiap post/berita
+
+**Tier 3 — Indexing & Structure (12-16):**
+- [ ] 12. `robots.txt` memblokir `/admin/`, `/api/`, `/dashboard/`, `/auth/`
+- [ ] 13. `sitemap.xml` dinamis — mencakup semua URL publik, di-update otomatis
+- [ ] 14. Hanya ada 1 `<h1>` per halaman, urutan heading tidak loncat (h1→h2→h3)
+- [ ] 15. Setiap `<img>` punya `alt` deskriptif — bukan `alt="image"` atau kosong
+- [ ] 16. Tidak ada orphan page — semua halaman bisa dicapai via navigasi atau sitemap
+
+**Tier 4 — Performance & Technical (17-20):**
+- [ ] 17. LCP ≤ 2.5s — gambar hero di-preload (`<link rel="preload" as="image">`)
+- [ ] 18. CLS ≤ 0.1 — semua `<img>` dan `<video>` punya `width` + `height` eksplisit
+- [ ] 19. INP ≤ 200ms — tidak ada blocking JS di main thread saat interaksi pertama
+- [ ] 20. Font heading di-preload: `<link rel="preload" as="font" type="font/woff2" crossorigin>`
 
 ### 5. Performance
 - [ ] Build production berhasil tanpa error (`npm run build` / `composer install --no-dev`)
