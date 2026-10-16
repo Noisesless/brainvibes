@@ -23,7 +23,7 @@ Larangan saja tidak cukup. Solusinya: **transformasi eksplisit (Copy Gate)** + *
 ## 2. COPY GATE (Gate 5B — Wajib, Sebelum Tulis Kode)
 
 1. **Ekstrak** dari instruksi user: entitas (benda: transaksi, pasien, produk), aksi (tambah, ekspor), audience.
-2. **Buang kata instruksi:** buat, bikin, tampilkan, halaman, fitur, untuk, agar, supaya, dapat, sistem, semua, lengkap, modern, profesional, interaktif, responsive, dashboard yang.
+2. **Buang kata instruksi:** buat, buatkan, bikin, tampilkan, tunjukkan, tambahkan, implementasi, fitur, halaman, page, untuk, agar, supaya, dapat, bisa, lengkap, modern, profesional, interaktif, responsive, CRUD, manajemen, management, dashboard yang, sistem informasi, menampilkan, mengelola, melihat, semua data, seluruh data, dengan grafik, dengan tabel.
 3. **Tulis `[COPY TABLE]`** — satu baris per slot teks yang akan terlihat:
 
 ```
@@ -35,7 +35,7 @@ btn utama  | "ekspor"                            | Ekspor CSV (2)
 empty      | -                                   | Belum ada transaksi (3)
 ```
 
-4. **Echo Test:** kolom "Teks UI" FORBIDDEN memuat 3+ kata berurutan yang sama dengan kolom "Dari instruksi".
+4. **Echo Test:** kolom "Teks UI" FORBIDDEN memuat **2+ kata berurutan** yang sama dengan kolom "Dari instruksi" (diperketat dari 3+ kata).
 5. Slot tanpa sumber di instruksi → tulis dari domain proyek (`prd.md §1`), bukan dari kosakata promosi.
 6. Teks UI = **nomina entitas** atau **verba imperatif pendek**. Bukan kalimat penjelas.
 
@@ -84,6 +84,95 @@ terpercaya / profesional / modern (sebagai klaim tanpa bukti).
 
 **Pengecualian:** kata boleh muncul jika bagian dari nama fitur/produk nyata dari user atau didukung data
 (mis. "Terintegrasi dengan Midtrans"). Klaim wajib punya fakta; tanpa fakta → hapus.
+
+---
+
+## 4.B Pattern Blocklist (Pola Kalimat Terlarang)
+Blocklist kata saja tidak cukup karena AI mudah memparafrasekan ke sinonim. Aturan ini melarang POLA:
+
+| # | Pola Terlarang | Contoh Salah | Perbaikan |
+|---|---|---|---|
+| P1 | Verba + "dengan mudah/cepat/aman" | "Kelola data dengan mudah" | "Data Pasien" (nomina saja) |
+| P2 | "Untuk [aksi] yang lebih [adjektif]" | "Untuk monitoring yang lebih efisien" | "Monitoring" |
+| P3 | "Solusi/Sistem/Platform [adjektif]" | "Sistem Terintegrasi", "Solusi Lengkap" | Nama domain spesifik |
+| P4 | Heading > 5 kata yang berisi verba | "Mengelola Semua Transaksi Harian Anda" | "Transaksi Harian" |
+| P5 | Subtitle yang berisi "Anda/kamu" | "Pantau perkembangan bisnis Anda" | "Ringkasan bulan ini" |
+| P6 | Kata sifat komparatif tanpa baseline | "Lebih cepat", "Lebih akurat" | Hapus, atau sertakan data faktual |
+| P7 | [Entitas] + "yang [klausa panjang]" | "Dashboard yang menampilkan semua data" | "Dashboard" |
+| P8 | Imperatif + objek + klausa penjelas | "Lihat semua laporan Anda di sini" | "Laporan" |
+
+---
+
+## 4.C TechLeak Expanded (Istilah Teknis Halus)
+Selain regex §7, FORBIDDEN istilah teknis halus ini muncul di teks antarmuka (UI):
+
+| Istilah Teknis Halus (❌ Terlarang di UI) | Padanan Ramah Pengguna (✅ Benar) |
+|---|---|
+| ID (sebagai header kolom tabel) | Nomor / No. / Kode |
+| Session | Sesi (hanya jika konteks auth/keamanan relevan) atau hapus |
+| Active/Inactive (sebagai status sistem backend) | Aktif / Nonaktif (hanya untuk data domain, bukan server) |
+| Query, Request, Response, Endpoint | FORBIDDEN di teks UI |
+| Null, Undefined, N/A, NaN | Kosong / Belum diisi / - |
+| Timestamp | Waktu / Tanggal |
+| Boolean (literal true/false atau 1/0 di UI) | Ya/Tidak atau icon status domain ✓/✗ |
+| Database, Server, API | FORBIDDEN di pesan dialog/notifikasi pengguna biasa |
+| Timeout, Connection Failed | "Gagal memuat. Coba lagi." (jangan sebut port/koneksi TCP) |
+| Stack trace / error code (SQLSTATE, PDOException) | "Terjadi kesalahan. Coba lagi." |
+
+---
+
+## 4.D Infra Status Badge Ban (Kapsul Status Infrastruktur)
+FORBIDDEN menambahkan badge/kapsul/pill yang menampilkan status infrastruktur di halaman end-user:
+
+### FORBIDDEN (Contoh badge yang TIDAK BOLEH ada):
+| Badge / Kapsul Terlarang | Mengapa Salah & Dilarang |
+|---|---|
+| `● Aktif` / `● Online` / `● Connected` (di pojok/header) | Status koneksi bukan urusan user. Jika error → tampilkan banner error. Jika normal → diam. |
+| `✓ Database Aktif` / `Terhubung Database` | End-user tidak perlu tahu teknologi database. Ini urusan DevOps/backend. |
+| `Server Online` / `API Ready` | Layar monitor infrastruktur, bukan antarmuka aplikasi produk. |
+| `🔴 Live` / `● Realtime` | Kecuali benar-benar live websocket/SSE nyata — badge ini klaim kosong. |
+| `✓ Terkoneksi` / `Sinkronisasi Aktif` | Jika sinkronisasi gagal → beri tahu langkah aksi. Jika berhasil → diam. |
+
+### ATURAN KAPSUL/BADGE:
+1. Badge status (termasuk warna hijau) HANYA boleh untuk status **data domain aplikasi** (misal status pesanan: "Lunas", "Dikirim"; status kehadiran: "Hadir").
+2. Badge status FORBIDDEN untuk status **infrastruktur/koneksi/server/database**.
+3. Jika ada error koneksi → tampilkan inline alert message, BUKAN badge hijau saat online dan merah saat offline.
+4. Prinsip: **Diam jika oke, bicara jika error.**
+
+---
+
+## 4.E Anti Literal Prompt Echo (Pencegahan Salinan Mentah Instruksi)
+Masalah paling persisten: AI menyalin teks instruksi user langsung ke halaman aplikasi.
+
+### Kata Instruksi yang WAJIB Dibuang dari Teks UI:
+`buat`, `buatkan`, `bikin`, `tampilkan`, `tunjukkan`, `tambahkan`, `implementasi`,
+`fitur`, `halaman`, `page`, `untuk`, `agar`, `supaya`, `dapat`, `bisa`,
+`lengkap`, `modern`, `profesional`, `interaktif`, `responsif`, `CRUD`,
+`manajemen`, `management`, `dashboard yang`, `sistem informasi`,
+`menampilkan`, `mengelola`, `melihat`, `semua data`, `seluruh data`,
+`dengan grafik`, `dengan tabel`, `dengan fitur`.
+
+### Prosedur (HARD BLOCK — bukan sekadar saran):
+1. Ambil ENTITAS dari instruksi (nomina: pasien, transaksi, produk, stok).
+2. BUANG semua kata instruksi di atas.
+3. Heading = entitas saja, max 3-5 kata.
+4. Jika instruksi = "buat dashboard manajemen stok barang dengan grafik" → `<h1>Stok Barang</h1>`. Titik.
+5. FORBIDDEN subtitle yang mendeskripsikan apa yang halaman lakukan — halaman sudah menunjukkannya secara visual.
+
+### Contoh Pelanggaran Nyata vs Benar:
+| Instruksi User | ❌ Slop (Literal Copy) | ✅ Benar (Lugas & Profesional) |
+|---|---|---|
+| "buat dashboard manajemen stok barang" | Dashboard Manajemen Stok Barang | Stok Barang |
+| "buatkan halaman untuk melihat riwayat transaksi" | Halaman untuk Melihat Riwayat Transaksi | Riwayat Transaksi |
+| "buat fitur CRUD data pasien lengkap" | Fitur CRUD Data Pasien Lengkap | Data Pasien |
+| "tampilkan statistik penjualan dengan grafik" | Menampilkan Statistik Penjualan dengan Grafik | Penjualan |
+| "buat halaman admin untuk kelola user" | Halaman Admin untuk Kelola User | Pengguna |
+| "bikin form input data karyawan baru" | Form Input Data Karyawan Baru | Karyawan Baru |
+
+### Echo Test (Diperketat):
+- Setelah tulis heading/subtitle → bandingkan dengan instruksi user.
+- Jika **2+ kata berurutan** sama dengan instruksi (diturunkan dari 3+ kata) → GAGAL, tulis ulang.
+- Test ini WAJIB dijalankan sebelum kode dikirim.
 
 ---
 
@@ -136,11 +225,13 @@ Jalankan `grep_search` (`IsRegex: true`, `MatchPerLine: true`) pada file UI yang
 (`*.html, *.php, *.blade.php, *.jsx, *.tsx, *.vue, *.astro, *.svelte`). Hit = perbaiki, lalu cek ulang.
 
 ```
-Buzz     : (?i)unlock|empower|revolution|seamless|effortless|cutting-edge|state-of-the-art|next-gen|next level|world-class|best-in-class|game-chang|elevate|transform your|unleash|supercharge|streamline|powerful|stunning|all-in-one|one-stop|solusi (terbaik|lengkap|cerdas)|terdepan|inovatif|revolusioner|canggih|komprehensif|tanpa ribet|tanpa batas|luar biasa|sempurna|nikmati kemudahan|pengalaman terbaik
-Meta     : (?i)halaman ini|section ini|di sini anda|berikut adalah|selamat datang di|fitur ini memungkinkan|kami menyediakan|platform kami|dirancang untuk|this page|this section|welcome to|we provide|designed to
-TechLeak : (?i)\(\s*(?:wib|wita|wit|utc|gmt)\b[^)]*\)|\b\d{1,2}[:.]\d{2}\s*(?:wib|wita|wit)\b|asia/jakarta|zona waktu|timezone|time zone|\breal-?time\b|diurutkan|sorted by|dienkripsi|encrypted|bcrypt|\bformat\s*:|\bresponsive\b|\bowasp\b
-Filler   : (?i)lorem ipsum|judul halaman|deskripsi singkat|your title|heading here|john doe|hero section|bento grid
-Seru     : >[^<{]*![^<=]*<
+Buzz        : (?i)unlock|empower|revolution|seamless|effortless|cutting-edge|state-of-the-art|next-gen|next level|world-class|best-in-class|game-chang|elevate|transform your|unleash|supercharge|streamline|powerful|stunning|all-in-one|one-stop|solusi (terbaik|lengkap|cerdas)|terdepan|inovatif|revolusioner|canggih|komprehensif|tanpa ribet|tanpa batas|luar biasa|sempurna|nikmati kemudahan|pengalaman terbaik
+Meta        : (?i)halaman ini|section ini|di sini anda|berikut adalah|selamat datang di|fitur ini memungkinkan|kami menyediakan|platform kami|dirancang untuk|this page|this section|welcome to|we provide|designed to
+TechLeak    : (?i)\(\s*(?:wib|wita|wit|utc|gmt)\b[^)]*\)|\b\d{1,2}[:.]\d{2}\s*(?:wib|wita|wit)\b|asia/jakarta|zona waktu|timezone|time zone|\breal-?time\b|diurutkan|sorted by|dienkripsi|encrypted|bcrypt|\bformat\s*:|\bresponsive\b|\bowasp\b
+InfraBadge  : (?i)(database aktif|terhubung (ke )?database|server (online|aktif|ready)|api (ready|connected|aktif)|●\s*(aktif|online|connected|live)|sinkronisasi aktif|terkoneksi|db connected|connection (status|active|established))
+PatternSlop : (?i)(dengan mudah|dengan cepat|dengan aman|yang lebih \w+|solusi \w+|sistem \w+|platform \w+|untuk (\w+ ){2,}yang|pantau \w+ anda|kelola \w+ anda|lihat semua)
+Filler      : (?i)lorem ipsum|judul halaman|deskripsi singkat|your title|heading here|john doe|hero section|bento grid
+Seru        : >[^<{]*![^<=]*<
 ```
 
 Hit di komentar kode / nama class / data user asli = abaikan dan catat.
@@ -150,9 +241,9 @@ Hit di komentar kode / nama class / data user asli = abaikan dan catat.
 ## 8. Output Marker
 
 ```
-[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)
+[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | Lint: ✅ (0 hit)
 ```
 
 Ada ❌ → perbaiki sebelum declare done. Jika ada yang diubah:
-`[Pragmatic Check] Removed: [buzzword/literal-copy/tech-leak] → Replaced: [versi lugas]`
+`[Pragmatic Check] Removed: [buzzword/literal-copy/tech-leak/infra-badge] → Replaced: [versi lugas]`
 

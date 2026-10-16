@@ -53,6 +53,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 - [ ] Compliance Score minimal GOOD (≥7/10) via saklar `cek komponen`
 - [ ] Build production berhasil tanpa error
 - [ ] Dev/Prod Dynamic Protocol terverifikasi (`anti-bloat-code.md §5`: zero hardcoded localhost/origin, dynamic env resolution)
+- [ ] Anti-Slop, Infra Badge Ban & Microcopy Lint lolos (`COPY_RULES.md §7`: 0 hit Buzz/Meta/TechLeak/InfraBadge/PatternSlop, Echo Test <2 kata berurutan, status infrastruktur bersih)
 - [ ] Responsive Viewport Verification (`design-system.md §10.E`: lolos uji visual di Laptop 1366×768 primary target dan Android 3M 360/393/412px)
 - [ ] Favicon dan meta tags lengkap
 - [ ] Security headers terpasang (6 header wajib: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy — rujuk gemini-execution.md §3C L6)

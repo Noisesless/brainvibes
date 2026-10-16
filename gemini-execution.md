@@ -451,11 +451,11 @@ Rhythm: [✅|❌] | Copy-slop: [✅|❌] | UUPM-sourced: [✅|❌]
 #### §4.I.2 Copy Anti-Slop Verification
 Sebelum declare done, AI REQUIRED:
 1. Jalankan lint regex `taste-skill-bridge/COPY_RULES.md §7` pada file UI yang diubah.
-2. Cocokkan teks UI dengan `[COPY TABLE]` (Echo Test: tidak ada 3+ kata berurutan sama dengan instruksi user).
-3. Cek tidak ada parameter teknis/timezone bocor (mis. `(WIB)`, timezone, sorting rule, hash) di teks UI.
-4. Cek batas kata (`COPY_RULES.md §3`) dan tidak ada eyebrow/capsule di halaman auth.
+2. Cocokkan teks UI dengan `[COPY TABLE]` (Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi user).
+3. Cek tidak ada parameter teknis/timezone bocor (mis. `(WIB)`, timezone, sorting rule, hash) atau istilah teknis halus (`COPY_RULES.md §4.C`) di teks UI.
+4. Cek batas kata (`COPY_RULES.md §3`), tidak ada eyebrow/capsule di auth, dan **FORBIDDEN status kapsul infrastruktur** (Database Aktif, Server Online, ● Aktif/Online) di semua halaman (`COPY_RULES.md §4.D`).
 5. Cek tidak ada fake-precise numbers tanpa real data.
-6. Cetak marker: `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)`
+6. Cetak marker: `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | Lint: ✅ (0 hit)`
 
 Jika ada pelanggaran → perbaiki SEBELUM declare done. FORBIDDEN declare done dengan ❌ di checklist.
 
@@ -792,6 +792,15 @@ Index Out of Sync:
 > **Sumber:** `gemini.md §0 #7`, `gemini.md §1 HARD BLOCK #11`, `.agents/rules/anti-bloat-code.md`
 > **Severity:** HARD BLOCK — pelanggaran = revisi wajib sebelum submit.
 
+### §4.O.0 Pre-Write Slop Filter (BLOCKING — Sebelum Menulis)
+
+SEBELUM AI menulis teks apapun (dialog, kode, UI, komentar, commit), terapkan 3-filter mental blocking ini:
+1. **Filter 1 — PANJANG (Anti-Bertele-tele):** Apakah kalimat ini bisa dipersingkat 50% tanpa kehilangan makna? → WAJIB perpendek.
+2. **Filter 2 — JUALAN (Anti-Promo & Fluff):** Apakah kalimat ini terdengar seperti promosi, brosur marketing, atau klaim kosong? → WAJIB potong seluruh kalimat.
+3. **Filter 3 — BOCOR (Anti-TechLeak & Anti-Infra):** Apakah ada istilah teknis backend, timezone, atau status infrastruktur (DB aktif, server online)? → WAJIB hapus atau ubah ke bahasa pengguna domain produk.
+
+Prinsip: Filter ini bekerja SEBELUM token ditulis ke response/file, bukan sekadar retrospeksi di akhir.
+
 ### §4.O.1 Anti-Verbosity dalam Dialog AI (Bahasa Interaksi)
 
 > **SSOT:** `.agents/rules/anti-bloat-code.md §1` (Blocklist lengkap EN & ID).
@@ -817,12 +826,14 @@ AI FORBIDDEN menyalin instruksi/prompt user mentah sebagai teks UI:
 | Tooltip | Max 8 kata | "Unduh laporan bulan ini" |
 | Button label | Max 3 kata | "Simpan", "Kirim", "Hapus" |
 
-**Anti-Kebocoran Teknis & Timezone:**
+**Anti-Kebocoran Teknis, Timezone & Kapsul Status Infra:**
 - Instruksi teknis seperti timezone ("local time jakarta"), sorting ("urutkan terbaru"), atau enkripsi ("bcrypt") adalah konfigurasi logika KODE, BUKAN teks layar.
 - FORBIDDEN memunculkan `(WIB)`, `(WITA)`, `(WIT)`, `WIB`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, dsb di tabel/layar UI.
+- **Infra Badge Ban:** FORBIDDEN menambahkan badge/kapsul/pill yang memamerkan status infrastruktur (seperti "Database Aktif", "Terhubung Database", "Server Online", "● Aktif/Online") di halaman end-user (`COPY_RULES.md §4.D`).
+- **Anti-Prompt-Echo:** Ambil ENTITAS saja, buang kata instruksi (buat, fitur, halaman, lengkap, dll). Echo Test max 1 kata sama; 2+ kata berurutan sama = GAGAL (`COPY_RULES.md §4.E`).
 
 **Prosedur wajib:** ekstrak entitas + aksi dari instruksi → cetak `[COPY TABLE]` → tulis teks UI dari tabel itu.
-**Self-Check Wajib:** lint regex `COPY_RULES.md §7` + `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak) sebelum declare done.
+**Self-Check Wajib:** lint regex `COPY_RULES.md §7` + `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak, InfraBadge) sebelum declare done.
 
 ### §4.O.3 Anti-Over-Engineering (YAGNI-First Architecture)
 
@@ -845,9 +856,13 @@ AI FORBIDDEN menyalin instruksi/prompt user mentah sebagai teks UI:
 
 ### §4.O.5 Enforcement Output
 
-Jika AI mendeteksi pelanggaran saat self-check:
+Setiap respons AI yang menghasilkan atau memodifikasi layer antarmuka (UI) WAJIB menyertakan evaluasi:
 ```
-[Pragmatic Check] Fixed: [jenis pelanggaran] → [apa yang diperbaiki]
+[Pragmatic Check] Removed: [buzzword/literal-copy/tech-leak/infra-badge] → Replaced: [versi lugas]
+```
+Atau jika seluruh string sudah patuh sejak awal:
+```
+[Pragmatic Check] SlopFilter: ✅ | Echo: ✅ (2+ kata) | InfraBadge: ✅ (0 hit) | YAGNI: ✅
 ```
 
 Jika AI mendeteksi instruksi user yang mengarah ke over-engineering:

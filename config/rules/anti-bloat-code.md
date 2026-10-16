@@ -11,6 +11,15 @@ Berlaku untuk 3 domain: **bahasa dialog**, **teks dalam aplikasi**, dan **arsite
 
 ---
 
+## §0. SATU ATURAN (Jika Hanya Ingat Satu Hal)
+
+Setiap teks yang akan dilihat user — baik di dialog, antarmuka aplikasi (UI), komentar kode, maupun commit log —
+harus bisa dibaca oleh developer senior tanpa merasa sedang membaca brosur marketing atau instruksi teknis mentah.
+Jika kalimat terasa "jualan" → potong. Jika bisa lebih pendek → pendekkan.
+Prinsip dasar: **Diam jika oke, bicara jika error.** Jangan tampilkan status infrastruktur (seperti koneksi database/server aktif) di antarmuka pengguna biasa.
+
+---
+
 ## §1. Anti-Verbosity & Anti-Buzzword (Dialog AI → User)
 
 ### FORBIDDEN Words & Phrases (Blocklist Dialog):
@@ -42,6 +51,15 @@ Berlaku untuk 3 domain: **bahasa dialog**, **teks dalam aplikasi**, dan **arsite
     keseluruhan user experience Anda!"
 ✅ "Form sudah diperbaiki. Validasi client-side + server-side aktif."
 ```
+
+### §1.B Pola Pikir Terlarang (Pattern-Based, Bukan Word-Based)
+FORBIDDEN pola kalimat berikut dalam dialog, APAPUN kata yang dipakai:
+1. **[Klaim tanpa bukti]** — "X lebih baik/cepat/optimal" tanpa angka benchmark konkret.
+2. **[Pujian diri sendiri]** — "Implementasi ini sudah [sangat baik / optimal / elegan]". Cukup laporkan status teknis selesai.
+3. **[Penjelasan berlebih]** — Menulis >2 kalimat penjelasan untuk perubahan kode <10 baris.
+4. **[Janji implisit]** — "Dengan ini, [hasil positif masa depan]". Cukup laporkan apa yang diubah hari ini.
+5. **[Kalimat pembuka meta]** — "Saya telah berhasil [aksi]" (langsung laporkan poin hasilnya).
+6. **[Subordinat bertingkat]** — Kalimat >25 kata dengan klausa bertumpuk "yang", "sehingga", "agar".
 
 ---
 
@@ -122,6 +140,21 @@ Aturan ini WAJIB dipatuhi saat menghasilkan markup/template/view antarmuka (HTML
    - ❌ "Menganalisis metrik data performa secara komprehensif" → ✅ "Lihat statistik"
    - ❌ "Konfigurasikan preferensi pengaturan profil pengguna Anda" → ✅ "Pengaturan profil"
 
+### §2.C Area Abu-Abu (Kode Bukan UI, Tapi Dibaca Manusia)
+Aturan anti-bloat JUGA berlaku untuk artefak pendukung:
+1. **Komentar kode** — Cukup 1 baris WHY, bukan 3 baris WHAT.
+   - ❌ `// This elegantly handles the user authentication flow with optimal performance`
+   - ✅ `// JWT + bcrypt, session 24h`
+2. **Console.log / error log** — Fakta, bukan narasi.
+   - ❌ `console.log('Successfully completed the data synchronization process!')`
+   - ✅ `console.log('sync done', { count })`
+3. **Commit message** — Subjek max 50 karakter, imperatif dan padat.
+   - ❌ `feat: Successfully implemented a comprehensive user management dashboard`
+   - ✅ `feat: add user dashboard`
+4. **Penamaan variabel/fungsi** — Deskriptif, bukan naratif.
+   - ❌ `fetchAllComprehensiveUserDataFromDatabase()`
+   - ✅ `getUsers()`
+
 ---
 
 ## §3. Anti-Over-Engineering (Arsitektur & Kode)
@@ -187,8 +220,13 @@ Output wajib jika ada perbaikan:
 
 ### §5.B Model Profile Hints (Spesifik Karakter AI)
 - **Gemini 3.8 Flash:**
-  - *Tendensi:* Menghasilkan layout generic/centered dan teks promosi/fluff lebay jika tidak dikontrol ketat.
-  - *Mitigasi Wajib:* Pangkas 50% panjang teks default, larang hero centered jika variasi > 4, dan gunakan nominatif padat pada heading/label/button.
+  - *Slop Utama:* Menghasilkan layout generic/centered, teks promosi/fluff lebay di heading dan subtitle, serta kapsul/badge status infrastruktur yang tidak perlu (seperti "Database Aktif" / "● Online").
+  - *Mitigasi Wajib:* Pangkas 50% panjang teks default. Heading = NOMINA SAJA (bukan kalimat). Max 3 kata untuk button. Larang hero centered jika variasi > 4. FORBIDDEN badge status server/DB.
+  - *Pattern khas:* "Kelola [X] dengan mudah" → FORBIDDEN. Tulis "[X]" saja.
 - **Claude Opus 4.6:**
-  - *Tendensi:* Over-engineering arsitektur kode (wrapper class 1 lapis, generic typing berlebihan, abstraction layer tanpa konsumen kedua).
-  - *Mitigasi Wajib:* Terapkan prinsip YAGNI mutlak. Panggil langsung fungsi/API tanpa lapisan wrapper perantara jika belum ada konsumen kedua.
+  - *Slop Utama:* Over-engineering arsitektur kode (wrapper class 1 lapis, generic typing berlebihan, abstraction layer tanpa konsumen kedua), over-explaining di dialog (>3 paragraf untuk hal sepele), dan komentar kode naratif.
+  - *Mitigasi Wajib:* Terapkan prinsip YAGNI mutlak. Panggil langsung fungsi/API tanpa lapisan wrapper perantara jika belum ada konsumen kedua. Max 3 kalimat per respons untuk task kecil. Komentar kode max 1 baris.
+  - *Pattern khas:* "Saya telah berhasil mengimplementasikan [X] yang..." → FORBIDDEN. Tulis "[X] selesai."
+- **Gemini 2.5 Pro / Claude Sonnet:**
+  - *Slop Utama:* Verbose tapi akurat — banyak penjelasan teknis yang benar tapi tidak diminta atau berlebihan.
+  - *Mitigasi Wajib:* Patuhi `user-prefs.md` response_style. Jika CONCISE → max 3-5 baris per respons.

@@ -68,7 +68,7 @@
 ### 2.2 Data Display (5 Komponen)
 - **Table:** Default, Striped, dan Borderless varian. Cell padding `12px 16px`, header padding `14px 16px`, sticky header `z-index: 10`.
 - **Pagination:** Item size `36px` (`var(--radius-md)`), active page bg `var(--vibe-accent-1)`, gap `6px`.
-- **Badge / Tag:** Solid, Outline, dan Soft variants. Height `22px-28px`, padding `2px 8px`, border-radius `var(--radius-md)`.
+- **Badge / Tag:** Solid, Outline, dan Soft variants. Height `22px-28px`, padding `2px 8px`, border-radius `var(--radius-md)`. **Infra Status Badge Ban:** Badge status HANYA untuk status data domain (pesanan, kehadiran, keaktifan akun user). FORBIDDEN mutlak kapsul status infrastruktur/koneksi (Database Aktif, Server Online, ● Aktif/Online). Prinsip: *Diam jika oke, bicara jika error*.
 - **Empty State:** Max-width `420px`, icon size `56px`, gap vertikal `16px`.
 - **Skeleton / Shimmer:** Shimmer animation `1.5s infinite`, bg `var(--vibe-surface-sub)`.
 
@@ -160,11 +160,15 @@
 > Seluruh teks yang tampil pada antarmuka pengguna wajib berupa nomina entitas atau verba imperatif pendek yang diturunkan dari `[COPY TABLE]`.
 
 ### Prinsip Utama Teks Antarmuka:
-1. **Anti-Kebocoran Teknis (Anti-Tech-Leak):** Instruksi teknis backend/JS (seperti waktu lokal Jakarta, urutan query, algoritma hashing) adalah logika kode, BUKAN teks tampilan layar.
+1. **Pre-Write Slop Filter (§4.O.0):** Terapkan 3 filter mental blocking (Panjang ≤50%, Jualan/Brosur potong total, Bocor/TechLeak hapus) sebelum teks ditulis ke file/UI.
+2. **Infra Status Badge Ban (§4.D):** FORBIDDEN mutlak kapsul status infrastruktur/koneksi (Database Aktif, Server Online, ● Aktif/Online). Status koneksi/infrastruktur bukan konsumsi pengguna biasa. Banner/alert hanya tampil jika terjadi error aktual. Prinsip: *Diam jika oke, bicara jika error*.
+3. **Anti-Kebocoran Teknis (Anti-Tech-Leak §4.C):** Instruksi teknis backend/JS (seperti waktu lokal Jakarta, urutan query, algoritma hashing) adalah logika kode, BUKAN teks tampilan layar.
    - ❌ **Dilarang:** `<th>Waktu (WIB)</th>`, `<td>17:02 (WIB)</td>`, `<span>Zona waktu Asia/Jakarta</span>`, `<p>Data realtime diurutkan terbaru</p>`, `<small>Password dienkripsi bcrypt</small>`.
    - ✅ **Wajib:** `<th>Waktu</th>`, `<td>17:02</td>`, `<td>03 Okt 2026, 17:02</td>`. Format waktu diatur di backend/JS tanpa label zona waktu mentah.
-2. **Anti-Literal-Copy & Echo Test:** Dilarang menyalin teks instruksi user mentah menjadi teks antarmuka. Minimal ada transformasi menjadi frasa produk nyata.
-3. **Batas Kata:** Heading halaman max 5 kata (hero headline max 8), subtitle max 15 kata, tombol max 3 kata, toast max 10 kata, placeholder max 5 kata.
-4. **Verifikasi Pre-Flight:** Wajib menjalankan filter regex `COPY_RULES.md §7` dan mencetak marker `[COPY CHECK]` sebelum menyatakan task UI selesai.
+4. **Anti-Literal-Copy & Echo Test Diperketat (§4.E):** Dilarang menyalin kata-kata instruksi prompt mentah (buat, fitur, halaman, lengkap, dll). Ambil entitas saja. Echo Test: FORBIDDEN **2+ kata berurutan** sama dengan prompt instruksi.
+5. **Pattern Blocklist (§4.B):** Larangan pola kalimat klise promosi (mis. "dengan mudah/cepat/aman", "untuk monitoring yang lebih efisien", "solusi terintegrasi").
+6. **Batas Kata:** Heading halaman max 5 kata (hero headline max 8), subtitle max 15 kata, tombol max 3 kata, toast max 10 kata, placeholder max 5 kata.
+7. **Verifikasi Pre-Flight:** Wajib menjalankan filter regex `COPY_RULES.md §7` (Buzz, Meta, TechLeak, InfraBadge, PatternSlop) dan mencetak marker `[COPY CHECK]` sebelum menyatakan task UI selesai.
+
 
 

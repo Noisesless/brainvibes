@@ -50,13 +50,14 @@
 - **Hard Blocks:** 11 (termasuk #11: Pragmatic Output & Anti-Over-Engineering Law)
 - **Gates:** 6
 - **Standards:** 9 (termasuk #8: Visual Registry Sync & #9: Responsive Laptop-First + Android 3M)
+- **Visual Gates:** 18 Larangan visual + 6 Penegakan positif (termasuk #22 Infra Status Badge Ban & #24 Anti-Literal Prompt Echo / Echo Test 2+ kata)
 - **Complexity:** Medium (technical focus, anti-AI-slop visual gate, unified dispatch table, pragmatic output gate)
 
 ### gemini-execution.md (Execution Details)
-- **Lines:** 899
+- **Lines:** 877
 - **Sections:** Main section groups (§3.A-C, §4.A-O sekuensial konsisten — 0 duplikasi, 0 tabrakan anchor)
-- **Visual Protocols:** §4.K Tiered Visual Gate (Tier 1 tweak 1 baris, Tier 2 komponen 2 baris, Tier 3 full 6-gate pipeline), Direct-Read CSV fallback, redesign execution protocol, §4.I pre-flight self-check & Copy Anti-Slop verification
-- **Complexity:** High (comprehensive execution, security, tiered visual gate, & efficiency protocols)
+- **Visual & Output Protocols:** §4.K Tiered Visual Gate, §4.I.2 Copy Anti-Slop Verification, §4.O.0 Pre-Write Slop Filter (3 filter mental blocking: Panjang, Jualan, Bocor), §4.O.5 Enforcement Output (`[Pragmatic Check]`)
+- **Complexity:** High (comprehensive execution, security, tiered visual gate, anti-slop filters & efficiency protocols)
 - **Load Method:** view_file on-demand
 
 ### gemini-templates.md (Templates)
@@ -67,10 +68,16 @@
 - **Load Method:** view_file on-demand
 
 ### anti-bloat-code.md (Universal Rules Engine)
-- **Lines:** 85
+- **Lines:** 233
 - **Scope:** Global (`~/.gemini/config/rules/`) & Workspace (`.agents/rules/`)
-- **Key Modules:** Blocklist kata hiperbola/buzzword, anti-literal-copy teks prompt ke UI, batasan teks terukur (heading ≤5, subtitle ≤15, card ≤25, toast ≤10 kata), anti-over-engineering (YAGNI, flat structure, zero empty wrapper), dev/prod dynamic protocol.
+- **Key Modules:** §0 Satu Aturan (Diam jika oke, bicara jika error), §1 Anti-Verbosity/Buzzwords, §1.B Pola Pikir Terlarang (Pattern-Based), §2 Anti-Literal Copy, §2.A TechLeak & Timezone, §2.B View/Frontend Generator, §2.C Area Abu-Abu (komentar kode, console logs, commit message, penamaan fungsi), §3 Anti-Over-Engineering (YAGNI), §4 Dynamic Dev/Prod, §5 Model Profile Hints.
 - **Load Method:** Full read on first session / system rules discovery
+
+### COPY_RULES.md (Single Source of Truth Teks UI)
+- **Lines:** 250
+- **Scope:** `config/skills/taste-skill-bridge/COPY_RULES.md`
+- **Key Modules:** Gate 5B `[COPY TABLE]`, §3 Batas Kata Komponen, §4.A Blocklist Promosi EN+ID, §4.B Pattern Blocklist (P1-P8), §4.C TechLeak Expanded (10 padanan istilah teknis halus), §4.D Infra Status Badge Ban (status koneksi/server terlarang di UI biasa), §4.E Anti Literal Prompt Echo (stripping 30+ kata instruksi, Echo Test <2 kata berurutan), §7 Lint Mekanis (Buzz, Meta, TechLeak, InfraBadge, PatternSlop, Filler, Seru), §8 `[COPY CHECK]` marker.
+- **Load Method:** Range / full read saat menulis teks UI atau perubahan visual
 
 ### secure-patterns.md (Security Patterns Registry)
 - **Lines:** 2036

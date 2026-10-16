@@ -17,7 +17,7 @@
     ├── user-prefs.md      → User preferences (highest priority, Windows native & XAMPP paths)
     ├── design-system.md   → Framework Master Reference: CSS tokens, 32-component registry (§7B), & 7-tier responsive strategy (~70KB)
     ├── prd-template.md    → PRD blueprint
-    ├── anti-bloat-code.md → Global & Workspace Rules Engine (.agents/rules & config/rules: §2.B View Anti-Bloat + Model Hints)
+    ├── anti-bloat-code.md → Global & Workspace Rules Engine (.agents/rules & config/rules: §0 Satu Aturan, §1.B Pattern Blocklist, §2.B View Anti-Bloat, §2.C Area Abu-Abu)
     ├── .gitattributes     → Cross-platform line endings normalization (LF/CRLF)
     └── scripts/           → ensure-cbm-daemon (.ps1/.sh), index-project (.ps1/.sh), cbm-hook (.ps1/.sh)
     ↓
@@ -96,9 +96,9 @@ User Input → Presentation → Logic → Data → Response
 | `gemini-templates.md` | Saat saklar aktif | View_file (section) | ~32KB (430 lines) |
 | `design-system.md` (root) | Saat setup CSS / render 32 komponen / breakpoints (Framework Reference) | Section specific (§1-§13, §7B, §10.E) | ~70KB (1480 lines) |
 | `.docs/design-system.md` | Saat merujuk Visual DNA proyek aktif (Project Instance) | Full read | ~10KB (170 lines) |
-| `anti-bloat-code.md` | Inline di §0 #7, §1 #11, first session | Full read | ~2.5KB (85 lines) |
+| `anti-bloat-code.md` | Inline di §0 #7, §1 #11, first session | Full read | ~13KB (233 lines) |
 | `taste-skill-bridge/SKILL.md` | Saat redesign / buat halaman | Full read (router) → ESSENTIAL/DETAILED | ~2.5KB (61 lines) |
-| `taste-skill-bridge/COPY_RULES.md` | Saat menulis teks UI / heading / tombol / toast | Range read / Full read | ~7KB (140 lines) |
+| `taste-skill-bridge/COPY_RULES.md` | Saat menulis teks UI / heading / tombol / toast | Range read / Full read | ~15KB (250 lines) |
 
 ## Token Efficiency Strategy
 
@@ -110,4 +110,4 @@ User Input → Presentation → Logic → Data → Response
 6. **Graph-First Query** — `codebase-memory-mcp` structural query (~3.4K tokens) menggantikan file-grep (~412K tokens) untuk analisis arsitektur, call chain, dan routes
 7. **Lean MCP Stack** — 2 server (dari 6) mengurangi startup overhead dan tool definition tokens
 8. **Daemon Persistence & Hook Auto-Start** — Background daemon CBM pada port 9749 dijaga selalu warm via `PreInvocation` hook (`cbm-hook.sh` / `cbm-hook.ps1`), mengeliminasi startup cold-boot per perintah CLI/tool.
-9. **Pragmatic Output & Anti-Bloat Law** — Pencegahan dialog verbose/buzzword, eliminasi instruksi prompt mentah ke teks UI aplikasi, dan arsitektur kode lugas/YAGNI tanpa wrapper kosong/abstraksi tanpa konsumen kedua.
+9. **Pragmatic Output, Anti-Slop & Infra-Ban Law** — Pre-write slop filter §4.O.0, pencegahan dialog verbose/buzzword, eliminasi instruksi prompt mentah ke teks UI (Echo Test 2+ kata), larangan mutlak kapsul status infrastruktur (Diam jika oke, bicara jika error), dan arsitektur kode lugas/YAGNI tanpa wrapper kosong/abstraksi tanpa konsumen kedua.

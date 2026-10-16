@@ -9,7 +9,7 @@
 | `AGENTS.global.md` | 2+ (.gemini global, execution) | L1 Global Dispatcher master |
 | `AGENTS.md` | 1 (Antigravity IDE workspace) | Workspace Pointer minimal |
 | `design-system.md` | 3+ (UI components, visual gate, responsive strategy) | Design tokens & 32-component registry |
-| `anti-bloat-code.md` | 4+ (gemini.md §0#7/§1#11, gemini-execution.md §4.O, §2.B View Anti-Bloat) | Behavior & Pragmatic Code Rules |
+| `anti-bloat-code.md` | 5+ (gemini.md §0#7/§1#11, gemini-execution.md §4.O, §2.B View Anti-Bloat, §1.B Pattern Blocklist, §2.C Area Abu-Abu) | Behavior & Pragmatic Code Rules |
 | `config/mcp_config.json` | 2 (codebase-memory, context7) | MCP servers |
 | `config/hooks.json` / `.agents/hooks.json` | 1+ (Antigravity IDE lifecycle) | Lifecycle hooks config |
 
@@ -43,7 +43,7 @@
 | Skill | Dependencies | Purpose |
 |---|---|---|
 | `ui-ux-pro-max` | 18 datasets (colors, typography, styles, ui-reasoning, landing, dll) | Design intelligence (Search / Direct-Read) |
-| `taste-skill-bridge` | ui-ux-pro-max, SKILL.md (router), ESSENTIAL, DETAILED, REFERENCE, CHEATSHEET, MODEL_HINTS | Anti-slop bridge & model overrides |
+| `taste-skill-bridge` | ui-ux-pro-max, SKILL.md (router), ESSENTIAL, DETAILED, REFERENCE, CHEATSHEET, MODEL_HINTS, COPY_RULES (Gate 5B, §4.B Pattern Blocklist, §4.D InfraBadge Ban, §4.E Anti-Prompt Echo) | Anti-slop bridge, microcopy SSOT & model overrides |
 | `security-patterns` | known-vulns.md, secure-patterns.md (SP-001..SP-030), xampp-php-patterns.md (SP-PHP-001..SP-PHP-005), audit-template.md | Security rules (30 SPs + 5 PHP SPs + 5-tier adaptive rate limiting) |
 | `code-snippets` | auth-patterns.md, form-patterns.md | Reusable snippets |
 | `database-patterns` | - | Schema design |

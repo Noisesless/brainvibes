@@ -14,7 +14,7 @@ description: |
 
 ---
 
-## Gemini 3.7 Flash — Known Tendencies & Overrides
+## Gemini (3.7 / 3.8 Flash) — Known Tendencies & Overrides
 
 ### Layout Slop (HARD OVERRIDE)
 | Tendency | Override |
@@ -43,6 +43,7 @@ description: |
 | Tendency | Override |
 |---|---|
 | Eyebrow/capsule badge di setiap heading | → FORBIDDEN di auth pages. Max 1 per 3 section di halaman lain |
+| Kapsul status infra ("Database Aktif", "● Online") | → FORBIDDEN di semua halaman end-user. Status koneksi bukan info user (COPY_RULES.md §4.D) |
 | Ikon SVG hand-rolled (path mentah) | → FORBIDDEN. Gunakan icon library proyek |
 | Fake stats ("92% faster", "4.1× growth") | → FORBIDDEN tanpa real data |
 | Border/outline/shadow pada logo | → FORBIDDEN. Logo as-is tanpa dekorasi |
@@ -53,6 +54,7 @@ Dua kebiasaan yang sering muncul, di SEMUA model:
 | Tendency | Override |
 |---|---|
 | Prompt user disalin jadi heading/subtitle ("Halaman untuk menampilkan data...") | → Cetak `[COPY TABLE]`: ambil entitas + aksi, buang kata instruksi. Heading = nomina |
+| Prompt user disalin literal ("Dashboard Manajemen Stok Barang") | → Ambil ENTITAS saja ("Stok Barang"). Buang semua kata instruksi (COPY_RULES.md §4.E) |
 | Slot kosong diisi kata promosi ("Unlock", "Seamless", "Solusi terbaik", "Terdepan") | → Blocklist EN+ID di `COPY_RULES.md §4`. Tanpa fakta = hapus |
 | Kalimat pembuka meta ("Halaman ini...", "Selamat datang di...", "Berikut adalah...") | → Hapus, langsung isi |
 | Istilah brief desain bocor ke UI ("Hero Section", "Bento Grid", "Dark Mode") | → Pakai nama user-facing |
@@ -63,12 +65,27 @@ Dua kebiasaan yang sering muncul, di SEMUA model:
 
 ---
 
+## Dialog Slop (SEMUA Model — HARD OVERRIDE)
+
+| Tendency | Override |
+|---|---|
+| "Saya telah berhasil [aksi]..." | → Hapus "Saya telah berhasil". Langsung tulis hasil: "[X] selesai." |
+| "Dengan perubahan ini, [janji masa depan]..." | → Hapus. Tulis fakta teknis: "Form validation client+server aktif." |
+| "Berikut adalah penjelasan lengkap..." | → Hapus. Langsung laporkan poin inti atau diff kode. |
+| Paragraf penjelasan sebelum kode | → Max 1 kalimat konteks singkat. Kode langsung di bawahnya. |
+| "Perlu dicatat bahwa..." | → Tulis langsung catatan intinya tanpa basa-basi pembuka. |
+| Pujian diri ("solusi yang sangat elegan / arsitektur robust") | → FORBIDDEN. Tulis fakta teknis terukur. |
+
+---
+
 ## Claude (Opus/Sonnet) — Known Tendencies
 
 | Tendency | Override |
 |---|---|
 | Over-engineered CSS (terlalu banyak utility class) | → Gunakan token-based approach, jangan atomic CSS berlebihan |
 | Verbose HTML (div nesting terlalu dalam) | → Max 4 level nesting. Gunakan semantic HTML |
+| Over-explaining di dialog (>3 paragraf untuk task kecil) | → Max 3-5 baris per respons sesuai CONCISE style |
+| Komentar kode naratif / abstraksi wrapper 1 lapis | → YAGNI mutlak. Komentar max 1 baris WHY. Panggil fungsi langsung |
 | Cenderung patuh tapi kadang skip UUPM search | → Tetap enforce Gate 3 UUPM — jangan skip |
 | Suka menambah fitur tidak diminta | → Stick ke brief. FORBIDDEN scope creep visual |
 
@@ -80,3 +97,4 @@ Dua kebiasaan yang sering muncul, di SEMUA model:
 2. **Rhythm Score WAJIB** — output `[RHYTHM SCORE]` sebelum HTML
 3. **Pre-Flight WAJIB** — output `[TASTE-SKILL PRE-FLIGHT]` sebelum declare done
 4. **Copy Gate berlaku universal** — `[COPY TABLE]` sebelum kode, `[COPY CHECK]` sebelum declare done (`COPY_RULES.md`)
+5. **Anti-Infra Badge & Anti-Echo WAJIB** — FORBIDDEN kapsul status infra (DB/Server) dan FORBIDDEN salin teks prompt ke UI (`COPY_RULES.md §4.D, §4.E`)

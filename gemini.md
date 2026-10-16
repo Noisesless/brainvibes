@@ -68,7 +68,7 @@
 Setiap output tugas (task) koding AI WAJIB memenuhi target kualitas positif berikut:
 1. **Kode Bersih (First-Attempt Clean):** Compile, lint, dan type-check lolos tanpa error fatal pada percobaan pertama. Minimalis, YAGNI, tanpa boilerplate mati.
 2. **Kepatuhan Visual Token (Zero Hardcode):** 100% nilai warna, spacing, radius, dan tipografi menggunakan CSS variables `var(--vibe-*)` dari `design-system.md §7B`. Responsif laptop 1366px + Android 3M tervalidasi.
-3. **Kualitas Microcopy (Anti-Slop Copy):** Batas kata terpenuhi 100% merujuk `COPY_RULES.md`, nol kata terlarang, tidak ada parameter teknis backend bocor ke UI.
+3. **Kualitas Microcopy (Anti-Slop Copy):** Batas kata terpenuhi 100% merujuk `COPY_RULES.md`, nol kata terlarang, tidak ada parameter teknis backend bocor ke UI, bebas kapsul status infrastruktur, dan lolos Echo Test (max 1 kata sama dari instruksi).
 4. **Sinkronisasi Konteks (Zero Drift):** Snapshot `app-context.md` ter-overwrite akurat dan `handover.md` ter-update setiap sub-task selesai.
 5. **Keamanan Proaktif (Zero Known Gap):** Pola aman diterapkan senyap (silent read `security-patterns`), sanitasi input, parameterized query, dan autentikasi kuat.
 
@@ -116,9 +116,9 @@ Jika ditemukan perbedaan aturan, batas angka, atau instruksi antar-berkas sistem
 19. ✅ **UUPM Gate:** REQUIRED jalankan UUPM `search.py --design-system` ATAU Direct-Read CSV (`grep_search` di `colors.csv`/`styles.csv`/`typography.csv`) SEBELUM menulis CSS token baru. FORBIDDEN deklarasi `:root` tanpa sumber data UUPM.
 20. ✅ **Design Read Gate:** REQUIRED output `[Design Read]` + `[RHYTHM SCORE]` sebelum menulis HTML/JSX halaman baru atau redesign. Kode tanpa Design Read = INVALID.
 21. ✅ **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
-22. ✅ **Capsule/Eyebrow Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. Eyebrow = salah satu tanda AI slop paling umum.
+22. ✅ **Capsule/Eyebrow & Infra Badge Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. **FORBIDDEN mutlak kapsul status infrastruktur/koneksi** (seperti "Database Aktif", "Terhubung Database", "Server Online", "● Aktif/Online") di antarmuka pengguna biasa — status koneksi hanya dilaporkan via alert jika error, bukan badge hijau saat normal (`COPY_RULES.md §4.D`). Eyebrow/kapsul = tanda AI slop paling mencolok.
 23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN kata promosi EN+ID ("Unlock", "Seamless", "Solusi terbaik", "Terdepan", dll — daftar lengkap `taste-skill-bridge/COPY_RULES.md §4`) dan kalimat meta ("Halaman ini...", "Selamat datang di..."). FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
-24. ✅ **Anti-Literal Copy & Tech-Leak Gate:** FORBIDDEN menyalin instruksi/prompt user mentah atau membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type) menjadi teks UI. REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada 3+ kata berurutan sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (termasuk TechLeak check).
+24. ✅ **Anti-Literal Copy, Anti-Echo & Tech-Leak Gate:** FORBIDDEN menyalin instruksi/prompt user mentah atau membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type) menjadi teks UI. Ambil ENTITAS saja dan buang kata instruksi (`COPY_RULES.md §4.E`). REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak, InfraBadge).
 
 ### Protokol Output Wajib:
 
