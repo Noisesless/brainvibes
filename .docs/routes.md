@@ -58,7 +58,7 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 | `visual gate (§4K, §4I)` | CSS/style/layout changes | 6-gate pipeline, UUPM direct-read, ui-reasoning, §7B tokens, pre-flight |
 | `pre-write slop filter (§4.O.0)` | Sebelum menulis teks/file | 3-filter mental blocking: potong panjang 50%, basmi jualan, bersihkan tech-leak |
 | `pragmatic output (§4.O)` | Seluruh dialog & UI text | Anti-buzzword, anti-literal-copy prompt→UI, metrik batas teks, YAGNI |
-| `copy anti-slop (§4.D, §4.E)` | Teks UI & komponen visual | Infra Badge Ban (Diam jika oke), Echo Test (<2 kata), 7-regex mechanical lint |
+| `copy anti-slop (§4.D, §4.E, §4.F)` | Teks UI & komponen visual | Infra Badge Ban (Diam jika oke), Echo Test (<2 kata), Em-Dash Ban, 8-regex mechanical lint |
 | `visual registry sync (§7B, §10.E)` | Rendering komponen UI | Token registry 32-komponen, responsive Laptop 1366 & Android 3M |
 | `ask-before-assume (§3.A)` | Ambiguous instructions | Clarify before acting |
 | `technical debate (§0.5)` | User proposal | Challenge with factual data if needed |

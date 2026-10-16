@@ -98,7 +98,7 @@ User Input → Presentation → Logic → Data → Response
 | `.docs/design-system.md` | Saat merujuk Visual DNA proyek aktif (Project Instance) | Full read | ~10KB (170 lines) |
 | `anti-bloat-code.md` | Inline di §0 #7, §1 #11, first session | Full read | ~13KB (233 lines) |
 | `taste-skill-bridge/SKILL.md` | Saat redesign / buat halaman | Full read (router) → ESSENTIAL/DETAILED | ~2.5KB (61 lines) |
-| `taste-skill-bridge/COPY_RULES.md` | Saat menulis teks UI / heading / tombol / toast | Range read / Full read | ~15KB (250 lines) |
+| `taste-skill-bridge/COPY_RULES.md` | Saat menulis teks UI / heading / tombol / toast | Range read / Full read | ~16KB (258 lines) |
 
 ## Token Efficiency Strategy
 
@@ -110,4 +110,4 @@ User Input → Presentation → Logic → Data → Response
 6. **Graph-First Query** — `codebase-memory-mcp` structural query (~3.4K tokens) menggantikan file-grep (~412K tokens) untuk analisis arsitektur, call chain, dan routes
 7. **Lean MCP Stack** — 2 server (dari 6) mengurangi startup overhead dan tool definition tokens
 8. **Daemon Persistence & Hook Auto-Start** — Background daemon CBM pada port 9749 dijaga selalu warm via `PreInvocation` hook (`cbm-hook.sh` / `cbm-hook.ps1`), mengeliminasi startup cold-boot per perintah CLI/tool.
-9. **Pragmatic Output, Anti-Slop & Infra-Ban Law** — Pre-write slop filter §4.O.0, pencegahan dialog verbose/buzzword, eliminasi instruksi prompt mentah ke teks UI (Echo Test 2+ kata), larangan mutlak kapsul status infrastruktur (Diam jika oke, bicara jika error), dan arsitektur kode lugas/YAGNI tanpa wrapper kosong/abstraksi tanpa konsumen kedua.
+9. **Pragmatic Output, Anti-Slop & tasteskill v2 Law** — Pre-write slop filter §4.O.0, pencegahan dialog verbose/buzzword, eliminasi instruksi prompt mentah ke teks UI (Echo Test 2+ kata), larangan mutlak kapsul status infrastruktur, larangan hairlines/resting shadows/em-dash di UI (studi 247 situs kurasi tasteskill v2), dan arsitektur kode lugas/YAGNI tanpa wrapper kosong/abstraksi tanpa konsumen kedua.

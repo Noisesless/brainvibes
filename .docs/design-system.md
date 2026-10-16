@@ -46,10 +46,9 @@
 
 ### Geometry & Elevation
 - **Border Radius:** `--radius-md: 8px` (Rounded System)
-- **Shadow System:**
-  - Passive Card: `0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2)`
-  - Hover Elevation: `0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4)`
-  - Modal / Dialog: `0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)`
+- **Shadow System (tasteskill v2 empirical):** Dilarang resting shadows pada elemen diam/menempel (kartu, tombol statis). Elevasi permukaan dicapai via langkah tone (`--vibe-surface`, `--vibe-surface-sub`). Shadow HANYA untuk elemen yang benar-benar melayang (floating):
+  - Hover Elevation / Tooltip: `0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4)`
+  - Modal / Dialog / Popover: `0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)`
 
 ---
 
@@ -84,7 +83,7 @@
 - **Toast:** Max-width `360px`, fixed bottom-right `16px`, auto-dismiss `4000ms`, max 3 stacked.
 
 ### 2.5 Interactive (7 Komponen)
-- **Button:** SM (`32px`), MD (`40px`), LG (`48px`), XL (`56px`). Variants: Primary, Secondary, Ghost, Danger.
+- **Button:** SM (`32px`), MD (`40px`), LG (`48px`), XL (`56px`). Variants: Primary, Secondary, Ghost, Danger. Geometry (tasteskill v2): Utamakan 52% square-cornered atau 23% fully round pill (hindari soft radius 8-16px generik tanpa pertimbangan karakter).
 - **Form / Input:** Height `40px`, padding `10px 14px`, focus-ring `0 0 0 3px rgba(56, 189, 248, 0.25)`.
 - **Card:** Padding default `24px` (`--space-lg`), compact `16px` (`--space-md`), hover lift `translateY(-2px)`.
 - **Modal / Dialog:** Width SM (`400px`), MD (`560px`), LG (`720px`), full mobile `calc(100vw - 32px)`, backdrop-blur `4px`.

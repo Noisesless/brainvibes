@@ -74,9 +74,9 @@
 - **Load Method:** Full read on first session / system rules discovery
 
 ### COPY_RULES.md (Single Source of Truth Teks UI)
-- **Lines:** 250
+- **Lines:** 258
 - **Scope:** `config/skills/taste-skill-bridge/COPY_RULES.md`
-- **Key Modules:** Gate 5B `[COPY TABLE]`, §3 Batas Kata Komponen, §4.A Blocklist Promosi EN+ID, §4.B Pattern Blocklist (P1-P8), §4.C TechLeak Expanded (10 padanan istilah teknis halus), §4.D Infra Status Badge Ban (status koneksi/server terlarang di UI biasa), §4.E Anti Literal Prompt Echo (stripping 30+ kata instruksi, Echo Test <2 kata berurutan), §7 Lint Mekanis (Buzz, Meta, TechLeak, InfraBadge, PatternSlop, Filler, Seru), §8 `[COPY CHECK]` marker.
+- **Key Modules:** Gate 5B `[COPY TABLE]`, §3 Batas Kata Komponen, §4.A Blocklist Promosi EN+ID, §4.B Pattern Blocklist (P1-P8), §4.C TechLeak Expanded (10 padanan istilah teknis halus), §4.D Infra Status Badge Ban (status koneksi/server terlarang di UI biasa), §4.E Anti Literal Prompt Echo (stripping 30+ kata instruksi, Echo Test <2 kata berurutan), §4.F Em-Dash Ban (tasteskill v2 empirical rule: nol em-dash di UI), §7 Lint Mekanis (Buzz, Meta, TechLeak, InfraBadge, PatternSlop, EmDash, Filler, Seru), §8 `[COPY CHECK]` marker.
 - **Load Method:** Range / full read saat menulis teks UI atau perubahan visual
 
 ### secure-patterns.md (Security Patterns Registry)

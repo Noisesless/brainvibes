@@ -338,14 +338,23 @@ small, .text-sm { font-size: 0.875rem; line-height: 1.4; }
 
 ## §4. SHADOW & ELEVATION SYSTEM
 
+> **Aturan Empiris tasteskill v2 (Studi 247 Situs Kurasi):**
+> FORBIDDEN resting shadows pada elemen statis (kartu/tombol at rest). Elevasi permukaan dicapai via langkah tone latar (`--vibe-surface`, `--vibe-surface-sub`). Shadow HANYA untuk elemen yang benar-benar melayang (hover elevation, dialog, dropdown menu, modal).
+
 ```css
-/* Soft (Pasif/Idle) */
-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+/* Elevasi Permukaan Statis (Tone Steps — Tanpa Shadow) */
+.surface-card     { background: var(--vibe-surface); }
+.surface-elevated { background: var(--vibe-surface-sub); }
 
 /* Hover/Glow (Aktif — REQUIRED kombinasi dengan transition + transform) */
 box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 transition: all 0.2s ease-in-out;
 transform: translateY(-4px); /* Efek angkat ringan saat hover */
+
+/* Elemen Melayang Nyata (Modal, Dialog, Dropdown) */
+.floating-dialog {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
 ```
 
 ---
@@ -387,6 +396,7 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 
 **Aturan Implementasi:**
 - AI **REQUIRED** menggunakan variabel CSS di atas (`var(--vibe-success)` dst) pada semua badge/tag status — **FORBIDDEN** hardcode hex warna status secara langsung.
+- **Infra Status Badge Ban (§4.D):** Badge status HANYA untuk status data domain produk (pesanan lunas, kehadiran siswa, status user aktif). FORBIDDEN mutlak kapsul status infrastruktur/koneksi ("Database Aktif", "Server Online", "● Aktif/Online") di antarmuka pengguna biasa. Status koneksi hanya dilaporkan via inline error banner jika gagal. Prinsip: *Diam jika oke, bicara jika error*.
 - Token ini dideklarasikan di `:root` (bukan di `[data-theme]`) sehingga **tidak berubah** antar mode light/dark.
 - Geometri badge mengikuti setting **Geometri Box** dari hasil wawancara (Sharp 0px / Rounded 6-8px / Pill penuh).
 
