@@ -56,17 +56,24 @@ leaning toward Oceanic Jade palette + asymmetric layout, dials: V=7 M=6 D=4
 [DNA Source] NEW — ini halaman utama, Visual DNA dimulai di sini. UUPM akan menentukan token.
 ```
 
-### 0.C Anti-Default Discipline (HARD BLOCK — Shape-First Architecture)
+### 0.C Anti-Default Discipline (HARD BLOCK — Shape-First Architecture & tasteskill v2)
 > 📐 **Prinsip Inti:** BENTUK & GEOMETRI > WARNA. Hindari bentuk kotak datar dan simetris monoton.
+> Diperkuat oleh data studi 247 situs kurasi dari **tasteskill v2** (situs top vs situs lemah).
 
 FORBIDDEN defaulting ke:
 - AI-purple gradients + centered dark mesh hero
-- 3 equal feature cards (symmetrical grid)
+- 3 equal feature cards (symmetrical grid — pada situs top hanya 1%, situs lemah 28%)
 - **Formasi 3 kartu (termasuk 3-card asymmetric) HANYA boleh digunakan jika diminta secara spesifik oleh user (`[User Explicit Opt-In]`).** Default bentuk wajib: Bento Matrix, Staggered Step Grid, Split 60/40 Offset, atau Inset Island.
 - Section flat tanpa overlap (wajib terapkan minimal 1 negative margin overlap `-32px` s/d `-60px`).
+- **Thin rules & hairlines ban:** Dilarang garis pembatas tipis (hairline dividers), kotak outline 1px berjejer, crosshairs, atau gridlines dekoratif. Pisahkan konten via spasi, langkah tone latar (`--vibe-surface`), atau skala tipografi.
+- **Resting shadows ban:** Dilarang box-shadow pada elemen yang sedang diam/menempel (cards, buttons, sections). Bayangan HANYA untuk elemen yang benar-benar mengambang di atas permukaan (dropdown menu, modal dialog, popover).
+- **Assistant palette ban:** Dilarang palet klise asisten AI (kuning-krem + terracotta/rust, atau violet/indigo generik). Gunakan palet terkurasi dari UUPM.
+- **Tiny uppercase tracked caps ban:** Dilarang label kecil kapital dengan letter-spacing lebar di atas judul.
+- **Complete em-dash ban:** Dilarang menggunakan karakter em-dash (`—`) di seluruh teks UI aplikasi (headline, body, pill, button). Gunakan hyphen (`-`) atau ubah struktur kalimat.
 - Glassmorphism everywhere tanpa alasan
 - Infinite loop micro-animations di semua elemen
-- Inter + slate-900 tanpa heading font pair
+- Inter + slate-900 tanpa heading font pair (headline-to-body ratio wajib tegas, median 4.3)
+- Fake div dashboards: Dilarang membuat bar abu-abu pura-pura jadi antarmuka aplikasi. Gunakan fragmen UI riil atau foto konkret.
 
 ---
 

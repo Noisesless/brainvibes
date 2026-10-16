@@ -28,16 +28,20 @@ AI REQUIRED menjalankan checklist ini sebelum menyatakan task UI selesai:
 - [ ] **Eyebrow count:** ≤ ceil(sectionCount / 3)
 - [ ] **Zigzag:** Tidak ada 3+ consecutive image+text split layout
 - [ ] **CTA:** Semua labels fit 1 line, tidak ada duplicate intent
-- [ ] **Copy Table:** `[COPY TABLE]` sudah dicetak sebelum kode; tidak ada teks UI yang menyalin 3+ kata berurutan dari instruksi user
-- [ ] **TechLeak:** Tidak ada kebocoran instruksi teknis (seperti `(WIB)`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, `responsive`) di teks UI/tabel
-- [ ] **Copy Lint:** Regex `COPY_RULES.md §7` dijalankan pada file UI yang diubah, 0 hit (atau hit sudah dijelaskan)
+- [ ] **Copy Table:** `[COPY TABLE]` sudah dicetak sebelum kode; tidak ada teks UI yang menyalin 2+ kata berurutan dari instruksi user (Echo Test <2 kata)
+- [ ] **TechLeak & Infra Badge:** Tidak ada kebocoran instruksi teknis (seperti `(WIB)`, `Asia/Jakarta`, `diurutkan terbaru`, `dienkripsi bcrypt`, `responsive`) dan **FORBIDDEN mutlak status infrastruktur** (Database Aktif, Server Online, ● Aktif/Online)
+- [ ] **Thin Rules:** Tidak ada hairline dividers, crosshairs, atau 1px outlined boxes berjejer — pisahkan via spasi atau langkah tone (`--vibe-surface`)
+- [ ] **Resting Shadows:** Tidak ada box-shadow pada elemen yang sedang diam/menempel — shadow hanya untuk elemen yang melayang (menu, dialog, modal)
+- [ ] **Em-Dash Ban:** Nol karakter em-dash (`—`) di seluruh teks UI (gunakan `-` atau susun ulang kalimat)
+- [ ] **Button Geometry:** Bentuk tombol konsisten dan terarah (square atau round pill, hindari soft radius generik tanpa alasan)
+- [ ] **Copy Lint:** Regex `COPY_RULES.md §7` dijalankan pada file UI yang diubah, 0 hit (Buzz, Meta, TechLeak, InfraBadge, PatternSlop)
 - [ ] **Copy Limit:** Heading ≤ 5 kata, button ≤ 3, toast ≤ 10, tanpa "!" dan emoji dekorasi
 - [ ] **Button contrast:** Semua tombol pass WCAG AA 4.5:1
 - [ ] **Shape consistency:** Menggunakan 1 corner-radius system yang konsisten untuk semua komponen. Jika menggunakan geometri kustom (asimetris/blob/oval/arch), pastikan sudah diterapkan secara seragam dan tidak dicampur tanpa aturan tertulis.
 - [ ] **Geometry Check:** FORBIDDEN hanya menggunakan persegi panjang rounded standar di seluruh halaman. Minimal ada 1 tipe elemen visual/kartu yang menggunakan bentuk geometri kustom (asimetris, oval, blob, arch, atau intersecting circle badges) untuk memecah monotoni.
-- [ ] **Color:** Tidak ada hardcode `white`/`black`/`#6C63FF`
-- [ ] **Spacing:** Semua padding/margin dalam kelipatan 8pt
-- [ ] **Images:** Minimal 2 real images, tidak ada fake screenshot div, tidak ada color overlay
+- [ ] **Color:** Tidak ada hardcode `white`/`black`/`#6C63FF` dan tidak menggunakan assistant palette (yellow-cream + terracotta/rust, violet/indigo generik)
+- [ ] **Spacing:** Semua padding/margin dalam kelipatan 8pt (jarak antar-section desktop 120-220px)
+- [ ] **Images:** Minimal 4 real images/interface fragments, tidak ada fake screenshot div, tidak ada color overlay
 - [ ] **Mobile:** Semua section punya explicit mobile collapse rule
 - [ ] **CSS tokens:** Semua warna via `var(--vibe-*)`, tidak ada hex hardcode
 - [ ] **Article containment:** Jika tipe artikel/berita → `overflow-wrap: break-word` + `img { max-width: 100% }` + `pre { overflow-x: auto }` sudah diterapkan
@@ -47,9 +51,10 @@ AI REQUIRED menjalankan checklist ini sebelum menyatakan task UI selesai:
 ```
 [TASTE-SKILL PRE-FLIGHT]
 DNA: ✅ | File: ✅ | Typography: ✅ | Hero: ✅ | Center-bias: ✅ | Eyebrow: ✅
-CTA: ✅ | Contrast: ✅ | Shape: ✅ (Asymmetric/Blob/Oval/Arch) | Tokens: ✅ | Images: ✅ | Mobile: ✅ | Article: ✅
+ThinRules: ✅ | RestingShadows: ✅ | EmDash: ✅ | RealImages: ✅ (≥4) | CTA: ✅ | Contrast: ✅
+Shape: ✅ (Asymmetric/Blob/Oval/Arch) | Tokens: ✅ | Mobile: ✅ | Article: ✅
 Rhythm: ✅ [A→C→B→D→A] — WOW moment: ✅ | Full-bleed: ✅ | BG variety: ✅
-[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | Lint: ✅ (0 hit)
+[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | Lint: ✅ (0 hit)
 ```
 Jika ada ❌ → perbaiki SEBELUM declare done.
 

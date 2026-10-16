@@ -453,9 +453,9 @@ Sebelum declare done, AI REQUIRED:
 1. Jalankan lint regex `taste-skill-bridge/COPY_RULES.md §7` pada file UI yang diubah.
 2. Cocokkan teks UI dengan `[COPY TABLE]` (Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi user).
 3. Cek tidak ada parameter teknis/timezone bocor (mis. `(WIB)`, timezone, sorting rule, hash) atau istilah teknis halus (`COPY_RULES.md §4.C`) di teks UI.
-4. Cek batas kata (`COPY_RULES.md §3`), tidak ada eyebrow/capsule di auth, dan **FORBIDDEN status kapsul infrastruktur** (Database Aktif, Server Online, ● Aktif/Online) di semua halaman (`COPY_RULES.md §4.D`).
+4. Cek batas kata (`COPY_RULES.md §3`), tidak ada eyebrow/capsule di auth, **FORBIDDEN status kapsul infrastruktur** (Database Aktif, Server Online, ● Aktif/Online) di semua halaman (`COPY_RULES.md §4.D`), dan **FORBIDDEN karakter em-dash (`—`)** di seluruh UI (`COPY_RULES.md §4.F`).
 5. Cek tidak ada fake-precise numbers tanpa real data.
-6. Cetak marker: `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | Lint: ✅ (0 hit)`
+6. Cetak marker: `[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | EmDash: ✅ | Lint: ✅ (0 hit)`
 
 Jika ada pelanggaran → perbaiki SEBELUM declare done. FORBIDDEN declare done dengan ❌ di checklist.
 

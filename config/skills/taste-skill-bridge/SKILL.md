@@ -13,12 +13,15 @@ description: |
   Berlaku untuk semua stack: PHP Native, Laravel, Next.js, React, Astro, Vanilla HTML/CSS.
   PRINSIP INTI: Visual DNA sebuah proyek dimulai dari halaman utama (landing/dashboard).
   Semua halaman lain WAJIB mewarisi dan konsisten dengan Visual DNA halaman utama.
+  Terintegrasi dengan tasteskill v2 (studi 247 situs kurasi: anti-hairlines, anti-resting-shadows, anti-assistant-palette, foto riil).
 ---
 
-# TASTE-SKILL BRIDGE — Router (v2.0)
+# TASTE-SKILL BRIDGE — Router (v2.0 — tasteskill v2 & UUPM v2.15.0)
 
 > ⚠️ **MANDATORY:** Saat skill ini di-trigger, AI REQUIRED membaca file ini DAN sub-file
 > yang sesuai via `view_file`. FORBIDDEN mengeksekusi pipeline dari memori tanpa baca ulang.
+> Mengintegrasikan prinsip empiris **tasteskill v2** (studi 247 situs kurasi: nol hairline dividers,
+> nol resting shadows, nol em-dash di UI, tombol 52% square / 23% pill, rasio headline ≥ 4.3).
 >
 > ⛔ **LAZY ROUTER EXIT GUARD (Gemini 3.7 Flash & Fast Models):**
 > DILARANG berhenti di berkas router ini dan langsung menulis kode!

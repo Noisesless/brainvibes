@@ -96,7 +96,7 @@ Jika ditemukan perbedaan aturan, batas angka, atau instruksi antar-berkas sistem
 1. ❌ Warna `#6C63FF`, `#4CAF50`, `#2196F3` tanpa rekomendasi UUPM
 2. ❌ `font-family: Inter` tunggal — wajib 2 font (heading + body) dari `typography.csv` UUPM
 3. ❌ `border-radius: 8px` hardcode — gunakan `var(--radius-md)` dan variasikan kontur geometri (Arched/Chamfered/Asymmetric)
-4. ❌ `box-shadow: 0 2px 4px rgba(0,0,0,0.1)` generik — gunakan `design-system.md §4`
+4. ❌ `box-shadow` pada elemen diam (resting shadows) — bayangan HANYA untuk elemen yang benar-benar melayang (dialog, dropdown, modal); gunakan tone steps untuk elevasi permukaan (`design-system.md §4`)
 5. ❌ `transition: all 0.3s ease` — gunakan `var(--vibe-transition)`
 6. ❌ `background: white` / `color: black` hardcode — gunakan `var(--vibe-background)`, `var(--vibe-text-main)`
 7. ❌ Pilih palet tanpa cek `colors.csv` UUPM terlebih dahulu
@@ -118,7 +118,7 @@ Jika ditemukan perbedaan aturan, batas angka, atau instruksi antar-berkas sistem
 21. ✅ **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
 22. ✅ **Capsule/Eyebrow & Infra Badge Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. **FORBIDDEN mutlak kapsul status infrastruktur/koneksi** (seperti "Database Aktif", "Terhubung Database", "Server Online", "● Aktif/Online") di antarmuka pengguna biasa — status koneksi hanya dilaporkan via alert jika error, bukan badge hijau saat normal (`COPY_RULES.md §4.D`). Eyebrow/kapsul = tanda AI slop paling mencolok.
 23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN kata promosi EN+ID ("Unlock", "Seamless", "Solusi terbaik", "Terdepan", dll — daftar lengkap `taste-skill-bridge/COPY_RULES.md §4`) dan kalimat meta ("Halaman ini...", "Selamat datang di..."). FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
-24. ✅ **Anti-Literal Copy, Anti-Echo & Tech-Leak Gate:** FORBIDDEN menyalin instruksi/prompt user mentah atau membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type) menjadi teks UI. Ambil ENTITAS saja dan buang kata instruksi (`COPY_RULES.md §4.E`). REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak, InfraBadge).
+24. ✅ **Anti-Literal Copy, Anti-Echo, Tech-Leak & Em-Dash Gate:** FORBIDDEN menyalin instruksi/prompt user mentah, membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type), atau menggunakan karakter em-dash (`—`) di teks UI. Ambil ENTITAS saja dan buang kata instruksi (`COPY_RULES.md §4.E, §4.F`). REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak, InfraBadge, EmDash).
 
 ### Protokol Output Wajib:
 

@@ -1,12 +1,11 @@
 ---
 name: ui-ux-pro-max
 description: |
-  AI-powered design intelligence with 192 industry-specific color palettes,
-  79 UI styles (50 active), 74 font pairings, 193 UI reasoning rules,
-  119 UX guidelines, 17 GSAP motion presets, 35 landing page patterns,
-  and 25 chart types across 22 tech stacks.
-  Activates automatically when the user requests UI building,
-  component creation, style/color/font/chart/UX recommendations or review.
+  AI-powered design intelligence (v2.15.0) with 192 industry-specific color palettes,
+  79 UI styles (50 active, 29 supplemental, 9 deprecated), 74 font pairings, 1,934 Google Fonts,
+  192 reasoning profiles, 119 UX guidelines, 1,260 stack guidelines across 22 stacks, 17 GSAP motion presets,
+  35 landing page patterns, and 25 chart types. Features BM25 query routing and resilient text layout guidance.
+  Activates automatically when the user requests UI building, component creation, style/color/font/chart/UX recommendations or review.
   Runs the design intelligence pipeline silently before any design decision.
 ---
 

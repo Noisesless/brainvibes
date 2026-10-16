@@ -42,8 +42,8 @@
 
 | Skill | Dependencies | Purpose |
 |---|---|---|
-| `ui-ux-pro-max` | 18 datasets (colors, typography, styles, ui-reasoning, landing, dll) | Design intelligence (Search / Direct-Read) |
-| `taste-skill-bridge` | ui-ux-pro-max, SKILL.md (router), ESSENTIAL, DETAILED, REFERENCE, CHEATSHEET, MODEL_HINTS, COPY_RULES (Gate 5B, §4.B Pattern Blocklist, §4.D InfraBadge Ban, §4.E Anti-Prompt Echo) | Anti-slop bridge, microcopy SSOT & model overrides |
+| `ui-ux-pro-max` | 18 datasets (colors, typography, styles, ui-reasoning, landing, 1,934 Google Fonts, dll) | Design intelligence engine v2.15.0 (Search / Direct-Read / BM25) |
+| `taste-skill-bridge` | ui-ux-pro-max, SKILL.md (router), ESSENTIAL, DETAILED, REFERENCE, CHEATSHEET, MODEL_HINTS, COPY_RULES (tasteskill v2 247-study, Gate 5B, §4.B Pattern Blocklist, §4.D InfraBadge Ban, §4.E Anti-Prompt Echo, §4.F EmDash Ban) | Anti-slop bridge, microcopy SSOT & empirical design rules |
 | `security-patterns` | known-vulns.md, secure-patterns.md (SP-001..SP-030), xampp-php-patterns.md (SP-PHP-001..SP-PHP-005), audit-template.md | Security rules (30 SPs + 5 PHP SPs + 5-tier adaptive rate limiting) |
 | `code-snippets` | auth-patterns.md, form-patterns.md | Reusable snippets |
 | `database-patterns` | - | Schema design |

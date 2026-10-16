@@ -176,6 +176,13 @@ Masalah paling persisten: AI menyalin teks instruksi user langsung ke halaman ap
 
 ---
 
+## 4.F Em-Dash Ban (Larangan Karakter Em-Dash di UI)
+Merujuk data empiris `tasteskill v2`, em-dash (`—`) adalah penanda (tell) paling mencolok yang sering dihasilkan AI di teks web.
+- **FORBIDDEN:** Penggunaan karakter em-dash (`—`) di seluruh antarmuka pengguna (headline, subtitle, pill, badge, button, caption, alt text).
+- **Padanan:** Gunakan tanda hubung pendek/hyphen (`-`) jika memang diperlukan pemisah, atau restrukturisasi kalimat menjadi frasa lugas tanpa jeda dramatis.
+
+---
+
 ## 5. Pola Terlarang (Meta-Deskriptif & Bocor dari Brief)
 
 | Pola | Contoh salah | Perbaikan |
@@ -230,6 +237,7 @@ Meta        : (?i)halaman ini|section ini|di sini anda|berikut adalah|selamat da
 TechLeak    : (?i)\(\s*(?:wib|wita|wit|utc|gmt)\b[^)]*\)|\b\d{1,2}[:.]\d{2}\s*(?:wib|wita|wit)\b|asia/jakarta|zona waktu|timezone|time zone|\breal-?time\b|diurutkan|sorted by|dienkripsi|encrypted|bcrypt|\bformat\s*:|\bresponsive\b|\bowasp\b
 InfraBadge  : (?i)(database aktif|terhubung (ke )?database|server (online|aktif|ready)|api (ready|connected|aktif)|●\s*(aktif|online|connected|live)|sinkronisasi aktif|terkoneksi|db connected|connection (status|active|established))
 PatternSlop : (?i)(dengan mudah|dengan cepat|dengan aman|yang lebih \w+|solusi \w+|sistem \w+|platform \w+|untuk (\w+ ){2,}yang|pantau \w+ anda|kelola \w+ anda|lihat semua)
+EmDash      : —
 Filler      : (?i)lorem ipsum|judul halaman|deskripsi singkat|your title|heading here|john doe|hero section|bento grid
 Seru        : >[^<{]*![^<=]*<
 ```
@@ -241,9 +249,9 @@ Hit di komentar kode / nama class / data user asli = abaikan dan catat.
 ## 8. Output Marker
 
 ```
-[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | Lint: ✅ (0 hit)
+[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | EmDash: ✅ | Lint: ✅ (0 hit)
 ```
 
 Ada ❌ → perbaiki sebelum declare done. Jika ada yang diubah:
-`[Pragmatic Check] Removed: [buzzword/literal-copy/tech-leak/infra-badge] → Replaced: [versi lugas]`
+`[Pragmatic Check] Removed: [buzzword/literal-copy/tech-leak/infra-badge/em-dash] → Replaced: [versi lugas]`
 
