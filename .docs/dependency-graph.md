@@ -1,6 +1,6 @@
 # Brainvibes — Dependency Graph
 
-## 🔴 Critical Files (paling banyak di-import — JANGAN ubah tanpa review)
+## Critical Files (paling banyak di-import — JANGAN ubah tanpa review)
 
 | File | Imported By (count) | Tipe |
 |---|---|---|
@@ -13,7 +13,7 @@
 | `config/mcp_config.json` | 2 (codebase-memory, context7) | MCP servers |
 | `config/hooks.json` / `.agents/hooks.json` | 1+ (Antigravity IDE lifecycle) | Lifecycle hooks config |
 
-## 🟡 High-Impact Files (ubah = efek luas)
+## High-Impact Files (ubah = efek luas)
 
 | File | Depends On | Used By | Impact Level |
 |---|---|---|---|
@@ -28,7 +28,7 @@
 | `app-context-template.md` | gemini.md | Context snapshot | Medium |
 
 
-## 🟢 Leaf Files (aman diubah — minimal dependency)
+## Leaf Files (aman diubah — minimal dependency)
 
 | File | Purpose |
 |---|---|
@@ -108,10 +108,10 @@ mcp_config.json
 
 | Check | Result |
 |---|---|
-| gemini.md ↔ AGENTS.md | ✅ No circular (AGENTS.md extends, tidak replace) |
-| gemini-execution.md ↔ gemini-templates.md | ✅ No circular (loaded independently) |
-| ui-ux-pro-max ↔ taste-skill-bridge | ✅ No circular (one-way dependency) |
-| user-prefs.md ↔ gemini.md | ✅ No circular (user-prefs dibaca dulu) |
+| gemini.md ↔ AGENTS.md | OK — No circular (AGENTS.md extends, tidak replace) |
+| gemini-execution.md ↔ gemini-templates.md | OK — No circular (loaded independently) |
+| ui-ux-pro-max ↔ taste-skill-bridge | OK — No circular (one-way dependency) |
+| user-prefs.md ↔ gemini.md | OK — No circular (user-prefs dibaca dulu) |
 
 ## File Role Definitions
 

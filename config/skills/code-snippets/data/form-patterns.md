@@ -25,7 +25,7 @@ Kompleksitas: Medium
     <div class="input-password-wrapper">
       <input type="password" id="password" name="password" class="form-input"
              required autocomplete="current-password" minlength="6">
-      <button type="button" class="password-toggle" aria-label="Tampilkan password">👁</button>
+      <button type="button" class="password-toggle" aria-label="Tampilkan password"><i data-lucide="eye" aria-hidden="true"></i></button>
     </div>
   </div>
   
@@ -34,7 +34,7 @@ Kompleksitas: Medium
     <div class="captcha-wrapper">
       <img src="api/captcha" alt="Captcha code" id="captcha-image" class="captcha-img">
       <button type="button" onclick="this.previousElementSibling.src='api/captcha?t='+Date.now()" 
-              aria-label="Refresh captcha" class="captcha-refresh">🔄</button>
+              aria-label="Refresh captcha" class="captcha-refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
     </div>
     <input type="text" id="captcha" name="captcha" class="form-input"
            required autocomplete="off" maxlength="5" placeholder="Masukkan kode">
@@ -84,7 +84,7 @@ Kompleksitas: Simple
   <label for="search-input" class="sr-only">Cari</label>
   <input type="search" id="search-input" class="form-input search-bar__input"
          placeholder="Ketik untuk mencari..." autocomplete="off">
-  <span class="search-bar__icon" aria-hidden="true">🔍</span>
+  <i data-lucide="search" class="search-bar__icon" aria-hidden="true"></i>
 </div>
 ```
 

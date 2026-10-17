@@ -5,13 +5,13 @@
 ### Brainvibes Itself
 | Metric | Value | Status |
 |---|---|---|
-| Total Files | ~120 | ✅ |
-| Core Files | 10 | ✅ |
-| Skills | 12 folders | ✅ |
-| Knowledge Bases | 3 | ✅ |
-| MCP Servers | 2 (Lean Stack) | ✅ |
-| Version | 4.7.0 | ✅ |
-| Total Size | ~630KB | ✅ |
+| Total Files | ~120 | OK |
+| Core Files | 10 | OK |
+| Skills | 12 folders | OK |
+| Knowledge Bases | 3 | OK |
+| MCP Servers | 2 (Lean Stack) | OK |
+| Version | 4.7.0 | OK |
+| Total Size | ~630KB | OK |
 
 ### File Size Distribution
 | Category | Files | Total Size |
@@ -26,31 +26,31 @@
 ## Linting & Validation
 
 ### Markdown Files
-- ✅ Consistent heading hierarchy (H1 → H2 → H3)
-- ✅ Table formatting aligned
-- ✅ Link validation (internal references)
-- ✅ Code block language tags
+- Consistent heading hierarchy (H1 → H2 → H3)
+- Table formatting aligned
+- Link validation (internal references)
+- Code block language tags
 
 ### JSON Files
-- ✅ Valid JSON syntax
-- ✅ Consistent indentation (2 spaces)
-- ✅ Required fields present
+- Valid JSON syntax
+- Consistent indentation (2 spaces)
+- Required fields present
 
 ### Shell & PowerShell Scripts (Dual-Platform)
-- ✅ Syntax validation (Bash `set -euo pipefail` & PowerShell StrictMode)
-- ✅ Fast socket checks (<100ms port 9749)
-- ✅ Error handling (try/catch & fallback checks)
-- ✅ Comment documentation & execution permissions (`chmod +x`)
+- Syntax validation (Bash `set -euo pipefail` & PowerShell StrictMode)
+- Fast socket checks (<100ms port 9749)
+- Error handling (try/catch & fallback checks)
+- Comment documentation & execution permissions (`chmod +x`)
 
 ## Complexity Analysis
 
 ### gemini.md (Core Instructions)
 - **Lines:** 485
-- **Sections:** 9 (§0 [termasuk §0.B Dynamic Path], §1, §VISUAL RULES [18 ban + 6 enforcement], §SESSION PROTOCOL, §2 [12 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
+- **Sections:** 9 (§0 [termasuk §0.B Dynamic Path], §1, §VISUAL RULES [19 ban + 6 enforcement], §SESSION PROTOCOL, §2 [12 saklar], §DOCS, §APP-CONTEXT, §POINTER, §SMART HEALTH)
 - **Hard Blocks:** 11 (termasuk #11: Pragmatic Output & Anti-Over-Engineering Law)
 - **Gates:** 6
 - **Standards:** 9 (termasuk #8: Visual Registry Sync & #9: Responsive Laptop-First + Android 3M)
-- **Visual Gates:** 18 Larangan visual + 6 Penegakan positif (termasuk #22 Infra Status Badge Ban & #24 Anti-Literal Prompt Echo / Echo Test 2+ kata)
+- **Visual Gates:** 19 Larangan visual + 6 Penegakan positif (termasuk #19 Raw Emoji & Unicode Symbol Ban, #23 Infra Status Badge Ban & #25 Anti-Literal Prompt Echo / Echo Test 2+ kata)
 - **Complexity:** Medium (technical focus, anti-AI-slop visual gate, unified dispatch table, pragmatic output gate)
 
 ### gemini-execution.md (Execution Details)
@@ -76,7 +76,7 @@
 ### COPY_RULES.md (Single Source of Truth Teks UI)
 - **Lines:** 258
 - **Scope:** `config/skills/taste-skill-bridge/COPY_RULES.md`
-- **Key Modules:** Gate 5B `[COPY TABLE]`, §3 Batas Kata Komponen, §4.A Blocklist Promosi EN+ID, §4.B Pattern Blocklist (P1-P8), §4.C TechLeak Expanded (10 padanan istilah teknis halus), §4.D Infra Status Badge Ban (status koneksi/server terlarang di UI biasa), §4.E Anti Literal Prompt Echo (stripping 30+ kata instruksi, Echo Test <2 kata berurutan), §4.F Em-Dash Ban (tasteskill v2 empirical rule: nol em-dash di UI), §7 Lint Mekanis (Buzz, Meta, TechLeak, InfraBadge, PatternSlop, EmDash, Filler, Seru), §8 `[COPY CHECK]` marker.
+- **Key Modules:** Gate 5B `[COPY TABLE]`, §3 Batas Kata Komponen, §4.A Blocklist Promosi EN+ID, §4.B Pattern Blocklist (P1-P8), §4.C TechLeak Expanded (10 padanan istilah teknis halus), §4.D Infra Status Badge Ban (status koneksi/server terlarang di UI biasa), §4.E Anti Literal Prompt Echo (stripping 30+ kata instruksi, Echo Test <2 kata berurutan), §4.F Em-Dash Ban (tasteskill v2 empirical rule: nol em-dash di UI), §7 Lint Mekanis (Buzz, Meta, TechLeak, InfraBadge, PatternSlop, EmDash, Filler, Seru, RawEmoji), §8 `[COPY CHECK]` marker.
 - **Load Method:** Range / full read saat menulis teks UI atau perubahan visual
 
 ### secure-patterns.md (Security Patterns Registry)
@@ -98,27 +98,27 @@
 ## Duplication Check
 
 ### Unique Content
-- ✅ `gemini.md` — Core instructions (tidak ada duplikasi)
-- ✅ `gemini-execution.md` — Execution details (unik)
-- ✅ `gemini-templates.md` — Templates (unik)
-- ✅ `AGENTS.md` — Additional rules (ekstensi gemini.md)
-- ✅ `user-prefs.md` — User preferences (unik)
+- `gemini.md` — Core instructions (tidak ada duplikasi)
+- `gemini-execution.md` — Execution details (unik)
+- `gemini-templates.md` — Templates (unik)
+- `AGENTS.md` — Additional rules (ekstensi gemini.md)
+- `user-prefs.md` — User preferences (unik)
 
 ### Cross-References
-- ✅ `gemini.md §POINTER` → Reference ke execution/templates
-- ✅ `AGENTS.md` → Extends gemini.md, tidak replace
-- ✅ `user-prefs.md` → Highest priority, dibaca sebelum gemini.md
+- `gemini.md §POINTER` → Reference ke execution/templates
+- `AGENTS.md` → Extends gemini.md, tidak replace
+- `user-prefs.md` → Highest priority, dibaca sebelum gemini.md
 
 ## Magic Numbers
 
 | File | Location | Value | Status |
 |---|---|---|---|
-| `gemini.md` | Token guard | max 5 files/turn | ✅ Documented |
-| `gemini.md` | Token guard | max 200 lines/read | ✅ Documented |
-| `gemini.md` | App-context | max 100 lines | ✅ Documented |
-| `gemini.md` | Issues.md | FIFO max 10 resolved | ✅ Documented |
-| `gemini.md` | Handover | 100 baris rolling | ✅ Documented |
-| `gemini.md` | Retry loop | max 3x | ✅ Documented |
+| `gemini.md` | Token guard | max 5 files/turn | Documented |
+| `gemini.md` | Token guard | max 200 lines/read | Documented |
+| `gemini.md` | App-context | max 100 lines | Documented |
+| `gemini.md` | Issues.md | FIFO max 10 resolved | Documented |
+| `gemini.md` | Handover | 100 baris rolling | Documented |
+| `gemini.md` | Retry loop | max 3x | Documented |
 
 ## Recommendations
 
@@ -132,15 +132,15 @@
 7. **Single Source of Truth Visual Registry** — 32 token komponen lengkap (§7B) & 7-tier responsive breakpoints (Android 3M + Laptop-First 1366)
 
 ### Areas for Improvement
-1. **Documentation Coverage** — `.docs/` lengkap (9 files termasuk deployment.md & design-system.md) ✅
+1. **Documentation Coverage** — `.docs/` lengkap (9 files termasuk deployment.md & design-system.md)
 2. **Version Tracking** — Changelog tersinkronisasi di v4.4.0-stable
 3. **Testing** — Belum ada automated test suite untuk validasi dynamic prompt instructions
-4. **Visual Optimization** — `taste-skill-bridge/SKILL.md` telah dioptimasi ke router 61 baris + CHEATSHEET + MODEL_HINTS ✅
-5. **Dual-Platform Parity** — `.gitattributes` (LF/CRLF), executable mode `100755` pada skrip Unix, paritas `sync.sh` & `sync.ps1`, serta dynamic PATH binary detection ✅
-6. **Security & Limiter Parity** — SP-024 s/d SP-030 terpasang, 5-tier adaptive rate limiter aktif, dan repo bersih dari residu usang ✅
-7. **Visual & Responsive Standards** — §7B diperluas dari 7 ke 32 komponen UI dan breakpoint strategy 7-tier memprioritaskan laptop 1366×768 serta Android 3M ✅
+4. **Visual Optimization** — `taste-skill-bridge/SKILL.md` telah dioptimasi ke router 61 baris + CHEATSHEET + MODEL_HINTS
+5. **Dual-Platform Parity** — `.gitattributes` (LF/CRLF), executable mode `100755` pada skrip Unix, paritas `sync.sh` & `sync.ps1`, serta dynamic PATH binary detection
+6. **Security & Limiter Parity** — SP-024 s/d SP-030 terpasang, 5-tier adaptive rate limiter aktif, dan repo bersih dari residu usang
+7. **Visual & Responsive Standards** — §7B diperluas dari 7 ke 32 komponen UI dan breakpoint strategy 7-tier memprioritaskan laptop 1366×768 serta Android 3M
 
 ## Self-Check Result
 ```
-[SELF-CHECK] ✅ Files: 120 | ✅ Links: OK | ✅ Tokens: CSS var | ✅ Format: Aligned
+[SELF-CHECK] Files: 120 | Links: OK | Tokens: CSS var | Format: Aligned
 ```

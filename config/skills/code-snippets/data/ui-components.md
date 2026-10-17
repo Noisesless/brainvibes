@@ -129,7 +129,7 @@ Dependensi: Tidak ada
 ```html
 <div class="dropdown" data-dropdown>
   <button class="dropdown__trigger" aria-expanded="false" aria-haspopup="true">
-    Menu ▾
+    Menu <i data-lucide="chevron-down" class="dropdown__icon" aria-hidden="true"></i>
   </button>
   <ul class="dropdown__menu" role="menu">
     <li role="menuitem"><a href="#">Profil</a></li>
@@ -230,13 +230,7 @@ Dependensi: Icon library (e.g. Tabler / Phosphor)
   <div class="service-card__body">
     <!-- Intersecting Badge -->
     <div class="service-card__badge">
-      <!-- Icon SVG dari Tabler/Phosphor -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-      </svg>
+      <i data-lucide="home" class="service-card__icon" aria-hidden="true"></i>
     </div>
     
     <h3 class="service-card__title">Home Cleaning</h3>
@@ -245,7 +239,7 @@ Dependensi: Icon library (e.g. Tabler / Phosphor)
     </p>
     
     <a href="/services/home-cleaning" class="service-card__cta">
-      Read More <span class="arrow">→</span>
+      Read More <i data-lucide="arrow-right" class="arrow" aria-hidden="true"></i>
     </a>
   </div>
 </div>

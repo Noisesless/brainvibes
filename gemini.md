@@ -92,7 +92,7 @@ Jika ditemukan perbedaan aturan, batas angka, atau instruksi antar-berkas sistem
 
 > ⛔ **HARD BLOCK #7 DETAIL:** Aturan ini BERLAKU OTOMATIS setiap kali AI menulis/mengedit kode visual (CSS, style, class, komponen UI, ikon, warna, font, spacing, layout, animasi).
 
-### 18 Larangan Anti-AI-SLOP (FORBIDDEN):
+### 19 Larangan Anti-AI-SLOP (FORBIDDEN):
 1. ❌ Warna `#6C63FF`, `#4CAF50`, `#2196F3` tanpa rekomendasi UUPM
 2. ❌ `font-family: Inter` tunggal — wajib 2 font (heading + body) dari `typography.csv` UUPM
 3. ❌ `border-radius: 8px` hardcode — gunakan `var(--radius-md)` dan variasikan kontur geometri (Arched/Chamfered/Asymmetric)
@@ -111,14 +111,15 @@ Jika ditemukan perbedaan aturan, batas angka, atau instruksi antar-berkas sistem
 16. ❌ Output visual tanpa cek kepatuhan §VISUAL RULES
 17. ❌ **3-Equal Cards Default Monoculture:** FORBIDDEN formasi default 3-kolom kartu simetris identik. Wajib utamakan Bento Matrix, Staggered Step Grid, atau Split Offset. *(Pengecualian: Formasi 3-card asymmetric HANYA boleh digunakan jika diminta secara spesifik oleh user)*.
 18. ❌ **Flat Box-in-a-Box Monoculture:** FORBIDDEN section berjejer datar tanpa kedalaman siluet. Wajib terapkan minimal 1 negative margin overlap (`margin-top: -32px` s/d `-60px`) atau kontur asimetris antar-section.
+19. ❌ **Raw Emoji & Unicode Symbol Ban:** FORBIDDEN menyisipkan emoji unicode mentah (✅, ❌, 🔴, 🟡, 🟢, ⚡, 🎉, 📊, ⚠️, 🔒, 🛡️, 💡, 🚀, dll.) di kode UI aplikasi (HTML, JSX, TSX, Vue, PHP, Blade, Astro, Svelte). Emoji = tanda AI slop paling mudah dikenali user. Gunakan komponen ikon dari icon library proyek (`<Icon name="check" />`, `<CheckIcon />`, dsb.) atau teks label bersih (`OK`, `Active`, `Error`). **Pengecualian tunggal:** emoji dalam data konten user-generated (chat, komentar) yang memang harus ditampilkan apa adanya.
 
 ### Enforcement Positif (REQUIRED — Anti-Slop Pipeline Wajib Jalan):
-19. ✅ **UUPM Gate:** REQUIRED jalankan UUPM `search.py --design-system` ATAU Direct-Read CSV (`grep_search` di `colors.csv`/`styles.csv`/`typography.csv`) SEBELUM menulis CSS token baru. FORBIDDEN deklarasi `:root` tanpa sumber data UUPM.
-20. ✅ **Design Read Gate:** REQUIRED output `[Design Read]` + `[RHYTHM SCORE]` sebelum menulis HTML/JSX halaman baru atau redesign. Kode tanpa Design Read = INVALID.
-21. ✅ **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
-22. ✅ **Capsule/Eyebrow & Infra Badge Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. **FORBIDDEN mutlak kapsul status infrastruktur/koneksi** (seperti "Database Aktif", "Terhubung Database", "Server Online", "● Aktif/Online") di antarmuka pengguna biasa — status koneksi hanya dilaporkan via alert jika error, bukan badge hijau saat normal (`COPY_RULES.md §4.D`). Eyebrow/kapsul = tanda AI slop paling mencolok.
-23. ✅ **Copy Anti-Slop Gate:** FORBIDDEN kata promosi EN+ID ("Unlock", "Seamless", "Solusi terbaik", "Terdepan", dll — daftar lengkap `taste-skill-bridge/COPY_RULES.md §4`) dan kalimat meta ("Halaman ini...", "Selamat datang di..."). FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
-24. ✅ **Anti-Literal Copy, Anti-Echo, Tech-Leak & Em-Dash Gate:** FORBIDDEN menyalin instruksi/prompt user mentah, membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type), atau menggunakan karakter em-dash (`—`) di teks UI. Ambil ENTITAS saja dan buang kata instruksi (`COPY_RULES.md §4.E, §4.F`). REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak, InfraBadge, EmDash).
+20. **UUPM Gate:** REQUIRED jalankan UUPM `search.py --design-system` ATAU Direct-Read CSV (`grep_search` di `colors.csv`/`styles.csv`/`typography.csv`) SEBELUM menulis CSS token baru. FORBIDDEN deklarasi `:root` tanpa sumber data UUPM.
+21. **Design Read Gate:** REQUIRED output `[Design Read]` + `[RHYTHM SCORE]` sebelum menulis HTML/JSX halaman baru atau redesign. Kode tanpa Design Read = INVALID.
+22. **Layout Intelligence Gate:** REQUIRED `grep_search` industri proyek di `ui-reasoning.csv` → ambil `Decision_Rules` + `Anti_Patterns` → gunakan sebagai constraint layout. Ini mencegah AI "main aman" dengan layout generik.
+23. **Capsule/Eyebrow & Infra Badge Ban:** FORBIDDEN eyebrow badge/capsule label (pill-shaped kecil di atas heading) di halaman auth (login/register/reset). Max 1 eyebrow per 3 section di halaman lain. **FORBIDDEN mutlak kapsul status infrastruktur/koneksi** (seperti "Database Aktif", "Terhubung Database", "Server Online", "● Aktif/Online") di antarmuka pengguna biasa — status koneksi hanya dilaporkan via alert jika error, bukan badge hijau saat normal (`COPY_RULES.md §4.D`). Eyebrow/kapsul = tanda AI slop paling mencolok.
+24. **Copy Anti-Slop Gate:** FORBIDDEN kata promosi EN+ID ("Unlock", "Seamless", "Solusi terbaik", "Terdepan", dll — daftar lengkap `taste-skill-bridge/COPY_RULES.md §4`) dan kalimat meta ("Halaman ini...", "Selamat datang di..."). FORBIDDEN fake-precise numbers (92%, 4.1×) tanpa real data.
+25. **Anti-Literal Copy, Anti-Echo, Tech-Leak & Em-Dash Gate:** FORBIDDEN menyalin instruksi/prompt user mentah, membocorkan parameter teknis backend (seperti `(WIB)`, timezone, sorting rule, hash type), atau menggunakan karakter em-dash (`—`) di teks UI. Ambil ENTITAS saja dan buang kata instruksi (`COPY_RULES.md §4.E, §4.F`). REQUIRED cetak `[COPY TABLE]` (entitas + aksi → teks UI) SEBELUM menulis heading/label/tombol/toast/kolom tabel; Echo Test: tidak ada **2+ kata berurutan** sama dengan instruksi. Batas kata & lint regex: `COPY_RULES.md §3, §7`. Self-check akhir: `[COPY CHECK]` (Echo, Blocklist, Limit, Meta, TechLeak, InfraBadge, EmDash).
 
 ### Protokol Output Wajib:
 

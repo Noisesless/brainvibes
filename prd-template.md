@@ -24,6 +24,7 @@
 | **Hex: Text Utama** | `[#XXXXXX]` | 🔒 IMMUTABLE |
 | **Mode Tema** | `[Static Light / Static Dark / Dynamic Toggle Switch]` | 🔒 IMMUTABLE |
 | **Font Family** | `[Inter (Sans-Serif Modern) / Playfair (Serif Elegan) / Roboto (Clean)]` | 🔒 IMMUTABLE |
+| **Icon Library** | `[Lucide / Phosphor Icons / Tabler Icons / Radix UI]` | 🔒 IMMUTABLE |
 | **Geometri Box** | `[Sharp 0px / Rounded 6–8px / Pill Bulat Penuh]` | 🔒 IMMUTABLE |
 | **Avatar Shape** | `[Lingkaran Sempurna rounded-full / Kotak Tumpul rounded-md]` | 🔒 IMMUTABLE |
 | **Navigasi Model** | `[Top Sticky Navbar / Vertical Sidebar Kiri / Floating Dock Menu]` | 🔒 IMMUTABLE |
@@ -58,6 +59,7 @@
 - **Styling & Design Engine:** [Pilih: Tailwind CSS v4 / Vanilla CSS dengan CSS Modules / Bootstrap 5]
 - **IDE Workspace Configuration:** [Pilih: Antigravity-IDE Settings / VSCode Settings / EditorConfig Standard / Tanpa Editor Config]
 - **Package Manager Engine:** [Pilih: npm / pnpm / yarn / bun]
+- **Icon Family / Library:** [Pilih: Lucide / Phosphor Icons / Tabler Icons / Radix UI — ONE family rule, FORBIDDEN raw SVG path mentah atau emoji unicode mentah]
 
 ### B. Pola Arsitektur, Multi-Environment Deployment & Path-Based Routing Rules
 - **Environment Agnostic & Anti-Port Collision Policy (STRICT):** AI REQUIRED merancang sistem routing dan konfigurasi environment yang sepenuhnya adaptif, mandiri, dan terisolasi.
@@ -162,6 +164,12 @@ Jika aplikasi membutuhkan fitur konversi dan pengunduhan berkas (Export Excel, P
      → **BACA `gemini-execution.md §4F`** untuk protokol HTTP request aman + hukum fallback lokal (onerror image guard).
   3. *Aturan Aset Lokal SVG Brand (Non-CDN):* Semua berkas SVG logo, brand, atau ikon utama (termasuk yang bersumber dari thesvg.org) wajib diunduh secara manual dan disimpan secara lokal (misal: `/public/assets/svg/`). Dilarang memuat SVG brand dari CDN luar langsung pada runtime.
      → **BACA `design-system.md §13`** untuk panduan lengkap integrasi SVG lokal dengan oklch() (fill/stroke via CSS variables, fallback hex injection, inline SVG component pattern).
+
+### H. Standar Sistem Ikon (Anti-Raw-Emoji & Official Icon Library)
+- **Keluarga Ikon Terkunci:** Seluruh icon UI di proyek WAJIB bersumber dari SATU keluarga library yang sama (`Lucide`, `Phosphor`, `Tabler`, atau `Radix UI`). FORBIDDEN mencampur >1 library.
+- **Larangan Keras Emoji & Simbol Unicode Mentah:** FORBIDDEN mutlak menyisipkan emoji unicode mentah (`✅`, `❌`, `🔴`, `⚡`, `🔍`, `🏠`, `👤`, `👁`, `🔄`, dll.) di kode UI aplikasi (HTML, JSX, TSX, Vue, Blade, PHP). Setiap indikator visual atau tombol harus menggunakan komponen icon resmi atau teks label profesional.
+- **Larangan SVG Mentah (Hand-Rolled):** FORBIDDEN menulis path `<svg>` mentah inline di template aplikasi.
+- **Token Geometri Ikon:** Wajib patuh pada sizing token di `design-system.md §7B.2` (`--icon-xs` s/d `--icon-hero`).
 
 ---
 

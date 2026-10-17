@@ -30,7 +30,8 @@ Prinsip dasar: **Diam jika oke, bicara jika error.** Jangan tampilkan status inf
 - ❌ "leverage", "utilize" (gunakan "use" / "pakai")
 - ❌ "ecosystem", "paradigm", "synergy" (kecuali konteks teknis presisi)
 - ❌ "unlock the full potential", "take it to the next level"
-- ❌ Emoji berlebihan (max 1-2 per respons, bukan hiasan setiap kalimat)
+- Emoji berlebihan di dialog (max 1-2 per respons, bukan hiasan setiap kalimat)
+- **FORBIDDEN emoji unicode mentah di kode UI aplikasi** (HTML/JSX/TSX/Vue/PHP/Blade). Gunakan komponen icon library (`<CheckIcon />`, `<Icon name="alert" />`) atau teks label bersih. Emoji = tanda AI slop paling mencolok. Detail: `gemini.md §VISUAL RULES #19`, lint: `COPY_RULES.md §7 RawEmoji`.
 - ❌ Bahasa Indonesia: "luar biasa", "sempurna", "spektakuler", "fenomenal", "revolusioner", "super canggih", "next level"
 
 > Blocklist untuk **teks di UI aplikasi** (lebih panjang, EN+ID) ada di `taste-skill-bridge/COPY_RULES.md §4`.

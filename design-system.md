@@ -492,10 +492,16 @@ transform: translateY(-4px); /* Efek angkat ringan saat hover */
 ```
 
 **HARD BLOCKS:**
-- FORBIDDEN ikon SVG hand-rolled (path mentah di HTML) — gunakan icon library proyek
+- FORBIDDEN emoji unicode mentah (✅, ❌, 🔴, 🟡, 🟢, ⚡, 🎉, 🔍, 🏠, 👤, 👁, 🔄, ⚙️, dll.) atau simbol unicode mentah sebagai icon UI di aplikasi — gunakan icon library proyek resmi.
+- FORBIDDEN ikon SVG hand-rolled (path mentah di HTML/JSX) — gunakan icon library proyek
 - FORBIDDEN campur icon library — ONE family rule
 - FORBIDDEN ikon tanpa `aria-hidden="true"` (kecuali ikon satu-satunya elemen interaktif)
 - FORBIDDEN ikon tanpa explicit `width`/`height` — gunakan `--icon-*` token
+
+**STANDAR IMPLEMENTASI ICON PER STACK:**
+- **React / Next.js:** Import komponen dari `lucide-react` (misal: `<Home size={20} aria-hidden="true" />`) atau `@phosphor-icons/react` / `@tabler/icons-react`.
+- **Astro / Vue / Vite:** Gunakan package icon resmi atau komponen icon wrapper terpusat.
+- **PHP Native / Laravel Blade / Static HTML:** Gunakan Lucide script loader (`<i data-lucide="home" aria-hidden="true"></i>` + `lucide.createIcons()`) atau Tabler Webfont (`<i class="ti ti-home" aria-hidden="true"></i>`) atau sprite SVG lokal resmi di `/public/assets/icons/`. FORBIDDEN menaruh emoji atau SVG inline mentah.
 
 ### §7B.3 MODAL / DIALOG TOKENS
 

@@ -18,21 +18,21 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 
 | Route / Command | Action / Purpose | Handler / Dependency | Status |
 |---|---|---|---|
-| `awal baru` | Wizard 10-poin → prd.md → todo.md | `gemini-templates.md §2A`, `prd-template.md` | ✅ Active |
-| `awal lanjut` | Resume project aktif | `app-context.md`, `gemini-templates.md §2B` | ✅ Active |
-| `awal konversi` | Stack & legacy migration | `gemini-templates.md §2C`, `prd-template.md` | ✅ Active |
-| `baca error` | YOLO debug pipeline | `gemini-templates.md §5`, `/.docs/issues.md` | ✅ Active |
-| `tambah fitur` | Incremental feature add | `app-context.md §NEXT`, `prd.md §2` | ✅ Active |
-| `lanjut dari sini` | Context recovery | `app-context.md`, `todo.md` | ✅ Active |
-| `status proyek` | Quick brief 10-baris | `app-context.md` | ✅ Active |
-| `analisa kualitas` | Code quality audit | `app-context.md`, `/.docs/quality_review.md` | ✅ Active |
-| `cek komponen` | Component & OWASP compliance check | `security-patterns/data/`, `app-context.md` | ✅ Active |
-| `pentest*` | DAST via Strix AI | `security-patterns/data/`, `pentest-strix/` | ✅ Active |
-| `redesign` | Visual overhaul & layout intelligence | `taste-skill router`, `UUPM Direct-Read`, `gemini-execution.md §4K`, `design-system.md §7B` | ✅ Active |
-| `update docs` | Buat/update semua 9 file `.docs/` dari scan codebase | `gemini-templates.md §2L`, `gemini-execution.md §4N.G` | ✅ Active |
-| `index project` | AST graph index + daemon ensure | `scripts/index-project` (.sh/.ps1) | ✅ Active |
-| `auto-sync` | Setiap 5 task / manual sync | `sync.sh` / `sync.ps1` (Step 1-10) | ✅ Active |
-| `auto-docs` | Setiap 5 task selesai | `/.docs/` files update | ✅ Active |
+| `awal baru` | Wizard 10-poin → prd.md → todo.md | `gemini-templates.md §2A`, `prd-template.md` | Active |
+| `awal lanjut` | Resume project aktif | `app-context.md`, `gemini-templates.md §2B` | Active |
+| `awal konversi` | Stack & legacy migration | `gemini-templates.md §2C`, `prd-template.md` | Active |
+| `baca error` | YOLO debug pipeline | `gemini-templates.md §5`, `/.docs/issues.md` | Active |
+| `tambah fitur` | Incremental feature add | `app-context.md §NEXT`, `prd.md §2` | Active |
+| `lanjut dari sini` | Context recovery | `app-context.md`, `todo.md` | Active |
+| `status proyek` | Quick brief 10-baris | `app-context.md` | Active |
+| `analisa kualitas` | Code quality audit | `app-context.md`, `/.docs/quality_review.md` | Active |
+| `cek komponen` | Component & OWASP compliance check | `security-patterns/data/`, `app-context.md` | Active |
+| `pentest*` | DAST via Strix AI | `security-patterns/data/`, `pentest-strix/` | Active |
+| `redesign` | Visual overhaul & layout intelligence | `taste-skill router`, `UUPM Direct-Read`, `gemini-execution.md §4K`, `design-system.md §7B` | Active |
+| `update docs` | Buat/update semua 9 file `.docs/` dari scan codebase | `gemini-templates.md §2L`, `gemini-execution.md §4N.G` | Active |
+| `index project` | AST graph index + daemon ensure | `scripts/index-project` (.sh/.ps1) | Active |
+| `auto-sync` | Setiap 5 task / manual sync | `sync.sh` / `sync.ps1` (Step 1-10) | Active |
+| `auto-docs` | Setiap 5 task selesai | `/.docs/` files update | Active |
 
 ## Middleware Chain
 
@@ -77,8 +77,8 @@ Brainvibes adalah sistem konfigurasi, bukan aplikasi web, jadi tidak memiliki ro
 
 | Status | Meaning |
 |---|---|
-| ✅ Active | Fully implemented and tested |
-| 🟡 Beta | Implemented but needs more testing |
-| 🔴 Planned | Documented but not yet implemented |
-| ⚪ Deprecated | Being phased out |
+| Active | Fully implemented and tested |
+| Beta | Implemented but needs more testing |
+| Planned | Documented but not yet implemented |
+| Deprecated | Being phased out |
 

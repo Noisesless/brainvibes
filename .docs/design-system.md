@@ -94,7 +94,7 @@
 ### 2.6 Media (3 Komponen)
 - **Avatar:** XS (`24px`), SM (`32px`), MD (`40px`), LG (`48px`), XL (`64px`). Radius circle / `var(--radius-md)`.
 - **Thumbnail / Image:** Aspect ratio `16:9`, `4:3`, `1:1`, object-fit `cover`, fallback background skeleton.
-- **Icon:** Library: Phosphor / Lucide (ONE family). Scales: XS (`14px`), SM (`16px`), MD (`20px`), LG (`24px`), XL (`32px`).
+- **Icon:** Library: Lucide / Phosphor / Tabler (ONE family rule). Scales: XS (`14px`), SM (`16px`), MD (`20px`), LG (`24px`), XL (`32px`). **Anti-Raw-Emoji:** FORBIDDEN mutlak emoji unicode mentah (`✅`, `❌`, `🔴`, `🔍`, `🏠`, `👤`, `👁`, `🔄`, dll.) atau SVG inline mentah di kode aplikasi. Wajib menggunakan komponen resmi dari library terpilih.
 
 ### 2.7 Structural (6 Komponen)
 - **Divider:** 1px `var(--vibe-divider)`, margin vertikal `16px-32px`.
@@ -162,12 +162,12 @@
 1. **Pre-Write Slop Filter (§4.O.0):** Terapkan 3 filter mental blocking (Panjang ≤50%, Jualan/Brosur potong total, Bocor/TechLeak hapus) sebelum teks ditulis ke file/UI.
 2. **Infra Status Badge Ban (§4.D):** FORBIDDEN mutlak kapsul status infrastruktur/koneksi (Database Aktif, Server Online, ● Aktif/Online). Status koneksi/infrastruktur bukan konsumsi pengguna biasa. Banner/alert hanya tampil jika terjadi error aktual. Prinsip: *Diam jika oke, bicara jika error*.
 3. **Anti-Kebocoran Teknis (Anti-Tech-Leak §4.C):** Instruksi teknis backend/JS (seperti waktu lokal Jakarta, urutan query, algoritma hashing) adalah logika kode, BUKAN teks tampilan layar.
-   - ❌ **Dilarang:** `<th>Waktu (WIB)</th>`, `<td>17:02 (WIB)</td>`, `<span>Zona waktu Asia/Jakarta</span>`, `<p>Data realtime diurutkan terbaru</p>`, `<small>Password dienkripsi bcrypt</small>`.
-   - ✅ **Wajib:** `<th>Waktu</th>`, `<td>17:02</td>`, `<td>03 Okt 2026, 17:02</td>`. Format waktu diatur di backend/JS tanpa label zona waktu mentah.
+   - **Dilarang:** `<th>Waktu (WIB)</th>`, `<td>17:02 (WIB)</td>`, `<span>Zona waktu Asia/Jakarta</span>`, `<p>Data realtime diurutkan terbaru</p>`, `<small>Password dienkripsi bcrypt</small>`.
+   - **Wajib:** `<th>Waktu</th>`, `<td>17:02</td>`, `<td>03 Okt 2026, 17:02</td>`. Format waktu diatur di backend/JS tanpa label zona waktu mentah.
 4. **Anti-Literal-Copy & Echo Test Diperketat (§4.E):** Dilarang menyalin kata-kata instruksi prompt mentah (buat, fitur, halaman, lengkap, dll). Ambil entitas saja. Echo Test: FORBIDDEN **2+ kata berurutan** sama dengan prompt instruksi.
 5. **Pattern Blocklist (§4.B):** Larangan pola kalimat klise promosi (mis. "dengan mudah/cepat/aman", "untuk monitoring yang lebih efisien", "solusi terintegrasi").
 6. **Batas Kata:** Heading halaman max 5 kata (hero headline max 8), subtitle max 15 kata, tombol max 3 kata, toast max 10 kata, placeholder max 5 kata.
-7. **Verifikasi Pre-Flight:** Wajib menjalankan filter regex `COPY_RULES.md §7` (Buzz, Meta, TechLeak, InfraBadge, PatternSlop) dan mencetak marker `[COPY CHECK]` sebelum menyatakan task UI selesai.
+7. **Verifikasi Pre-Flight:** Wajib menjalankan filter regex `COPY_RULES.md §7` (Buzz, Meta, TechLeak, InfraBadge, PatternSlop, RawEmoji) dan mencetak marker `[COPY CHECK]` sebelum menyatakan task UI selesai.
 
 
 

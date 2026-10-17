@@ -85,19 +85,19 @@ Kompleksitas: Simple
 ```html
 <nav class="bottom-nav" aria-label="Navigasi mobile">
   <a href="/" class="bottom-nav__item active" aria-current="page">
-    <span class="bottom-nav__icon">🏠</span>
+    <i data-lucide="home" class="bottom-nav__icon" aria-hidden="true"></i>
     <span class="bottom-nav__label">Beranda</span>
   </a>
   <a href="/explore" class="bottom-nav__item">
-    <span class="bottom-nav__icon">🔍</span>
+    <i data-lucide="compass" class="bottom-nav__icon" aria-hidden="true"></i>
     <span class="bottom-nav__label">Jelajah</span>
   </a>
   <a href="/notif" class="bottom-nav__item">
-    <span class="bottom-nav__icon">🔔</span>
+    <i data-lucide="bell" class="bottom-nav__icon" aria-hidden="true"></i>
     <span class="bottom-nav__label">Notifikasi</span>
   </a>
   <a href="/profil" class="bottom-nav__item">
-    <span class="bottom-nav__icon">👤</span>
+    <i data-lucide="user" class="bottom-nav__icon" aria-hidden="true"></i>
     <span class="bottom-nav__label">Profil</span>
   </a>
 </nav>

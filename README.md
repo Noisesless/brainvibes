@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧠 Brainvibes
+# Brainvibes
 
 ### _Global AI Coding Configuration System_
 
@@ -35,11 +35,11 @@
 | :--- | :--- | :--- |
 | [`gemini.md`](gemini.md) | ~32KB | **Core System Instructions** — Global agent rules, session protocols, main switches, visual & security gates, context budget management, and response formatting. |
 | [`gemini-execution.md`](gemini-execution.md) | ~55KB | **Technical Execution Guide** — Code standardization, modular architecture, upload pipeline, §3.B.7 Dual-Mode Handover Engine, §4.K Tiered Visual Design Pipeline, §4.O Pragmatic Output, and pre-flight validation. |
-| [`gemini-templates.md`](gemini-templates.md) | ~32KB | **Templates & Macro Commands** — Detailed execution flows for 11 macro commands (§2A-§2K), `issues.md` debug tracker, 5-stage Git sanitization workflow, and handover specifications. |
+| [`gemini-templates.md`](gemini-templates.md) | ~32KB | **Templates & Macro Commands** — Detailed execution flows for 12 macro commands (§2A-§2L), `issues.md` debug tracker, 5-stage Git sanitization workflow, and handover specifications. |
 | [`prd-template.md`](prd-template.md) | ~29KB | **PRD Template** — Standard 11-chapter Product Requirement Document, immutable core constraints, and architectural specifications. |
 | [`design-system.md`](design-system.md) | ~70KB | **Design System** — CSS token specifications (oklch), layer architecture, typography pairing, 32-component UI token registry (§7B), and 7-tier responsive strategy (Android 3M + Laptop-First 1366×768). |
 | [`AGENTS.md`](AGENTS.md) | ~0.2KB | **Workspace Pointer** — Lightweight pointer for Antigravity IDE to prevent redundant 18K token global rule loading at the repository root. |
-| [`AGENTS.global.md`](AGENTS.global.md) | ~4KB | **L1 Global Dispatcher** — In-memory fast routing table (11 switches), Git drift detection, dynamic multi-platform fallback resolver, and Browser Tool Gate. |
+| [`AGENTS.global.md`](AGENTS.global.md) | ~4KB | **L1 Global Dispatcher** — In-memory fast routing table (12 switches), Git drift detection, dynamic multi-platform fallback resolver, and Browser Tool Gate. |
 | [`anti-bloat-code.md`](.agents/rules/anti-bloat-code.md) | ~13KB | **Anti-Bloat & Pragmatic Output Rule** — §0 Satu Aturan (*Diam jika oke, bicara jika error*), §1.B Pattern-based blocklist, §2.B View anti-bloat, §2.C Area abu-abu (komentar/log/commit), dan arsitektur YAGNI pragmatis. |
 | [`COPY_RULES.md`](config/skills/taste-skill-bridge/COPY_RULES.md) | ~15KB | **UI Microcopy & Anti-Tech-Leak SSOT** — Single source of truth teks UI, Gate 5B `[COPY TABLE]`, batas kata, blocklist EN+ID, §4.B Pattern blocklist, §4.C TechLeak expanded, §4.D Infra Status Badge Ban, §4.E Anti Literal Prompt Echo (Echo Test <2 kata), dan 7-filter lint regex. |
 | [`user-prefs.md`](user-prefs.md) | ~7KB | **User Preferences** — Port defaults, visual themes, agent behavior toggles, context7 whitelists, response styles, and web search configurations. |
@@ -147,6 +147,7 @@ Brainvibes implements a **Unified Dispatch Table** in `gemini.md §2` and an in-
 | `cek komponen` | Code component & security pattern verification (Anti-Stale FSEP) → `security-audit.md` | `security-patterns/data/`, `app-context.md` | `prd-template.md`, `design-system.md` | `gemini-templates.md §2I` |
 | `pentest*` | Dynamic Application Security Testing (DAST via Strix) → `security-audit.md §DAST` | `security-patterns/data/`, `pentest-strix/` | `prd-template.md` | `gemini-templates.md §2J` |
 | `redesign` | Anti-slop visual overhaul → taste pipeline → UUPM tokens | `taste-skill-bridge/ESSENTIAL.md`, UUPM data/, `app-context.md §PALETTE` | `prd-template.md` | `gemini-templates.md §2K` |
+| `update docs` | Generate/update all 9 `.docs/` files from codebase scan | `app-context.md`, `gemini-execution.md §4N.G` | `prd-template.md`, `design-system.md` | `gemini-templates.md §2L` |
 
 ### Automated Event Triggers
 

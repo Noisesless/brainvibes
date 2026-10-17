@@ -238,6 +238,7 @@ TechLeak    : (?i)\(\s*(?:wib|wita|wit|utc|gmt)\b[^)]*\)|\b\d{1,2}[:.]\d{2}\s*(?
 InfraBadge  : (?i)(database aktif|terhubung (ke )?database|server (online|aktif|ready)|api (ready|connected|aktif)|●\s*(aktif|online|connected|live)|sinkronisasi aktif|terkoneksi|db connected|connection (status|active|established))
 PatternSlop : (?i)(dengan mudah|dengan cepat|dengan aman|yang lebih \w+|solusi \w+|sistem \w+|platform \w+|untuk (\w+ ){2,}yang|pantau \w+ anda|kelola \w+ anda|lihat semua)
 EmDash      : —
+RawEmoji    : [\x{2705}\x{274C}\x{26A0}\x{2B50}\x{1F525}\x{1F680}\x{1F389}\x{1F4CA}\x{1F4A1}\x{1F512}\x{1F6E1}\x{1F534}\x{1F7E1}\x{1F7E2}\x{26A1}\x{2728}\x{1F4DD}\x{1F4E6}\x{2699}\x{1F527}\x{1F6A8}\x{1F3AF}\x{1F4CB}\x{1F50D}\x{1F4C8}\x{1F4C9}\x{1F9E9}\x{1F6A7}\x{1F3C6}\x{1F9F0}\x{2B06}\x{2B07}\x{27A1}\x{1F449}\x{1F448}]
 Filler      : (?i)lorem ipsum|judul halaman|deskripsi singkat|your title|heading here|john doe|hero section|bento grid
 Seru        : >[^<{]*![^<=]*<
 ```
@@ -249,7 +250,7 @@ Hit di komentar kode / nama class / data user asli = abaikan dan catat.
 ## 8. Output Marker
 
 ```
-[COPY CHECK] Echo: ✅ | Blocklist: ✅ | Limit: ✅ | Meta: ✅ | TechLeak: ✅ | InfraBadge: ✅ | EmDash: ✅ | Lint: ✅ (0 hit)
+[COPY CHECK] Echo: OK | Blocklist: OK | Limit: OK | Meta: OK | TechLeak: OK | InfraBadge: OK | EmDash: OK | RawEmoji: OK | Lint: OK (0 hit)
 ```
 
 Ada ❌ → perbaiki sebelum declare done. Jika ada yang diubah:

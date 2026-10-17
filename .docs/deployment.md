@@ -28,7 +28,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 
 ## Pre-Deploy Checklist
 
-### 🔴 Critical (Harus sebelum deploy)
+### Critical (Harus sebelum deploy)
 - [ ] `.env.example` ada dan lengkap (tanpa secret values)
 - [ ] `.env` tidak masuk Git (cek `.gitignore`)
 - [ ] `.gitattributes` ada dan memastikan normalisasi line-endings (LF untuk Unix, CRLF untuk Windows)
@@ -37,7 +37,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 - [ ] Database migration sudah dijalankan
 - [ ] HTTPS aktif (SSL certificate)
 
-### 🟡 Important (Sangat disarankan)
+### Important (Sangat disarankan)
 - [ ] Error logging & exception handling (SP-019, SP-025: safe error masking & zero production debug leak)
 - [ ] 5-Tier Adaptive Rate Limiting aktif (SP-014/SP-015/SP-PHP-004: Auth 5/min s/d Webhooks 300/min)
 - [ ] Secrets sanitization & in-memory scrubbing (SP-024)
@@ -58,7 +58,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 - [ ] Favicon dan meta tags lengkap
 - [ ] Security headers terpasang (6 header wajib: CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy — rujuk gemini-execution.md §3C L6)
 
-### 🟢 Nice-to-have
+### Nice-to-have
 - [ ] Gzip/Brotli compression aktif
 - [ ] Cache headers dikonfigurasi
 - [ ] CDN untuk assets statis
@@ -67,7 +67,7 @@ Panduan deployment untuk proyek yang dibuat dengan Brainvibes workflow. Mencakup
 
 ## Deploy Scripts (Copy-Paste Ready)
 
-> ⚠️ Ganti placeholder `[SLUG]`, `[DOMAIN]`, `[PORT]`, `[DB_NAME]`, `[DB_USER]`, `[DB_PASS]` dengan nilai proyek aktual.
+> **Perhatian:** Ganti placeholder `[SLUG]`, `[DOMAIN]`, `[PORT]`, `[DB_NAME]`, `[DB_USER]`, `[DB_PASS]` dengan nilai proyek aktual.
 > AI WAJIB membaca section ini sebelum memberikan instruksi deploy — FORBIDDEN mengarang command sendiri.
 
 ---
